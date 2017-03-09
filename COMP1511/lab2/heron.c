@@ -17,5 +17,4 @@ int main(void){
         printf("Area = %f\n", area);
     }
     return(0);
-
 }
