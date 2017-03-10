@@ -9,21 +9,35 @@ int main(void){
     printf("Enter integer: ");
     scanf("%d", &c);
 
-    int avg,diff;
-    avg = (a+b)/2;
-    diff = (avg-a)%avg;
-    a = avg-diff;
-    b = avg+diff;
 
-    avg = (b+c)/2;
-    diff = (avg-b)%avg;
-    b = avg-diff;
-    c = avg+diff;
+    int avg,diff,factor;
+    avg = (a+b);
+    diff = (avg-2*a)%avg;
+    factor = -1;
+    factor = factor + 2*(b>a);
+    diff = diff*factor;
+    a = (avg-diff)/2;
+    b = (avg+diff)/2;
 
-    avg = (a+b)/2;
-    diff = (avg-a)%avg;
-    a = avg-diff;
-    b = avg+diff;
- 
-    printf("The integers in order are: %d %d %d", a,b,c);
+    avg = (b+c);
+    diff = (avg-2*b)%avg;
+    factor = -1;
+    factor = factor + 2*(c>b);
+    diff = diff*factor;
+    b = (avg-diff)/2;
+    c = (avg+diff)/2;
+    
+
+
+    
+    avg = (a+b);
+    diff = (avg-2*a)%avg;
+    factor = -1;
+    factor = factor + 2*(b>a);
+    diff = diff*factor;
+    a = (avg-diff)/2;
+    b = (avg+diff)/2;
+   
+    printf("The integers in order are: %d %d %d\n" ,a,b,c);
+
 }
