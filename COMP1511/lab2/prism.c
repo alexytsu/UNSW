@@ -12,6 +12,5 @@ int main(void) {
     printf("Volume = %d\n", width*height*length);
     printf("Area = %d\n", 2*(width*height+height*length+width*length));
     printf("Edge length = %d\n", 4*(width+height+length));
-    return(0); 
 }
     
