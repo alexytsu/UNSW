@@ -9,10 +9,10 @@ int main(void){
     int midrow = (size-1)/2; 
     //These nested loops will print through the entire grid
     //with x corresponding to the row and y corresponding to the column
-
-    for(int x = 1; x <= size; x += 1){
-        for (int y = 1; y <= size; y += 1){
-
+	int x,y;
+    for(x = 1; x <= size; x += 1){
+        for (y = 1; y <= size; y += 1){
+			int j;
             //here are conditions under which, it will always be an asterix
             //top row, right border, bottom row, left border(excl row2)
             if(x==1 || y==size || x==size || y==1&&x!=2&&x%2!=0&&(x%2==0)){
@@ -24,9 +24,8 @@ int main(void){
 
                 int stars = x - 1;
                 int starsprinted = 0;
-
                 //j counts the columns in this even line
-                for(int j = 1; j<=size; j += 1){
+                for(j = 1; j<=size; j += 1){
                     if(starsprinted < stars/2 && j%2==1){
                         printf("*");
                         starsprinted += 1;
@@ -50,9 +49,8 @@ int main(void){
             else if(x%2==1 && x<= midrow){
                 int dashes = x - 2;
                 int dashesprinted = 0;
-
                 //j counts the columns in this odd line
-                for(int j = 1; j<=size; j += 1){
+                for(j = 1; j<=size; j += 1){
                     if(dashesprinted < dashes/2 && j%2==0){
                         printf("-");
                         dashesprinted += 1;
@@ -74,12 +72,34 @@ int main(void){
             }
 
             //odd lines after midline
+			else if (x%2==1){
+				int dashes = size - x;
+				int dashesprinted = 0;
+				//j counts the columns in this odd line
+				for(j =1; j<=size; j+=1){
+					if(dashesprinted <= dashes/2 && j%2==0){
+						printf("-");
+						dashesprinted += 1;
+					}else if(dashesprinted > dashes/2 && j%2==0){
+						int yettoprint = dashes - dashesprinted;
+						if((size-j)/2 + 1 <= yettoprint){
+							printf("-");
+							dashesprinted += 1;
+						}else{
+							printf("*");
+						}
+					}else{
+						printf("*");
+					}
+				}
+				y += size;
+			}
 
             //even lines after midline
             else if(x%2==0){
                 int stars = size - x + 1;
                 int starsprinted = 0;
-                for(int j = 1; j<=size; j += 1){
+                for(j = 1; j<=size; j += 1){
                     if(starsprinted < stars/2 && j%2==1){
                         printf("*");
                         starsprinted += 1;
