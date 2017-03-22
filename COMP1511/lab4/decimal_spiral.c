@@ -1,54 +1,74 @@
 #include <stdio.h>
 
 int main(void){
-    int size, size2, counter, total;
+
+    //get size of grid from user
+    /*
+    int size; 
     printf("Enter size: ");
     scanf("%d", &size);
-    size2 = size - 1;
+    */
 
-    //size2 is used to establish how many numbers will be in the spiral
-    //total becomes the number of numbers in the spiral
-    total = size2*3;
-    size2 -= 2;
-    while(size2 >= 2){
-        total += 2*size2;
-        size2 -= 2;
+    //while testing, set grid to a value
+    int size = 17;
+
+    //get the length of the spiral from the size of the grid
+    int length = size * 2;
+    int s = size - 2;
+    while(s >= 2){
+        length += 2 * s;
+        s -= 2;
     }
-    total += 1;
-    //total is the length of the spiral
-    //taking its modulus congruent to 10 will give us the starting digit
-    counter = (total % 10) - 1;
 
-    //size is the side length of the spiral
-    //counter keeps the current digit 
+    printf("%d\n", length);
+    //assuming the spiral starts at 0
+    //from the outside in, the digit should be
+    //(length - posSpiral) % 10 
+    //print the grid
+    //for each coordinate value, we will check 
+    //if it lies on the spiral
+    //and if it does, how far along the spiral it is 
 
-    printf("counter: %d\n", counter);
+    int row, col;
+    int onSpiral, posSpiral;
 
-    for(int x = 0; x < size; x += 1){
-        for(int y = 0; y < size; y += 1){
-            //while in the loop, we are at the coordinate (x,y)
-            //where y gives the column and x gives the row
-
-            //print the first line
-            if(x == 0){
-                printf("%d", counter);
-                counter -= 1;
-                total -= 1;
-            }
-
-            
-
-            else{
+    //print the top half
+    for(row = 1; row <= size/2+1; row++){
+        for(col = 1; col <= size; col++){
+            if(col <= size - row + 1 && row%2 != 0 && col >= row-2){
+                printf("*");
+            } else if (col <= size - row + 1 && row%2==0 && col >=  row -2){
+                printf("-");
+            } else if (col%2!=0){
+                printf("*");
+            } else{
                 printf("-");
             }
+        }//closes col loop
+       printf("\n"); 
+    }//closes row loop
+
+    //print lower half
+    for(row = size/2+1; row <= size; row++){
+        for(col = 1; col <= size; col++){
+            if (col>=size-row+1 && row%2!=0 && col<=row-1){
+                printf("*");
+            } else if (col>=size -row +1 && row%2==0 && col <= row -1){
+                printf("-");
+            } else if (col%2!=0){
+                printf("*"); 
+            } else{
+                printf("-");
+            }
+        }//closes col loop
+       printf("\n"); 
+    }//closes row loop
+    
+}
+
+int getDecimal(int length, int x, int y){
+
+for :w
 
 
-
-        //print newline if at the end of the row
-        if (y==size-1){
-            printf("\n");
-        }
-
-        }
-    }
 }
