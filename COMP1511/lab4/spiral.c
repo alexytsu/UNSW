@@ -11,15 +11,11 @@ int main(void){
     //with x corresponding to the row and y corresponding to the column
 	int x,y;
     for(x = 1; x <= size; x += 1){
-        printf("%d:", x);
-        if(x<=9){
-        printf(" ");
-        }
         for (y = 1; y <= size; y += 1){
 			int j;
             //here are conditions under which, it will always be an asterix
             //top row, right border, bottom row, left border(excl row2)
-            if(x==1 || y==size || x==size || y==1&&x!=2&&x%2!=0&&(x%2==0)){
+            if(x==1 || y==size || x==size || (y==1&&x!=2&&x%2!=0&&(x%2==0))){
                 printf("*");
             }
 
@@ -79,9 +75,11 @@ int main(void){
             else if(x==midrow){
                 if((size+1)%4!=0){ 
                     for(j = 1; j<=size; j += 1){
-                        if(j%2==0){
+                        if(j%2==0 && j!=midrow -1){
                             printf("-"); 
-                        }else if(j==midrow || j ==midrow-1 || j == midrow +1){
+                        }else if(j == midrow - 1){
+                            printf("*");    
+                        }else if(j == midrow +1){
                             printf("-");
                         }else{
                             printf("*");
