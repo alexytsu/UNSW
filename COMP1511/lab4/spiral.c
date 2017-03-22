@@ -6,11 +6,15 @@ int main(void){
     int size;
     printf("Enter size: ");
     scanf("%d", &size);
-    int midrow = (size-1)/2; 
+    int midrow = (size+1)/2; 
     //These nested loops will print through the entire grid
     //with x corresponding to the row and y corresponding to the column
 	int x,y;
     for(x = 1; x <= size; x += 1){
+        printf("%d:", x);
+        if(x<=9){
+        printf(" ");
+        }
         for (y = 1; y <= size; y += 1){
 			int j;
             //here are conditions under which, it will always be an asterix
@@ -46,7 +50,7 @@ int main(void){
             }
 
             //odd lines before midline
-            else if(x%2==1 && x<= midrow){
+            else if(x%2==1 && x < midrow){
                 int dashes = x - 2;
                 int dashesprinted = 0;
                 //j counts the columns in this odd line
@@ -71,9 +75,26 @@ int main(void){
                 y += size;
             }
 
+            //midrow (only needed when (size+1)%4!=0)
+            else if(x==midrow){
+                if((size+1)%4!=0){ 
+                    for(j = 1; j<=size; j += 1){
+                        if(j%2==0){
+                            printf("-"); 
+                        }else if(j==midrow || j ==midrow-1 || j == midrow +1){
+                            printf("-");
+                        }else{
+                            printf("*");
+                        }
+                    }
+                }
+                y += size;
+            }
+
+
             //odd lines after midline
-			else if (x%2==1){
-				int dashes = size - x;
+			else if (x%2==1 && x!=midrow){
+				int dashes = size - x -1 ;
 				int dashesprinted = 0;
 				//j counts the columns in this odd line
 				for(j =1; j<=size; j+=1){
@@ -82,7 +103,7 @@ int main(void){
 						dashesprinted += 1;
 					}else if(dashesprinted > dashes/2 && j%2==0){
 						int yettoprint = dashes - dashesprinted;
-						if((size-j)/2 + 1 <= yettoprint){
+						if((size-j)/2 <= yettoprint){
 							printf("-");
 							dashesprinted += 1;
 						}else{
