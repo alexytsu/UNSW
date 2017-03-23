@@ -44,7 +44,7 @@ int main(void){
                 printf("-");
             } else if (col%2!=0){
                 //printf("*");
-                //printf("%d", getDecimal(size, length, row, col));
+                printf("%d", getDecimal(size, length, row, col));
             } else{
                 printf("-");
             }
@@ -100,7 +100,9 @@ int getDecimal(int s, int l, int xpos, int ypos){
                 dir= 1;
             }
             curTravelled = 0;
-            curSide -= 1;
+            if (curSide = s){
+                curSide -= 1;
+            }
         }
         
     }
