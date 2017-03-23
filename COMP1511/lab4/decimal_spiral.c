@@ -82,10 +82,23 @@ int getDecimal(int s, int l, int xpos, int ypos){
         if(curTravelled < curSide){
             if(dir==0){
                 y+=1;
+            }else if (dir ==1){
+                x+=1;
             }
         travelledTotal += 1; 
         curTravelled += 1;
         }
+
+
+        else if(curTravelled = curSide){
+            //change direction
+            if(dir==0){
+                dir= 1;
+            }
+            curTravelled = 0;
+            curSide -= 1;
+        }
+        
     }
 
     /*if (x == 1){
