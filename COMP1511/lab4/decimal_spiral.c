@@ -54,11 +54,11 @@ int main(void){
     for(row = size/2+1; row <= size; row++){
         for(col = 1; col <= size; col++){
             if (col>=size-row+1 && row%2!=0 && col<=row-1){
-                printf("%d", getDecimal(size, length, row + 1, col));
+                //printf("%d", getDecimal(size, length, row + 1, col));
             } else if (col>=size -row +1 && row%2==0 && col <= row -1){
                 printf("-");
             } else if (col%2!=0){
-                printf("%d", getDecimal(size, length, row + 1, col));
+                //printf("%d", getDecimal(size, length, row + 1, col));
             } else{
                 printf("-");
             }
