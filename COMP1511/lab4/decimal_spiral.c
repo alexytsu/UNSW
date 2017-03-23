@@ -12,7 +12,7 @@ int main(void){
     */
 
     //while testing, set grid to a value
-    int size = 15;
+    int size = 5;
 
     //get the length of the spiral from the size of the grid
     int length = size * 2;
@@ -38,11 +38,13 @@ int main(void){
     for(row = 1; row <= size/2+1; row++){
         for(col = 1; col <= size; col++){
             if(col <= size - row + 1 && row%2 != 0 && col >= row-2){
+                //printf("*");
                 printf("%d", getDecimal(size, length, row, col));
             } else if (col <= size - row + 1 && row%2==0 && col >=  row -2){
                 printf("-");
             } else if (col%2!=0){
-                printf("%d", getDecimal(size, length, row, col));
+                //printf("*");
+                //printf("%d", getDecimal(size, length, row, col));
             } else{
                 printf("-");
             }
@@ -51,13 +53,15 @@ int main(void){
     }//closes row loop
 
     //print lower half
-    for(row = size/2+1; row <= size; row++){
+    for(row = size/2+2; row <= size; row++){
         for(col = 1; col <= size; col++){
             if (col>=size-row+1 && row%2!=0 && col<=row-1){
+                printf("*");
                 //printf("%d", getDecimal(size, length, row + 1, col));
             } else if (col>=size -row +1 && row%2==0 && col <= row -1){
                 printf("-");
             } else if (col%2!=0){
+                printf("*");
                 //printf("%d", getDecimal(size, length, row + 1, col));
             } else{
                 printf("-");
@@ -90,7 +94,7 @@ int getDecimal(int s, int l, int xpos, int ypos){
         }
 
 
-        else if(curTravelled = curSide){
+        else if(curTravelled == curSide){
             //change direction
             if(dir==0){
                 dir= 1;
