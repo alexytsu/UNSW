@@ -54,11 +54,11 @@ int main(void){
     for(row = size/2+1; row <= size; row++){
         for(col = 1; col <= size; col++){
             if (col>=size-row+1 && row%2!=0 && col<=row-1){
-                printf("%d", getDecimal(size, length, row, col));
+                printf("%d", getDecimal(size, length, row + 1, col));
             } else if (col>=size -row +1 && row%2==0 && col <= row -1){
                 printf("-");
             } else if (col%2!=0){
-                printf("%d", getDecimal(size, length, row, col));
+                printf("%d", getDecimal(size, length, row + 1, col));
             } else{
                 printf("-");
             }
@@ -74,7 +74,7 @@ int getDecimal(int s, int l, int x, int y){
     }else if (y == s){
         return (l - s + 1 - x + 1) % 10;
     }else if(x == s + 1){
-        return (l - s + 1 - x + (s-y)) % 10;
+        return (l - s + 1 - x - (s-y) + 1) % 10;
     }else{
         return 0;
     }
