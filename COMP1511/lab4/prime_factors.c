@@ -19,6 +19,7 @@ int main(void){
     if(isPrime){
         printf("%d is prime\n", number);
     }
+
     else{
         printf("The prime factorization of %d is:\n", number);
         while(factor <= number){
