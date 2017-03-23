@@ -12,7 +12,7 @@ int main(void){
     */
 
     //while testing, set grid to a value
-    int size = 17;
+    int size = 13;
 
     //get the length of the spiral from the size of the grid
     int length = size * 2;
@@ -67,9 +67,35 @@ int main(void){
     }//closes row loop
 }
 
-int getDecimal(int s, int l, int x, int y){
+int getDecimal(int s, int l, int xpos, int ypos){
+    int x = 1, y = 1; 
+    int sidesTravelled = 0;
+    int thisSideLength = s;
+    int direction = 0; //0 to go right, 1 to go down, 2 to go right, 3 to go up 
+    int travelled = 0;
+    int travelledTotal = 0; 
+    while( !((xpos == x)&&(ypos == y))){
+        while (travelled < thisSideLength){
+            if(direction == 0){
+                x++;
+                travelled++;
+            }
+        }
 
-    if (x == 1){
+        sides ++;
+        if(sidesTravelled = 1){
+            thisSideLength -= 1;
+        }else if(thisSideLength%2 == 1){
+            thisSideLength -= 2;
+        }else if(thisSideLength%2 == 0){
+            thisSideLength = thisSideLength;
+        }
+        travelled = 0;
+        //change side length every second time, except the first time
+
+
+    }
+    /*if (x == 1){
         return (l - (y - 1)) % 10;
     }else if (y == s){
         return (l - (y - 1 + x - 1)) % 10;
@@ -79,7 +105,7 @@ int getDecimal(int s, int l, int x, int y){
         return (l - (y  - x )) % 10;     
     }else{
         return 0;
-    }
+    }*/
     //s is (side length of the grid
     //l is the length of the spiral
     //x and y give the position of the coordinate 
