@@ -70,11 +70,13 @@ int main(void){
 int getDecimal(int s, int l, int x, int y){
 
     if (x == 1){
-        return (l - y + 1) % 10;
+        return (l - (y - 1)) % 10;
     }else if (y == s){
-        return (l - s + 1 - x + 1) % 10;
+        return (l - (y - 1 + x - 1)) % 10;
     }else if(x == s + 1){
-        return (l - s + 1 - x - (s-y) + 1) % 10;
+        return (l + (y - 1 + x - 1)) % 10;
+    }else if(y ==1 ){
+        return (l - (y  - x )) % 10;     
     }else{
         return 0;
     }
