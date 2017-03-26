@@ -5,20 +5,21 @@ int getDecimal(int s, int l, int x, int y);
 int main(void){
 
     //get size of grid from user
-    /*
+    
     int size; 
     printf("Enter size: ");
     scanf("%d", &size);
-    */
+    
 
-    //while testing, set grid to a value
-    int size = 9;
     //get the length of the spiral from the size of the grid
     int length = size * 2;
     int s = size - 2;
     while(s >= 2){
         length += 2 * s;
         s -= 2;
+    }
+    if((size-1)%4==0){
+        length ++;
     }
     printf("%d\n", length);
     //assuming the spiral starts at 0
@@ -105,7 +106,6 @@ int getDecimal(int s, int l, int xpos, int ypos){
             //change direction
             dir ++;
             curTravelled = 0;
-            printf("curTravelled: %d curSide: %d\n", curTravelled, curSide); 
             if (curSide == s){
                 sideTime ++;
                 if (sideTime == 3){
@@ -119,7 +119,6 @@ int getDecimal(int s, int l, int xpos, int ypos){
                 secondTime = 1;
             }
             
-            printf("curTravelled: %d curSide: %d\n", curTravelled, curSide); 
         }
         
     
