@@ -21,7 +21,6 @@ int main(void){
     if((size-1)%4==0){
         length ++;
     }
-    printf("%d\n", length);
     //assuming the spiral starts at 0
     //from the outside in, the digit should be
     //(length - posSpiral) % 10 
