@@ -18,9 +18,7 @@ int main(void){
         length += 2 * s;
         s -= 2;
     }
-    if((size-1)%4==0){
-        length ++;
-    }
+    length ++;
     //assuming the spiral starts at 0
     //from the outside in, the digit should be
     //(length - posSpiral) % 10 
