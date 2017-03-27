@@ -11,4 +11,5 @@ int main(void) {
     } else {
         printf("Could not read tiles\n");
     }
+
 }
