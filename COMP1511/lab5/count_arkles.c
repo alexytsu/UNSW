@@ -5,6 +5,13 @@
 int count_arkles(int sequence1[N_TILES], int sequence2[N_TILES]) {
     int counted[N_TILES] = {0};
     int arkles = 0;
+
+    for(int i = 0; i < N_TILES; i++){
+        if(sequence1[i] == sequence2[i]){
+            counted[i] = 1;
+        }
+    }
+
     for(int i = 0; i < N_TILES; i++){
         for(int j = 0; j < N_TILES; j++){
             if(sequence2[i] == sequence1[j] && counted[j] == 0 && sequence2[i] != sequence1[i]){
