@@ -2,7 +2,6 @@
 #include "farnarkle.h"
 
 int main(void) {
-
     int hidden_sequence[N_TILES];
     int guess[N_TILES];
 
