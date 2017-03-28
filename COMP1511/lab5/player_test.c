@@ -17,7 +17,7 @@ int main(){
     int farnarkles[MAX_TURNS];
     int arkles[MAX_TURNS];
     int win = 0;
-    
+
     while(win == 0){
         farnarkle_player(turn, previous_guesses, farnarkles, arkles, guess);
         printf("Player guess for turn %d:", turn+1);
@@ -25,8 +25,8 @@ int main(){
             printf(" %d", guess[i]);
         }
         printf("\n%d farnarkles %d arkles\n", count_farnarkles(hidden_sequence, guess)
-                                        , count_arkles(hidden_sequence, guess));
-        
+                , count_arkles(hidden_sequence, guess));
+
         for(int i = 0; i < N_TILES; i++){
             previous_guesses[turn][i] = guess[i];
         }         
