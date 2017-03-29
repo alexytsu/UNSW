@@ -19,29 +19,39 @@ int main(){
     int win = 0;
 
     while(win == 0){
+
         farnarkle_player(turn, previous_guesses, farnarkles, arkles, guess);
-        printf("Player guess for turn %d:", turn+1);
+
+        printf("Player guess for turn %d:", turn);
         for(int i = 0; i < N_TILES; i++){
             printf(" %d", guess[i]);
         }
         printf("\n%d farnarkles %d arkles\n", count_farnarkles(hidden_sequence, guess)
                 , count_arkles(hidden_sequence, guess));
 
+        farnarkles[turn] = count_farnarkles(hidden_sequence, guess);
+        arkles[turn] = count_arkles(hidden_sequence, guess);
+
+
         for(int i = 0; i < N_TILES; i++){
             previous_guesses[turn][i] = guess[i];
         }         
 
         turn ++;
+
         if(turn == 10){
             win = 1;
         }
     }
 
+    //test the mechanics of the functions
     printf("guesses: \n");
     for(int i = 0; i<turn; i++){
         for(int j = 0; j<N_TILES; j++){
             printf("%d ", previous_guesses[i][j]);
         }
+        printf("arkles: %d ", arkles[i]);
+        printf("farnakles: %d", farnarkles[i]);
         printf("\n");
     }
 }
