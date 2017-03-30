@@ -16,7 +16,6 @@
 
 void farnarkle_player(int turn, int previous_guesses[MAX_TURNS][N_TILES], int farnarkles[MAX_TURNS], int arkles[MAX_TURNS], int guess[N_TILES]) {
 
-    //the first turn
     for(int i = 0; i < N_TILES; i++){
         guess[i] = i+turn;
     }
