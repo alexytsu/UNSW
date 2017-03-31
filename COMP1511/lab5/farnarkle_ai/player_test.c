@@ -17,12 +17,13 @@ int main(){
     int farnarkles[MAX_TURNS];
     int arkles[MAX_TURNS];
     int win = 0;
+    int used[N_TILES];
 
     while(win == 0){
 
-        farnarkle_player(turn, previous_guesses, farnarkles, arkles, guess);
+        farnarkle_player(turn, previous_guesses, farnarkles, arkles, guess, 0);
 
-        printf("Player guess for turn %d:", turn);
+        printf("Player guess for turn %d", turn);
         for(int i = 0; i < N_TILES; i++){
             printf(" %d", guess[i]);
         }
@@ -32,14 +33,12 @@ int main(){
         farnarkles[turn] = count_farnarkles(hidden_sequence, guess);
         arkles[turn] = count_arkles(hidden_sequence, guess);
 
-
         for(int i = 0; i < N_TILES; i++){
             previous_guesses[turn][i] = guess[i];
         }         
 
         turn ++;
-
-        if(turn == 10){
+        if(turn == 8){
             win = 1;
         }
     }
@@ -53,5 +52,11 @@ int main(){
         printf("arkles: %d ", arkles[i]);
         printf("farnakles: %d", farnarkles[i]);
         printf("\n");
+    }
+
+
+    getUsed(used, farnarkles, turn);
+    for(int i = 0; i < 16; i++){
+        farnarkle_player(turn, previous_guesses, farnarkles, arkles, guess, i);
     }
 }
