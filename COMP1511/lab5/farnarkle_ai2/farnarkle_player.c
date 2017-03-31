@@ -26,24 +26,64 @@ void farnarkle_player(int turn, int previous_guesses[MAX_TURNS][N_TILES], int fa
     }
 
     //gets the 4 digits in the sequence
+    int used[N_TILES];
     if(turn >= 8){
-        int used[N_TILES];
         //find the digits in the sequence
         int digit = 0;
-        for(int i = 0; i < turn; i++){
+        for(int i = 0; i < 8; i++){
             for(int j = 0; j<farnarkles[i]; j++){
                 used[digit] = i+1;
                 digit ++;
             }
         }
+    }
+
+    if(turn>=8 && turn <12){ 
         for(int i = 0; i < N_TILES; i++){
-            printf("%d", used[i]);
+            if(i == (turn-8)%4){
+                guess[i] = used[0];    
+            }else{
+                guess[i] = 0;
+            }
+        }
+    }else if(turn>=12 && turn <16){
+
+        for(int i = 0; i < N_TILES; i++){
+            if(i == (turn-8)%4){
+                guess[i] = used[1];    
+            }else{
+                guess[i] = 0;
+            }
+        }
+    }else if(turn>=16 && turn <20){
+
+        for(int i = 0; i < N_TILES; i++){
+            if(i == (turn-8)%4){
+                guess[i] = used[2];    
+            }else{
+                guess[i] = 0;
+            }
+        }
+    }else if(turn>=20 && turn <24){
+
+        for(int i = 0; i < N_TILES; i++){
+            if(i == (turn-8)%4){
+                guess[i] = used[3];    
+            }else{
+                guess[i] = 0;
+            }
         }
     }
-
-    //so now we know the 4 digits in the sequence
-    if(turn >= 8){
-        
+   
+    else if(turn == 25){
+        //look through the guesses indexed at 8-23 and determine the final guess 
+        for(int i = 8; i < 23; i++){
+            //get the index of used
+            int position = i%4;
+            int index = (i-8)/4;
+            if(farnarkles[i]){
+                guess[position] = used[index] ;
+            }
+        }
     }
-
 }

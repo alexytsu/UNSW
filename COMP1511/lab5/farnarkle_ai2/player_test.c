@@ -53,7 +53,7 @@ int main(){
         turn ++;
 
         //hardstop for testing purposes
-        if(turn == 15){
+        if(turn == 50){
             win = 1;
         }
     }// end of the while loop
