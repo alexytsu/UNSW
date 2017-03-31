@@ -18,43 +18,16 @@ void farnarkle_player(int turn,
     int previous_guesses[MAX_TURNS][N_TILES], 
     int farnarkles[MAX_TURNS], 
     int arkles[MAX_TURNS], 
-    int guess[N_TILES],
-    int educatedguess) {
+    int guess[N_TILES]
+    ) {
 
     for(int i = 0; i < N_TILES; i++){
         guess[i] = turn+1;
     }
-   
-    //now used has the four numbers but in the wrong sequence
-    if(turn>=8){
 
-        for(int i = 0; i<N_TILES; i++){
-            for(int j = 0; j<N_TILES; j++){
-                if(i == j){
-                    guess[j] = used[i];
-                }else{
-                    guess[j] = 0;
-                }
-                }
-            }
-    }
     for (int i = 0; i < N_TILES; i++){
         printf("%d", guess[i]);
     }
 }
 
-void getUsed(int used[N_TILES],
-        int farnarkles[MAX_TURNS],
-        int turn){
-
-    //farnarkle[i] is the number of times (i+1) occurs 
-    int place = 0;
-    for (int i = 0; i < 8; i++){
-        while(farnarkles[i] > 0){
-            used[place] = i+1;
-            place ++;
-            farnarkles[i]  -= 1;
-        }
-    }
-}
 

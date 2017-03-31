@@ -54,9 +54,4 @@ int main(){
         printf("\n");
     }
 
-
-    getUsed(used, farnarkles, turn);
-    for(int i = 0; i < 16; i++){
-        farnarkle_player(turn, previous_guesses, farnarkles, arkles, guess, i);
-    }
 }
