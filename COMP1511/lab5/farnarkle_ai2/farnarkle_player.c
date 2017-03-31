@@ -30,7 +30,7 @@ void farnarkle_player(int turn, int previous_guesses[MAX_TURNS][N_TILES], int fa
         int used[N_TILES];
         //find the digits in the sequence
         int digit = 0;
-        for(int i = 0; i < turn; i++){
+        for(int i = 0; i < 8; i++){
             for(int j = 0; j<farnarkles[i]; j++){
                 used[digit] = i+1;
                 digit ++;
