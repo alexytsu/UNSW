@@ -6,9 +6,6 @@ int main(void) {
     int guess[N_TILES];
 
     create_random_tiles(hidden_sequence);
-    for(int i = 0; i < N_TILES; i++){
-        printf("%d\n", hidden_sequence[i]);
-    }
 
     int win = 0;
     int turn = 1;
