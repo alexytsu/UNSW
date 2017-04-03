@@ -9,6 +9,7 @@ int main(void) {
 
     int win = 0;
     int turn = 1;
+
     while(!win){
         printf("Enter guess for turn %d: ", turn);
         if (read_tiles(guess) != 1){
