@@ -1,21 +1,35 @@
 #include <stdio.h>
 #include <stdlib.h>
-#define MAX_LINE 1000
+#include <string.h>
+#define MAX_LENGTH 1000
 
 int main(int c, char *argv[]){
 
-    int offset = atoi(argv[1]), i = 0; 
-    char input[MAX_LINE];
+    //get the caesar shift width
+    int shift = atoi(argv[1]) % 26;
+    
+    while(1){
+        //get the message to be shifted
+        char message[MAX_LENGTH];
+        fgets(message, MAX_LENGTH, stdin);
 
-    while(fgets(input, MAX_LINE, stdin) != NULL){
-        for(i = 0; i < MAX_LINE-1; i++){
-            input[i] = 'a';            
+        //perform the caesar shift on the message
+        int length = strlen(message); 
+        for(int i = 0; i < length; i++){
+            char cur = message[i]; 
 
+            if(cur >= 'a' && cur <= 'z'){
+                cur = ();
+                putchar(cur);
+
+            }else if(cur >= 'A' && cur <= 'Z'){
+
+            }
         }
-        printf("%s", input);
-    }
 
+        //print the ciphered message
+        printf("%s", message);
+
+    }
     return 0;
 }
-
-
