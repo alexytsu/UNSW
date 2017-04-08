@@ -7,11 +7,10 @@ int main(int c, char *argv[]){
 
     //get the caesar shift width
     int shift = atoi(argv[1]) % 26;
-    
-    while(1){
+
+    char message[MAX_LENGTH];
+    while(fgets(message, MAX_LENGTH, stdin)!=NULL){
         //get the message to be shifted
-        char message[MAX_LENGTH];
-        fgets(message, MAX_LENGTH, stdin);
 
         //perform the caesar shift on the message
         int length = strlen(message); 
@@ -19,6 +18,8 @@ int main(int c, char *argv[]){
             if(message[i] >= 'a' && message[i] <= 'z'){
                 if(message[i] + shift > 'z'){
                     message[i] += (shift-26);
+                }else if(message[i] + shift < 'a'){
+                    message[i] += (shift+26); 
                 }else{
                     message[i] += shift;
                 } 
@@ -26,6 +27,8 @@ int main(int c, char *argv[]){
             }else if(message[i] >= 'A' && message[i] <= 'Z'){
                 if(message[i] + shift > 'Z'){
                     message[i] += (shift-26);
+                }else if(message[i] + shift < 'A'){
+                    message[i] += (shift+26); 
                 }else{
                     message[i] += shift;
                 } 
