@@ -16,20 +16,24 @@ int main(int c, char *argv[]){
         //perform the caesar shift on the message
         int length = strlen(message); 
         for(int i = 0; i < length; i++){
-            char cur = message[i]; 
-
-            if(cur >= 'a' && cur <= 'z'){
-                cur = ();
-                putchar(cur);
-
-            }else if(cur >= 'A' && cur <= 'Z'){
-
+            if(message[i] >= 'a' && message[i] <= 'z'){
+                if(message[i] + shift > 'z'){
+                    message[i] += (shift-26);
+                }else{
+                    message[i] += shift;
+                } 
+                putchar(message[i]);
+            }else if(message[i] >= 'A' && message[i] <= 'Z'){
+                if(message[i] + shift > 'Z'){
+                    message[i] += (shift-26);
+                }else{
+                    message[i] += shift;
+                } 
+                putchar(message[i]);
+            }else{
+                putchar(message[i]);
             }
         }
-
-        //print the ciphered message
-        printf("%s", message);
-
     }
     return 0;
 }
