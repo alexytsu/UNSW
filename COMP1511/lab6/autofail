@@ -1,0 +1,85 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+#define MAX_LINE 10000
+int main(int argc, char *argv[]){
+
+    FILE *fp;
+
+	int alphabet[26] = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
+	int upper_alphabet[26] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
+
+    int frequency[26] = {0};
+	
+    fp = fopen(argv[1], "r");
+    int c;
+
+    //find the frequency of each letter in the input text
+    while(c != EOF){
+        c = fgetc(fp);
+        for(int i = 0; i < 26; i++){
+            if(c == alphabet[i]){
+                frequency[i]++;
+                break;
+            }else if(c == upper_alphabet[i]){
+                frequency[i]++;
+                break;
+            }
+        }
+    }
+
+    //make a list that orders the most frequent letters in the input text
+    int index_of_max = 0;
+    char ordered_by_freq[26] = {0};
+    for(int k = 0; k < 26; k++){
+        for(int j = 0; j < 26; j++){
+            if(frequency[j] >= frequency[index_of_max]){
+                index_of_max = j;
+            } 
+        }
+        ordered_by_freq[k] = alphabet[index_of_max];
+        frequency[index_of_max] = -1;
+    }
+
+    //now get the encrypted message from stdin
+    char encrypted[MAX_LENGTH];
+    while(fgets(encrypted, MAX_LENGTH, stdin)!=NULL){
+        int caesar_score[26];        
+        for(int i = 0; i < 26; i++){ 
+            caesar_score[i] = shift_and_score(i, encrypted, ordered_by_freq);
+            }
+        }
+    }
+    return 0;
+}
+
+int shift_and_score(int shift_amount, char encrypted[], char reference[]){
+    int length = strlen(encrypted);
+    char shifted[length];
+
+    for(int i = 0; i < length; i++){
+        if(encrypted[i] >= 'a' && encrypted[i] <= 'z'){
+            if(encrypted[i] + shift_amount > 'z'){
+                shifted[i] = encrypted[i] + (shift_amount-26);
+            }else if(encrypted[i] + shift_amount < 'a'){
+                shifted[i] = encrypted[i] + (shift_amount+26); 
+            }else{
+                shifted[i] = encrypted[i] + shift_amount;
+            } 
+        }else if(encrypted[i] >= 'A' && encrypted[i] <= 'Z'){
+            if(encrypted[i] + shift_amount > 'Z'){
+                shifted[i] = encrypted[i] + (shift_amount-26);
+            }else if(encrypted[i] + shift_amount < 'A'){
+                shifted[i] = encrypted[i] + (shift_amount+26); 
+            }else{
+                shifted[i] = encrypted[i] + shift_amount;
+            } 
+        }else{
+            shifted[i] = encrypted[i];
+        }
+    }
+
+    
+
+}

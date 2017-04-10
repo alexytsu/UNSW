@@ -1,56 +1,122 @@
 #include <stdio.h>
-#include <string.h>
 #include <stdlib.h>
+#include <string.h>
+#define MAX_LENGTH 1000
+#define ALPHABET 26
 
-#define MAX_LINE 1000
+void read_frequencies(char input[], int frequencies[], int filemode, char encrypted[], char total_encrypted[]);
+
 int main(int argc, char *argv[]){
+    int sample_frequencies[ALPHABET] = {0};
+    char total_encrypted[MAX_LENGTH];
+    char encrypted[MAX_LENGTH];
+    read_frequencies(argv[1], sample_frequencies, 1, encrypted, total_encrypted); 
 
-    FILE *fp;
+    int most_frequent_sample = 0;
+    int freq_of_most_frequent_sample = 0;
 
-	int alphabet[26] = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
-	int upper_alphabet[26] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
+    for(int i = 0; i < ALPHABET; i ++){
+        if(sample_frequencies[i] > freq_of_most_frequent_sample){
+           freq_of_most_frequent_sample = sample_frequencies[i];
+           most_frequent_sample = i;
+        }
+    }
+    
+    int encrypted_frequencies[ALPHABET] = {0};
+    read_frequencies(argv[1], encrypted_frequencies, 0, encrypted, total_encrypted);
 
-    int frequency[26] = {0};
-	
-    fp = fopen(argv[1], "r");
-    int c;
+    int most_frequent_encrypted = 0;
+    int freq_of_most_frequent_encrypted = 0;
+    for(int i = 0; i < ALPHABET; i ++){
+        if(encrypted_frequencies[i] > freq_of_most_frequent_encrypted){
+           freq_of_most_frequent_encrypted = encrypted_frequencies[i];
+           most_frequent_encrypted = i;
+        }
+    }
 
-    //find the frequency of each letter in the input text
-    while(c != EOF){
-        c = fgetc(fp);
-        for(int i = 0; i < 26; i++){
-            if(c == alphabet[i]){
-                frequency[i]++;
-                break;
-            }else if(c == upper_alphabet[i]){
-                frequency[i]++;
-                break;
+    int shift_length =  most_frequent_sample - most_frequent_encrypted;
+    
+    int total_length = strlen(encrypted);
+
+    for(int i = 0; i < total_length; i++){
+            if(encrypted[i] >= 'a' && encrypted[i] <= 'z'){
+                if(encrypted[i] + shift_length > 'z'){
+                    encrypted[i] += (shift_length-26);
+                }else if(encrypted[i] + shift_length < 'a'){
+                    encrypted[i] += (shift_length+26); 
+                }else{
+                    encrypted[i] += shift_length;
+                } 
+                printf("%c", encrypted[i]);
+            }else if(encrypted[i] >= 'A' && encrypted[i] <= 'Z'){
+                if(encrypted[i] + shift_length > 'Z'){
+                    encrypted[i] += (shift_length-26);
+                }else if(encrypted[i] + shift_length < 'A'){
+                    encrypted[i] += (shift_length+26); 
+                }else{
+                    encrypted[i] += shift_length;
+                } 
+                printf("%c", encrypted[i]);
+            }else{
+                printf("%c", encrypted[i]);
+            }
+    }
+    return 0;
+}
+
+void read_frequencies(char input[], int frequency[], int filemode, char encrypted[], char total_encrypted[]){
+
+    int alphabet[ALPHABET] = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
+    int upper_alphabet[ALPHABET] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
+
+    if(filemode){
+        FILE *fp;
+        fp = fopen(input, "r");
+        int c;
+        while(c != EOF){
+            c = fgetc(fp);
+            for(int i = 0; i < ALPHABET; i++){
+                if(c == alphabet[i]){
+                    frequency[i]++;
+                    break;
+                }else if(c == upper_alphabet[i]){
+                    frequency[i]++;
+                    break;
+                }
             }
         }
-    }
-
-    for(int k = 0; k < 26; k++){
-        printf("%c: %d\n", alphabet[k], frequency[k]);
-    }
-
-    //make a list that orders the most frequent letters in the input text
-    int index_of_max = 0;
-    char ordered_by_freq[26] = {0};
-    for(int k = 0; k < 26; k++){
-        for(int j = 0; j < 26; j++){
-            if(frequency[j] >= frequency[index_of_max]){
-                index_of_max = j;
-            } 
+    }else{
+        
+        int c;
+        int pos = 0;
+        while(c != EOF){
+            c = fgetc(stdin); 
+            if(c != EOF){
+                for(int i = 0; i < ALPHABET; i++){
+                    if(c == alphabet[i]){
+                        frequency[i]++;
+                    }else if(c == upper_alphabet[i]){
+                        frequency[i]++;
+                    }
+                }
+                encrypted[pos] = c;
+                pos ++;
+            }
         }
-        ordered_by_freq[k] = alphabet[index_of_max];
-        frequency[index_of_max] = -1;
+
+        /*while(fgets(encrypted, MAX_LENGTH, stdin)){
+            length = strlen(encrypted);
+            for(int i = 0; i < length; i++){
+                for(int j = 0; j < ALPHABET; j++){
+                    if(encrypted[i] == alphabet[j]){
+                        frequency[j]++;
+                        break;
+                    }else if(encrypted[i] == upper_alphabet[j]){
+                        frequency[j]++;
+                        break;
+                    }
+                }
+            }
+        }*/
     }
-
-    for(int k = 0; k < 26; k++){
-        printf("%c\n", ordered_by_freq[k]);
-    }
-
-    
-
-    return 0;
 }
