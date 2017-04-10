@@ -10,11 +10,9 @@ int main(int argc, char *argv[]){
         int length = strlen(message); 
         for(int i = 0; i < length; i++){
             if(message[i] >= 'a' && message[i] <= 'z'){
-                message[i] = argv[1][message[i]-'a']; 
-                putchar(message[i]);
+                putchar(argv[1][message[i]-'a']);
             }else if(message[i] >= 'A' && message[i] <= 'Z'){
-                message[i] = argv[1][message[i]-'A']-'a'+'A'; 
-                putchar(message[i]);
+                putchar(argv[1][message[i]-'A']-'a'+'A');
             }else{
                 putchar(message[i]);
             }
