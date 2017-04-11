@@ -9,7 +9,7 @@ void read_frequencies(char input[], int frequencies[], int filemode, char encryp
 int main(int argc, char *argv[]){
     int sample_frequencies[ALPHABET] = {0};
     char total_encrypted[MAX_LENGTH];
-    char encrypted[MAX_LENGTH];
+    char encrypted[MAX_LENGTH] = {0};
     read_frequencies(argv[1], sample_frequencies, 1, encrypted, total_encrypted); 
 
     int most_frequent_sample = 0;
@@ -35,7 +35,6 @@ int main(int argc, char *argv[]){
     }
 
     int shift_length =  most_frequent_sample - most_frequent_encrypted;
-    
     int total_length = strlen(encrypted);
 
     for(int i = 0; i < total_length; i++){
@@ -72,7 +71,7 @@ void read_frequencies(char input[], int frequency[], int filemode, char encrypte
     if(filemode){
         FILE *fp;
         fp = fopen(input, "r");
-        int c;
+        int c=0;
         while(c != EOF){
             c = fgetc(fp);
             for(int i = 0; i < ALPHABET; i++){
@@ -87,7 +86,7 @@ void read_frequencies(char input[], int frequency[], int filemode, char encrypte
         }
     }else{
         
-        int c;
+        int c = 0;
         int pos = 0;
         while(c != EOF){
             c = fgetc(stdin); 

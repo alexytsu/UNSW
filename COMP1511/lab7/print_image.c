@@ -9,7 +9,7 @@ void print_image(int height, int width, int pixels[height][width]){
             if(pixels[row][col]){
                 printf("*");
             }else{
-                printf("-");
+                printf(".");
             }
         }
         printf("\n");
