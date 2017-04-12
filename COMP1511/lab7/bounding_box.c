@@ -1,28 +1,6 @@
 #include <stdio.h>
 #include "captcha.h"
 
-int check_row(int width, int height, int pixels[height][width], int row);
-int check_column(int width, int height, int pixels[height][width], int col);
-
-//checks if a row is empty
-//returns 0 if non-empty, 1 if empty
-int check_row(int width, int height, int pixels[height][width], int row){
-    for(int i = 0; i < width; i++){
-        if(pixels[row][i] == 1){
-            return 0;
-        }
-    }
-    return 1;
-}
-
-int check_column(int width, int height, int pixels[height][width], int col){
-    for(int i = 0; i < height; i++){
-        if(pixels[i][col] == 1){
-            return 0;
-        }
-    }
-    return 1;
-}
 
 void get_bounding_box(int height, int width, int pixels[height][width],
                   int *start_row, int *start_column, int *box_height, int *box_width){
@@ -32,20 +10,64 @@ void get_bounding_box(int height, int width, int pixels[height][width],
     *box_width = 0;
     *box_height = 0;
 
-    while(check_row(height, width, pixels, *start_row)){
-        *start_row ++;
-    }
-    while(check_col(height, width, pixels, *start_column)){
-        *start_column ++;
+    //get the start row
+    int keep_checking = 1;
+    int row = 0;
+    while(keep_checking){
+        for(int i = 0; i < width; i++){
+            if(pixels[row][i]){
+                keep_checking = 0; 
+                *start_row = row;
+                break;
+            }
+        } 
+        row ++;
     }
 
-    *box_height = *start_row;
-    *box_width = *start_column;
 
-    while(!check_row(height, width, pixels, *box_height)){
-        *box_height ++;
+    //get the box_height
+    keep_checking = 1;
+    while(keep_checking){
+        int pixel_detected = 0;
+        for(int i = 0; i < width; i++){
+            if(pixels[row][i]){
+                pixel_detected = 1;
+            }
+        }
+        if(!pixel_detected){
+           *box_height = row - *start_row; 
+           keep_checking = 0;
+        }
+        row ++;
     }
-    while(!check_col(height, width, pixels, *box_width)){
-        *box_width ++;
+
+    //get the start column
+    keep_checking = 1;
+    int col = 0;
+    while(keep_checking){
+        for(int i = 0; i < height; i++){
+            if(pixels[i][col]){
+                keep_checking = 0;
+                *start_column = col;
+                break;
+            }
+        }
+        col ++;
+    }
+
+    //get the box_width
+    keep_checking = 1;
+    while(keep_checking){
+        int pixel_detected = 0;
+        for(int i = 0; i < col; i++){
+            if(pixels[i][col]){
+                pixel_detected = 1;
+            }
+        }
+        if(!pixel_detected){
+           *box_width = col - *start_column; 
+           keep_checking = 0;
+        }
+        col ++;
     }
 }
