@@ -59,7 +59,7 @@ void get_bounding_box(int height, int width, int pixels[height][width],
     int right_edge_reached = 0;
     while(keep_checking){
         int pixel_detected = 0;
-        for(int i = 0; i < col; i++){
+        for(int i = 0; i < height; i++){
             if(pixels[i][col]){
                 pixel_detected = 1;
             }
