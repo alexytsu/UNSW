@@ -13,7 +13,7 @@ double get_horizontal_balance(int height, int width, int pixels[height][width]){
     double column_sum = 0;
 
     for(int row = 0; row < height; row++){
-        for(int col = 0; col < height; col++){
+        for(int col = 0; col < width; col++){
             if(pixels[row][col]){
                 column_sum += col;
                 n_black_pixels++;
@@ -21,7 +21,7 @@ double get_horizontal_balance(int height, int width, int pixels[height][width]){
 
         }
     }
-    double horizontal_balance = (column_sum/n_black_pixels + 0.5)/(width+1);
+    double horizontal_balance = (column_sum/n_black_pixels + 0.5)/(width);
     return(horizontal_balance);
 
 
