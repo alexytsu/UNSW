@@ -13,7 +13,7 @@ int main(int argc, char *argv[]){
     int frequency[26] = {0};
     int frequency2[26] = {0};	
     fp = fopen(argv[1], "r");
-    int c;
+    int c = 0;
 
     //find the frequency of each letter in the input text
     while(c != EOF){
@@ -29,10 +29,6 @@ int main(int argc, char *argv[]){
         }
     }
 
-    for(int k = 0; k < 26; k++){
-        printf("%c: %d\n", alphabet[k], frequency[k]);
-    }
-
     //make a list that orders the most frequent letters in the input text
     int index_of_max = 0;
     char ordered_by_freq[26] = {0};
@@ -46,26 +42,24 @@ int main(int argc, char *argv[]){
         frequency[index_of_max] = -1;
     }
 
-    for(int k = 0; k < 26; k++){
-        printf("%c\n", ordered_by_freq[k]);
-    }
-    
     char message[MAX_LINE] = {'0'};
     int counter = 0;
-    int d; 
+    int d = 0; 
     while(d != EOF){
         d = fgetc(stdin);
         message[counter] = d;
         for(int i = 0; i < 26; i++){
-            if(c == alphabet[i]){
+            if(d == alphabet[i]){
                 frequency2[i]++;
                 break;
-            }else if(c == upper_alphabet[i]){
+            }else if(d == upper_alphabet[i]){
                 frequency2[i]++;
                 break;
             }
         }
+        counter ++;
     }
+
 
     index_of_max = 0;
     char ordered_by_freq2[26] = {0};
@@ -79,14 +73,26 @@ int main(int argc, char *argv[]){
         frequency2[index_of_max] = -1;
     }
 
-    for(int k = 0; k < 26; k++){
-        printf("%c: %d\n", alphabet[k], frequency2[k]);
-    }
 
-    for(int k = 0; k < 26; k++){
-        printf("%c\n", ordered_by_freq2[k]);
+    for(int k = 0; k < counter; k++){
+        for(int j = 0; j < 26; j++){
+            if(message[k]>='a' &&  message[k] <='z'){
+                if(message[k] == ordered_by_freq2[j]){
+                    printf("%c", ordered_by_freq[j]);
+                    break;
+                }
+            }else if(message[k]>='A' && message[k]<='Z'){
+                if(message[k]-'A'+'a' == ordered_by_freq2[j]){
+                    printf("%c", ordered_by_freq[j]-'a'+'A');
+                    break;
+                }
+            }else{
+                printf("%c", message[k]);
+                break;
+            }
+        }
     }
-
+    printf("\n");
     return 0;
 }
 

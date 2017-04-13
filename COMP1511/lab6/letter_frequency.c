@@ -10,7 +10,7 @@ int main(int argc, char *argv[]) {
 	double character_count=0, prev_character_count;
 	char input[MAX_LINE];
 	//counts the number of each character from the input
-	while(fgets(input, MAX_LINE, argv[1]) != NULL) {
+	while(fgets(input, MAX_LINE, *argv[1]) != NULL) {
 		for(i; i < strlen(input); i++) {
 			for(j; j < 26; j++) { 
 				if(input[i] == alphabet[j] || input[i] == upper_alphabet[j]) {
@@ -30,4 +30,4 @@ int main(int argc, char *argv[]) {
 	printf("' %lf %d\n", counter[k]/character_count, counter[k]);
 		}
 	return 0;	
-      
+}
