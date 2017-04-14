@@ -2,6 +2,8 @@ import subprocess
 
 TESTS = 1000
 score = [0]*10 
+tests = [0]*10
+failed = []
 
 #Customize the test so that you can test individual digits
 print("Enter the test_digits you want to test (eg. '0 1 5 6 8')")
@@ -21,6 +23,33 @@ for x in range(TESTS):
 
     #Only runs the test if we specified it earlier
     if(digit in test_digits):
-        run = subprocess.run(["../a.out", filename], stdout=subprocess.PIPE)
+        run = subprocess.run(["../a.out", filename], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+        #get the output of the program and determine if it is valid or an error
         output = run.stdout.strip()
         output = output.decode('ascii')
+        error = run.stderr.strip()
+        error = error.decode('ascii')
+
+        if(error == ''):
+            #if it is a valid guess, record if it is correct or not
+            tests[digit] += 1
+            if(output == str(digit)):
+                score[digit] += 1
+            else:
+                failed.append(filename)
+
+#print the scores for each digit
+print("Here are your scores")
+for x in range(10):
+    if(x in test_digits):
+        percent = score[x]*100/tests[x]
+        print("%d: %d/%d for a score of %.2lf" % (x, score[x], tests[x], percent) + "%")
+
+print("Would you like to see the images you failed? (y/n)")
+confirm = input().strip()
+if(confirm == "y"):
+    for x in failed:
+        print(x)
+        check = subprocess.run(["./print", x])
+        #print useful attributes of the digit in question
