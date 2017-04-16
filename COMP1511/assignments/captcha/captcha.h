@@ -15,3 +15,4 @@ void copy_pixels(int height, int width, int pixels[height][width],
                  int copy[copy_height][copy_width]);
 double get_horizontal_balance(int height, int width, int pixels[height][width]);
 double get_vertical_balance(int height, int width, int pixels[height][width]);
+double get_density(int height, int width, int pixels[height][width]);
