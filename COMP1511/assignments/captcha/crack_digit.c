@@ -5,7 +5,7 @@ int main(int argc, char *argv[]) {
     
     //read the digit, get it's bounding box and get its balance
     int height, width, start_row, start_column, box_width, box_height;
-    double balance;
+    double h_balance, v_balance;
 
     if (argc < 2) {
         fprintf(stderr, "Usage: %s <image-file>\n", argv[0]);
@@ -17,6 +17,8 @@ int main(int argc, char *argv[]) {
 
     //reads the pbm into the array pixels
     int pixels[height][width];
+
+    //get all the attributes of the digit inside this function
     if (read_pbm(argv[1], height, width, pixels)) {
 
         //gets the bounding box around the pixel
@@ -27,10 +29,11 @@ int main(int argc, char *argv[]) {
         copy_pixels(height, width, pixels, start_row, start_column, box_height, box_width, box_pixels);
 
         //balance = horizontal center of gravity
-        balance = get_horizontal_balance(box_height, box_width, box_pixels);
+        h_balance = get_horizontal_balance(box_height, box_width, box_pixels);
+        v_balance = get_vertical_balance(box_height, box_width, box_pixels);
     }
 
+    printf("h_balance: %.2lf\nv_balance: %.2lf\n", h_balance, v_balance);
 
     return 0;
 }
-
