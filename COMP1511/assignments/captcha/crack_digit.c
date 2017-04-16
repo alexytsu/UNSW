@@ -5,7 +5,7 @@ int main(int argc, char *argv[]) {
     
     //read the digit, get it's bounding box and get its balance
     int height, width, start_row, start_column, box_width, box_height;
-    double h_balance, v_balance;
+    double h_balance, v_balance, density;
 
     if (argc < 2) {
         fprintf(stderr, "Usage: %s <image-file>\n", argv[0]);
@@ -31,9 +31,12 @@ int main(int argc, char *argv[]) {
         //balance = horizontal center of gravity
         h_balance = get_horizontal_balance(box_height, box_width, box_pixels);
         v_balance = get_vertical_balance(box_height, box_width, box_pixels);
+        
+        //density of digit in the bounding box 
+        density = get_density(box_height, box_width, box_pixels);
     }
 
-    printf("h_balance: %.2lf\nv_balance: %.2lf\n", h_balance, v_balance);
+    printf("density: %.2lf\n", density);
 
     return 0;
 }
