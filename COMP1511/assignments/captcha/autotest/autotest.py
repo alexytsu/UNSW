@@ -4,7 +4,6 @@ TESTS = 1000
 score = [0]*10 
 tests = [0]*10
 failed = []
-attributes = []
 
 #Customize the test so that you can test individual digits
 print("Enter the test_digits you want to test (eg. '0 1 5 6 8')")
@@ -29,13 +28,8 @@ for x in range(TESTS):
         #get the output of the program and determine if it is valid or an error
         output = run.stdout.strip()
         output = output.decode('ascii')
-        output = output.split()
-        for x in output:
-            attributes.append(x)
-
-        error = run.stderr.strip().split()
-        for x in error:
-            x = x.decode('ascii')
+        error = run.stderr.strip()
+        error = error.decode('ascii')
 
         if(error == ''):
             #if it is a valid guess, record if it is correct or not
@@ -46,15 +40,11 @@ for x in range(TESTS):
                 failed.append(filename)
 
 #print the scores for each digit
-"""
 print("Here are your scores")
 for x in range(10):
     if(x in test_digits):
         percent = score[x]*100/tests[x]
         print("%d: %d/%d for a score of %.2lf" % (x, score[x], tests[x], percent) + "%")
-"""
-for x in attributes:
-    print(x)
 
 print("Would you like to see the images you failed? (y/n)")
 confirm = input().strip()
