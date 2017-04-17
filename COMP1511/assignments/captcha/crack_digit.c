@@ -6,6 +6,7 @@ int main(int argc, char *argv[]) {
     //read the digit, get it's bounding box and get its balance
     int height, width, start_row, start_column, box_width, box_height;
     double h_balance, v_balance, density;
+    int holes;
 
     if (argc < 2) {
         fprintf(stderr, "Usage: %s <image-file>\n", argv[0]);
@@ -34,9 +35,10 @@ int main(int argc, char *argv[]) {
         
         //density of digit in the bounding box 
         density = get_density(box_height, box_width, box_pixels);
+        holes = get_holes(box_height, box_width, box_pixels);
     }
 
-    printf("density: %.2lf\n", density);
+    printf("holes: %d", holes); 
 
     return 0;
 }

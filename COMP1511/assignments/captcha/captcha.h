@@ -1,5 +1,6 @@
 int read_pbm(char filename[], int height, int width, int pixels[height][width]);
 int get_pbm_dimensions(char filename[], int *height, int *width);
+int get_holes(int height, int width, int pixels[height][width]);
 void print_image(int height, int width, int pixels[height][width]);
 void get_bounding_box(int height, int width, int pixels[height][width],
                   int *start_row, int *start_column, int *box_height, int *box_width);
