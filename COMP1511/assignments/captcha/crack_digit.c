@@ -37,8 +37,20 @@ int main(int argc, char *argv[]) {
         density = get_density(box_height, box_width, box_pixels);
         holes = get_holes(box_height, box_width, box_pixels);
     }
-
-    printf("holes: %d", holes); 
+       
+    if(holes == 2){
+        printf("8");
+    }else if(holes == 1){
+        if(v_balance >= 0.55){
+            printf("9");
+        }else if(v_balance <= 0.45){
+            printf("6");
+        }else{
+            printf("0");
+        }
+    }else if(h_balance >= 0.5){
+        printf("3");
+    }
 
     return 0;
 }

@@ -31,14 +31,16 @@ int get_holes(int height, int width, int pixels[height][width]){
         }
     }
     
+    //label the new array
     int curlabel = 2;
     for(int row = 0; row < nheight; row ++){
         for(int col = 0; col < nwidth; col ++){
             label(nheight, nwidth, npixels, row, col, curlabel);
+            curlabel ++;
         }
-        curlabel ++;
     }
 
+    //count the number of labels
     int labels[MAX_LABELS] = {0}; 
     int current_label = 0; 
     int unique = 1;
@@ -97,7 +99,8 @@ void label(int height, int width, int pixels[height][width], int posx, int posy,
         //use an array of values corresponding to directions to check all 
         //boxes around the current box
         //
-        //vector method taken from user gus of stackoverflow
+        //vector method of traversing the array taken from user gus of stackoverflow
+        //saves from having to have 4 cases
         //http://stackoverflow.com/a/14466081
         int dx[] = {+1, 0, -1, 0};
         int dy[] = {0, +1, 0, -1};
