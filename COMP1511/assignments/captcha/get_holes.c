@@ -25,9 +25,15 @@ int get_holes(int height, int width, int pixels[height][width]){
     int nheight = height + 2;
     int nwidth = width + 2; 
     int npixels[nheight][nwidth];
-    for(int row = 0; row < height; row ++){
-        for(int col = 0; col < width; col ++){
-            npixels[1+row][1+col] = pixels[row][col];
+    for(int row = 0; row < nheight; row ++){
+        for(int col = 0; col < nwidth; col ++){
+            if(row == 0 || col == 0){
+                npixels[row][col] = 0;
+            }else if(row < height && col < width){
+                npixels[row][col] = pixels[row-1][col-1];
+            }else{
+                npixels[row][col] = 0;
+            }
         }
     }
     
