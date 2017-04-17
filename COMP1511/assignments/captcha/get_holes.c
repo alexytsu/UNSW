@@ -36,8 +36,8 @@ int get_holes(int height, int width, int pixels[height][width]){
     for(int row = 0; row < nheight; row ++){
         for(int col = 0; col < nwidth; col ++){
             label(nheight, nwidth, npixels, row, col, curlabel);
+            curlabel ++;
         }
-        curlabel ++;
     }
 
     //count the number of labels
