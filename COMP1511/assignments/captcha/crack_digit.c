@@ -35,12 +35,8 @@ int main(int argc, char *argv[]) {
         //density of digit in the bounding box 
         density = get_density(box_height, box_width, box_pixels);
     }
-    
-    if(h_balance < 0.5){
-        printf("6\n");
-    }else{
-        printf("3\n");
-    }
+
+    printf("%2.lf, %2.lf, %2.lf", h_balance, v_balance, density);
 
     return 0;
 }
