@@ -38,46 +38,20 @@ int get_holes(int height, int width, int pixels[height][width]){
     }
     
     //label the new array
-    int curlabel = 2;
+    int curlabel = 1; //the first label will be 2, which is unique from the 0s and 1s that make up the image
     for(int row = 0; row < nheight; row ++){
         for(int col = 0; col < nwidth; col ++){
-            label(nheight, nwidth, npixels, row, col, curlabel);
-            curlabel ++;
-        }
-    }
-
-    //count the number of labels
-    int labels[MAX_LABELS] = {0}; 
-    int current_label = 0; 
-    int unique = 1;
-    for(int row = 0; row < nheight; row ++){
-        for(int col = 0; col < nwidth; col ++){
-            current_label = npixels[row][col];
-            unique = 1;
-            for(int i = 0; i < MAX_LABELS; i ++){
-                if(labels[i] == current_label){
-                    unique = 0;
-                }
-            }
-            
-            if(unique){
-                for(int i = 0; i < MAX_LABELS; i ++){
-                    if(labels[i] == 0){
-                        labels[i] = current_label;
-                        break;
-                    }
-                }
+            if(npixels[row][col] == 0){
+                curlabel ++;
+                label(nheight, nwidth, npixels, row, col, curlabel);
             }
         }
     }
-    
-    int holes = -2;
-    for(int i = 0; i < MAX_LABELS; i ++){
-        if(labels[i] != 0){
-            holes ++;
-        }
-    }
 
+    //there are always three extra labels than holes
+    // 1. the extra label for the border
+    // 2. the extra label for the actual number
+    int holes = curlabel - 2;
     return holes;
 }
 
