@@ -4,9 +4,10 @@
 int main(int argc, char *argv[]) {
     
     //read the digit, get it's bounding box and get its balance
-    int height, width, start_row, start_column, box_width, box_height;
+    int height, width, start_row, start_column, box_width, box_height, holes;
     double h_balance, v_balance, density;
-    int holes = 0;
+    double quadrant_densities[4];
+
 
     if (argc < 2) {
         fprintf(stderr, "Usage: %s <image-file>\n", argv[0]);
@@ -36,6 +37,20 @@ int main(int argc, char *argv[]) {
         //density of digit in the bounding box 
         density = get_density(box_height, box_width, box_pixels);
         holes = get_holes(box_height, box_width, box_pixels);
+
+        //get the density of each quadrant of the bounded digit
+        box_width = 4; 
+        box_height = 5;
+        //since quad_width & height are integers, they will take the correct value whether 
+        //box_width and height are odd or even 
+        //N.B. when both box_width and box_height are odd, the bottom left quadrant will be 
+        //larger than the top right by one pixel in each dimension
+        int quad_width = box_width/2;
+        int quad_height = box_height/2;
+        
+
+
+
     }
        
     if(holes == 2){

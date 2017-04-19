@@ -1,5 +1,11 @@
 #include <stdio.h>
 
+//Vertical and horizontal balance return a percentage 
+//This percentage corresponds to the position within the image where the 
+//horizontal or vertical "center of gravity" lies
+//ie. high horizontal balance indicates many pixels on the right of the image
+//    high vertical balance indicates many pixels in the top half of the image
+
 double get_horizontal_balance(int height, int width, int pixels[height][width]){
 
     /*
@@ -9,6 +15,7 @@ double get_horizontal_balance(int height, int width, int pixels[height][width]){
            n_black_pixels = number of black pixels
            width = image width
     */
+
     double n_black_pixels = 0;
     double column_sum = 0;
 
@@ -25,7 +32,6 @@ double get_horizontal_balance(int height, int width, int pixels[height][width]){
 }
 
 double get_vertical_balance(int height, int width, int pixels[height][width]){
-    
 
     /*
     vertical_balance = (row_sum/n_black_pixels + 0.5)/height)
