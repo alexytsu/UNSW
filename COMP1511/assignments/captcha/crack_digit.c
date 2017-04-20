@@ -39,17 +39,54 @@ int main(int argc, char *argv[]) {
         holes = get_holes(box_height, box_width, box_pixels);
 
         //get the density of each quadrant of the bounded digit
-        box_width = 4; 
-        box_height = 5;
         //since quad_width & height are integers, they will take the correct value whether 
         //box_width and height are odd or even 
         //N.B. when both box_width and box_height are odd, the bottom left quadrant will be 
-        //larger than the top right by one pixel in each dimension
-        int quad_width = box_width/2;
-        int quad_height = box_height/2;
-        
+        //smalle than the top right by one pixel in each dimension
+        //q3 | q4
+        //___|___
+        //q1 | q2  
 
+        int lower_height = box_height/2;
+        int left_width = box_width/2;
+        int higher_height, right_width;
 
+        //if even, top and bottom height are same, otherwise, q4 is larger by one pixel in each dimension
+        if(box_height % 2 == 1){
+            higher_height = height/2 + 1;
+        }else{
+            higher_height = height/2;
+        }
+        if(box_width % 2 == 1){
+            right_width = height/2 + 1;
+        }else{
+            right_width = height/2;
+        }
+
+        //create copies of the pixels so that we can perform analysis on each quadrant
+
+        int dimensions[4][2] = {{lower_height, left_width}, 
+                                {lower_height, right_width}, 
+                                {higher_height, left_width}, 
+                                {higher_height, right_width}};
+
+        int quadrant1[dimensions[0][0]][dimensions[0][1]];
+        int quadrant2[lower_height][right_width];
+        int quadrant3[higher_height][left_width];
+        int quadrant4[higher_height][right_width];
+
+        copy_pixels(box_height, box_width, box_pixels, 0, 0, lower_height, left_width, quadrant1);
+        copy_pixels(box_height, box_width, box_pixels, 0, left_width, lower_height, right_width, quadrant2);
+        copy_pixels(box_height, box_width, box_pixels, lower_height, 0, higher_height, left_width, quadrant3);
+        copy_pixels(box_height, box_width, box_pixels, lower_height, left_width, higher_height, right_width, quadrant4);
+
+        //put them in an array for easier analysis
+        int quadrants[4] = {quadrant1, quadrant2, quadrant3, quadrant4};
+
+        //get the density of each quadrant
+        int densities[4];
+        for(int i = 0; i < 4; i ++){
+        }
 
     }
        
