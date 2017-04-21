@@ -5,10 +5,6 @@ score = [0]*10
 tests = [0]*10
 failed = []
 
-build = subprocess.run(["../clang", "../*c"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-
-print("Compiled program");
-
 #Customize the test so that you can test individual digits
 print("Enter the test_digits you want to test (eg. '0 1 5 6 8')")
 test_digits = input().strip().split()

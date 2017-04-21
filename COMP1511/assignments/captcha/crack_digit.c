@@ -36,13 +36,9 @@ int main(int argc, char *argv[]) {
                 start_column, box_height, box_width,
                 box_pixels, &h_balance, &v_balance,
                 &density, &holes, quadrant_densities);
-
-         
-        printf("h_balance:%.2lf\nv_balance:%.2lf\ndensity:%.2lf\nholes:%d\n",
-                h_balance, v_balance, density, holes);
-        for(int i = 0; i < 4; i ++){
-            printf("density%d: %.2lf\n", i, quadrant_densities[i]);
-        }
+        
+        printf("%d\n", decide_digit(h_balance, v_balance, density, holes,
+                   quadrant_densities));
 
     }
     return 0;
