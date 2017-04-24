@@ -38,7 +38,9 @@ int main(int argc, char *argv[]) {
                 box_pixels, &h_balance, &v_balance,
                 &density, &holes, quadrant_densities);
         
-        printf("%.3lf", v_balance);
+        printf("%d %d %d %d\n", start_row, box_height, start_column, box_width);
+        print_image(box_height, box_width, box_pixels);
+        printf("%.3lf", h_balance);
 
 /*
         int nheight = 10; 

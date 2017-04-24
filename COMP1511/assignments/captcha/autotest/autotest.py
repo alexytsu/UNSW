@@ -42,7 +42,7 @@ for x in h_balance:
    avg = sum(x)/len(x)
    highest = max(x)
    lowest = min(x)
-   print(str("Digit("+str(digit)+"): v_balance_avg = "+str(avg)+" highest = "+str(highest)+" lowest = "+str(lowest)))
+   print(str("Digit("+str(digit)+"): h_balance_avg = "+str(avg)+" highest = "+str(highest)+" lowest = "+str(lowest)))
    digit += 1
 
 
