@@ -58,7 +58,6 @@ void get_bounding_box(int height, int width, int pixels[height][width],
 
     //get the box_width
     keep_checking = 1;
-    int right_edge_reached = 0;
     while(keep_checking){
         int pixel_detected = 0;
         for(int i = 0; i < height; i++){
@@ -66,16 +65,8 @@ void get_bounding_box(int height, int width, int pixels[height][width],
                 pixel_detected = 1;
             }
         }
-        if(right_edge_reached == 1){
-            if(pixel_detected){
-                right_edge_reached = 0;
-            }
-        }
-        if(!pixel_detected && !right_edge_reached){
-           *box_width = col - *start_column; 
-            right_edge_reached = 1;
-        }
-        if(col == width-1){
+        if(!pixel_detected){
+            *box_width = col - *start_column;
             keep_checking = 0;
         }
         col ++;
