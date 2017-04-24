@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "captcha.h"
 
 int main(int argc, char *argv[]) {
@@ -37,8 +38,13 @@ int main(int argc, char *argv[]) {
                 box_pixels, &h_balance, &v_balance,
                 &density, &holes, quadrant_densities);
         
-        printf("%d\n", decide_digit(h_balance, v_balance, density, holes,
-                   quadrant_densities));
+//        printf("%d\n", decide_digit(h_balance, v_balance, density, holes,
+ //                  quadrant_densities));
+
+        int nheight = 10; 
+        int nwidth = 10; 
+        int npixels[nheight*nwidth];
+        downscale(box_height, box_width, box_pixels, nheight, nwidth, npixels);
 
     }
     return 0;
