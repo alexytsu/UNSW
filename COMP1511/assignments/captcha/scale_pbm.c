@@ -2,21 +2,17 @@
 #include <math.h>
 #include "captcha.h"
 
-void downscale(int height, int width, int pixels[height][width], int nheight, int nwidth, int npixels[nheight*nwidth]){
+void downscale(int height, int width, int pixels[height][width], int nheight, int nwidth, int npixels[nheight][nwidth]){
+
+    //create a 1D holding the bounded digit
     int pixel_copy[height*width];
     for(int i = 0; i < height; i ++){
         for(int j = 0; j < width; j ++){
             pixel_copy[i*width+j] = pixels[i][j];
         }
     }
-    for(int i = 0; i < height*width; i++){
-        printf("%d", pixel_copy[i]);
-        if(i % width == width - 1){
-            printf("\n");
-        }
-    }
 
-    printf("\n");
+    //keep as a double until needed to maintain precision 
     double height_ratio = height/(double)nheight;
     double width_ratio = width/(double)nwidth;
     double px, py;
@@ -24,13 +20,7 @@ void downscale(int height, int width, int pixels[height][width], int nheight, in
         for(int col = 0; col < nwidth; col ++){     
             px = floor(col*width_ratio);
             py = floor(row*height_ratio);
-            npixels[(row*nwidth)+col] = pixel_copy[(int)((py*width)+px)]; 
-        }
-    }
-    for(int i = 0; i < nheight * nwidth; i ++){
-        printf("%d", npixels[i]);
-        if(i % nwidth == nwidth - 1){
-           printf("\n"); 
+            npixels[row][col] = pixel_copy[(int)((py*width)+px)]; 
         }
     }
 }

@@ -6,7 +6,7 @@ int decide_digit(double h_balance, double v_balance, double density, int
         holes, double quadrant_densities[4]);
 void print_image(int height, int width, int pixels[height][width]);
 void downscale(int height, int width, int pixels[height][width], int nheight,
-        int nwidth, int npixels[nheight*nwidth]);
+        int nwidth, int npixels[nheight][nwidth]);
 void get_bounding_box(int height, int width, int pixels[height][width], int
         *start_row, int *start_column, int *box_height, int *box_width);
 void copy_pixels(int height, int width, int pixels[height][width], int

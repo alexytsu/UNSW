@@ -43,7 +43,7 @@ int main(int argc, char *argv[]) {
 
         int nheight = 10; 
         int nwidth = 10; 
-        int npixels[nheight*nwidth];
+        int npixels[nheight][nwidth];
         downscale(box_height, box_width, box_pixels, nheight, nwidth, npixels);
 
     }
