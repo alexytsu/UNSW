@@ -80,6 +80,5 @@ void get_bounding_box(int height, int width, int pixels[height][width],
         }
         col ++;
     }
-
-
 }
+

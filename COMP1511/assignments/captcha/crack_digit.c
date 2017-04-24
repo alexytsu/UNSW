@@ -5,11 +5,10 @@
 int main(int argc, char *argv[]) {
 
     //read the digit, get it's bounding box and get its balance
+
     int height, width, start_row, start_column, box_width, box_height, holes;
     double h_balance, v_balance, density;
     double quadrant_densities[4];
-
-
     if (argc < 2) {
         fprintf(stderr, "Usage: %s <image-file>\n", argv[0]);
         return 1;
@@ -27,23 +26,28 @@ int main(int argc, char *argv[]) {
         //gets the bounding box around the pixel
         get_bounding_box(height, width, pixels, &start_row, &start_column,
                 &box_height, &box_width);
+        printf("%d %d %d %d\n\n", start_row, start_column, box_height, box_width);
 
         //puts the bounded pixel in box_pixels 
         int box_pixels[box_height][box_width];
         copy_pixels(height, width, pixels, start_row, start_column, box_height,
                 box_width, box_pixels);
 
-        /*
+        
         get_attributes(height, width, pixels, start_row,
                 start_column, box_height, box_width,
                 box_pixels, &h_balance, &v_balance,
                 &density, &holes, quadrant_densities);
-        */
+        
+        printf("%.3lf", v_balance);
 
+/*
         int nheight = 10; 
         int nwidth = 10; 
         int npixels[nheight][nwidth];
         downscale(box_height, box_width, box_pixels, nheight, nwidth, npixels);
+*/
+
 
     }
     return 0;
