@@ -39,5 +39,5 @@ int decide_digit(double h_balance, double v_balance, double density, int
         }
 
     }
-
+    return 0;
 }
