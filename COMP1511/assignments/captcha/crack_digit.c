@@ -33,13 +33,12 @@ int main(int argc, char *argv[]) {
         copy_pixels(height, width, pixels, start_row, start_column, box_height,
                 box_width, box_pixels);
 
+        /*
         get_attributes(height, width, pixels, start_row,
                 start_column, box_height, box_width,
                 box_pixels, &h_balance, &v_balance,
                 &density, &holes, quadrant_densities);
-        
-//        printf("%d\n", decide_digit(h_balance, v_balance, density, holes,
- //                  quadrant_densities));
+        */
 
         int nheight = 10; 
         int nwidth = 10; 

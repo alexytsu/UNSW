@@ -19,7 +19,10 @@ for x in range(TESTS):
     filenumber = str(x) 
     number = x%100
     digit = int(x/100)
-    filename = str("../digit/"+str(digit)+"_"+str(number)+".pbm")
+    if number < 10:
+        filename = str("../digit/"+str(digit)+"_0"+str(number)+".pbm")
+    else:
+        filename = str("../digit/"+str(digit)+"_"+str(number)+".pbm")
 
     #Only runs the test if we specified it earlier
     if(digit in test_digits):
