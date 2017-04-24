@@ -26,7 +26,6 @@ int main(int argc, char *argv[]) {
         //gets the bounding box around the pixel
         get_bounding_box(height, width, pixels, &start_row, &start_column,
                 &box_height, &box_width);
-        printf("%d %d %d %d\n\n", start_row, start_column, box_height, box_width);
 
         //puts the bounded pixel in box_pixels 
         int box_pixels[box_height][box_width];

@@ -30,6 +30,10 @@ void get_bounding_box(int height, int width, int pixels[height][width],
     keep_checking = 1;
     while(keep_checking){
         int pixel_detected = 0;
+        if(row==height){
+            *box_height = height - *start_row;
+            break;
+        }else{
         for(int i = 0; i < width; i++){
             if(pixels[row][i]){
                 pixel_detected = 1;
@@ -40,6 +44,7 @@ void get_bounding_box(int height, int width, int pixels[height][width],
            keep_checking = 0;
         }
         row ++;
+        }
     }
 
     //get the start column
@@ -60,6 +65,10 @@ void get_bounding_box(int height, int width, int pixels[height][width],
     keep_checking = 1;
     while(keep_checking){
         int pixel_detected = 0;
+        if(col == width){
+            *box_width = width - *start_column;
+            break;
+        }
         for(int i = 0; i < height; i++){
             if(pixels[i][col]){
                 pixel_detected = 1;
