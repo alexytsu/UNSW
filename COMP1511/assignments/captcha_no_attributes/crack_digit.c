@@ -6,8 +6,6 @@ int main(int argc, char *argv[]) {
 
     //read the digit, get it's bounding box and get its balance
     int height, width, start_row, start_column, box_width, box_height, holes;
-    double h_balance, v_balance, density;
-    double quadrant_densities[4];
     if (argc < 2) {
         fprintf(stderr, "Usage: %s <image-file>\n", argv[0]);
         return 1;
