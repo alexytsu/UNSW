@@ -26,6 +26,7 @@ void get_attributes(int height, int width, int pixels[height][width], int
         //___|___
         //q1 | q2  
 
+        //wow such code reuse huh!
         //do maths that gets us the dimensions and locations of the quadrants
         int start_row_quad = box_height/2; 
         int start_col_quad = box_width/2;

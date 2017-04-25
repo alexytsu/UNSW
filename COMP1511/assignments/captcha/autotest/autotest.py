@@ -40,9 +40,10 @@ for x in range(TESTS):
 digit = 0
 for x in h_balance:
    avg = sum(x)/len(x)
+   '{0:.2f}'.format(avg)
    highest = max(x)
    lowest = min(x)
-   print(str("Digit("+str(digit)+"): h_balance_avg = "+str(avg)+" highest = "+str(highest)+" lowest = "+str(lowest)))
+   print(str("Digit("+str(digit)+"): veryfunny_avg = "+str(avg)+" highest = "+str(highest)+" lowest = "+str(lowest)))
    digit += 1
 
 

@@ -29,27 +29,24 @@ int main(int argc, char *argv[]) {
 
         //puts the bounded pixel in box_pixels 
         int box_pixels[box_height][box_width];
+
         copy_pixels(height, width, pixels, start_row, start_column, box_height,
                 box_width, box_pixels);
-
         
         get_attributes(height, width, pixels, start_row,
                 start_column, box_height, box_width,
                 box_pixels, &h_balance, &v_balance,
                 &density, &holes, quadrant_densities);
-        
-        printf("%d %d %d %d\n", start_row, box_height, start_column, box_width);
-        print_image(box_height, box_width, box_pixels);
-        printf("%.3lf", h_balance);
+    
 
-/*
-        int nheight = 10; 
-        int nwidth = 10; 
-        int npixels[nheight][nwidth];
-        downscale(box_height, box_width, box_pixels, nheight, nwidth, npixels);
-*/
-
-
+        //get scores based on templating
+        int match_score[DIGITS][TESTS];
+        get_scores(box_height, box_width, box_pixels, match_score);
+        for(int i = 0; i < 10; i ++){
+            for(int k = 0; k < 100; k ++){
+                printf("%d, %d, %d\n", i, k, match_score[i][k]);
+            }
+        }
     }
     return 0;
 }
