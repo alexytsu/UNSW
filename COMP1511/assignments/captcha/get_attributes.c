@@ -15,11 +15,11 @@ void get_attributes(int height, int width, int pixels[height][width], int
         *density = get_density(box_height, box_width, box_pixels);
         *holes = get_holes(box_height, box_width, box_pixels);
 
-        //get the density of each quadrant of the bounded digit when the
-        //bounding box has even dimensions the quadrant dimensions are easy
+        //get the density of each quadrant of the bounded digit. when the
+        //bounding box has even dimensions the quadrant dimensions are easy.
         //however, when odd, we will have one pixel overlap in the middle this
         //way we can have all quadrants to be the exact same size rather than
-        //havign some one pixel wider or taller than others this helps us
+        //having some one pixel wider or taller than others. this helps us
         //initialize a 3d array of quadrants which helps us compact the
         //analysis code
         //q3 | q4

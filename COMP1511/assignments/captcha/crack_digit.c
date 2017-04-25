@@ -56,8 +56,7 @@ int main(int argc, char *argv[]) {
                 best_digit = i;
                 max_score = total_score[i];
             }
-        }
-
+        }  
         printf("%d\n", best_digit);
     }
     return 0;

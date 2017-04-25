@@ -27,6 +27,7 @@ for x in range(TESTS):
 
     #Only runs the test if we specified it earlier
     if(digit in test_digits):
+        print("test" +str(digit))
         run = subprocess.run(["../a.out", filename], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
         #get the output of the program and determine if it is valid or an error
@@ -34,20 +35,7 @@ for x in range(TESTS):
         output = output.decode('ascii')
         error = run.stderr.strip()
         error = error.decode('ascii')
-        print(output)
-        h_balance[digit][number] = float(output)
-          
-digit = 0
-for x in h_balance:
-   avg = sum(x)/len(x)
-   '{0:.2f}'.format(avg)
-   highest = max(x)
-   lowest = min(x)
-   print(str("Digit("+str(digit)+"): veryfunny_avg = "+str(avg)+" highest = "+str(highest)+" lowest = "+str(lowest)))
-   digit += 1
-
-
-"""
+        print("output: "+str(output))
         if(error == ''):
             #if it is a valid guess, record if it is correct or not
             tests[digit] += 1
@@ -70,4 +58,3 @@ if(confirm == "y"):
         print(x)
         check = subprocess.run(["./print", x])
         #print useful attributes of the digit in question
-"""
