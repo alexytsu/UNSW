@@ -42,11 +42,23 @@ int main(int argc, char *argv[]) {
         //get scores based on templating
         int match_score[DIGITS][TESTS];
         get_scores(box_height, box_width, box_pixels, match_score);
-        for(int i = 0; i < 10; i ++){
-            for(int k = 0; k < 100; k ++){
-                printf("%d, %d, %d\n", i, k, match_score[i][k]);
+        int total_score[DIGITS] = {0};
+        for(int digit = 0; digit < DIGITS; digit ++){
+            for(int version = 0; version < TESTS; version ++){
+                total_score[digit] += match_score[digit][version];
             }
         }
+
+        int best_digit = 0;
+        int max_score = 0;
+        for(int i = 0; i<DIGITS; i++){
+            if(total_score[i] > max_score){
+                best_digit = i;
+                max_score = total_score[i];
+            }
+        }
+
+        printf("%d\n", best_digit);
     }
     return 0;
 }

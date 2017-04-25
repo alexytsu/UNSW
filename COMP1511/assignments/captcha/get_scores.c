@@ -34,7 +34,7 @@ void get_bounded_template(int template_height, int template_width, int digit,
 
     //filename generation from Muhammad Abubakar on the class forum
     //https://edstem.com.au/courses/416/discussion/28913?comment=72658
-    char filename[14];
+    char filename[15];
     sprintf(filename, "digit/%d_%02d.pbm", digit, version);
 
     //read each digit in as a reference and put it in a bounding box
