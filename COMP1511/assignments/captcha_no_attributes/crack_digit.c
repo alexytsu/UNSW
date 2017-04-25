@@ -30,7 +30,7 @@ int main(int argc, char *argv[]) {
                 box_width, box_pixels);
 
         //find the similarity between the bounded digit and templates
-        double similarity_scores[DIGITS];
+        double similarity_scores[DIGITS] = {0};
         get_scores(box_height, box_width, box_pixels, similarity_scores);
         
 
