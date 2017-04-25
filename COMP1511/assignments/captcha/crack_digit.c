@@ -40,15 +40,16 @@ int main(int argc, char *argv[]) {
     
 
         //get scores based on templating
-        int match_score[DIGITS][TESTS];
+        double match_score[DIGITS][TESTS];
         get_scores(box_height, box_width, box_pixels, match_score);
-        int total_score[DIGITS] = {0};
+        double total_score[DIGITS] = {0};
         for(int digit = 0; digit < DIGITS; digit ++){
             for(int version = 0; version < TESTS; version ++){
                 total_score[digit] += match_score[digit][version];
             }
         }
-
+        
+        //using the scores, get the best digit
         int best_digit = 0;
         int max_score = 0;
         for(int i = 0; i<DIGITS; i++){

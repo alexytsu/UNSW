@@ -2,7 +2,7 @@
 #include "captcha.h"
 
 void get_scores(int box_height, int box_width, int
-        box_pixels[box_height][box_width], int match_score[DIGITS][TESTS]){
+        box_pixels[box_height][box_width], double match_score[DIGITS][TESTS]){
     
     for(int digit = 0; digit < DIGITS; digit ++){
         for(int version = 0; version < TESTS; version ++){
@@ -17,7 +17,7 @@ void get_scores(int box_height, int box_width, int
 
 void get_matches(int digit, int version, int box_height, int box_width, int
         box_pixels[box_height][box_width], int template[box_height][box_width],
-        int match_score[DIGITS][TESTS]){
+        double match_score[DIGITS][TESTS]){
     int score = 0;
     for(int row = 0; row < box_height; row ++){
         for(int col = 0; col < box_width; col ++){
@@ -26,7 +26,7 @@ void get_matches(int digit, int version, int box_height, int box_width, int
             }
         }
     }
-    match_score[digit][version] = score;
+    match_score[digit][version] = score/(box_width*box_height);
 }
 
 void get_bounded_template(int template_height, int template_width, int digit,

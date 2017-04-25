@@ -8,7 +8,7 @@ int get_holes(int height, int width, int pixels[height][width]);
 int decide_digit(double h_balance, double v_balance, double density, int
         holes, double quadrant_densities[4]);
 void get_scores(int box_height, int box_width, int
-        box_pixels[box_height][box_width], int match_scores[DIGITS][TESTS]);
+        box_pixels[box_height][box_width], double match_scores[DIGITS][TESTS]);
 void get_bounded_template(int template_height, int template_width, int digit,
         int version, int template[template_height][template_width]);
 void print_image(int height, int width, int pixels[height][width]);
@@ -34,7 +34,7 @@ void copy_pixels(int height, int width, int pixels[height][width], int
         copy[copy_height][copy_width]);
 void get_matches(int digit, int version, int box_height, int box_width, int
         box_pixels[box_height][box_width], int template[box_height][box_width],
-        int match_score[DIGITS][TESTS]);
+        double match_score[DIGITS][TESTS]);
 double get_horizontal_balance(int height, int width, int
         pixels[height][width]);
 double get_vertical_balance(int height, int width, int pixels[height][width]);
