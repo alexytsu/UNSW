@@ -9,16 +9,16 @@ void get_scores(int box_height, int box_width, int
 
     //use holes to shortcut to an answer when possible (minor optimisation)
     int holes = get_holes(box_height, box_width, box_pixels);
-    if(holes >= 1){
+    if(holes >= 1){ 
+
         for(int digit = 0; digit < DIGITS; digit ++){
-            for(int version = 0; version < TESTS; version ++){
-                //only do the check if it is a number with one hole
-                if(digit == 8 || digit == 6 || digit ==4 || digit == 9 || digit == 0){
-                    int template[box_height][box_width];
+            if(digit == 0 || digit == 4 || digit == 6 || digit == 8 || digit == 9){
+                for(int version = 0; version < TESTS; version ++){
 
+                    //only check numbers with holes
                     //makes the template
+                    int template[box_height][box_width];
                     get_bounded_template(box_height, box_width, digit, version, template);
-
                     //compares the template to the bounded digit
                     get_similarity(digit, version, box_height, box_width, box_pixels, template,
                             similarity_scores);
@@ -26,10 +26,12 @@ void get_scores(int box_height, int box_width, int
             }
         }
     }else{
+
         for(int digit = 0; digit < DIGITS; digit ++){
-            for(int version = 0; version < TESTS; version ++){
-                //don't check numbers with holes
-                if(digit != 8 || digit != 6 || digit !=4 || digit != 9 || digit != 0){
+            if(digit == 1 || digit == 2 || digit == 3 || digit == 5 || digit == 7){
+                for(int version = 0; version < TESTS; version ++){
+
+                    //don't check numbers with holes
                     int template[box_height][box_width];
 
                     //makes the template
@@ -42,7 +44,6 @@ void get_scores(int box_height, int box_width, int
             }
         }
     }
-
 }
 
 //taking the template, it analyses the similarity between it and the digit

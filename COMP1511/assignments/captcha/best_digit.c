@@ -17,7 +17,7 @@ void best_digits(double similarity_scores[DIGITS], int top_three[3], double
         copy_similarities[i] = similarity_scores[i];
     }
 
-    int max = 0;
+    double max = 0;
     int index_of_max = 0;
     //each iteration, find the max and add it to top_scores and its index to 
     //top_three
@@ -44,12 +44,6 @@ int check_guess(int top_three[3], double top_scores[3],
         int start_row, int start_column, int
         box_height, int box_width, int box_pixels[box_height][box_width]){
 
-    /*
-    for(int i = 0; i < 3; i ++){
-        printf("%d: %.3lf\n", top_three[i], top_scores[i]);
-    }
-    */
-
     double h_balance, v_balance, density, quadrant_densities[4];
     int holes;
     get_attributes(start_row, start_column, box_height, box_width, box_pixels,
@@ -57,6 +51,5 @@ int check_guess(int top_three[3], double top_scores[3],
     
     //we analyse the guess for possible mistakes. this depends on what the
     //guess is. we use a switch structure to check each possible guess
-
     return top_three[0];
 }
