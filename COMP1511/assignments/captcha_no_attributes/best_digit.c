@@ -6,7 +6,7 @@ int best_digit(double similarity_scores[DIGITS]){
 
     int best_digit = 0;
     int max_score = 0;
-    
+        
     for(int i = 0; i<DIGITS; i++){
         //if larger than current_max, set it as the new max
         if(similarity_scores[i] > max_score){

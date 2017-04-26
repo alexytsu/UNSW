@@ -58,7 +58,7 @@ void get_similarity(int digit, int version, int box_height, int box_width, int
             }
         }
     }
-    double percentage = score/(box_width*box_height);
+    double percentage = (double)score/(box_width*box_height);
     similarity_scores[digit] += percentage;
 }
 
