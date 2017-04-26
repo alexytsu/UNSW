@@ -1,11 +1,9 @@
 #include <stdio.h>
 #include "captcha.h"
 
-void get_attributes(int height, int width, int pixels[height][width], int
-        start_row, int start_column, int box_height, int box_width, int
-        box_pixels[box_height][box_width], double *h_balance, double
+void get_attributes(int start_row, int start_column, int box_height, int box_width, 
+        int box_pixels[box_height][box_width], double *h_balance, double
         *v_balance, double *density, int *holes, double quadrant_densities[4]){
-
 
         //balance = horizontal center of gravity
         *h_balance = get_horizontal_balance(box_height, box_width, box_pixels);

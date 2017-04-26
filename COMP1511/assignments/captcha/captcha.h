@@ -39,8 +39,24 @@ void copy_pixels(int height, int width, int pixels[height][width], int
 //Image analysis functions (run these on arrays not PBMs)
 //-------------------------------------------------------
 
+//gets the vertical and horizontal center of gravity of the bounded digit
+//returns as a percentage position within the image
+double get_horizonatal_balance(int height, int width, int pixels[height][width]);
+double get_vertical_balance(int height, int width, int pixels[height][width]);
+   
+//gets the density of the entire bounded digit
+double get_density(int height, int width, int pixels[height][width]);
+
 //gets the number of holes holes in a bounded digit 
 int get_holes(int height, int width, int pixels[height][width]);
+
+//gets all the attributes (including quadrant density), calls all the attribute
+//functions listed above. stores the values it gets in external variables by
+//use of pointers
+void get_attributes(int start_row, int start_column, int box_height, int
+        box_width, int box_pixels[box_height][box_width], double *h_balance,
+        double *v_balance, double *density, int *holes, double
+        quadrant_densities[4]);
 
 //loops through all 1000 reference images and tests them against the input 
 //calls get_similarity, get_bounded_template and get_holes
@@ -58,4 +74,4 @@ void get_similarity(int digit, int version, int box_height, int box_width, int
 int best_digit(double similarity_scores[DIGITS]);
 
 //double checks the output of best_digit against known attributes of numbers
-int check_guess(int guess, double similarity_scores[DIGITS]);
+int check_guess(int guess, double similarity_scores[DIGITS], int start_row, int start_column, int box_height, int box_width, int box_pixels[box_height][box_width]);
