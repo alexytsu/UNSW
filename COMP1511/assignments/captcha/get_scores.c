@@ -1,23 +1,55 @@
 #include <stdio.h>
 #include "captcha.h"
 
+//loops through 1000 reference pbms and for each, 
+//creates a template of correct size and then
+//compares the templates to the input digit
 void get_scores(int box_height, int box_width, int
-        box_pixels[box_height][box_width], double match_score[DIGITS][TESTS]){
-    
-    for(int digit = 0; digit < DIGITS; digit ++){
-        for(int version = 0; version < TESTS; version ++){
-            int template[box_height][box_width];
-            get_bounded_template(box_height, box_width, digit, version, template);
-            get_matches(digit, version, box_height, box_width, box_pixels, template,
-                    match_score);
+        box_pixels[box_height][box_width], double similarity_scores[DIGITS]){
+
+    //use holes to shortcut to an answer when possible (minor optimisation)
+    int holes = get_holes(box_height, box_width, box_pixels);
+    if(holes >= 1){
+        for(int digit = 0; digit < DIGITS; digit ++){
+            for(int version = 0; version < TESTS; version ++){
+                //only do the check if it is a number with one hole
+                if(digit == 8 || digit == 6 || digit ==4 || digit == 9 || digit == 0){
+                    int template[box_height][box_width];
+
+                    //makes the template
+                    get_bounded_template(box_height, box_width, digit, version, template);
+
+                    //compares the template to the bounded digit
+                    get_similarity(digit, version, box_height, box_width, box_pixels, template,
+                            similarity_scores);
+                }
+            }
+        }
+    }else{
+        for(int digit = 0; digit < DIGITS; digit ++){
+            for(int version = 0; version < TESTS; version ++){
+                //don't check numbers with holes
+                if(digit != 8 || digit != 6 || digit !=4 || digit != 9 || digit != 0){
+                    int template[box_height][box_width];
+
+                    //makes the template
+                    get_bounded_template(box_height, box_width, digit, version, template);
+
+                    //compares the template to the bounded digit
+                    get_similarity(digit, version, box_height, box_width, box_pixels, template,
+                            similarity_scores);
+                }
+            }
         }
     }
 
 }
 
-void get_matches(int digit, int version, int box_height, int box_width, int
+//taking the template, it analyses the similarity between it and the digit
+void get_similarity(int digit, int version, int box_height, int box_width, int
         box_pixels[box_height][box_width], int template[box_height][box_width],
-        double match_score[DIGITS][TESTS]){
+        double similarity_scores[DIGITS]){
+
     int score = 0;
     for(int row = 0; row < box_height; row ++){
         for(int col = 0; col < box_width; col ++){
@@ -26,9 +58,12 @@ void get_matches(int digit, int version, int box_height, int box_width, int
             }
         }
     }
-    match_score[digit][version] = score/(box_width*box_height);
+    double percentage = (double)score/(box_width*box_height);
+    similarity_scores[digit] += percentage;
 }
 
+//makes a reference image from pbm and then downscales it so its size matches
+//the bounded digit
 void get_bounded_template(int template_height, int template_width, int digit,
         int version, int template[template_height][template_width]){ 
 
@@ -37,12 +72,14 @@ void get_bounded_template(int template_height, int template_width, int digit,
     char filename[15];
     sprintf(filename, "digit/%d_%02d.pbm", digit, version);
 
-    //read each digit in as a reference and put it in a bounding box
+    //read the reference pbm
     int reference_height, reference_width;
     get_pbm_dimensions(filename, &reference_height, &reference_width);
     int reference[reference_height][reference_width];
     read_pbm(filename, reference_height, reference_width, reference);
     int start_row, start_column, box_height, box_width;
+
+    //create a bounded reference
     get_bounding_box(reference_height, reference_width, reference, &start_row,
             &start_column, &box_height, &box_width);
     int bounded_reference[box_height][box_width];

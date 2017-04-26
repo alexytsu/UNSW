@@ -22,11 +22,7 @@ int best_digit(double similarity_scores[DIGITS]){
 //checks that the attributes of the digit matches with the guess from the 
 //similarity comparison (which isn't perfect)
 int check_guess(int guess, double similarity_scores[DIGITS]){
+	
+    return guess;
 
-
-    get_attributes
-
-    if(guess == 8){
-        
-    }    
 }
