@@ -35,7 +35,9 @@ int main(int argc, char *argv[]) {
         
 
         //prints the best guess based on similarity scores
-        printf("%d\n", best_digit(similarity_scores));
+        int similarity_guess = best_digit(similarity_scores);
+        int guess = check_guess(similarity_guess, similarity_scores);
+        printf("%d\n", guess);
     }
 
     return 0;
