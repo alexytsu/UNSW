@@ -6,8 +6,8 @@ tests = [0]*10
 failed = []
 h_balance = [[0]*100 for _ in range(10)]
 
-#Customize the test so that you can test individual digits
-print("Enter the test_digits you want to test (eg. '0 1 5 6 8')")
+#Customize the test so that you can test individual digits 
+print("Enter the test_digits you want to test (eg. '0 1 5 6 8')") 
 test_digits = input().strip().split()
 test_digits = [int(i) for i in test_digits]
 print("Running tests with ", end="")
@@ -27,7 +27,6 @@ for x in range(TESTS):
 
     #Only runs the test if we specified it earlier
     if(digit in test_digits):
-        print("test" +str(digit))
         run = subprocess.run(["../a.out", filename], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
         #get the output of the program and determine if it is valid or an error
@@ -35,7 +34,8 @@ for x in range(TESTS):
         output = output.decode('ascii')
         error = run.stderr.strip()
         error = error.decode('ascii')
-        print("output: "+str(output))
+        print(output)
+        h_balance[digit][number] = float(output)
         if(error == ''):
             #if it is a valid guess, record if it is correct or not
             tests[digit] += 1
@@ -44,8 +44,16 @@ for x in range(TESTS):
             else:
                 failed.append(filename)
 
+digit = 0
+for x in h_balance:
+    avg = sum(x)/len(x)
+    highest = max(x)
+    lowest = min(x)
+    print(str("Digit("+str(digit)+"): h_balance_avg = "+str(avg)+" highest = "+str(highest)+" lowest = "+str(lowest)))
+    digit += 1
+
 #print the scores for each digit
-print("Here are your values")
+print("Here are your scores")
 for x in range(10):
     if(x in test_digits):
         percent = score[x]*100/tests[x]
