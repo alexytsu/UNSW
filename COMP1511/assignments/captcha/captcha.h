@@ -41,7 +41,7 @@ void copy_pixels(int height, int width, int pixels[height][width], int
 
 //gets the vertical and horizontal center of gravity of the bounded digit
 //returns as a percentage position within the image
-double get_horizonatal_balance(int height, int width, int pixels[height][width]);
+double get_horizontal_balance(int height, int width, int pixels[height][width]);
 double get_vertical_balance(int height, int width, int pixels[height][width]);
    
 //gets the density of the entire bounded digit
@@ -70,8 +70,15 @@ void get_similarity(int digit, int version, int box_height, int box_width, int
         box_pixels[box_height][box_width], int template[box_height][box_width],
         double similarity_scores[DIGITS]);
 
+//--------------------
+//Digit Guessing Logic
+//--------------------
+
 //returns the index where the maximum value is within similarity_scores
-int best_digit(double similarity_scores[DIGITS]);
+void best_digits(double similarity_scores[DIGITS], int top_three[3], double
+        top_scores[3]);
 
 //double checks the output of best_digit against known attributes of numbers
-int check_guess(int guess, double similarity_scores[DIGITS], int start_row, int start_column, int box_height, int box_width, int box_pixels[box_height][box_width]);
+int check_guess(int top_three[3], double top_scores[3] , int start_row, int
+        start_column, int box_height, int box_width, int
+        box_pixels[box_height][box_width]);
