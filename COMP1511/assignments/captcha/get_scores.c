@@ -5,7 +5,7 @@
 //creates a template of correct size and then
 //compares the templates to the input digit
 void get_scores(int box_height, int box_width, int
-        box_pixels[box_height][box_width], double similarity_scores[DIGITS]){
+        box_pixels[box_height][box_width], int similarity_scores[DIGITS]){
 
     //use holes to shortcut to an answer when possible (minor optimisation)
     int holes = get_holes(box_height, box_width, box_pixels);
@@ -49,7 +49,7 @@ void get_scores(int box_height, int box_width, int
 //taking the template, it analyses the similarity between it and the digit
 void get_similarity(int digit, int version, int box_height, int box_width, int
         box_pixels[box_height][box_width], int template[box_height][box_width],
-        double similarity_scores[DIGITS]){
+        int similarity_scores[DIGITS]){
 
     int score = 0;
     for(int row = 0; row < box_height; row ++){
@@ -59,8 +59,7 @@ void get_similarity(int digit, int version, int box_height, int box_width, int
             }
         }
     }
-    double percentage = (double)score/(box_width*box_height);
-    similarity_scores[digit] += percentage;
+    similarity_scores[digit] += score;
 }
 
 //makes a reference image from pbm and then downscales it so its size matches

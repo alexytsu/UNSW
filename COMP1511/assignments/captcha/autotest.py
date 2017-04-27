@@ -34,7 +34,7 @@ for x in range(TESTS):
         error = run.stderr.strip()
         error = error.decode('ascii')
         print(filename,output)
-        attribute[digit][number] = int(output)
+        attribute[digit][number] = float(output)
         if(error == ''):
             #if it is a valid guess, record if it is correct or not
             tests[digit] += 1
