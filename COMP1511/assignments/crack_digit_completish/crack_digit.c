@@ -20,9 +20,6 @@ int main(int argc, char *argv[]) {
     //get all the attributes of the digit inside this function
     if (read_pbm(argv[1], height, width, pixels)) {
         
-        //cut the captcha into four diigts
-        
-
         //gets the bounding box around the pixel
         get_bounding_box(height, width, pixels, &start_row, &start_column,
                 &box_height, &box_width);
@@ -33,12 +30,18 @@ int main(int argc, char *argv[]) {
                 box_width, box_pixels);
 
         //find the similarity between the bounded digit and templates
-        double similarity_scores[DIGITS];
+        int similarity_scores[DIGITS] = {0};
         get_scores(box_height, box_width, box_pixels, similarity_scores);
         
 
-        //prints the best guess based on similarity scores
-        printf("%d\n", best_digit(similarity_scores));
+        //ranks the top three digits on similarity, and stores their scores
+        int top_three[3] = {0};
+        int top_scores[3] = {0};
+        best_digits(similarity_scores, top_three, top_scores);
+
+        int guess = check_guess(top_three, top_scores, start_row, start_column,
+                box_height, box_width, box_pixels);
+        printf("%d\n", guess);
     }
 
     return 0;
