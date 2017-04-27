@@ -18,14 +18,11 @@ void divide_captcha(int height, int width, int pixels[height][width], int
 
 int next_empty_column(int height, int width, int pixels[height][width], int cur_col){
     while(line_empty(height, width, pixels, cur_col)){
-        printf("%d\n", cur_col);
         cur_col ++;
     }
-    printf("%d\n", cur_col);
     while(!(line_empty(height, width, pixels, cur_col))){
         cur_col ++;
     }
-    printf("reached");
     return cur_col;
 }
 

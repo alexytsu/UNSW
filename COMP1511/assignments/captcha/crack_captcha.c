@@ -24,9 +24,20 @@ int main(int argc, char *argv[]) {
     if (read_pbm(argv[1], height, width, pixels)) {
         int dividing_columns[3] = {0};
         divide_captcha(height, width, pixels, dividing_columns);
-        for(int i = 0; i < 3; i ++){
-            printf("dividing column %d: %d\n",i,  dividing_columns[i]);
-        }
+
+        int width1 = dividing_columns[0];
+        int width2 = dividing_columns[1] - width1;
+        int width3 = dividing_columns[2] - width2 - width1;
+        int width4 = width - width3 - width2 -width1; 
+
+        int unbounded1[height][width1];
+        int unbounded2[height][width2];
+        int unbounded3[height][width3];
+        int unbounded4[height][width4];
+
+        copy_pixels(height, width, pixels, 0, 0, height, width1, unbounded1);
+        print_image(height, width1, unbounded1);
+
     }
     return 0;
 
