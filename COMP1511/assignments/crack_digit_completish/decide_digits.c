@@ -34,8 +34,6 @@ void best_digits(int similarity_scores[DIGITS], int top_three[3], int
         top_scores[rank] = max;
         top_three[rank] = index_of_max;
     }
-    
-
 }
 
 //checks that the attributes of the digit matches with the guess from the 

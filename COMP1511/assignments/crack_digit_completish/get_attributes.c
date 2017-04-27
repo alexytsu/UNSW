@@ -56,5 +56,4 @@ void get_attributes(int start_row, int start_column, int box_height, int box_wid
             quadrant_densities[quad] = get_density(quad_height, quad_width,
                     quadrants[quad]);
         }
-
 }
