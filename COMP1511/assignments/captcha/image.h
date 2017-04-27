@@ -34,6 +34,5 @@ void copy_pixels(int height, int width, int pixels[height][width], int
 
 //gets the starting coords and sizes of each bounded digit in a captcha
 //gives all the information required to use
-void divide_captchas(int height, int width, int pixels[height][width], int
-        box_heights[4], int box_widths[4], int start_rows[4], int
-        start_columns[4]);
+void divide_captcha(int height, int width, int pixels[height][width], int
+        dividing_columns[3]);
