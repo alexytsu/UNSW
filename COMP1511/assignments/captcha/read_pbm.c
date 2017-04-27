@@ -5,7 +5,7 @@
 // read a PBM image file
 
 #include <stdio.h>
-#include "captcha.h"
+#include "image.h"
 
 int read_pbm_header(FILE *f, int *height, int *width);
 int read_pbm_pixels(FILE *f, int height, int width, int pixels[height][width]);

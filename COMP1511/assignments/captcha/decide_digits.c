@@ -1,5 +1,6 @@
 #include <stdio.h>
-#include "captcha.h"
+#include "guess.h"
+#include "heuristics.h"
 
 //stores the similarity scores of the 3 most likely candidate guesses
 void best_digits(int similarity_scores[DIGITS], int top_three[3], int
@@ -34,15 +35,13 @@ void best_digits(int similarity_scores[DIGITS], int top_three[3], int
         top_scores[rank] = max;
         top_three[rank] = index_of_max;
     }
-    
-
 }
 
 //checks that the attributes of the digit matches with the guess from the 
 //similarity comparison (which isn't perfect)
-int check_guess(int top_three[3], int top_scores[3], 
-        int start_row, int start_column, int
-        box_height, int box_width, int box_pixels[box_height][box_width]){
+int check_guess(int top_three[3], int top_scores[3], int start_row, int
+        start_column, int box_height, int box_width, int
+        box_pixels[box_height][box_width]){
 
     double h_balance, v_balance, density, quadrant_densities[4], tallness;
     int holes;
@@ -57,5 +56,4 @@ int check_guess(int top_three[3], int top_scores[3],
     }else{
         return top_three[0];
     }
-
 }

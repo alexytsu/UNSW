@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include "heuristics.h"
 
 //Vertical and horizontal balance return a percentage 
 //This percentage corresponds to the position within the image where the 

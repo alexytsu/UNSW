@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "captcha.h"
+#include "heuristics.h"
 
 //get density returns a percentage value for how dense the image is
 //ie. the more pixels in an image the higher the density

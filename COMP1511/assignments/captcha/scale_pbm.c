@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <math.h>
-#include "captcha.h"
+#include "image.h"
 
 void downscale(int height, int width, int pixels[height][width], int nheight, int nwidth, int npixels[nheight][nwidth]){
 
@@ -12,6 +12,9 @@ void downscale(int height, int width, int pixels[height][width], int nheight, in
         }
     }
 
+    //Code Written October 2007 (nearest neighbour bitmap scaling)
+    //Accessed at http://tech-algorithm.com/articles/nearest-neighbor-image-scaling/
+    //and converted to C code
     //keep as a double until needed to maintain precision 
     double height_ratio = height/(double)nheight;
     double width_ratio = width/(double)nwidth;

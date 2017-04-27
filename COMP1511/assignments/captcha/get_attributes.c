@@ -1,5 +1,6 @@
 #include <stdio.h>
-#include "captcha.h"
+#include "heuristics.h"
+#include "image.h"
 
 void get_attributes(int start_row, int start_column, int box_height, int box_width, 
         int box_pixels[box_height][box_width], double *h_balance, double

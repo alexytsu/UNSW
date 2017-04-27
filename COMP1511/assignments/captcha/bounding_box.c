@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "captcha.h"
+#include "image.h"
 
 //gets the coordinates and size of a bounding box for a digit
 //that is, the smallest box which comletely encapsulates the digit

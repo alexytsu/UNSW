@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "captcha.h"
+#include "image.h"
 
 void print_image(int height, int width, int pixels[height][width]){
 

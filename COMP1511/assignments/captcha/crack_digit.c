@@ -1,6 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h> 
-#include "captcha.h"
+#include "guess.h"
+#include "image.h"
+#include "heuristics.h"
+
 
 int main(int argc, char *argv[]) {
 

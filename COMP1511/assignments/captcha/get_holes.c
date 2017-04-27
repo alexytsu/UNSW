@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "captcha.h"
+#include "heuristics.h"
 #define MAX_LABELS 4
 
 void label(int height, int width, int pixels[height][width], int posx, int posy, int curlabel);
@@ -14,7 +14,9 @@ int get_holes(int height, int width, int pixels[height][width]){
   
     //if the digit hits the edge of the bounding box, we will have issues with
     //extra outside holes, so create a border within which the bounded digit can
-    //safely sit
+    //safely sit. this is also a problem with the unbounded digit so we may as 
+    //well just use the bounded digit. 
+    //
     //                                  000000
     //0110  which has                   001100
     //1001  five "holes"   to --->      010010  which has 2 "holes"

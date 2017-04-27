@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "captcha.h"
+#include "image.h"
 
 //creates a copy of a subsection of an image
 //used to cut out bounding boxes and to get quadrants

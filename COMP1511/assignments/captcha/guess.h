@@ -1,0 +1,27 @@
+#define DIGITS 10
+#define TESTS 100
+
+//--------------------
+//Digit Guessing Logic
+//--------------------
+
+//returns the index where the maximum value is within similarity_scores
+void best_digits(int similarity_scores[DIGITS], int top_three[3], int
+        top_scores[3]);
+
+//double checks the output of best_digit against known attributes of numbers
+int check_guess(int top_three[3], int top_scores[3] , int start_row, int
+        start_column, int box_height, int box_width, int
+        box_pixels[box_height][box_width]);
+
+//loops through all 1000 reference images and tests them against the input 
+//calls get_similarity, get_bounded_template and get_holes
+void get_scores(int box_height, int box_width, int
+        box_pixels[box_height][box_width], int similarity_scores[DIGITS]);
+
+//compares the given digit with 1000 known digits and stores them in
+//similarity_scores. the higher the score at index 'i', the more likely the
+//digit is to be the digit 'i'
+void get_similarity(int digit, int version, int box_height, int box_width, int
+        box_pixels[box_height][box_width], int template[box_height][box_width],
+        int similarity_scores[DIGITS]);

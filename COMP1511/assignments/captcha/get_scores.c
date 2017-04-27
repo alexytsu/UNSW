@@ -1,5 +1,7 @@
 #include <stdio.h>
-#include "captcha.h"
+#include "guess.h"
+#include "image.h"
+#include "heuristics.h"
 
 //loops through 1000 reference pbms and for each, 
 //creates a template of correct size and then
