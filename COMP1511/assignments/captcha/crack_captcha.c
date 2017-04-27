@@ -25,7 +25,7 @@ int main(int argc, char *argv[]) {
         int dividing_columns[3] = {0};
         divide_captcha(height, width, pixels, dividing_columns);
         for(int i = 0; i < 3; i ++){
-            printf("%d\n", dividing_columns[i]);
+            printf("dividing column %d: %d\n",i,  dividing_columns[i]);
         }
     }
     return 0;

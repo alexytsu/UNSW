@@ -3,7 +3,7 @@
 
 //check a column, if it is empty return 1, else return 0
 int line_empty(int height, int width, int pixels[height][width], int col);
-int next_empty_column(int height, int width, int pixels[height][width], int *cur_col);
+int next_empty_column(int height, int width, int pixels[height][width], int cur_col);
 
 //divides captchas into 4 images, separating the digits
 void divide_captcha(int height, int width, int pixels[height][width], int
@@ -11,18 +11,22 @@ void divide_captcha(int height, int width, int pixels[height][width], int
     
     int cur_col = 0;
     for(int divider = 0; divider < 3; divider ++){
-        dividing_columns[divider] = next_empty_column(height, width, pixels, &cur_col);
+        dividing_columns[divider] = next_empty_column(height, width, pixels, cur_col);
+        cur_col = dividing_columns[divider];
     }
 }
 
-int next_empty_column(int height, int width, int pixels[height][width], int *cur_col){
-    while(line_empty(height, width, pixels, *cur_col)){
-        *cur_col ++;
+int next_empty_column(int height, int width, int pixels[height][width], int cur_col){
+    while(line_empty(height, width, pixels, cur_col)){
+        printf("%d\n", cur_col);
+        cur_col ++;
     }
-    while(!(line_empty(height, width, pixels, *cur_col))){
-        *cur_col ++;
+    printf("%d\n", cur_col);
+    while(!(line_empty(height, width, pixels, cur_col))){
+        cur_col ++;
     }
-    return *cur_col;
+    printf("reached");
+    return cur_col;
 }
 
 //check a column, if it is empty return 1, else return 0
