@@ -2,7 +2,7 @@
 #include "captcha.h"
 
 //stores the similarity scores of the 3 most likely candidate guesses
-void best_digits(int similarity_scores[DIGITS], int top_three[3], double
+void best_digits(int similarity_scores[DIGITS], int top_three[3], int
         top_scores[3]){
 
     //finds the top three scores in similarity_scores
@@ -17,7 +17,7 @@ void best_digits(int similarity_scores[DIGITS], int top_three[3], double
         copy_similarities[i] = similarity_scores[i];
     }
 
-    double max = 0;
+    int max = 0;
     int index_of_max = 0;
     //each iteration, find the max and add it to top_scores and its index to 
     //top_three
@@ -40,7 +40,7 @@ void best_digits(int similarity_scores[DIGITS], int top_three[3], double
 
 //checks that the attributes of the digit matches with the guess from the 
 //similarity comparison (which isn't perfect)
-int check_guess(int top_three[3], double top_scores[3], 
+int check_guess(int top_three[3], int top_scores[3], 
         int start_row, int start_column, int
         box_height, int box_width, int box_pixels[box_height][box_width]){
 

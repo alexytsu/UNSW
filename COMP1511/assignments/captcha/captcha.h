@@ -75,10 +75,10 @@ void get_similarity(int digit, int version, int box_height, int box_width, int
 //--------------------
 
 //returns the index where the maximum value is within similarity_scores
-void best_digits(int similarity_scores[DIGITS], int top_three[3], double
+void best_digits(int similarity_scores[DIGITS], int top_three[3], int
         top_scores[3]);
 
 //double checks the output of best_digit against known attributes of numbers
-int check_guess(int top_three[3], double top_scores[3] , int start_row, int
+int check_guess(int top_three[3], int top_scores[3] , int start_row, int
         start_column, int box_height, int box_width, int
         box_pixels[box_height][box_width]);

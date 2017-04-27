@@ -36,13 +36,12 @@ int main(int argc, char *argv[]) {
 
         //ranks the top three digits on similarity, and stores their scores
         int top_three[3] = {0};
-        double top_scores[3] = {0};
+        int top_scores[3] = {0};
         best_digits(similarity_scores, top_three, top_scores);
 
         int guess = check_guess(top_three, top_scores, start_row, start_column,
                 box_height, box_width, box_pixels);
         printf("%d\n", guess);
-//
     }
 
     return 0;
