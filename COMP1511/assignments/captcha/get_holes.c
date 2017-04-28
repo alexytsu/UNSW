@@ -2,6 +2,7 @@
 #include "heuristics.h"
 #define MAX_LABELS 4
 
+void remove_small_holes(int height, int width, int pixels[height][widt]);
 void label(int height, int width, int pixels[height][width], int posx, int posy, int curlabel);
 //gets the number of holes in a digit by connected-component labelling
 //algorithm as described from https://en.wikipedia.org/wiki/Connected-component_labeling
@@ -39,6 +40,8 @@ int get_holes(int height, int width, int pixels[height][width]){
         }
     }
     
+    remove_small_holes(nheight, nwidth, npixels, row, col);
+
     //label the new array
     int curlabel = 1; //the first label will be 2, which is unique from the 0s and 1s that make up the image
     for(int row = 0; row < nheight; row ++){
@@ -49,6 +52,8 @@ int get_holes(int height, int width, int pixels[height][width]){
             }
         }
     }
+
+    
 
     //there are always three extra labels than holes
     // 1. the extra label for the border
@@ -91,3 +96,11 @@ void label(int height, int width, int pixels[height][width], int posx, int posy,
         }
     }
 }
+
+//gets rid of one box 
+void remove_small_holes(int height, int width, int pixels[height][widt], int posx, int posy){
+    
+    if(
+
+}
+
