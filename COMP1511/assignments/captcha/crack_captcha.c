@@ -4,11 +4,13 @@
 #include "image.h"
 #include "heuristics.h"
 
+//contains basically crack_digit.c but as a function that can be called
+int captcha_digit(int height, int width, int pixels[height][width]);
 
 int main(int argc, char *argv[]) {
 
     //read the digit, get it's bounding box and get its balance
-    int height, width, start_row, start_column, box_width, box_height, holes;
+    int height, width;
     if (argc < 2) {
         fprintf(stderr, "Usage: %s <image-file>\n", argv[0]);
         return 1;
@@ -36,9 +38,41 @@ int main(int argc, char *argv[]) {
         int unbounded4[height][width4];
 
         copy_pixels(height, width, pixels, 0, 0, height, width1, unbounded1);
-        print_image(height, width1, unbounded1);
+        copy_pixels(height, width, pixels, 0, dividing_columns[0], height, width2, unbounded2);
+        copy_pixels(height, width, pixels, 0, dividing_columns[1], height, width3, unbounded3);
+        copy_pixels(height, width, pixels, 0, dividing_columns[2], height, width4, unbounded4);
 
+        printf("%d", captcha_digit(height, width1, unbounded1));
+        printf("%d", captcha_digit(height, width2, unbounded2));
+        printf("%d", captcha_digit(height, width3, unbounded3));
+        printf("%d", captcha_digit(height, width4, unbounded4));
+        printf("\n");
     }
     return 0;
+}
 
+int captcha_digit(int height, int width, int pixels[height][width]){
+    int start_row, start_column, box_width, box_height, holes;
+    //gets the bounding box around the pixel
+    get_bounding_box(height, width, pixels, &start_row, &start_column,
+            &box_height, &box_width);
+
+    //puts the bounded pixel in box_pixels 
+    int box_pixels[box_height][box_width];
+    copy_pixels(height, width, pixels, start_row, start_column, box_height,
+            box_width, box_pixels);
+
+    //find the similarity between the bounded digit and templates
+    int similarity_scores[DIGITS] = {0};
+    get_scores(box_height, box_width, box_pixels, similarity_scores);
+
+    //ranks the top three digits on similarity, and stores their scores
+    int top_three[3] = {0};
+    int top_scores[3] = {0};
+    best_digits(similarity_scores, top_three, top_scores);
+
+    int guess = check_guess(top_three, top_scores, start_row, start_column,
+            box_height, box_width, box_pixels);
+    
+    return guess;
 }
