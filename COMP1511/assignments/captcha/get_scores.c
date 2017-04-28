@@ -8,11 +8,10 @@
 //compares the templates to the input digit
 void get_scores(int box_height, int box_width, int
         box_pixels[box_height][box_width], int similarity_scores[DIGITS]){
-
+    double hole_balance;
     //use holes to shortcut to an answer when possible (minor optimisation)
-    int holes = get_holes(box_height, box_width, box_pixels);
+    int holes = get_holes(box_height, box_width, box_pixels, &hole_balance);
     if(holes >= 1){ 
-
         for(int digit = 0; digit < DIGITS; digit ++){
             if(digit == 0 || digit == 4 || digit == 6 || digit == 8 || digit == 9){
                 for(int version = 0; version < TESTS; version ++){

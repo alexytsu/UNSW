@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import subprocess
 
 TESTS = 1000
@@ -38,20 +39,10 @@ for x in range(TESTS):
         if(error == ''):
             #if it is a valid guess, record if it is correct or not
             tests[digit] += 1
-
-### TEST FOR CORRECT HOLES
-            if((output == 2 and digit == 8) or ((output == 1) and (digit == 6 or digit == 4 or digit == 9 or digit == 9)) or (output == 0 and (digit == 1 or digit == 2 or digit == 3 or digit == 5 or digit == 7))):
-                score[digit] += 1
-            else:
-                failed.append(filename)
-
-### TEST FOR CORRECT DIGIT
-            """
             if(output == str(digit)):
                 score[digit] += 1
             else:
                 failed.append(filename)
-            """
 
 print("Would you like to see (a)nalysis or (s)cores? (a/s)")
 mode = input().strip()
@@ -66,10 +57,13 @@ if(mode == 'a'):
 elif(mode == 's'):
 #print the scores for each digit
     print("Here are your scores")
+    total_score = 0
     for x in range(10):
         if(x in test_digits):
-            percent = score[x]*100/tests[x]
-            print("%d: %d/%d for a score of %.2lf" % (x, score[x], tests[x], percent) + "%")
+            total_score += score[x]
+            print("%d: %d/%d" % (x, score[x], tests[x]))
+
+    print("Total score " + str(total_score))
 
     print("Would you like to see the images you failed? (y/n)")
     confirm = input().strip()

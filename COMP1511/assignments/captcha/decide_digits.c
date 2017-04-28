@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <math.h>
+#include <stdlib.h>
 #include "guess.h"
 #include "heuristics.h"
 
@@ -43,16 +45,44 @@ int check_guess(int top_three[3], int top_scores[3], int start_row, int
         start_column, int box_height, int box_width, int
         box_pixels[box_height][box_width]){
 
-    double h_balance, v_balance, density, quadrant_densities[4], tallness;
+    double h_balance, v_balance, density, quadrant_densities[4], tallness, hole_balance;
     int holes;
     get_attributes(start_row, start_column, box_height, box_width, box_pixels,
-            &h_balance, &v_balance, &density, &holes, quadrant_densities);
-    
-    //we analyse the guess for possible mistakes. this depends on what the
-    //guess is. we use a switch structure to check each possible guess
+            &h_balance, &v_balance, &density, &holes, quadrant_densities, &hole_balance);
+    //trivial to calculate so no need to put into get_attributes
+    tallness = (double)box_height/box_width;
 
+    //guess is. we use a switch structure to check each possible guess
     if(holes == 2){
+        //may be a 0 or and 8
+        for(int i = 0; i < 3; i ++){
+            if(top_three[i] == 8){
+                return 8;
+            }
+            if(top_three[i] == 0){
+                return 0;
+            }
+        }
         return 8;
+    }else if(holes == 1){
+        if(top_three[0] == 8){
+            return top_three[1];
+        }
+        return top_three[0];
+    }else if(holes == 0){
+
+        double heuristic_scores[3] = {0};
+        double stat_tallness[10] = {1.503, 1.770, 1.478, 1.457, 1.378, 1.486, 1.448, 1.546, 1.452, 1.460}; 
+        for(int i = 0; i < 3; i ++){
+            int digit = top_three[i];    
+            heuristic_scores[i] += fabs(stat_tallness[digit] - tallness); 
+        }
+        printf("heuristic scores\n");
+        for (int i = 0; i < 3; i ++){
+            printf("%d: %lf\n", top_three[i], heuristic_scores[i]);
+        }
+
+        return top_three[0];
     }else{
         return top_three[0];
     }

@@ -1,8 +1,10 @@
 #include <stdio.h>
 #include "heuristics.h"
+#include "image.h"
 #define MAX_LABELS 4
+#define THRESHOLD 5
 
-void remove_small_holes(int height, int width, int pixels[height][widt]);
+int find_small_holes(int height, int width, int pixels[height][width]);
 void label(int height, int width, int pixels[height][width], int posx, int posy, int curlabel);
 //gets the number of holes in a digit by connected-component labelling
 //algorithm as described from https://en.wikipedia.org/wiki/Connected-component_labeling
@@ -11,7 +13,7 @@ void label(int height, int width, int pixels[height][width], int posx, int posy,
 //one more hole than actual holes since, the "outside" of each number will always
 //be counted as a hole
 
-int get_holes(int height, int width, int pixels[height][width]){
+int get_holes(int height, int width, int pixels[height][width], double *hole_balance){
   
     //if the digit hits the edge of the bounding box, we will have issues with
     //extra outside holes, so create a border within which the bounded digit can
@@ -39,8 +41,6 @@ int get_holes(int height, int width, int pixels[height][width]){
             }
         }
     }
-    
-    remove_small_holes(nheight, nwidth, npixels, row, col);
 
     //label the new array
     int curlabel = 1; //the first label will be 2, which is unique from the 0s and 1s that make up the image
@@ -52,18 +52,41 @@ int get_holes(int height, int width, int pixels[height][width]){
             }
         }
     }
-
-    
+    //print_image(nheight, nwidth, npixels);
+    //determine how many holes are insignificant
+    int non_holes = find_small_holes(nheight, nwidth, npixels);
 
     //there are always three extra labels than holes
     // 1. the extra label for the border
     // 2. the extra label for the actual number
     int holes = curlabel - 2;
+    holes = holes - non_holes;
+
+    //get the hole_balance ie. round or pointy
+    if(holes == 1){
+        //make the hole into the picture
+        for(int row = 0; row < nheight; row ++){
+            for(int col = 0; col < nwidth; col ++){
+                if(npixels[row][col] != 3){
+                    npixels[row][col] = 0;
+                }else{
+                    npixels[row][col] = 1;
+                }
+            }
+        }
+        int start_row, start_column, box_height, box_width; 
+        get_bounding_box(nheight, nwidth, npixels, &start_row, &start_column,
+                &box_height, &box_width);
+        int box_hole[box_height][box_width];
+        copy_pixels(nheight, nwidth, npixels, start_row, start_column,
+                box_height, box_width, box_hole);
+        *hole_balance = get_vertical_balance(box_height, box_width, box_hole);
+    }else{//irrelevant
+        *hole_balance = 0;
+    }
+    
     return holes;
 }
-
-
-   
 
 //this labels holes in the new array, npixels 
 //it calls itself recursively such that as soon as an empty pixel is found, 
@@ -97,10 +120,20 @@ void label(int height, int width, int pixels[height][width], int posx, int posy,
     }
 }
 
-//gets rid of one box 
-void remove_small_holes(int height, int width, int pixels[height][widt], int posx, int posy){
-    
-    if(
-
+int find_small_holes(int height, int width, int pixels[height][width]){
+    int hole_sizes[5] = {0}; 
+    int non_holes = 0;
+    int current_label;
+    for(int row = 0; row < height; row ++){
+        for(int col = 0; col < width; col ++){
+            current_label = pixels[row][col]; 
+            hole_sizes[current_label] ++; 
+        }
+    }
+    for(int i = 0; i < 5; i++){
+        if(hole_sizes[i] < THRESHOLD && hole_sizes[i] != 0){
+           non_holes ++;
+        }
+    }
+    return non_holes;
 }
-
