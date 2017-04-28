@@ -38,10 +38,20 @@ for x in range(TESTS):
         if(error == ''):
             #if it is a valid guess, record if it is correct or not
             tests[digit] += 1
+
+### TEST FOR CORRECT HOLES
+            if((output == 2 and digit == 8) or ((output == 1) and (digit == 6 or digit == 4 or digit == 9 or digit == 9)) or (output == 0 and (digit == 1 or digit == 2 or digit == 3 or digit == 5 or digit == 7))):
+                score[digit] += 1
+            else:
+                failed.append(filename)
+
+### TEST FOR CORRECT DIGIT
+            """
             if(output == str(digit)):
                 score[digit] += 1
             else:
                 failed.append(filename)
+            """
 
 print("Would you like to see (a)nalysis or (s)cores? (a/s)")
 mode = input().strip()
