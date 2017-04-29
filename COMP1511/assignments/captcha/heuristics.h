@@ -15,6 +15,7 @@ int get_holes(int height, int width, int pixels[height][width], double *hole_bal
 
 int analyse_right_side(int height, int width, int pixels[height][width]);
 
+int get_vertical_intercepts(int height, int width, int pixels[height][width]);
 void get_quadrant_densities(int box_height, int box_width, int
         box_pixels[box_height][box_width], double
         quadrant_densities[4]);

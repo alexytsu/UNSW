@@ -12,6 +12,12 @@ int analyse_right_side(int height, int width, int pixels[height][width]){
         for(int row = 0; row < height; row ++){
             if(pixels[row][col]){
                 //check not out of bounds
+                //i
+                if(row < 4){
+                    if(pixels[4][col]){
+                        pixels[row][col] = 1;
+                    }
+                }
                 if(row + 4 < height){
                     if(pixels[row+4][col]){
                         pixels[row+1][col] = 1;
