@@ -4,7 +4,7 @@
 
 void get_attributes(int start_row, int start_column, int box_height, int box_width, 
         int box_pixels[box_height][box_width], double *h_balance, double
-        *v_balance, double *density, int *holes, double quadrant_densities[4], double *hole_balance){
+        *v_balance, double *density, int *holes, double quadrant_densities[4], double *hole_balance, double *vertical_symmetry){
 
         //balance = horizontal center of gravity
         *h_balance = get_horizontal_balance(box_height, box_width, box_pixels);
@@ -13,6 +13,9 @@ void get_attributes(int start_row, int start_column, int box_height, int box_wid
         //density of digit in the bounding box 
         *density = get_density(box_height, box_width, box_pixels);
         *holes = get_holes(box_height, box_width, box_pixels, hole_balance);
+
+        //helps look at 3's comapared to 2's and 5's 
+        *vertical_symmetry = get_vertical_symmetry(box_height, box_width, box_pixels);
 
         //get the density of each quadrant of the bounded digit. when the
         //bounding box has even dimensions the quadrant dimensions are easy.
@@ -48,7 +51,6 @@ void get_attributes(int start_row, int start_column, int box_height, int box_wid
             {0, start_col_quad},
             {start_row_quad,0},
             {start_row_quad, start_col_quad}};
-
         //copy each quadrant and then find its density
         for(int quad = 0; quad < 4; quad++){
             copy_pixels(box_height, box_width, box_pixels,
