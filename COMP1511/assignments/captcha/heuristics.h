@@ -13,9 +13,8 @@ double get_density(int height, int width, int pixels[height][width]);
 //gets the number of holes holes in a bounded digit 
 int get_holes(int height, int width, int pixels[height][width], double *hole_balance);
 
-//gets all the attributes (including quadrant density), calls all the attribute
-//functions listed above. stores the values it gets in external variables by
-//use of pointers
+int analyse_right_side(int height, int width, int pixels[height][width]);
+
 void get_quadrant_densities(int box_height, int box_width, int
         box_pixels[box_height][box_width], double
         quadrant_densities[4]);

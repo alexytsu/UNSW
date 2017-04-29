@@ -61,7 +61,6 @@ int get_holes(int height, int width, int pixels[height][width], double *hole_bal
     // 2. the extra label for the actual number
     int holes = curlabel - 2;
     holes = holes - non_holes;
-
     //get the hole_balance ie. round or pointy
     if(holes == 1){
         //make the hole into the picture
@@ -84,7 +83,6 @@ int get_holes(int height, int width, int pixels[height][width], double *hole_bal
     }else{//irrelevant
         *hole_balance = 0;
     }
-    
     return holes;
 }
 
