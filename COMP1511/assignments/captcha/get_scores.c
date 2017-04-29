@@ -7,7 +7,7 @@
 //creates a template of correct size and then
 //compares the templates to the input digit
 void get_scores(int box_height, int box_width, int
-        box_pixels[box_height][box_width], int similarity_scores[DIGITS]){
+        box_pixels[box_height][box_width], int similarity_scores[DIGITS], int reverse_scores[DIGITS]){
     double hole_balance;
     //use holes to shortcut to an answer when possible (minor optimisation)
     int holes = get_holes(box_height, box_width, box_pixels, &hole_balance);
@@ -27,7 +27,6 @@ void get_scores(int box_height, int box_width, int
             }
         }
     }else{
-
         for(int digit = 0; digit < DIGITS; digit ++){
             if(digit == 1 || digit == 3 || digit == 7){
                 for(int version = 0; version < TESTS; version ++){
@@ -68,8 +67,6 @@ void get_scores(int box_height, int box_width, int
                     int reverse_scores[10] = {0};
                     get_similarity(digit, version, box_width, box_height, box_rpixels, template,
                             reverse_scores);
-                    similarity_scores[2] = (similarity_scores[2] + reverse_scores[5]);
-                    similarity_scores[5] = (similarity_scores[5] + reverse_scores[2]);
                 }
             }
         }

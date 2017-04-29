@@ -16,10 +16,6 @@ int get_holes(int height, int width, int pixels[height][width], double *hole_bal
 //gets all the attributes (including quadrant density), calls all the attribute
 //functions listed above. stores the values it gets in external variables by
 //use of pointers
-void get_attributes(int start_row, int start_column, int box_height, int
-        box_width, int box_pixels[box_height][box_width], double *h_balance,
-        double *v_balance, double *density, int *holes, double
-        quadrant_densities[4], double *hole_balance, double *vertical_symmetry);
-
-double get_vertical_symmetry(int height, int width, int pixels[height][width]);
-
+void get_quadrant_densities(int box_height, int box_width, int
+        box_pixels[box_height][box_width], double
+        quadrant_densities[4]);
