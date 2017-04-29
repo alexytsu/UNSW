@@ -42,16 +42,23 @@ int check_guess(int similarity_scores[DIGITS], int reverse_scores[DIGITS], int
     //0, 4, 6 or 9
     else if(holes == 1){
         //holes is a pretty accurate metric
-        
-        return 0;
+         
+        return ordered_similarity_scores[0][0];
     }
 
     //1, 2, 3, 5 or 7
     else if(holes == 0){
         if((ordered_similarity_scores[1][0] == 2 || ordered_similarity_scores[0][0] == 2) && (ordered_reverse_scores[0][0] == 5 || ordered_reverse_scores[1][0] == 5 || ordered_reverse_scores[2][0] == 5)){
             return 2;
-        }else if((ordered_similarity_scores[0][0] == 5 || ordered_similarity_scores[1][0] == 5) && (ordered_reverse_scores[0][0] == 2 || ordered_reverse_scores[1][0] == 2 || ordered_reverse_scores[2][0] == 2)){
+        }
+        else if((ordered_similarity_scores[0][0] == 5 || ordered_similarity_scores[1][0] == 5) && (ordered_reverse_scores[0][0] == 2 || ordered_reverse_scores[1][0] == 2 || ordered_reverse_scores[2][0] == 2)){
             return 5;
+        }
+        else if((ordered_similarity_scores[0][0] == 1 || ordered_similarity_scores[1][0] == 1) && (ordered_reverse_scores[0][0] == 1 || ordered_reverse_scores[1][0] == 1)){
+            return 1;
+        }
+        else{
+            return 3;
         }
         /*
         int no_holes[5] = {1,2,3,5,7};
