@@ -33,7 +33,7 @@ int main(int argc, char *argv[]) {
 
         //find the similarity between the bounded digit and templates
         int similarity_scores[DIGITS] = {0};
-//        get_scores(box_height, box_width, box_pixels, similarity_scores);
+        get_scores(box_height, box_width, box_pixels, similarity_scores);
 
         //ranks the top three digits on similarity, and stores their scores
         int top_three[3] = {0};
@@ -42,8 +42,8 @@ int main(int argc, char *argv[]) {
     
         int guess = check_guess(top_three, top_scores, start_row, start_column,
                 box_height, box_width, box_pixels);
-//        printf("guess: %d\n", guess);
-        //printf("%d", guess);
+        //printf("guess: %d\n", guess);
+        printf("%d", guess);
     }
 
     return 0;

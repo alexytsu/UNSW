@@ -29,7 +29,7 @@ void get_scores(int box_height, int box_width, int
     }else{
 
         for(int digit = 0; digit < DIGITS; digit ++){
-            if(digit == 1 || digit == 2 || digit == 3 || digit == 5 || digit == 7){
+            if(digit == 1 || digit == 3 || digit == 7){
                 for(int version = 0; version < TESTS; version ++){
 
                     //don't check numbers with holes
@@ -41,6 +41,35 @@ void get_scores(int box_height, int box_width, int
                     //compares the template to the bounded digit
                     get_similarity(digit, version, box_height, box_width, box_pixels, template,
                             similarity_scores);
+                }
+            }
+        }
+        for(int digit = 0; digit < DIGITS; digit ++){
+            if(digit == 2 || digit == 5){
+                for(int version = 0; version < TESTS; version ++){
+
+                    //don't check numbers with holes
+                    int template[box_height][box_width];
+
+                    //makes the template
+                    get_bounded_template(box_height, box_width, digit, version, template);
+
+                    //compares the template to the bounded digit
+                    get_similarity(digit, version, box_height, box_width, box_pixels, template,
+                            similarity_scores);
+                    
+                    //compares reverse
+                    int box_rpixels[box_height][box_width];
+                    for(int row = 0; row < box_height; row ++){
+                        for(int col = 0; col < box_width; col ++){
+                            box_rpixels[row][col] = box_pixels[box_height-row-1][col];
+                        }
+                    }
+                    int reverse_scores[10] = {0};
+                    get_similarity(digit, version, box_width, box_height, box_rpixels, template,
+                            reverse_scores);
+                    similarity_scores[2] = (similarity_scores[2] + reverse_scores[5]);
+                    similarity_scores[5] = (similarity_scores[5] + reverse_scores[2]);
                 }
             }
         }
