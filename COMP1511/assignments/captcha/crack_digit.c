@@ -38,7 +38,7 @@ int main(int argc, char *argv[]) {
     
         int guess = check_guess(similarity_scores, reverse_scores,
                 box_height, box_width, box_pixels);
-
+        //
         //printf("guess: %d\n", guess);
         printf("%d", guess);
     }

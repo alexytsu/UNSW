@@ -24,3 +24,6 @@ void get_scores(int box_height, int box_width, int
 void get_similarity(int digit, int version, int box_height, int box_width, int
         box_pixels[box_height][box_width], int template[box_height][box_width],
         int similarity_scores[DIGITS]);
+
+//rank scores
+void rank_scores(int unordered[DIGITS], int ordered[DIGITS][2]);

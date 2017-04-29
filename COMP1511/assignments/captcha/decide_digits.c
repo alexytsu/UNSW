@@ -4,40 +4,6 @@
 #include "guess.h"
 #include "heuristics.h"
 
-//stores the similarity scores of the 3 most likely candidate guesses
-void best_digits(int similarity_scores[DIGITS], int top_three[3], int
-        top_scores[3]){
-
-    //finds the top three scores in similarity_scores
-    //puts the highest scoring digits in top_three
-    //puts their corresponding scores in top_scores
-
-    //since we will be destroying elements in the list whilst we sort it, we 
-    //should make a copy
-
-    int copy_similarities[DIGITS] = {0};
-    for(int i = 0; i < DIGITS; i ++){
-        copy_similarities[i] = similarity_scores[i];
-    }
-    int max = 0;
-    int index_of_max = 0;
-    //each iteration, find the max and add it to top_scores and its index to 
-    //top_three
-    for(int rank = 0; rank < 3; rank ++){
-        max = 0;
-        index_of_max = 0;
-        for(int i = 0; i < DIGITS; i ++){
-            if(copy_similarities[i] > max){
-                index_of_max = i;
-                max = copy_similarities[i];
-            }
-        }
-        copy_similarities[index_of_max] = 0;
-        top_scores[rank] = max;
-        top_three[rank] = index_of_max;
-    }
-}
-
 //checks that the attributes of the digit matches with the guess from the 
 //similarity comparison (which isn't perfect)
 int check_guess(int similarity_scores[DIGITS], int reverse_scores[DIGITS], int
@@ -45,6 +11,8 @@ int check_guess(int similarity_scores[DIGITS], int reverse_scores[DIGITS], int
 
     int ordered_similarity_scores[DIGITS][2];
     int ordered_reverse_scores[DIGITS][2];
+    rank_scores(similarity_scores, ordered_similarity_scores);
+    rank_scores(reverse_scores, ordered_reverse_scores);
 
     //balance = horizontal center of gravity
     double h_balance = get_horizontal_balance(box_height, box_width, box_pixels);
@@ -80,8 +48,11 @@ int check_guess(int similarity_scores[DIGITS], int reverse_scores[DIGITS], int
 
     //1, 2, 3, 5 or 7
     else if(holes == 0){
-         
-
+        if((ordered_similarity_scores[1][0] == 2 || ordered_similarity_scores[0][0] == 2) && (ordered_reverse_scores[0][0] == 5 || ordered_reverse_scores[1][0] == 5 || ordered_reverse_scores[2][0] == 5)){
+            return 2;
+        }else if((ordered_similarity_scores[0][0] == 5 || ordered_similarity_scores[1][0] == 5) && (ordered_reverse_scores[0][0] == 2 || ordered_reverse_scores[1][0] == 2 || ordered_reverse_scores[2][0] == 2)){
+            return 5;
+        }
         /*
         int no_holes[5] = {1,2,3,5,7};
         double heuristic_scores[5] = {0};
@@ -119,6 +90,6 @@ int check_guess(int similarity_scores[DIGITS], int reverse_scores[DIGITS], int
 
     //Error number of holes
     else{ 
-        return top_three[0];
+        return 0;        
     }
 }

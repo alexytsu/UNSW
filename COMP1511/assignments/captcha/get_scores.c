@@ -28,23 +28,7 @@ void get_scores(int box_height, int box_width, int
         }
     }else{
         for(int digit = 0; digit < DIGITS; digit ++){
-            if(digit == 1 || digit == 3 || digit == 7){
-                for(int version = 0; version < TESTS; version ++){
-
-                    //don't check numbers with holes
-                    int template[box_height][box_width];
-
-                    //makes the template
-                    get_bounded_template(box_height, box_width, digit, version, template);
-
-                    //compares the template to the bounded digit
-                    get_similarity(digit, version, box_height, box_width, box_pixels, template,
-                            similarity_scores);
-                }
-            }
-        }
-        for(int digit = 0; digit < DIGITS; digit ++){
-            if(digit == 2 || digit == 5){
+            if(digit == 1 || digit == 3 || digit == 7 || digit == 2 || digit == 5){
                 for(int version = 0; version < TESTS; version ++){
 
                     //don't check numbers with holes
@@ -64,8 +48,8 @@ void get_scores(int box_height, int box_width, int
                             box_rpixels[row][col] = box_pixels[box_height-row-1][col];
                         }
                     }
-                    int reverse_scores[10] = {0};
-                    get_similarity(digit, version, box_width, box_height, box_rpixels, template,
+
+                    get_similarity(digit, version, box_height, box_width, box_rpixels, template,
                             reverse_scores);
                 }
             }
@@ -117,4 +101,22 @@ void get_bounded_template(int template_height, int template_width, int digit,
     //bounded read-in digit 
     downscale(box_height, box_width, bounded_reference, template_height,
             template_width, template);
+}
+
+void rank_scores(int unordered[DIGITS], int ordered[DIGITS][2]){
+    int max = 0;
+    int posmax = 0;
+    for(int rank = 0; rank < DIGITS; rank ++){
+        max = 0;
+        posmax = 0;
+        for(int digit = 0; digit < DIGITS; digit ++){
+            if(unordered[digit] > max){
+                max = unordered[digit]; 
+                posmax = digit;
+            }
+        }
+        ordered[rank][0] = posmax;
+        ordered[rank][1] = max;
+        unordered[posmax] = 0;
+    }
 }
