@@ -56,7 +56,6 @@ int captcha_digit(int height, int width, int pixels[height][width]){
     //gets the bounding box around the pixel
     get_bounding_box(height, width, pixels, &start_row, &start_column,
             &box_height, &box_width);
-
     //puts the bounded pixel in box_pixels 
     int box_pixels[box_height][box_width];
     copy_pixels(height, width, pixels, start_row, start_column, box_height,
@@ -64,15 +63,12 @@ int captcha_digit(int height, int width, int pixels[height][width]){
 
     //find the similarity between the bounded digit and templates
     int similarity_scores[DIGITS] = {0};
-    get_scores(box_height, box_width, box_pixels, similarity_scores);
+    int reverse_scores[DIGITS] = {0};
+    get_scores(box_height, box_width, box_pixels, similarity_scores, reverse_scores);
 
-    //ranks the top three digits on similarity, and stores their scores
-    int top_three[3] = {0};
-    int top_scores[3] = {0};
-    best_digits(similarity_scores, top_three, top_scores);
-
-    int guess = check_guess(top_three, top_scores, start_row, start_column,
+    int guess = check_guess(similarity_scores, reverse_scores,
             box_height, box_width, box_pixels);
-    
+    //
+    //printf("guess: %d\n", guess);
     return guess;
 }
