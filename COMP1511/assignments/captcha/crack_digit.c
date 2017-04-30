@@ -4,7 +4,6 @@
 #include "image.h"
 #include "heuristics.h"
 
-
 int main(int argc, char *argv[]) {
 
     //read the digit, get it's bounding box and get its balance
@@ -40,7 +39,7 @@ int main(int argc, char *argv[]) {
                 box_height, box_width, box_pixels);
         //
         //printf("guess: %d\n", guess);
-        printf("%d", guess);
+       printf("%d\n", guess);
     }
 
     return 0;
