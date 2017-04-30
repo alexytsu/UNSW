@@ -22,6 +22,7 @@ void label_trailing_spaces(int height, int width, int pixels[height][width], int
 
 int is_smooth_r(int height, int width, int pixels[height][width]);
 int is_smooth_l(int height, int width, int pixels[height][width]);
+int touching_both_sides(int height, int width, int pixels[height][width]);
 
 void get_quadrant_densities(int box_height, int box_width, int
         box_pixels[box_height][box_width], double
