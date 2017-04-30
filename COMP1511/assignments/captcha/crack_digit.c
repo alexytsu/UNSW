@@ -40,7 +40,7 @@ int main(int argc, char *argv[]) {
                 box_height, box_width, box_pixels);
         //
         //printf("guess: %d\n", guess);
-        printf("%d\n", guess);
+//        printf("%d", guess);
     }
 
     return 0;

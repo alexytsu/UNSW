@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include "guess.h"
 #include "heuristics.h"
+#include "image.h"
 
 //checks that the attributes of the digit matches with the guess from the 
 //similarity comparison (which isn't perfect)
@@ -34,6 +35,13 @@ int check_guess(int similarity_scores[DIGITS], int reverse_scores[DIGITS], int
     int vertical_intercepts = get_vertical_intercepts(box_height, box_width, box_pixels);
     //determine how many curves the right hand of a digit has
     //3 has 2, 2 has 1.5 etc. 
+
+    int bottom_height = box_height/3;
+    int bottom_pixels[bottom_height][box_width];
+    copy_pixels(box_height, box_width, box_pixels, 0, 0, bottom_height, box_width, bottom_pixels);
+    print_image(bottom_height, box_width, bottom_pixels);
+    int concave = concavity(bottom_height, box_width, bottom_pixels);
+    printf("%d\n", concavity);
     int right_hand_points = analyse_right_side(box_height, box_width,
             box_pixels);
     //printf("%d\n", right_hand_points);
