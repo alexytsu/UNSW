@@ -2,8 +2,8 @@
 #include "image.h"
 
 //creates a copy of a subsection of an image
-//used to cut out bounding boxes and to get quadrants
-
+//used to find quadrants and thirds of images
+//used to divide captchas
 void copy_pixels(int height, int width, int pixels[height][width],
                  int start_row, int start_column, int copy_height, int copy_width,
                  int copy[copy_height][copy_width]){
@@ -15,6 +15,4 @@ void copy_pixels(int height, int width, int pixels[height][width],
 
         }
     }
-
-
 }

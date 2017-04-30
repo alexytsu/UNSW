@@ -35,13 +35,12 @@ int main(int argc, char *argv[]) {
         int reverse_scores[DIGITS] = {0};
         get_scores(box_height, box_width, box_pixels, similarity_scores, reverse_scores);
     
+        //implements logic to get the best digit possible
         int guess = check_guess(similarity_scores, reverse_scores,
                 box_height, box_width, box_pixels);
-        //
-        //printf("guess: %d\n", guess);
+
+        //prints the guess
         printf("%d\n", guess);
     }
-
     return 0;
-
 }

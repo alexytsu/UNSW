@@ -118,20 +118,29 @@ void label(int height, int width, int pixels[height][width], int posx, int posy,
     }
 }
 
+//removes small holes that can occur when corners are very sharp in a digit
 int find_small_holes(int height, int width, int pixels[height][width]){
     int hole_sizes[5] = {0}; 
     int non_holes = 0;
     int current_label;
+    
+    //tallies the number of elements of the same label (i.e. belonging to the 
+    //same hole)
     for(int row = 0; row < height; row ++){
         for(int col = 0; col < width; col ++){
             current_label = pixels[row][col]; 
             hole_sizes[current_label] ++; 
         }
     }
+
+    //if it finds a hole lower than a certain threshold size, it marks it as an
+    //insignificant hole
     for(int i = 0; i < 5; i++){
         if(hole_sizes[i] < THRESHOLD && hole_sizes[i] != 0){
            non_holes ++;
         }
     }
+
+    //lets get_holes know how many holes to ignore
     return non_holes;
 }

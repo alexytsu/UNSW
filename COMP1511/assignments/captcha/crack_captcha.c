@@ -5,6 +5,7 @@
 #include "heuristics.h"
 
 //contains basically crack_digit.c but as a function that can be called
+//and returns a value instead of printing it
 int captcha_digit(int height, int width, int pixels[height][width]);
 
 int main(int argc, char *argv[]) {
@@ -24,24 +25,34 @@ int main(int argc, char *argv[]) {
 
     //get all the attributes of the digit inside this function
     if (read_pbm(argv[1], height, width, pixels)) {
+        
+        //finds the columns between digits that are completely white
+        //these are good boundaries to split a captcha into 4 digits
         int dividing_columns[3] = {0};
         divide_captcha(height, width, pixels, dividing_columns);
-
+        
+        //calculates the width of each digit's bound within captcha
         int width1 = dividing_columns[0];
         int width2 = dividing_columns[1] - width1;
         int width3 = dividing_columns[2] - width2 - width1;
         int width4 = width - width3 - width2 -width1; 
 
+        //initialises arrays which will store the unbounded digits
         int unbounded1[height][width1];
         int unbounded2[height][width2];
         int unbounded3[height][width3];
         int unbounded4[height][width4];
 
+        //copies each digit into its array
+        //these arrays are essentially equivalent to the output of the 
+        //read_pbm function and can therefore be passed straight to the 
+        //captcha_digit() function declared below
         copy_pixels(height, width, pixels, 0, 0, height, width1, unbounded1);
         copy_pixels(height, width, pixels, 0, dividing_columns[0], height, width2, unbounded2);
         copy_pixels(height, width, pixels, 0, dividing_columns[1], height, width3, unbounded3);
         copy_pixels(height, width, pixels, 0, dividing_columns[2], height, width4, unbounded4);
 
+        //print the results
         printf("%d", captcha_digit(height, width1, unbounded1));
         printf("%d", captcha_digit(height, width2, unbounded2));
         printf("%d", captcha_digit(height, width3, unbounded3));
@@ -53,6 +64,7 @@ int main(int argc, char *argv[]) {
 
 int captcha_digit(int height, int width, int pixels[height][width]){
     int start_row, start_column, box_width, box_height, holes;
+
     //gets the bounding box around the pixel
     get_bounding_box(height, width, pixels, &start_row, &start_column,
             &box_height, &box_width);
@@ -64,11 +76,12 @@ int captcha_digit(int height, int width, int pixels[height][width]){
     //find the similarity between the bounded digit and templates
     int similarity_scores[DIGITS] = {0};
     int reverse_scores[DIGITS] = {0};
-    get_scores(box_height, box_width, box_pixels, similarity_scores, reverse_scores);
+    get_scores(box_height, box_width, box_pixels, similarity_scores,
+            reverse_scores);
 
+    //implements logic to determine the digit
     int guess = check_guess(similarity_scores, reverse_scores,
             box_height, box_width, box_pixels);
-    //
-    //printf("guess: %d\n", guess);
+
     return guess;
 }

@@ -4,13 +4,13 @@
 //get density returns a percentage value for how dense the image is
 //ie. the more pixels in an image the higher the density
 //digits with a lot of white space will have lower densities
-
 double get_density(int height, int width, int pixels[height][width]){
-    
+
     int area = height*width;
     int black = 0;
     for( int row = 0; row < height; row ++){
         for( int col = 0; col < width; col ++){
+            //the sum of a binary bitmap array is also the number of pixels 
             black +=  pixels[row][col];
         }
     }
@@ -18,4 +18,3 @@ double get_density(int height, int width, int pixels[height][width]){
     double density = (double)black/area;
     return density;
 }
-
