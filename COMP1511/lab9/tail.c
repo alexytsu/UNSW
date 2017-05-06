@@ -28,8 +28,15 @@ int main(int argc, char *argv[]){
     }
     fclose(fp);
 
-    for(int i = 0; i < lines && i < 10; i ++){
-        printf("%s\n", buffer[9 - i]);
+    if(lines >= 10){
+        for(int i = 0; i < 10; i ++){
+            printf("%s\n", buffer[9 - i]);
+        }
+    }else{
+        int starting_index = lines - 1;
+        for(int i = starting_index; i >= 0; i ++){
+            printf("%s\n", buffer[i]);
+        }
     }
 
     return 0;
