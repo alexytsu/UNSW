@@ -9,7 +9,9 @@ int main(int argc, char *argv[]){
 
     char buffer[10][MAX_LINE];
     char cur_line[MAX_LINE];
+    int lines = 0;
     while(fscanf(fp, "%s", cur_line)!=EOF){
+        lines ++; 
         for(int i = 0; i < MAX_LINE; i ++){
 
             buffer[9][i] = buffer[8][i];
@@ -26,8 +28,8 @@ int main(int argc, char *argv[]){
     }
     fclose(fp);
 
-    for(int i = 9; i >= 0; i --){
-        printf("%s\n", buffer[i]);
+    for(int i = 0; i < lines && i < 10; i ++){
+        printf("%s\n", buffer[9 - i]);
     }
 
     return 0;
