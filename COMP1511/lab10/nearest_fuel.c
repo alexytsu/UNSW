@@ -8,16 +8,21 @@ int nearest_fuel(struct bot *b){
     int distance_forward = 0;
     int distance_backward = 0;
 
-    for(;forward->type!=LOCATION_PETROL_STATION && backward->type!=LOCATION_PETROL_STATION;backward=backward->previous, forward=forward->next){
+    for(;forward->type!=LOCATION_PETROL_STATION;forward=forward->next){
         distance_forward ++;
-        distance_backward --;
     }
 
-    if(-distance_backward > distance_forward){
-        return distance_backward;
-    }else if(-distance_backward < distance_forward){
-        return distance_forward;
-    }else{
+    for(;backward->type!=LOCATION_PETROL_STATION;backward=backward->previous){
+        distance_backward ++;
+    }
+
+    if(distance_forward < distance_backward){
         return distance_forward;
     }
+    if(distance_backward < distance_forward){
+        return -distance_backward;
+    }
+    return distance_forward;
+    
+
 }
