@@ -23,7 +23,7 @@ void print_world(struct bot *b){
             printf("other\n"); 
         }
         else if(current_location->type == LOCATION_PETROL_STATION){
-            printf("Petrol station %d units of available fuel for $%d", current_location->quantity, current_location->price);
+            printf("Petrol station %d units of available fuel for $%d\n", current_location->quantity, current_location->price);
         }
         current_location = current_location->next;
     }

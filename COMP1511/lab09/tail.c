@@ -49,7 +49,7 @@ int main(int argc, char *argv[]){
 
     for(int i = 0; i < 10; i ++){
         if(buffer[i][0] != -1){
-            printf("%s\n", buffer[i]);
+            printf("%s\n", buffer[9-j]);
         }
     }
 
