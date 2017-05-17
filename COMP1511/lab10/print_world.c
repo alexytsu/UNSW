@@ -2,10 +2,14 @@
 #include "trader_bot.h"
 
 void print_world(struct bot *b){
-
+    
+    //we must store the starting location to check when we have returned
     struct location *start_location = b->location;
     struct location *current_location = start_location;
-    for(int i =0; current_location != start_location || i == 0;i ++){
+    
+    //loop through the world until the second time we are at start_location
+    //and print the relevant information at each location
+    for(int i = 0; current_location != start_location || i == 0; i ++){
         printf("%s: ", current_location->name);
         if(current_location->type == LOCATION_START){
             printf("start\n"); 
