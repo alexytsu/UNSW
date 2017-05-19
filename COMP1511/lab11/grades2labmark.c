@@ -12,13 +12,13 @@ double grades2labmark(char grades[]){
 
     for(int i = 0; grades[i] != NULL; i ++){
         switch (grades[i]){
-            case 'A': 
+            case 'A':
                 mark+=1.0;
                 break;
-            case '+': 
+            case '+':
                 mark+=0.2;
                 break;
-            case 'B': 
+            case 'B':
                 mark+=0.8;
                 break;
             case 'C':
@@ -29,4 +29,3 @@ double grades2labmark(char grades[]){
     if(mark > 10) return 10.0;
     return mark;
 }
-

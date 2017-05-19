@@ -1,7 +1,7 @@
 #include <stdio.h>
 
 int sorted_name(char *name1, char *name2){
-	if(*name1 == '\0'&& *name2 == '\0\){
+	if(*name1 == '\0'&& *name2 == '\0'){
 		return 2;
 	}
 
@@ -22,7 +22,7 @@ int sorted_name(char *name1, char *name2){
 
 int sorted_zid(int zid_1, int zid_2){
 	if(zid_1 < zid_2){
-		return 0;	
+		return 0;
 	}
 	return 1;
 }
@@ -36,7 +36,7 @@ Student makeStudent(char *line){
 	firstname = strchr(zid, ' ');
 	firstname[0] = '\0';
 	firstname++;
-    
+
     lastname = strchr(firstname, ' ');
     lastname[0] = '\0';
     lastname++;
@@ -59,5 +59,5 @@ Student makeStudent(char *line){
 
 	s->next = NULL;
 	return s;
-	
+
 }

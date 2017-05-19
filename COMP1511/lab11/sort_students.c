@@ -1,5 +1,4 @@
 // starting point for COMP1511 lab 11
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -10,70 +9,111 @@
 #define MAX_LAB_NAME_LENGTH 32
 #define MAX_LINE_LENGTH 4096
 
-struct student {
-    int              zid;
-    char             name[MAX_STUDENT_NAME_LENGTH + 1];
-    char             lab_name[MAX_LAB_NAME_LENGTH + 1];
-    char             lab_grades[MAX_GRADE_STRING_LENGTH + 1];
-    struct student   *next;
-};
-
 struct student *read_students_file(char filename[]);
 struct student *read_student(FILE *stream);
 double grades2labmark(char grades[]);
 
+struct student {
+    int zid;
+    char name[MAX_STUDENT_NAME_LENGTH + 1];
+    char lab_name[MAX_LAB_NAME_LENGTH + 1];
+    char lab_grades[MAX_GRADE_STRING_LENGTH + 1];
+    struct student   *next;
+};
+
+typedef struct student *Student;
+
+int sorted_name(char *name1, char *name2){
+    if(*name1 == '\0'&& *name2 == '\0') {
+            return 2;
+    }
+
+    if(*name1 == '\0') {
+            return 1;
+    } else if(*name2 == '\0') {
+            return 0;
+    }
+
+    if(*name1 < *name2) {
+            return 1;
+    } else if(*name1 > *name2) {
+            return 0;
+    } else {
+            return sorted_name(name1+1, name2+1);
+    }
+}
+
+int sorted_zid(int zid_1, int zid_2){
+    if(zid_1 < zid_2) {
+            return 0;
+    }
+    return 1;
+}
+
+void print_list(Student head){
+    for(Student n = head; n != NULL; n = n->next){   
+        printf("%d %-30s %-12s %-22s %4.1lf\n", n->zid, n->name, n->lab_name, n->lab_grades, grades2labmark(n->lab_grades));
+    }
+}
+
+Student insert(Student head, Student node){
+    if(head == NULL || head->zid >= head->zid){
+        node->next = head;
+        return node;
+    }
+    head->next = insert(head->next, node);
+    return head;
+}
+
 int main(int argc, char *argv[]) {
-    // CHANGE THIS CODE
 
     if (argc != 2) {
         fprintf(stderr, "Usage: %s <marks-file>\n", argv[0]);
         return 1;
     }
 
-    struct student *student_list = read_students_file(argv[1]);
-    struct student *sorted_student_list;
+    Student student_list = read_students_file(argv[1]);
+    Student current_student = student_list;
 
-    //we sort the linked list here.
+    Student new_head = NULL;
+    int first_time = 1;
+    while(first_time==1 || new_head != NULL){
+        first_time ++;
+        Student next = new_head->next;          
+        new_head = insert(new_head, current_student);
+        new_head = next; 
+    } 
+    print_list(new_head);
+    return 0;
 
-    int last_name_sorted;
+}
 
-    
+double grades2labmark(char grades[]){
+    int grades_len = strlen(grades);
+    double grade_point = 0.0;
 
-    while(sorted_student_list != NULL) {
-		printf("%d %-30s %-12s %-22s %4.1lf\n", sorted_student_list->zid, sorted_student_list->name, sorted_student_list->lab_name, sorted_student_list->lab_grades, grades2labmark(sorted_student_list->lab_grades));
-	
-	sorted_student_list = sorted_student_list->next;
-	
+    for(int i = 0; i < grades_len; i++) {
+        if(grades[i] == 'A') {
+                if(grades[i+1] == '+') {
+                        grade_point+=1.2;
+                } else {
+                        grade_point+=1.0;
+                }
+        } else if(grades[i] == 'B') {
+                grade_point+=0.8;
+        } else if(grades[i] == 'C') {
+                grade_point+=0.5;
+        } else {
+                grade_point+=0;
+        }
     }
 
-    return 0;
+    if(grade_point>10.0) {
+            return 10.0;
+    }
+    return grade_point;
 }
-  
-double grades2labmark(char grades[]){
-         int grades_len = strlen(grades);
-	 double grade_point = 0.0;
 
-         for(int i = 0; i < grades_len; i++){
-		if(grades[i] == 'A'){
-			if(grades[i+1] == '+'){
-				grade_point+=1.2;
-			} else {
-				grade_point+=1.0;
-			}
-		} else if(grades[i] == 'B'){
-			grade_point+=0.8;
-		} else if(grades[i] == 'C'){
-			grade_point+=0.5;
-		} else {
-			grade_point+=0;
-		}
-	}
-
-        if(grade_point>10.0){
-		return 10.0;
-	}
-	return grade_point;
-}
 // DO NOT CHANGE THE CODE BELOW HERE - DO NOT CHANGE read_students_file
 
 // read_students_file reads a file where line contains information for 1 student
@@ -83,21 +123,21 @@ double grades2labmark(char grades[]){
 struct student *read_students_file(char filename[]) {
     FILE *fp = fopen(filename, "r");
     if (fp == NULL) {
-        fprintf(stderr,"warning file %s could not  be opened for reading\n", filename);
-        return NULL;
+            fprintf(stderr,"warning file %s could not  be opened for reading\n", filename);
+            return NULL;
     }
 
     struct student *first_student = NULL;
     struct student *last_student = NULL;
     struct student *s;
     while ((s = read_student(fp)) != NULL) {
-        if (last_student == NULL) {
-            first_student = s;
-            last_student = s;
-        } else {
-            last_student->next = s;
-            last_student = s;
-        }
+            if (last_student == NULL) {
+                    first_student = s;
+                    last_student = s;
+            } else {
+                    last_student->next = s;
+                    last_student = s;
+            }
     }
 
     fclose(fp);
@@ -121,8 +161,8 @@ struct student *read_student(FILE *stream) {
     assert(s);
 
     if (fgets(line, MAX_LINE_LENGTH, stream) == NULL) {
-        free(s);
-        return NULL;
+            free(s);
+            return NULL;
     }
 
     char *newline_ptr = strchr(line, '\n');
