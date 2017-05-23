@@ -15,6 +15,6 @@ char *get_bot_name(void){
 void get_action(struct bot *bot, int *action, int *n){
     Location *current_location = bot->location;
     Market *market_list = get_market_list(current_location); 
-    *action = 0;
-    *n = 0;
+    *action = ACTION_MOVE;
+    *n = 1;
 }
