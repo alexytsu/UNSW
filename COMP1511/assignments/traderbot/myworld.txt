@@ -18,31 +18,31 @@ fuel_price 50 200
 #  name type commodity
 
 CSE             LOCATION_START 
-#Quadrangle      LOCATION_OTHER
-#"Physics Lawn"  LOCATION_OTHER 
-#Racecourse      LOCATION_OTHER 
-#Dump            LOCATION_DUMP 
-#Caltex          LOCATION_PETROL_STATION  
-#BP              LOCATION_PETROL_STATION  
+Quadrangle      LOCATION_OTHER
+"Physics Lawn"  LOCATION_OTHER 
+Racecourse      LOCATION_OTHER 
+Dump            LOCATION_DUMP 
+Caltex          LOCATION_PETROL_STATION  
+BP              LOCATION_PETROL_STATION  
 "J&B Hifi"      LOCATION_BUYER          Computers
 MSY             LOCATION_BUYER          Computers
 Umart           LOCATION_BUYER          Computers
 Dell            LOCATION_SELLER         Computers
 Lenovo          LOCATION_SELLER         Computers
 Apple           LOCATION_SELLER          Computers
-#"Regent Hotel"  LOCATION_BUYER          Beer        
-#Whitehouse      LOCATION_BUYER          Beer
-#"James Squires" LOCATION_SELLER         Beer
-#"4 Pines"       LOCATION_SELLER         Beer
-#"Batch Brewing" LOCATION_SELLER         Beer
-#Harvey-Norman   LOCATION_BUYER          Televisions
-#"Good Guys"     LOCATION_BUYER          Televisions
-#LG              LOCATION_SELLER         Televisions
-#Sony            LOCATION_SELLER         Televisions
-#"UNSW Bookshop" LOCATION_BUYER          Books
-#Addison-Wesley  LOCATION_SELLER         Books
-#Prentice-Hall   LOCATION_SELLER         Books
-#"O'Reilly"      LOCATION_SELLER         Books
+"Regent Hotel"  LOCATION_BUYER          Beer        
+Whitehouse      LOCATION_BUYER          Beer
+"James Squires" LOCATION_SELLER         Beer
+"4 Pines"       LOCATION_SELLER         Beer
+"Batch Brewing" LOCATION_SELLER         Beer
+Harvey-Norman   LOCATION_BUYER          Televisions
+"Good Guys"     LOCATION_BUYER          Televisions
+LG              LOCATION_SELLER         Televisions
+Sony            LOCATION_SELLER         Televisions
+"UNSW Bookshop" LOCATION_BUYER          Books
+Addison-Wesley  LOCATION_SELLER         Books
+Prentice-Hall   LOCATION_SELLER         Books
+"O'Reilly"      LOCATION_SELLER         Books
 Mars            LOCATION_SELLER         "Mars Bars"
 "IGA UNSW"      LOCATION_BUYER          "Mars Bars"
 Coles           LOCATION_BUYER          "Mars Bars"
