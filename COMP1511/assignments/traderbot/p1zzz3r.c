@@ -14,7 +14,7 @@ char *get_bot_name(void){
 //to action and n corresponding to what we want to do this turn
 void get_action(struct bot *bot, int *action, int *n){
     Location *current_location = bot->location;
-    printf("Hiasdfjasdjklfsadkjlfjaskldfjklsadjklf\n"); 
+    Market *market_list = get_market_list(current_location); 
     *action = 0;
     *n = 0;
 }
