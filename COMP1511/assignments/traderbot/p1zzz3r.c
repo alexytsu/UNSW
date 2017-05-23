@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include "trader_bot.h"
+#include "trader_functions.h"
 
 char *get_bot_name(void);
 void get_action(struct bot *bot, int *action, int *n);
-
 
 //Sets name as per assignment specs
 char *get_bot_name(void){
@@ -13,10 +13,8 @@ char *get_bot_name(void){
 //the "main" function of this robot, it is called every turn and assigns values
 //to action and n corresponding to what we want to do this turn
 void get_action(struct bot *bot, int *action, int *n){
-
-         
-
-    *action = ACTION_MOVE;
-    *n = 1;
-
+    Location *current_location = bot->location;
+    printf("Hiasdfjasdjklfsadkjlfjaskldfjklsadjklf\n"); 
+    *action = 0;
+    *n = 0;
 }
