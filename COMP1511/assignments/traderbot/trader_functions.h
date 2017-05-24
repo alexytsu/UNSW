@@ -1,5 +1,4 @@
 typedef struct location Location;
-
 typedef struct store{
     int distance;
     int price;
@@ -16,11 +15,12 @@ typedef struct market{
     int buyers;
     int volume;
     int weight; 
-    Store *seller_list;
+    Store *stores;
     struct market *next;  
 }Market;
+
 int distance_search(Location *loc1, Location *loc2);
-int market_from_location(Market *m, Location *loc);
+int market_from_location(Market *m, Location *loc, Location *bot_loc);
 void print_market_node(Market *m);
 Market *market_add(Market *node, Market *head);
 Market *get_market_list(Location *cur_loc);

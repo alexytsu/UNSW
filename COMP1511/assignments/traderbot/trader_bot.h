@@ -176,7 +176,7 @@ char *get_bot_name(void);
 //
 // *action must be set to one of ACTION_MOVE, ACTION_BUY, ACTION_SELL, ACTION_DUMP
 // 
-//   for ACTION_MOVE *n should be set to an integer indicating how many locations to move
+//   for ACTION_MOVE *n should be set to an integer indicating how many lstatic ocations to move
 //                    a negative integer  indicates a move in the reverse direction
 //
 //   for ACTION_BUY, ACTION_SELL *n should be set to how many items the bot wishes to buy/sell
