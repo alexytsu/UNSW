@@ -4,6 +4,7 @@ typedef struct store{
     int price;
     int amount;
     int type;
+    int preference;
     struct buyer *next;
 }Store;
 

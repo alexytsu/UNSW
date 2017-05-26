@@ -63,9 +63,15 @@ int distance_search(Location *loc1, Location *loc2){
     return distance_f<=distance_b ? distance_f:-distance_b;
 }
 
+
+//copy values from the location into a custom market struct
 int market_from_location(Market *m, Location *loc, Location *bot_loc){
     
-    //copy values from the location into a custom market struct
+    //if not a buyer or seller, we don't include it in the "market"
+    if(loc->type != LOCATION_BUYER || loc->type != LOCATION_SELLER){
+        return 0;
+    }
+
     m->product = loc->commodity->name;
     m->volume = loc->commodity->volume;
     m->weight = loc->commodity->weight;
@@ -87,7 +93,7 @@ int market_from_location(Market *m, Location *loc, Location *bot_loc){
         return 1;
     }
 
-    else if(loc->type == LOCATION_SELLER){
+    if(loc->type == LOCATION_SELLER){
         m->supply = loc->quantity;
         m->sellers = 1;
         m->buyers = 0;
@@ -95,16 +101,13 @@ int market_from_location(Market *m, Location *loc, Location *bot_loc){
         return 1;
     }
 
-    //if not a buyer or seller, we don't include it in the "market"
-    else{
-        return 0;
-    }
 }
 
 //prints a custom Market linked list
 void print_market_node(Market *m){
     printf("%s, supply: %d\t demand: %d\t sellers: %d\t buyers %d\t volume:%d\t weight:%d\t\n", m->product, m->supply, m->demand, m->sellers, m->buyers, m->volume, m->weight);
 }
+
 
 //either adds a new commodity to the market list or adds the quantity being 
 //bought or sold of a particular commodity to its existing node
