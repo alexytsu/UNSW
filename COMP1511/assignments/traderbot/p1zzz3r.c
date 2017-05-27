@@ -4,7 +4,7 @@
 
 //Sets name as per assignment specs
 char *get_bot_name(void){
-    return "xXx_1337_cr1ng3b0t";
+    return "cr1ngey mc'cr1ng3face";
 }
 
 //the "main" function of this robot, it is called every turn and assigns values
@@ -12,9 +12,8 @@ char *get_bot_name(void){
 void get_action(struct bot *bot, int *action, int *n){
 
     Location *current_location = bot->location;
-    Market *market_list = get_market_list(current_location); 
+    Market *market_list = get_market_list(current_location);
     for(;market_list!=NULL;market_list=market_list->next){
         print_market_node(market_list);
     }
-
 }

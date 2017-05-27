@@ -3,7 +3,6 @@
 #include "trader_fucntions.h"
 
 int get_preference(Location *loc, Location *bot_loc){
-    
-    
-
+    int preference = 0;
+    return preference;
 }
