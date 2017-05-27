@@ -25,9 +25,9 @@ the market linked list displays for each commodotiy that exists in the world...
         - amount: amount that store can buy or sell
         - type: whether the store buys or sells
 */
+
 Market *get_market_list(Location *cur_loc){
     Location *start = cur_loc;
-
     Market *market_head = NULL;
 
     do{
@@ -64,6 +64,14 @@ int distance_search(Location *loc1, Location *loc2){
     return distance_f<=distance_b ? distance_f:-distance_b;
 }
 
+int change_location_preference(Location *loc){
+    
+
+    int preference = 0;
+    
+    return preference;
+}
+
 int market_from_location(Market *m, Location *loc, Location *bot_loc){
     
     //copy values from the location into a custom market struct
@@ -79,6 +87,7 @@ int market_from_location(Market *m, Location *loc, Location *bot_loc){
     m->stores->price = loc->price;
     m->stores->amount = loc->quantity; 
     m->stores->type = loc->type; 
+    m->stores->store_preference = get_location_preference(loc);
 
     //store additional information
     if(loc->type == LOCATION_BUYER){
@@ -107,7 +116,6 @@ int market_from_location(Market *m, Location *loc, Location *bot_loc){
 void print_market_node(Market *m){
     printf("%s, supply: %d\t demand: %d\t sellers: %d\t buyers %d\t volume:%d\t weight:%d\t\n", m->product, m->supply, m->demand, m->sellers, m->buyers, m->volume, m->weight);
 }
-
 
 //either adds a new commodity to the market list or adds the quantity being 
 //bought or sold of a particular commodity to its existing node

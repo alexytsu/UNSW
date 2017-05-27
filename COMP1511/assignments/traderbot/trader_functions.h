@@ -1,10 +1,18 @@
 typedef struct location Location;
+
+typedef struct seller{
+
+    struct seller *next; 
+}Seller;
+
 typedef struct store{
     int distance;
     int price;
     int amount;
     int type;
-    struct buyer *next;
+    int store_preference;
+    struct store *nextseller; 
+    struct store *nextbuyer;
 }Store;
 
 typedef struct market{
@@ -15,6 +23,7 @@ typedef struct market{
     int buyers;
     int volume;
     int weight; 
+    int product_preference;
     Store *stores;
     struct market *next;  
 }Market;
