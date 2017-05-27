@@ -4,8 +4,8 @@
 #include "trader_bot.h"
 #include "trader_functions.h"
 
-/*
-this function is called each turn to return a linked list of custom market 
+/*------------------------------------------------------------------------------
+this function is called each turn to return a linked list of custom market
 structs. its using heuristics and information calculated from this linked list
 of commodities that we make a decision for our action. 
 
@@ -18,14 +18,13 @@ the market linked list displays for each commodotiy that exists in the world...
     - volume: of the product
     - weight: of the product
     - store_list: a list of stores that sells or buys the product
-        - the store list shows each location that either sells or buys the produc
-        and some information about those stores
+        - the store list shows each location that either sells or buys the
+          product and some information about those stores
         - distance: from the bot
         - price: buying or selling price
         - amount: amount that store can buy or sell
         - type: whether the store buys or sells
 */
-
 Market *get_market_list(Location *cur_loc){
     Location *start = cur_loc;
     Market *market_head = NULL;
@@ -33,7 +32,6 @@ Market *get_market_list(Location *cur_loc){
     do{
         Market *temp = malloc(sizeof(struct market));
         if(market_from_location(temp, cur_loc, start)){
-            print_market_node(temp);
             if(temp->buyers == 1 || temp->sellers == 1){
                 market_head = market_add(temp, market_head);
             }
@@ -41,7 +39,7 @@ Market *get_market_list(Location *cur_loc){
         cur_loc = cur_loc->next;
     }while(cur_loc != start);
 
-    printf("ALL NODES ADDED, PRINT THE WHOLE LIST\n");
+    printf("===================================\nALL NODES ADDED, PRINT THE WHOLE LIST\n\n\n\n\n");
     for(;market_head!=NULL;market_head = market_head->next){
         print_market_node(market_head);
     }
@@ -64,6 +62,7 @@ int distance_search(Location *loc1, Location *loc2){
     return distance_f<=distance_b ? distance_f:-distance_b;
 }
 
+<<<<<<< HEAD
 int change_location_preference(Location *loc){
     
 
@@ -72,10 +71,17 @@ int change_location_preference(Location *loc){
     return preference;
 }
 
+=======
+
+//copy values from the location into a custom market struct
+>>>>>>> 2b15fbd8375a9d2a18eaefc7c55cfa82a0e98cac
 int market_from_location(Market *m, Location *loc, Location *bot_loc){
     
-    //copy values from the location into a custom market struct
-    printf("Bot is at %s\n", bot_loc->name);
+    //if not a buyer or seller, we don't include it in the "market"
+    if(loc->type != LOCATION_BUYER || loc->type != LOCATION_SELLER){
+        return 0;
+    }
+
     m->product = loc->commodity->name;
     m->volume = loc->commodity->volume;
     m->weight = loc->commodity->weight;
@@ -98,7 +104,7 @@ int market_from_location(Market *m, Location *loc, Location *bot_loc){
         return 1;
     }
 
-    else if(loc->type == LOCATION_SELLER){
+    if(loc->type == LOCATION_SELLER){
         m->supply = loc->quantity;
         m->sellers = 1;
         m->buyers = 0;
@@ -106,10 +112,6 @@ int market_from_location(Market *m, Location *loc, Location *bot_loc){
         return 1;
     }
 
-    //if not a buyer or seller, we don't include it in the "market"
-    else{
-        return 0;
-    }
 }
 
 //prints a custom Market linked list
@@ -149,3 +151,10 @@ Market *market_add(Market *node, Market *head){
     return head; 
 }
 
+//We often need to find the min or max of two values
+int max(int a, int b){
+    return a>=b ? a:b;
+}
+int min(int a, int b){
+    return a<=b ? a:b;
+}
