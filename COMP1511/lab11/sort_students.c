@@ -120,9 +120,9 @@ int unsorted(struct student *stu1, struct student *stu2){
 
     struct student *previous = NULL;
     struct student *n = sorted;
-    
+
     printf("student: %p, n: %p\n\n\n", student, n);
-    
+
     //while(unsorted(student, n)){
     while(student->zid > n->zid){
         previous = n;

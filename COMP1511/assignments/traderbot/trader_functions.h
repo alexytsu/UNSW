@@ -5,13 +5,13 @@ typedef struct store{
     int distance;
     int price;
     int amount;
-    int type;
     int store_preference;
     struct store *next;
 }Store;
 
 typedef struct market{
     char *product;
+    int store_type;
     int supply;
     int demand;
     int sellers;
@@ -31,3 +31,4 @@ Market *market_add(Market *node, Market *head);
 Market *get_market_list(Location *cur_loc);
 Store *add_store(Store *node, Store *head);
 void print_store_locations(Store *store);
+void create_store(Store *seller_list, Store *buyer_list, Location *loc);
