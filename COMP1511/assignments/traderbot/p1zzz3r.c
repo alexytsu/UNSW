@@ -16,4 +16,6 @@ void get_action(struct bot *bot, int *action, int *n){
     for(;market_list!=NULL;market_list=market_list->next){
         print_market_node(market_list);
     }
+    *action = ACTION_MOVE;
+    *n = 1;
 }
