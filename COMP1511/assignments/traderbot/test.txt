@@ -1,0 +1,176 @@
+seeding with 16180226
+dcc get_preference.c market_list.c p1zzz3r.c -I/tmp_amd/kamen/export/kamen/3/cs1511/public_html/17s1/assignments/trader_bot /tmp_amd/kamen/export/kamen/3/cs1511/public_html/17s1/assignments/trader_bot/trader_bot_main.c -o bot
+dcc get_preference.c market_list.c p1zzz3r.c -I/tmp_amd/kamen/export/kamen/3/cs1511/public_html/17s1/assignments/trader_bot /tmp_amd/kamen/export/kamen/3/cs1511/public_html/17s1/assignments/trader_bot/trader_bot_main.c --valgrind -o bot-valgrind
+[33m*** Trader Bot Parameters ***[0m
+cash=200000
+fuel_tank_capacity=88
+maximum_cargo_volume=687266
+maximum_cargo_weight=239083
+maximum_move=7
+n_bots=1
+turns_left=2
+
+[33m*** Trader Bot Commodities ***[0m
+Beer volume=2868 weight=1035
+Books volume=6126 weight=6416
+Computers volume=4968 weight=16235
+Mars Bars volume=125 weight=54
+Televisions volume=3686 weight=17756
+
+[33m*** Turn 0 ***[0m
+
+CSE: [33mstart[0m
+James Squires: will sell 1000 units of [32mBeer[0m for $102
+Mars: will sell 786 units of [32mMars Bars[0m for $185
+LG: will sell 128 units of [32mTelevisions[0m for $816
+Whitehouse: will buy 1760 units of [31mBeer[0m for $136
+UNSW Bookshop: will buy 518 units of [31mBooks[0m for $338
+Good Guys: will buy 38 units of [31mTelevisions[0m for $1602
+Prentice-Hall: will sell 1470 units of [32mBooks[0m for $173
+Harvey-Norman: will buy 393 units of [31mTelevisions[0m for $900
+Batch Brewing: will sell 3097 units of [32mBeer[0m for $87
+Dell: will sell 240 units of [32mComputers[0m for $1304
+Quadrangle: [33mother[0m
+MSY: will buy 60 units of [31mComputers[0m for $2945
+J&B Hifi: will buy 107 units of [31mComputers[0m for $3530
+Racecourse: [33mother[0m
+Dump: [33mdump[0m
+O'Reilly: will sell 1148 units of [32mBooks[0m for $144
+Regent Hotel: will buy 2332 units of [31mBeer[0m for $141
+Apple: will sell 128 units of [32mComputers[0m for $1636
+Lenovo: will sell 190 units of [32mComputers[0m for $1170
+Umart: will buy 38 units of [31mComputers[0m for $2578
+IGA UNSW: will buy 767 units of [31mMars Bars[0m for $315
+Addison-Wesley: will sell 848 units of [32mBooks[0m for $155
+4 Pines: will sell 2830 units of [32mBeer[0m for $73
+Physics Lawn: [33mother[0m
+BP: Petrol station 64 units of available fuel for $96
+Aldi: will buy 792 units of [31mMars Bars[0m for $248
+Coles: will buy 488 units of [31mMars Bars[0m for $380
+Sony: will sell 321 units of [32mTelevisions[0m for $692
+Caltex: Petrol station 50 units of available fuel for $77
+
+Output from cr1ngey mc'cr1ng3face
+MARKET LIST
+Beer, supply: 6927	 demand: 4092	 sellers: 3	 buyers 2	 volume:2868	 weight:1035	
+Buyer List
+	 name: Regent Hotel	 distance: 13	 price: 141	 amount: 2332
+	 name: Whitehouse	 distance: -4	 price: 136	 amount: 1760
+	 name: James Squires	 distance: -1	 price: 102	 amount: 1000
+Seller List
+	 name: 4 Pines	 distance: 7	 price: 73	 amount: 2830
+	 name: Batch Brewing	 distance: -9	 price: 87	 amount: 3097
+Mars Bars, supply: 786	 demand: 2047	 sellers: 1	 buyers 3	 volume:125	 weight:54	
+Buyer List
+	 name: Coles	 distance: 3	 price: 380	 amount: 488
+	 name: Aldi	 distance: 4	 price: 248	 amount: 792
+	 name: IGA UNSW	 distance: 9	 price: 315	 amount: 767
+	 name: Mars	 distance: -2	 price: 185	 amount: 786
+Seller List
+Televisions, supply: 449	 demand: 431	 sellers: 2	 buyers 2	 volume:3686	 weight:17756	
+Buyer List
+	 name: Harvey-Norman	 distance: -8	 price: 900	 amount: 393
+	 name: Good Guys	 distance: -6	 price: 1602	 amount: 38
+	 name: LG	 distance: -3	 price: 816	 amount: 128
+Seller List
+	 name: Sony	 distance: 2	 price: 692	 amount: 321
+Books, supply: 3466	 demand: 518	 sellers: 3	 buyers 1	 volume:6126	 weight:6416	
+Buyer List
+	 name: UNSW Bookshop	 distance: -5	 price: 338	 amount: 518
+Seller List
+	 name: Addison-Wesley	 distance: 8	 price: 155	 amount: 848
+	 name: O'Reilly	 distance: 14	 price: 144	 amount: 1148
+	 name: Prentice-Hall	 distance: -7	 price: 173	 amount: 1470
+Computers, supply: 558	 demand: 205	 sellers: 3	 buyers 3	 volume:4968	 weight:16235	
+Buyer List
+	 name: Umart	 distance: 10	 price: 2578	 amount: 38
+	 name: J&B Hifi	 distance: -13	 price: 3530	 amount: 107
+	 name: MSY	 distance: -12	 price: 2945	 amount: 60
+	 name: Dell	 distance: -10	 price: 1304	 amount: 240
+Seller List
+	 name: Lenovo	 distance: 11	 price: 1170	 amount: 190
+	 name: Apple	 distance: 12	 price: 1636	 amount: 128
+
+"cr1ngey mc'cr1ng3face" is at CSE with $200000 and 88 fuel: action = [32mMove 1[0m 
+
+[33m*** Turn 1 ***[0m
+
+CSE: [33mstart[0m
+James Squires: will sell 1000 units of [32mBeer[0m for $102
+Mars: will sell 786 units of [32mMars Bars[0m for $185
+LG: will sell 128 units of [32mTelevisions[0m for $816
+Whitehouse: will buy 1760 units of [31mBeer[0m for $136
+UNSW Bookshop: will buy 518 units of [31mBooks[0m for $338
+Good Guys: will buy 38 units of [31mTelevisions[0m for $1602
+Prentice-Hall: will sell 1470 units of [32mBooks[0m for $173
+Harvey-Norman: will buy 393 units of [31mTelevisions[0m for $900
+Batch Brewing: will sell 3097 units of [32mBeer[0m for $87
+Dell: will sell 240 units of [32mComputers[0m for $1304
+Quadrangle: [33mother[0m
+MSY: will buy 60 units of [31mComputers[0m for $2945
+J&B Hifi: will buy 107 units of [31mComputers[0m for $3530
+Racecourse: [33mother[0m
+Dump: [33mdump[0m
+O'Reilly: will sell 1148 units of [32mBooks[0m for $144
+Regent Hotel: will buy 2332 units of [31mBeer[0m for $141
+Apple: will sell 128 units of [32mComputers[0m for $1636
+Lenovo: will sell 190 units of [32mComputers[0m for $1170
+Umart: will buy 38 units of [31mComputers[0m for $2578
+IGA UNSW: will buy 767 units of [31mMars Bars[0m for $315
+Addison-Wesley: will sell 848 units of [32mBooks[0m for $155
+4 Pines: will sell 2830 units of [32mBeer[0m for $73
+Physics Lawn: [33mother[0m
+BP: Petrol station 64 units of available fuel for $96
+Aldi: will buy 792 units of [31mMars Bars[0m for $248
+Coles: will buy 488 units of [31mMars Bars[0m for $380
+Sony: will sell 321 units of [32mTelevisions[0m for $692
+Caltex: Petrol station 50 units of available fuel for $77
+
+Output from cr1ngey mc'cr1ng3face
+MARKET LIST
+Beer, supply: 6927	 demand: 4092	 sellers: 3	 buyers 2	 volume:2868	 weight:1035	
+Buyer List
+	 name: Regent Hotel	 distance: 14	 price: 141	 amount: 2332
+	 name: Whitehouse	 distance: -3	 price: 136	 amount: 1760
+	 name: James Squires	 distance: 0	 price: 102	 amount: 1000
+Seller List
+	 name: 4 Pines	 distance: 8	 price: 73	 amount: 2830
+	 name: Batch Brewing	 distance: -8	 price: 87	 amount: 3097
+Mars Bars, supply: 786	 demand: 2047	 sellers: 1	 buyers 3	 volume:125	 weight:54	
+Buyer List
+	 name: Coles	 distance: 4	 price: 380	 amount: 488
+	 name: Aldi	 distance: 5	 price: 248	 amount: 792
+	 name: IGA UNSW	 distance: 10	 price: 315	 amount: 767
+	 name: Mars	 distance: -1	 price: 185	 amount: 786
+Seller List
+Televisions, supply: 449	 demand: 431	 sellers: 2	 buyers 2	 volume:3686	 weight:17756	
+Buyer List
+	 name: Harvey-Norman	 distance: -7	 price: 900	 amount: 393
+	 name: Good Guys	 distance: -5	 price: 1602	 amount: 38
+	 name: LG	 distance: -2	 price: 816	 amount: 128
+Seller List
+	 name: Sony	 distance: 3	 price: 692	 amount: 321
+Books, supply: 3466	 demand: 518	 sellers: 3	 buyers 1	 volume:6126	 weight:6416	
+Buyer List
+	 name: UNSW Bookshop	 distance: -4	 price: 338	 amount: 518
+Seller List
+	 name: Addison-Wesley	 distance: 9	 price: 155	 amount: 848
+	 name: O'Reilly	 distance: 15	 price: 144	 amount: 1148
+	 name: Prentice-Hall	 distance: -6	 price: 173	 amount: 1470
+Computers, supply: 558	 demand: 205	 sellers: 3	 buyers 3	 volume:4968	 weight:16235	
+Buyer List
+	 name: Umart	 distance: 11	 price: 2578	 amount: 38
+	 name: J&B Hifi	 distance: -12	 price: 3530	 amount: 107
+	 name: MSY	 distance: -11	 price: 2945	 amount: 60
+	 name: Dell	 distance: -9	 price: 1304	 amount: 240
+Seller List
+	 name: Lenovo	 distance: 12	 price: 1170	 amount: 190
+	 name: Apple	 distance: 13	 price: 1636	 amount: 128
+
+"cr1ngey mc'cr1ng3face" is at James Squires with $200000 and 87 fuel: action = [32mMove 1[0m 
+
+[33m*** Game Over ***[0m
+
+"cr1ngey mc'cr1ng3face" is at Mars with $200000 and 86 fuel profit = [31m-$0[0m
+
+Regenerate this world with this command: /import/kamen/3/cs1511/bin/bot_test -s 16180226 get_preference.c market_list.c p1zzz3r.c trader_bot.h trader_functions.h -w myworld.txt -p turns_left=2 --valgrind
