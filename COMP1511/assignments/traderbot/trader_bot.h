@@ -134,9 +134,9 @@ struct cargo {
 //  volume - volume of a single item of this commodity
 
 struct commodity {
-    char   *name; 
-    int    weight; 
-    int    volume; 
+    char   *name;
+    int    weight;
+    int    volume;
 };
 
 
@@ -155,7 +155,7 @@ struct bot_list {
 
 // get_bot_name is called once at the start of the game to get a bot's name
 // get_bot_name should return a string of between 1..MAX_SUPPLIED_BOT_NAME_CHARS
-// The supplied chars for the name should only include [a-zA-Z0-9] '-' '_' ' ' 
+// The supplied chars for the name should only include [a-zA-Z0-9] '-' '_' ' '
 // It is used to set the name field of the bot's struct.  The name field will
 // have a numeric suffix added if necessary to make it unique.
 
@@ -175,7 +175,7 @@ char *get_bot_name(void);
 // It should set two values indicating the bot's move for this turn.
 //
 // *action must be set to one of ACTION_MOVE, ACTION_BUY, ACTION_SELL, ACTION_DUMP
-// 
+//
 //   for ACTION_MOVE *n should be set to an integer indicating how many lstatic ocations to move
 //                    a negative integer  indicates a move in the reverse direction
 //
@@ -189,7 +189,7 @@ void get_action(struct bot *b, int *action, int *n);
 //
 // These function are used in lab exercises
 //
-// You do not have to define print_world or nearest_fuel in the assignment 
+// You do not have to define print_world or nearest_fuel in the assignment
 // but you can not have a function of the same name with a different prototype
 
 void print_world(struct bot *b);
