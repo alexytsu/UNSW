@@ -4,7 +4,7 @@
 
 //Sets name as per assignment specs
 char *get_bot_name(void){
-    return "cr1ngey mc'cr1ng3face";
+    return "cr1ng3y_mc_cr1ng3f4c3";
 }
 
 //the "main" function of this robot, it is called every turn and assigns values

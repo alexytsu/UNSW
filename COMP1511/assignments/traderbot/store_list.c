@@ -6,27 +6,11 @@
 
 //adds a store to the appropriate buyer or seller list
 Store *add_store(Store *node, Store *head){
-    Store *previous = NULL;
-    Store *n = head;
-    while(n!=NULL && node->distance>n->distance){
-        previous = n;
-        n = n->next;
-    }
-
-    if(previous==NULL){
-        head = node;
-    }else{
-        previous->next = node;
-    }
-
-    node->next = n;
-    return head;
+    node->next = head;
+    return node;
 }
 
 void create_store(Store *seller_list, Store *buyer_list, Location *loc){
-    seller_list=malloc(sizeof(Store));
-    buyer_list=malloc(sizeof(Store));
-
     if(loc->type == LOCATION_BUYER){
         seller_list->next=NULL;
         seller_list=NULL;
@@ -49,11 +33,19 @@ void create_store(Store *seller_list, Store *buyer_list, Location *loc){
 
 //prints a custom Store linked list
 void print_store_locations(Store *location_list){
-    while(location_list!=NULL){
-        printf("\t name: %s", location_list->name);
+    Store *start = location_list;
+    while(location_list->next->price > 0){
+        location_list = location_list->next;
+    }
+    location_list->next=NULL;
+
+    while(start!=NULL){
+       // printf("\t name: %s", location_list->name);
+        printf("\t self_pointer: %p", location_list);
         printf("\t distance: %d", location_list->distance);
         printf("\t price: %d", location_list->price);
-        printf("\t amount: %d\n", location_list->amount);
+        printf("\t amount: %d", location_list->amount);
+        printf("\t next_pointer: %p\n", location_list->next);
         location_list=location_list->next;
     }
 }

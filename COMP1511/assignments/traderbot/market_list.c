@@ -39,11 +39,6 @@ Market *get_market_list(Location *cur_loc){
     }while(cur_loc != start);
 
     printf("MARKET LIST\n");
-    /*
-    for(;market_head!=NULL;market_head = market_head->next){
-        print_market_node(market_head);
-    }
-    */
     return market_head;
 }
 
@@ -62,6 +57,10 @@ int market_from_location(Market *m, Location *loc, Location *bot_loc){
     m->next = NULL;
 
     //create and initialise the details of that particular store
+    m->seller_list = malloc(sizeof(Store));
+    m->buyer_list = malloc(sizeof(Store));
+    m->seller_list->distance = distance_search(loc, bot_loc);
+    m->buyer_list->distance = distance_search(loc, bot_loc);
     create_store(m->seller_list, m->buyer_list, loc);
 
     //store additional information
@@ -109,13 +108,11 @@ Market *market_add(Market *node, Market *head){
             n->sellers+=node->sellers;
             n->buyers+=node->buyers;
 
-            /*
             if(node->store_type==LOCATION_BUYER){
                 n->buyer_list = add_store(node->buyer_list, n->buyer_list);
             }else if(node->store_type==LOCATION_SELLER){
                 n->seller_list = add_store(node->seller_list, n->seller_list);
             }
-            */
 
             return head;
         }
