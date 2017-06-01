@@ -12,6 +12,17 @@ char *get_bot_name(void){
 void get_action(struct bot *bot, int *action, int *n){
 
     Location *current_location = bot->location;
+    Location *sanitize_location = bot->location;
+    do{
+        if(sanitize_location->quantity == 0){
+            sanitize_location->previous->next = sanitize_location->next;
+            sanitize_location->next->previous = sanitize_location->previous;
+            free(sanitize_location);
+            sanitize_location = sanitize_location->previous->next;
+            continue;
+        }
+        sanitize_location = sanitize_location->next;
+    }while(sanitize_location!=bot->location);
 
     //check fuel_status and if we need to move strictly towards the nearest station
     int fuel_distance = 0;
@@ -43,6 +54,9 @@ void get_action(struct bot *bot, int *action, int *n){
 
     //print the market)list
     Market *print = market_list;
+    if(print==NULL){
+        printf("NULLED YOU CUCK!\n");
+    }
     for(;print!=NULL;print=print->next){
         print_market_node(print);
     }
@@ -56,7 +70,7 @@ void get_action(struct bot *bot, int *action, int *n){
         *action = ACTION_BUY;
         *n = 1000;
     }
-        
+
     if(bot->cargo!=NULL){
         move = distance_to_best_buyer(market_list, bot);
         if(move != 0){
@@ -66,6 +80,6 @@ void get_action(struct bot *bot, int *action, int *n){
             *action = ACTION_SELL;
             *n = 1000;
         }
-        
+
     }
 }
