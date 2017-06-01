@@ -59,8 +59,8 @@ int market_from_location(Market *m, Location *loc, Location *bot_loc){
     //create and initialise the details of that particular store
     m->seller_list = malloc(sizeof(Store));
     m->buyer_list = malloc(sizeof(Store));
-    m->seller_list->distance = distance_search(loc, bot_loc);
-    m->buyer_list->distance = distance_search(loc, bot_loc);
+    m->seller_list->distance = distance_search(bot_loc, loc);
+    m->buyer_list->distance = distance_search(bot_loc, loc);
     create_store(m->seller_list, m->buyer_list, loc);
 
     //store additional information
@@ -84,7 +84,14 @@ int market_from_location(Market *m, Location *loc, Location *bot_loc){
 
 //prints a custom Market linked list
 void print_market_node(Market *m){
-    printf("%s, supply: %d\t demand: %d\t sellers: %d\t buyers %d\t volume:%d\t weight:%d\t\n", m->product, m->supply, m->demand, m->sellers, m->buyers, m->volume, m->weight);
+    printf("%s: ", m->product);
+    printf("\t supply: %d", m->supply);
+    printf("\t demand: %d", m->demand);
+    printf("\t sellers: %d", m->sellers);
+    printf("\t buyers: %d", m->buyers);
+    printf("\t volume: %d", m->volume);
+    printf("\t weight: %d", m->weight);
+    printf("\t preference: %d\n", m->preference_to_buy);
     printf("Buyer List\n");
     print_store_locations(m->buyer_list);
     printf("Seller List\n");
@@ -122,8 +129,18 @@ Market *market_add(Market *node, Market *head){
     //if not in the list, add it to the list
     if(previous==NULL){
         head = node;
+        if(node->store_type == LOCATION_SELLER){
+            node->buyer_list = NULL;
+        }else if(node->store_type == LOCATION_BUYER){
+            node->seller_list = NULL;
+        }
     }else{
         previous->next = node;
+        if(node->store_type == LOCATION_SELLER){
+            node->buyer_list = NULL;
+        }else if(node->store_type == LOCATION_BUYER){
+            node->seller_list = NULL;
+        }
     }
     node->next = n;
     return head;

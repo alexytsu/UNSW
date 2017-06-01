@@ -17,20 +17,20 @@ fuel_price 50 200
 # specify locations as
 #  name type commodity
 
-CSE             LOCATION_START 
+CSE             LOCATION_START
 Quadrangle      LOCATION_OTHER
-"Physics Lawn"  LOCATION_OTHER 
-Racecourse      LOCATION_OTHER 
-Dump            LOCATION_DUMP 
-Caltex          LOCATION_PETROL_STATION  
-BP              LOCATION_PETROL_STATION  
+"Physics Lawn"  LOCATION_OTHER
+Racecourse      LOCATION_OTHER
+Dump            LOCATION_DUMP
+Caltex          LOCATION_PETROL_STATION
+BP              LOCATION_PETROL_STATION
 "J&B Hifi"      LOCATION_BUYER          Computers
 MSY             LOCATION_BUYER          Computers
 Umart           LOCATION_BUYER          Computers
 Dell            LOCATION_SELLER         Computers
 Lenovo          LOCATION_SELLER         Computers
 Apple           LOCATION_SELLER          Computers
-"Regent Hotel"  LOCATION_BUYER          Beer        
+"Regent Hotel"  LOCATION_BUYER          Beer
 Whitehouse      LOCATION_BUYER          Beer
 "James Squires" LOCATION_SELLER         Beer
 "4 Pines"       LOCATION_SELLER         Beer
@@ -49,12 +49,11 @@ Coles           LOCATION_BUYER          "Mars Bars"
 Aldi            LOCATION_BUYER          "Mars Bars"
 
 # specify commodities as
-# name volume weight price
+#
+# name      volume weight price
 
-Computers 4000 10000 2000
-Beer 1500  1300 100
-Televisions 4000 10000 1000
-Books 6000 5000 200
-"Mars Bars" 120 100 200
-
-
+Computers     4000 10000  2000
+Beer          1500  1300   100
+Televisions   4000 10000  1000
+Books         6000  5000   200
+"Mars Bars"    120   100   200
