@@ -12,18 +12,12 @@ Store *add_store(Store *node, Store *head){
 
 void create_store(Store *seller_list, Store *buyer_list, Location *loc){
     if(loc->type == LOCATION_BUYER){
-        seller_list->next=NULL;
-        seller_list=NULL;
-
         buyer_list->name = loc->name;
         buyer_list->price = loc->price;
         buyer_list->amount = loc->quantity;
         buyer_list->next = NULL;
     }
     if(loc->type == LOCATION_SELLER){
-        buyer_list->next=NULL;
-        buyer_list=NULL;
-
         seller_list->name = loc->name;
         seller_list->price = loc->price;
         seller_list->amount = loc->quantity;
@@ -31,21 +25,15 @@ void create_store(Store *seller_list, Store *buyer_list, Location *loc){
     }
 }
 
+
 //prints a custom Store linked list
 void print_store_locations(Store *location_list){
-    Store *start = location_list;
-    while(location_list->next->price > 0){
-        location_list = location_list->next;
-    }
-    location_list->next=NULL;
-
-    while(start!=NULL){
-       // printf("\t name: %s", location_list->name);
-        printf("\t self_pointer: %p", location_list);
+    while(location_list!=NULL){
+        printf("\t name: %s", location_list->name);
         printf("\t distance: %d", location_list->distance);
         printf("\t price: %d", location_list->price);
         printf("\t amount: %d", location_list->amount);
-        printf("\t next_pointer: %p\n", location_list->next);
+        printf("\t preference: %.0lf\n", location_list->store_preference);
         location_list=location_list->next;
     }
 }

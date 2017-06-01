@@ -40,7 +40,6 @@ Harvey-Norman   LOCATION_BUYER          Televisions
 LG              LOCATION_SELLER         Televisions
 Sony            LOCATION_SELLER         Televisions
 "UNSW Bookshop" LOCATION_BUYER          Books
-"ALEX"          LOCATION_BUYER          Books
 Addison-Wesley  LOCATION_SELLER         Books
 Prentice-Hall   LOCATION_SELLER         Books
 "O'Reilly"      LOCATION_SELLER         Books
