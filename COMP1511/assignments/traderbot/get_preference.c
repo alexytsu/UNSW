@@ -42,7 +42,7 @@ void rank_commodities(Market *market_list, Bot *bot){
             //max profit when constrained by how much funds we have left
 
             int max_by_available = seller->amount;
-            int max_by_funds = bot->cash/seller->price;
+            int max_by_funds = (bot->cash-10000)/seller->price;
             int max_by_weight = weight_remaining(bot)/n->weight;
             int max_by_volume = volume_remaining(bot)/n->volume;
 
@@ -117,7 +117,7 @@ int distance_to_best_store(Market *market_list){
     return best_store->distance;
 }
 
-int distance_to_best_buyer(Market *market_list, Bot *bot){
+int distance_to_best_buyer(Market *market_list, Bot *bot, int *none_found){
     char *product_name = malloc(1+strlen(bot->cargo->commodity->name));
     strcpy(product_name, bot->cargo->commodity->name);
     Market *market_search = market_list;
@@ -128,14 +128,20 @@ int distance_to_best_buyer(Market *market_list, Bot *bot){
     }
 
     Store *buyers = market_search->buyer_list;
-    int closest = buyers->distance;
+    int location = 0;
+    int maxprice = 0;
     Store *closest_store = buyers;
+    int found = 0;
     for(;buyers!=NULL;buyers=buyers->next){
-        if(buyers->distance < closest && buyers->amount != 0){
-            closest = buyers->distance;
-            closest_store = buyers;
+        if(buyers->price > maxprice && buyers->amount != 0){
+            maxprice = buyers->price;
+            location = buyers->distance;
         }
     }
+    if(maxprice==0){
+        *none_found = 1;
+        return location;
+    }
 
-    return closest;
+    return location;
 }

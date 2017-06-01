@@ -35,17 +35,30 @@ int fuel_status(int *fuel_distance, Bot *bot){
     Location *backward = bot->location;
     int distance_f = 0;
     int distance_b = 0;
-    for(;forward->type!=LOCATION_PETROL_STATION;forward=forward->next){
+    //check fuel is still available in the word
+    Location *check_world = bot->location;
+    int no_fuel_left = 1;
+    do{
+        if(check_world->type==LOCATION_PETROL_STATION&&check_world->quantity!=0){
+            no_fuel_left = 0;
+        }
+        check_world = check_world->next;
+    }while(check_world != bot->location);
+
+    if(no_fuel_left) return 0;
+
+    for(;forward->type!=LOCATION_PETROL_STATION || forward->quantity==0;forward=forward->next){
         distance_f ++;
     }
-    for(;backward->type!=LOCATION_PETROL_STATION;backward=backward->next){
+    for(;backward->type!=LOCATION_PETROL_STATION || backward->quantity==0;backward=backward->previous){
         distance_b ++;
     }
 
 
     *fuel_distance = distance_f<=distance_b ? distance_f:-distance_b;
-    if(bot->fuel <= bot->maximum_move + abs(*fuel_distance)){
+    if(bot->fuel <= 2*bot->maximum_move + abs(*fuel_distance)){
         return 1;
     }
     return 0;
 }
+

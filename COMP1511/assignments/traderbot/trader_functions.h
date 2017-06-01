@@ -42,4 +42,5 @@ int weight_remaining(Bot *bot);
 int min(int a, int b);
 int max(int a, int b);
 int distance_to_best_store(Market *market_list);
-int distance_to_best_buyer(Market *market_list, Bot *bot);
+int distance_to_best_buyer(Market *market_list, Bot *bot, int *none_found);
+int nearest_dump(Location *location);
