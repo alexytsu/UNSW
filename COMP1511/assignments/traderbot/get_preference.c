@@ -133,7 +133,7 @@ int distance_to_best_buyer(Market *market_list, Bot *bot, int *none_found){
     Store *closest_store = buyers;
     int found = 0;
     for(;buyers!=NULL;buyers=buyers->next){
-        if(buyers->price > maxprice && buyers->amount != 0){
+        if(buyers->price > maxprice && can_sell(buyers->name, bot->location)){
             maxprice = buyers->price;
             location = buyers->distance;
         }
@@ -142,6 +142,32 @@ int distance_to_best_buyer(Market *market_list, Bot *bot, int *none_found){
         *none_found = 1;
         return location;
     }
-
     return location;
+}
+
+int can_sell(char *store_name, Location *loc){
+    Location *start = loc;
+    do{
+        if(strcmp(store_name, start->name)==0){
+            break;
+        }
+        start = start->next;
+    }while(start!=loc);
+
+    printf("Analysing Seller!\n");
+
+    int sellers = 0;
+    for(struct bot_list *list = start->bots; list != NULL; list = list->next){
+        for(struct cargo *cur_bot_cargo = list->bot->cargo; cur_bot_cargo!=NULL; cur_bot_cargo = cur_bot_cargo->next){
+            if(strcmp(start->commodity->name, cur_bot_cargo->commodity->name)==0){
+                sellers ++;
+            } 
+        } 
+    }
+
+    if(sellers >= start->quantity){
+        return 0;
+    }else{
+        return 1;
+    }
 }
