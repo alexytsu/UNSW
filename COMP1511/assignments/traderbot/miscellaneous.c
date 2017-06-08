@@ -13,6 +13,40 @@ int min(int a, int b){
     return a<=b ? a:b;
 }
 
+int overcrowded(int move, Location *curr){
+    int i = 0;
+    if(move>=0){
+        for(i = 0; i < move; i++){
+            curr = curr->next;
+        }
+    }else{
+        move = -1*move;
+        for(i = 0; i < move; i ++){
+            curr = curr->previous;
+        }
+    }
+    
+    int bot_count = 0;
+    //here curr is the location we wanted to sell at
+    for(struct bot_list *bots = curr->bots; bots!=NULL; bots=bots->next){
+        //look in each bots cargo to see if they have the item 
+        int contains = 0; 
+        for(struct cargo *cur_bot_cargo = bots->bot->cargo;cur_bot_cargo !=NULL ;cur_bot_cargo = cur_bot_cargo->next){
+            if(strcmp(cur_bot_cargo->commodity->name, curr->commodity->name)==0){
+                contains = 1;
+            }
+        }
+        if(contains){
+            bot_count ++;
+        }
+    }
+    if(curr->quantity <= bot_count){
+        return 1;
+    }
+
+    return 0;
+}
+
 //find the distance between any two locations in the circular map
 int distance_search(Location *loc1, Location *loc2){
     Location *forward = loc1;
