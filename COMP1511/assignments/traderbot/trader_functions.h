@@ -1,3 +1,5 @@
+#include "trader_bot.h"
+
 typedef struct location Location;
 
 typedef struct store{
