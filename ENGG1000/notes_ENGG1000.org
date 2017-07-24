@@ -1,0 +1,42 @@
+* ENGG1000 Engineering Design and Innovation 
+
+* Lecture Notes 
+** <2017-07-24 Mon> Introduction                                    :admin: 
+*** Course objectives 
+    - Reduce a problem statement 
+    - Generate a range of concecpts 
+    - Evaluate the best design 
+    - Build and compete 
+*** Track your project against a plan 
+    - Keep a design journal 
+*** Projects
+**** Engineers Without Borders Challenge
+     - Providing a safe clean water supply to Vanuata
+     - Design a low cost water purifier and associated water quality sensor
+     - Solution must be appropriate to the community
+     - Chemical, computing or electrical streams available
+**** Project DELTA
+     - Develop a low cost all terrain transport system
+     - Vehicle needs to transport the three FRC balls
+     - Must collect and carry the load
+     - Mentoring, TAFE training and building facilities
+     - Mechanical, electrical and computing streams available
+**** SMART Project 
+     - Integrate shape memory alloy into a humanoid robot
+     - Create a prototype elbow joint with 1deg rotational freedom
+     - At least 120degree arc
+     - Criteria
+       1. Overall weight
+       2. Flexibility
+       3. Lifting capabilities
+       4. Movement speed
+       5. Precision of position
+       6. Energy efficiency
+     - Mechanical, material, computer
+**** Warehouse Droid 
+     - Deliver a pallet from uknown to known position
+     - Detect magnetic tags
+     - Lift magnetic tags
+     - Identify delivery point
+     - Drop the pallet
+
