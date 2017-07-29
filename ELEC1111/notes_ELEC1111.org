@@ -62,7 +62,7 @@
     | Operational Amplifiers     | Inductors                 |
     An *ideal independent source* is an active element that provides a specified
     voltage and current that is completely independent of any other voltage or
-    current in the circuit.
+    current in the circuit. Represented on diagrams as *circles*.
     #+ATTR_LATEX: :environment longtable :align p{5cm}p{5cm}
     | Ideal Voltage Source                                                   | Ideal Current Source                                                                         |
     |------------------------------------------------------------------------+----------------------------------------------------------------------------------------------|
@@ -70,7 +70,7 @@
     | Capable of producing any necessary current to maintain desired voltage | Capable of producing any necessary voltage to establish desired current through the terminal |
     | Voltage is known at the terminals but current is not                   | Current is known at the terminals but voltage is not                                         |
     An *ideal dependent source* is an active element whose output is controlled
-    by another voltage or current in the circuit.
+    by another voltage or current in the circuit. Represented on diagrams as *squares*.
 
     In summary,
     - Ideal voltage and current sources can generate infinite power
