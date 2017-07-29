@@ -25,7 +25,7 @@ struct IntListRep {
 // create a new empty IntList
 IntList newIntList()
 {
-	struct IntListRep *L;
+  struct IntListRep *L;
 
 	L = malloc(sizeof (struct IntListRep));
 	assert (L != NULL);
@@ -38,7 +38,6 @@ IntList newIntList()
 // free up all space associated with list
 void freeIntList(IntList L)
 {
-	// does nothing ...
 }
 
 // display list as one integer per line on stdout
@@ -92,8 +91,32 @@ void IntListInsert(IntList L, int v)
 // insert an integer into correct place in a sorted list
 void IntListInsertInOrder(IntList L, int v)
 {
-	// This is INCORRECT
-	IntListInsert(L, v);
+  struct IntListNode *n;
+  n = newIntListNode(v);
+
+  struct IntListNode *curr = L->first;
+  struct IntListNode *prev = NULL;
+
+  if(curr == NULL){
+    L->first = L->last = n;
+  }
+
+  while(curr!=NULL && v >= curr->data){
+    prev = curr;
+    curr = curr -> next;
+  }
+
+  if(prev == NULL){
+    L->first = n;
+    n->next = curr;
+  }else{
+    prev->next = n;
+    n->next = curr;
+    if(n->next == NULL){
+      L->last = n;
+    }
+  }
+  L->size++;
 }
 
 // delete first occurrence of v from a list
