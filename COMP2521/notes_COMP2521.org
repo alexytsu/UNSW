@@ -1,13 +1,11 @@
 * Lectures
 ** <2017-07-26 Wed> 
 *** Handling Command Line Arguments
-
 Use =sscanf= to handle command line arguments and error checking. Here is a
 example calendar app that gets months. We first check that we receive the
 correct number of command line arguments. We then check that the command line
 arguments are valid by assigning it to an integer and checking the return status
 of that assignment.
-
 #+BEGIN_SRC C
   #include <stdio.h>
   #include <stdlib.h>
@@ -30,16 +28,7 @@ of that assignment.
       switch(num){
           case 1: monthStr = "January"; break;
           case 2: monthStr = "February"; break;
-          case 3: monthStr = "March"; break;
-          case 4: monthStr = "April"; break;
-          case 5: monthStr = "May"; break;
-          case 6: monthStr = "June"; break;
-          case 7: monthStr = "July"; break;
-          case 8: monthStr = "August"; break;
-          case 9: monthStr = "September"; break;
-          case 10: monthStr = "October"; break;
-          case 11: monthStr = "November"; break;
-          case 12: monthStr = "December"; break;
+          default: monthStr = "Other"; break;
       }
 
       printf("%s\n", monthStr);
@@ -47,3 +36,20 @@ of that assignment.
       return EXIT_SUCCESS;
   }
 #+END_SRC
+** <2017-08-01 Tue> [[file:lectures/week2.html][Lecture Slides]] 
+*** Measuring the efficiency of an algorithm
+We want our programs to be /correct/, /reliable/, /maintainable/ and
+/efficient/. To determine algorithmic efficiency, we measure program execution
+costs.
+| Experimental                                     | Theoretical                          |
+|--------------------------------------------------+--------------------------------------|
+| Run and measure execution time                   | Identify core costs of an algorithm  |
+| Depends on compiler, machine etc.                | Express cost in terms of #operations |
+| Alternatively we analyze a function call profile |                                      |
+
+We are usually more interested in the /growth rate/ of algorithms rather than
+their absolute cost. We look at /complexity classes/ and /big-O notation/:
+- O(1) ... constant functions
+- O(logn) ... log functions
+- O(n) ... linear functions
+- O(nlogn), O(n^2), O(n!) ... etc.
