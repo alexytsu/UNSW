@@ -38,6 +38,14 @@ IntList newIntList()
 // free up all space associated with list
 void freeIntList(IntList L)
 {
+	struct IntListNode *prev = NULL;
+	struct IntListNode *temp = L->first;
+	while(temp != NULL){
+		prev = temp;
+		temp = temp->next;
+		free(prev);
+	}
+	free(L);
 }
 
 // display list as one integer per line on stdout
@@ -91,32 +99,35 @@ void IntListInsert(IntList L, int v)
 // insert an integer into correct place in a sorted list
 void IntListInsertInOrder(IntList L, int v)
 {
-  struct IntListNode *n;
-  n = newIntListNode(v);
+	struct IntListNode *n = newIntListNode(v);
+	assert(n!=NULL);
 
-  struct IntListNode *curr = L->first;
-  struct IntListNode *prev = NULL;
+	struct IntListNode *curr = L->first;
+	struct IntListNode *prev = NULL;
 
-  if(curr == NULL){
-    L->first = L->last = n;
-  }
+	//if the list is empty
+	if(curr == NULL){
+		L->first = L->last = n;
+	}
 
-  while(curr!=NULL && v >= curr->data){
-    prev = curr;
-    curr = curr -> next;
-  }
+	//move the pointers to the correct positions
+	while(curr!=NULL && v >= curr->data){
+		prev = curr;
+		curr = curr -> next;
+	}
 
-  if(prev == NULL){
-    L->first = n;
-    n->next = curr;
-  }else{
-    prev->next = n;
-    n->next = curr;
-    if(n->next == NULL){
-      L->last = n;
-    }
-  }
-  L->size++;
+	if(prev == NULL){ //a new smallest element in the list
+		L->first = n;
+		n->next = curr;
+	}else{ //insert elsewhere in the list
+		prev->next = n;
+		n->next = curr;
+		if(n->next == NULL){ //if it's the biggest element in the list
+			L->last = n;
+		}
+	}
+
+	L->size++;
 }
 
 // delete first occurrence of v from a list
@@ -225,5 +236,5 @@ void IntListPrint(FILE *outf, IntList L)
 
 	assert(L != NULL);
 	for (curr = L->first; curr != NULL; curr = curr->next)
-		printf("%d\n", curr->data);
+		fprintf(outf, "%d\n", curr->data);
 }
