@@ -1,7 +1,7 @@
 * Lectures
-** <2017-07-26 Wed> 
-*** Handling Command Line Arguments
-Use =sscanf= to handle command line arguments and error checking. Here is a
+* <2017-07-26 Wed> Introduction 
+** Handling Command Line Arguments
+Use ~sscanf~ to handle command line arguments and error checking. Here is a
 example calendar app that gets months. We first check that we receive the
 correct number of command line arguments. We then check that the command line
 arguments are valid by assigning it to an integer and checking the return status
@@ -36,8 +36,9 @@ of that assignment.
       return EXIT_SUCCESS;
   }
 #+END_SRC
-** <2017-08-01 Tue> [[file:lectures/week2.html][Lecture Slides]] 
-*** Measuring the efficiency of an algorithm
+* <2017-08-01 Tue> Algorithmic Efficiency 
+[[file:lectures/week2.html][Lecture Slides]]
+** Measuring the efficiency of an algorithm
 We want our programs to be /correct/, /reliable/, /maintainable/ and
 /efficient/. To determine algorithmic efficiency, we measure program execution
 costs.
@@ -53,3 +54,68 @@ their absolute cost. We look at /complexity classes/ and /big-O notation/:
 - O(logn) ... log functions
 - O(n) ... linear functions
 - O(nlogn), O(n^2), O(n!) ... etc.
+* <2017-08-02 Wed> Abstract Data Types  
+** Binary Search
+Start with entire array and halve the range the element may be in. We stop when
+we find X or the range is empty. Binary search is *limited*. E.g. must be
+performed on arrays and the array must already be sorted. ADD derivation of its
+efficiency. 
+** Abstract Data Types
+We can model a program as a *state machine*. An *abstract data type* helps us
+conceptualize this. A data type is a set of *values* and collection of
+*operations* on those values. An abstract data type is an approach to
+implementing these, separating the interface and implementation. End users of an
+ADT should not see the implementation (which can be stored in an object file).
+| Type                       | Example   |
+|----------------------------+-----------|
+| Data Type                  | C strings |
+| Abstract Data Object       |           |
+| Abstract Data Types        | C files   |
+| Generic Abstract Data Type |           |
+Abstract data types can have multiple instances whereas GADTs can have multiple
+types and instances. We can also have hybrid data types such as linked-lists
+where each node points to an array.
+[[file:lectures/week2_files/structures2-small.png][linked-list-array]]
+** Pre-conditions and post-conditions
+If we assume a set of pre-conditions, we expect to reach a post-condition after
+our code has run. We /can/ use ~assert~ to do this pre-condition checking. But
+it does not provide useful error-handling and does not release resources that
+were allocated by ~malloc~. Usually, it is a better idea first release resources
+and then return the function with an error log.
+** Implement Bit Operations
+#+BEGIN_SRC c
+#define NBITS 1024
+#define NWORDS (NBITS/32)
+typedef unsigned int Word;
+typedef Word Bits[NWORDS]; //an unsigned integer
+#+END_SRC
+*** Masking
+Say we have 00110101 and we want to find the fourth bit. 
+| x = 1      | ~[00000001]~ |
+| x = x << 3 | ~[00001000]~ |
+| x & y      | ~[00000000]~ |
+We get a 1 or a 0 (as an int) corresponding to the 4th bit of x. 
+** Function pointers
+#+BEGIN_SRC c
+int sqauare(int x){ 
+  return x*x;
+}
+int timesTwo(int x){ 
+  return x*2;
+}
+int (*fp)(int); //declare a pointer that can point to a function
+fp = &square; //fp points to the square function
+int n = (*fp)(10); //call the square function with input 10
+fp = timesTwo; //we can point fp to functions without the &
+n = (*fp)(2); //call the timesTwo function with input 2
+n = fp(2); //we can also use normal function notation
+#+END_SRC 
+*** Higher Order Functions
+** Generic Types in C
+C provides a pointer to void ~void *p~ which can be used to create *generic data
+types* by declaring values to be of type ~void *~. For example:
+#+BEGIN_SRC C
+struct Node{
+   
+}
+#+END_SRC
