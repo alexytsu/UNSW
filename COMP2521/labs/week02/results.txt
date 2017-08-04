@@ -1,0 +1,368 @@
+rm -f usel IntList.o useIntList.o randl
+gcc -c -Wall -Werror useIntList.c
+gcc -c -Wall -Werror IntList.c
+gcc -o usel IntList.o useIntList.o
+gcc -Wall -Werror -o randl randList.c
+Generating lists
+Lists Generated
+0.005
+UNIX_SORT reversed 10000 trial 0
+0.002
+INSERT_SORT reversed 10000 trial 0
+0.006
+UNIX_SORT reversed 10000 trial 1
+0.006
+INSERT_SORT reversed 10000 trial 1
+0.004
+UNIX_SORT reversed 10000 trial 2
+0.006
+INSERT_SORT reversed 10000 trial 2
+0.011
+UNIX_SORT random 10000 trial 0
+0.319
+INSERT_SORT random 10000 trial 0
+0.009
+UNIX_SORT random 10000 trial 1
+0.321
+INSERT_SORT random 10000 trial 1
+0.009
+UNIX_SORT random 10000 trial 2
+0.336
+INSERT_SORT random 10000 trial 2
+0.000
+UNIX_SORT sorted 10000 trial 0
+0.334
+INSERT_SORT sorted 10000 trial 0
+0.005
+UNIX_SORT sorted 10000 trial 1
+0.334
+INSERT_SORT sorted 10000 trial 1
+0.005
+UNIX_SORT sorted 10000 trial 2
+0.332
+INSERT_SORT sorted 10000 trial 2
+0.009
+UNIX_SORT random_dup 10000 trial 0
+0.339
+INSERT_SORT random_dup 10000 trial 0
+0.006
+UNIX_SORT random_dup 10000 trial 1
+0.322
+INSERT_SORT random_dup 10000 trial 1
+0.006
+UNIX_SORT random_dup 10000 trial 2
+0.338
+INSERT_SORT random_dup 10000 trial 2
+0.006
+UNIX_SORT reversed_dup 10000 trial 0
+0.005
+INSERT_SORT reversed_dup 10000 trial 0
+0.007
+UNIX_SORT reversed_dup 10000 trial 1
+0.006
+INSERT_SORT reversed_dup 10000 trial 1
+0.008
+UNIX_SORT reversed_dup 10000 trial 2
+0.006
+INSERT_SORT reversed_dup 10000 trial 2
+0.006
+UNIX_SORT sorted_dup 10000 trial 0
+0.337
+INSERT_SORT sorted_dup 10000 trial 0
+0.003
+UNIX_SORT sorted_dup 10000 trial 1
+0.337
+INSERT_SORT sorted_dup 10000 trial 1
+0.005
+UNIX_SORT sorted_dup 10000 trial 2
+0.335
+INSERT_SORT sorted_dup 10000 trial 2
+0.009
+UNIX_SORT reversed 25000 trial 0
+0.011
+INSERT_SORT reversed 25000 trial 0
+0.009
+UNIX_SORT reversed 25000 trial 1
+0.011
+INSERT_SORT reversed 25000 trial 1
+0.012
+UNIX_SORT reversed 25000 trial 2
+0.007
+INSERT_SORT reversed 25000 trial 2
+0.022
+UNIX_SORT random 25000 trial 0
+3.326
+INSERT_SORT random 25000 trial 0
+0.022
+UNIX_SORT random 25000 trial 1
+3.348
+INSERT_SORT random 25000 trial 1
+0.024
+UNIX_SORT random 25000 trial 2
+3.325
+INSERT_SORT random 25000 trial 2
+0.011
+UNIX_SORT sorted 25000 trial 0
+2.072
+INSERT_SORT sorted 25000 trial 0
+0.007
+UNIX_SORT sorted 25000 trial 1
+2.063
+INSERT_SORT sorted 25000 trial 1
+0.011
+UNIX_SORT sorted 25000 trial 2
+2.064
+INSERT_SORT sorted 25000 trial 2
+0.025
+UNIX_SORT random_dup 25000 trial 0
+3.334
+INSERT_SORT random_dup 25000 trial 0
+0.020
+UNIX_SORT random_dup 25000 trial 1
+3.328
+INSERT_SORT random_dup 25000 trial 1
+0.023
+UNIX_SORT random_dup 25000 trial 2
+3.335
+INSERT_SORT random_dup 25000 trial 2
+0.010
+UNIX_SORT reversed_dup 25000 trial 0
+0.013
+INSERT_SORT reversed_dup 25000 trial 0
+0.013
+UNIX_SORT reversed_dup 25000 trial 1
+0.009
+INSERT_SORT reversed_dup 25000 trial 1
+0.013
+UNIX_SORT reversed_dup 25000 trial 2
+0.010
+INSERT_SORT reversed_dup 25000 trial 2
+0.008
+UNIX_SORT sorted_dup 25000 trial 0
+2.065
+INSERT_SORT sorted_dup 25000 trial 0
+0.012
+UNIX_SORT sorted_dup 25000 trial 1
+2.073
+INSERT_SORT sorted_dup 25000 trial 1
+0.014
+UNIX_SORT sorted_dup 25000 trial 2
+2.067
+INSERT_SORT sorted_dup 25000 trial 2
+0.024
+UNIX_SORT reversed 50000 trial 0
+0.018
+INSERT_SORT reversed 50000 trial 0
+0.020
+UNIX_SORT reversed 50000 trial 1
+0.020
+INSERT_SORT reversed 50000 trial 1
+0.024
+UNIX_SORT reversed 50000 trial 2
+0.019
+INSERT_SORT reversed 50000 trial 2
+0.039
+UNIX_SORT random 50000 trial 0
+17.794
+INSERT_SORT random 50000 trial 0
+0.046
+UNIX_SORT random 50000 trial 1
+17.273
+INSERT_SORT random 50000 trial 1
+0.043
+UNIX_SORT random 50000 trial 2
+17.464
+INSERT_SORT random 50000 trial 2
+0.021
+UNIX_SORT sorted 50000 trial 0
+8.275
+INSERT_SORT sorted 50000 trial 0
+0.017
+UNIX_SORT sorted 50000 trial 1
+8.259
+INSERT_SORT sorted 50000 trial 1
+0.018
+UNIX_SORT sorted 50000 trial 2
+8.267
+INSERT_SORT sorted 50000 trial 2
+0.044
+UNIX_SORT random_dup 50000 trial 0
+17.501
+INSERT_SORT random_dup 50000 trial 0
+0.044
+UNIX_SORT random_dup 50000 trial 1
+17.420
+INSERT_SORT random_dup 50000 trial 1
+0.048
+UNIX_SORT random_dup 50000 trial 2
+17.774
+INSERT_SORT random_dup 50000 trial 2
+0.027
+UNIX_SORT reversed_dup 50000 trial 0
+0.021
+INSERT_SORT reversed_dup 50000 trial 0
+0.022
+UNIX_SORT reversed_dup 50000 trial 1
+0.018
+INSERT_SORT reversed_dup 50000 trial 1
+0.024
+UNIX_SORT reversed_dup 50000 trial 2
+0.020
+INSERT_SORT reversed_dup 50000 trial 2
+0.019
+UNIX_SORT sorted_dup 50000 trial 0
+8.283
+INSERT_SORT sorted_dup 50000 trial 0
+0.022
+UNIX_SORT sorted_dup 50000 trial 1
+8.273
+INSERT_SORT sorted_dup 50000 trial 1
+0.023
+UNIX_SORT sorted_dup 50000 trial 2
+8.264
+INSERT_SORT sorted_dup 50000 trial 2
+0.049
+UNIX_SORT reversed 100000 trial 0
+0.042
+INSERT_SORT reversed 100000 trial 0
+0.045
+UNIX_SORT reversed 100000 trial 1
+0.038
+INSERT_SORT reversed 100000 trial 1
+0.048
+UNIX_SORT reversed 100000 trial 2
+0.038
+INSERT_SORT reversed 100000 trial 2
+0.093
+UNIX_SORT random 100000 trial 0
+104.598
+INSERT_SORT random 100000 trial 0
+0.090
+UNIX_SORT random 100000 trial 1
+120.986
+INSERT_SORT random 100000 trial 1
+0.097
+UNIX_SORT random 100000 trial 2
+123.372
+INSERT_SORT random 100000 trial 2
+0.041
+UNIX_SORT sorted 100000 trial 0
+33.726
+INSERT_SORT sorted 100000 trial 0
+0.038
+UNIX_SORT sorted 100000 trial 1
+33.863
+INSERT_SORT sorted 100000 trial 1
+0.035
+UNIX_SORT sorted 100000 trial 2
+33.696
+INSERT_SORT sorted 100000 trial 2
+0.100
+UNIX_SORT random_dup 100000 trial 0
+110.247
+INSERT_SORT random_dup 100000 trial 0
+0.097
+UNIX_SORT random_dup 100000 trial 1
+117.402
+INSERT_SORT random_dup 100000 trial 1
+0.102
+UNIX_SORT random_dup 100000 trial 2
+105.299
+INSERT_SORT random_dup 100000 trial 2
+0.048
+UNIX_SORT reversed_dup 100000 trial 0
+0.044
+INSERT_SORT reversed_dup 100000 trial 0
+0.048
+UNIX_SORT reversed_dup 100000 trial 1
+0.043
+INSERT_SORT reversed_dup 100000 trial 1
+0.048
+UNIX_SORT reversed_dup 100000 trial 2
+0.043
+INSERT_SORT reversed_dup 100000 trial 2
+0.040
+UNIX_SORT sorted_dup 100000 trial 0
+35.172
+INSERT_SORT sorted_dup 100000 trial 0
+0.041
+UNIX_SORT sorted_dup 100000 trial 1
+34.214
+INSERT_SORT sorted_dup 100000 trial 1
+0.046
+UNIX_SORT sorted_dup 100000 trial 2
+34.372
+INSERT_SORT sorted_dup 100000 trial 2
+0.054
+UNIX_SORT reversed 110000 trial 0
+0.045
+INSERT_SORT reversed 110000 trial 0
+0.055
+UNIX_SORT reversed 110000 trial 1
+0.038
+INSERT_SORT reversed 110000 trial 1
+0.048
+UNIX_SORT reversed 110000 trial 2
+0.046
+INSERT_SORT reversed 110000 trial 2
+0.106
+UNIX_SORT random 110000 trial 0
+161.363
+INSERT_SORT random 110000 trial 0
+0.114
+UNIX_SORT random 110000 trial 1
+164.632
+INSERT_SORT random 110000 trial 1
+0.099
+UNIX_SORT random 110000 trial 2
+146.506
+INSERT_SORT random 110000 trial 2
+0.043
+UNIX_SORT sorted 110000 trial 0
+41.490
+INSERT_SORT sorted 110000 trial 0
+0.043
+UNIX_SORT sorted 110000 trial 1
+42.586
+INSERT_SORT sorted 110000 trial 1
+0.050
+UNIX_SORT sorted 110000 trial 2
+41.176
+INSERT_SORT sorted 110000 trial 2
+0.105
+UNIX_SORT random_dup 110000 trial 0
+147.249
+INSERT_SORT random_dup 110000 trial 0
+0.107
+UNIX_SORT random_dup 110000 trial 1
+173.745
+INSERT_SORT random_dup 110000 trial 1
+0.109
+UNIX_SORT random_dup 110000 trial 2
+142.736
+INSERT_SORT random_dup 110000 trial 2
+0.058
+UNIX_SORT reversed_dup 110000 trial 0
+0.038
+INSERT_SORT reversed_dup 110000 trial 0
+0.054
+UNIX_SORT reversed_dup 110000 trial 1
+0.047
+INSERT_SORT reversed_dup 110000 trial 1
+0.060
+UNIX_SORT reversed_dup 110000 trial 2
+0.048
+INSERT_SORT reversed_dup 110000 trial 2
+0.038
+UNIX_SORT sorted_dup 110000 trial 0
+41.482
+INSERT_SORT sorted_dup 110000 trial 0
+0.050
+UNIX_SORT sorted_dup 110000 trial 1
+41.182
+INSERT_SORT sorted_dup 110000 trial 1
+0.046
+UNIX_SORT sorted_dup 110000 trial 2
+41.262
+INSERT_SORT sorted_dup 110000 trial 2
+rm -f usel IntList.o useIntList.o randl
