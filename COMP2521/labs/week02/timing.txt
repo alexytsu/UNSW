@@ -26,8 +26,21 @@ INSERT_SORT	 25000	 random    	 3.326000	 3.348000	 3.325000	 3.333000
 UNIX_SORT	 50000	 random    	 0.039000	 0.046000	 0.043000	 0.042667
 INSERT_SORT	 50000	 random    	 17.794000	 17.273000	 17.464000	 17.510333
 
-UNIX_SORT	 100000	 random    	 0.093000	 0.090000	 0.097000	 0.093333
-INSERT_SORT	 100000	 random    	 104.598000	 120.986000	 123.372000	 116.318667
+NOTE: let's compare the algorithm's performances against random lists as an
+estimate of their relative performances. we notice that on line 20 and 21, the
+time differences are relatively small (although in terms of orders of magnitude,
+insert sort is still much slower). however, if we compare each algorithm's
+performance to its own performance at each list size, we see that insert sort
+grows much quicker. That is to say whilst unix sort only takes an approximately
+10% increase in time to sort 110,000 numbers compared to 100,000, the time taken
+for insert sort increases by about 60%. this is expected when we consider the
+bigO time complexity of each algorithm we see that unix sort (which i think uses
+merge sort?) runs in nlog(n) time whilst insert sort runs on average in n^2
+time, discounting edge cases where it runs in n time (see the final note for an
+explanation) performance to itself
+
+UNIX_SORT 100000 random 0.093000 0.090000 0.097000 0.093333
+INSERT_SORT 100000 random 104.598000 120.986000 123.372000 116.318667
 
 UNIX_SORT	 110000	 random    	 0.106000	 0.114000	 0.099000	 0.106333
 INSERT_SORT	 110000	 random    	 161.363000	 164.632000	 146.506000	 157.500333
@@ -94,5 +107,13 @@ INSERT_SORT	 110000	 sorted_dup	 41.482000	 41.182000	 41.262000	 41.308667
 
 
 
-Note:
-Insert sort takes slightly less time to process reverse inputs than unix sort. The way it works, insert sort runs down the linked list from the start looking for a node containing data larger than that the new node holds. Therefore if the input list is fed in reverse in descending order, each new node will always be inserted at the start of the list. This would mean that the file wouldn't have to run the while loop some large amount of times to compare each node with the new one, as a check for the first node will always result in something larger than or equal to the new node. Other than that unix sort is a much more efficient algorithm, although the differences are quite minimal with smaller input sizes.
+Note: Insert sort takes slightly less time to process reverse inputs than unix
+sort. The way it works, insert sort runs down the linked list from the start
+looking for a node containing data larger than that the new node holds.
+Therefore if the input list is fed in reverse in descending order, each new node
+will always be inserted at the start of the list. This would mean that the file
+wouldn't have to run the while loop some large amount of times to compare each
+node with the new one, as a check for the first node will always result in
+something larger than or equal to the new node. Other than that unix sort is a
+much more efficient algorithm, although the differences are quite minimal with
+smaller input sizes.
