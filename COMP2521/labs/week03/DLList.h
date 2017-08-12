@@ -62,4 +62,6 @@ int DLListLength(DLList);
 // is the list empty?
 int DLListIsEmpty(DLList);
 
+// print values and number of pointers in a list
+void details(DLList myList, int state);
 #endif

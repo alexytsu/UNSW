@@ -222,8 +222,8 @@ void DLListBefore(DLList L, char *it)
 	    newNode->next = L->curr;
 	    newNode->prev = L->curr->prev;
 	    L->curr->prev = newNode;
-	    L->curr = newNode;
 	}
+	L->curr = newNode;
 	L->nitems++;
 }
 
@@ -288,3 +288,21 @@ int DLListIsEmpty(DLList L)
 	return (L->nitems == 0);
 }
 
+#define CYAN "\x1b[36m"
+#define GREEN "\x1b[32m"
+#define RESET "\x1b[0m"
+
+void details(DLList myList, int state)
+{
+
+    (state) ? printf(CYAN):printf(GREEN);
+    printf("Details %s\n", (state) ? "after":"before");
+    printf("nitems: %d\n", myList->nitems);
+    printf("first: %s\n", myList->first->value);
+    printf("last: %s\n", myList->last->value);
+    printf("curr: %s\n", myList->curr->value);
+    if(state){
+        printf("\n\n List contents after this change \n\n");
+    }
+    printf(RESET);
+}
