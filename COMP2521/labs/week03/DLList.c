@@ -212,7 +212,9 @@ void DLListBefore(DLList L, char *it)
 {
 	assert(L != NULL);
     DLListNode *newNode = newDLListNode(it);
-    if(L->curr->prev==NULL){
+    if(L->curr == NULL){
+        L->first=L->curr=L->last=newNode;
+    }else if(L->curr->prev==NULL){
         newNode->next = L->curr;
         L->curr->prev = newNode;
         L->first = newNode;
@@ -235,7 +237,11 @@ void DLListAfter(DLList L, char *it)
 	DLListNode *newNode = newDLListNode(it);
     newNode->prev = L->curr; 
 	newNode->next = L->curr->next;
-	L->curr->next->prev = newNode;
+    if(L->curr->next != NULL){ //inserting at the end of a list
+	    L->curr->next->prev = newNode;
+    }else{
+        L->last = newNode;
+    }
 	L->curr->next = newNode;
 	L->curr = newNode;
 	
@@ -249,8 +255,14 @@ void DLListAfter(DLList L, char *it)
 void DLListDelete(DLList L)
 {
 	assert (L != NULL);
-	if(L->curr->prev==NULL && L->curr->next==NULL){ //empty 
+    if(L->curr==NULL) return;
+	if(L->curr->prev==NULL && L->curr->next==NULL){ //last one 
+        free(L->curr); 
+        L->first = NULL;
+        L->last = NULL;
 	    L->curr = NULL;
+        L->nitems = 0;
+        return;
 	}
 	else if(L->curr->next==NULL){ //last
 	    DLListNode *newcurr = L->curr->prev;
@@ -273,7 +285,7 @@ void DLListDelete(DLList L)
 	    free(L->curr);
 	    L->curr = newcurr;
 	}
-	L->nitems--;
+    L->nitems--;
 }
 
 // return number of elements in a list
