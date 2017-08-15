@@ -119,3 +119,21 @@ struct Node{
    
 }
 #+END_SRC
+* <2017-08-15 Tue> Sorting Algorithms
+** Merge Sort
+Since merge sort only works between two sorted lists, we must first split the
+original values into sorted lists. We can do this recursively by splitting an
+array until we have small sorted fragments.
+1. *Divide* by finding the middle of the array between index p and r. This can
+   be calculated by averaging p and r and rounding down.
+2. *Conquer* by recursively sorting the arrays (if they are unsorted). Split
+   them if unsorted, merge them if sorted.
+3. *Combine* by merging the two sorted subarrays back into a single sorted
+   subarray.
+The base case is a subarray containing fewer than two elements. Any array with
+one or no elements is already sorted.
+** Stability in Sorting Algorithms
+A *stable sort* assures that if two of the same values appear in a sequence the
+sorted output will have the same order. Quick sort is not a stable sort whereas
+*merge sort* can be implemented as a stable sort.
+
