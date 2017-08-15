@@ -1,0 +1,3 @@
+sortedA seems stable
+sortebB seems not stable
+sort b is faster on random lists than reversed/sorted lists
