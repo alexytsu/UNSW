@@ -122,10 +122,9 @@ circuit*.
 | Mesh   | Loop that contains no other loop         |
 | Node   | Point of connection between two branches |
 
-From these terms we can define series and parallel elements. Elements are in
-*series* if they exclusively share a single node and consequently carry the same
-current. Two or more elements are in parallel if they are connected to the same
-two nodes and have the same voltage across them.
+Elements are in *series* if they exclusively share a single node and
+consequently carry the same current. Two or more elements are in *parallel* if
+they are connected to the same two nodes and have the same voltage across them.
 ** Resistivity and conductance
 *Conductance* is the ability of an element to conduct electric current. It is
 the reciprocal of resistance. \begin{equation} G=\frac{1}{R}\end{equation}
