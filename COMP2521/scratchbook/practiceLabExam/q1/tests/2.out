@@ -1,0 +1,3 @@
+Value: 3
+Input sequence: 4, 3, 10, 5, 3, 1, 7, 3, 4, 1
+After removal: 4, 10, 5, 1, 7, 4, 1

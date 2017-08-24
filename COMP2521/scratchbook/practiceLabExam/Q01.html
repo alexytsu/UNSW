@@ -1,0 +1,140 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>COMP2521 (17s2) Sample Week-05 Lab Practical Exam</title>
+<link rel='stylesheet' type='text/css' href='exam.css'></head>
+<body>
+<div align='center'>
+<table width='100%' border='0'>
+<tr valign='top'>
+<td align='left' width='25%'>
+  <span class='tiny'>COMP2521 (17s2)</span>
+</td>
+<td align='center' width='50%'>
+  <span class='heading'>COMP2521 (17s2) Sample Week-05 Lab Exam</span>
+</td>
+<td align='right' width='25%'>
+  <span class='tiny'>Data Structures and Algorithms</span>
+</td>
+</table>
+</div>
+<center><a href='index.html'>[Instructions]</a> <a target='C' href='C/index.html'>[C language]</a>  
+<br>  <b>[q1]</b>   <a href='Q02.html'>[Q2]</a> 
+</center>
+<hr>
+<div style='margin-left:40px;margin-right:40px'>
+<h3>Question 1 <span class='tiny'>(10 marks)</span></h3>
+<p>
+
+In the <tt>q1</tt> directory, you will find the following files/directories:
+<ul>
+<li><b><tt>removeValue.c</tt></b>: the only file you need to modify and submit. You will also find the supporing header file 
+<tt>removeValue.h</tt>
+
+<li><tt>autotest</tt>: simple auto testing script, <i>important</i>: this script only tests simple cases, you need to extensively test your program for a wide range of test cases. 
+
+<li><tt>DLList.h</tt> and <tt>DLList.o</tt>: an implementation of a simple </b>doubly-linked list</b> ADT, 
+similar to (but not the same as) the one you used in your lab exercises. Please open and read 
+ <tt>DLList.h</tt> for the available functions for this question. Please note that <tt>DLList.c</tt> is NOT available for this exam.
+
+
+<li><tt>testRemoveValue.c</tt>: the program to test your function.The program uses the available function 
+<tt>getDLList</tt> to read a list from <tt>stdin</tt>, calls the function you implement <tt>removeValue</tt>, and 
+outputs the answer to <tt>stdout</tt>.
+
+<li><tt>Makefile</tt>: to build the required files.
+
+<li><tt>tests</tt>: the directory containing input (<tt>*.in</tt>) and 
+	expected output (<tt>*.exp</tt>) files for few simple test cases.
+
+</ul>
+
+</p>
+<p>
+Your task for this question is to implement the <tt>removeValue()</tt> function in the file <tt>removeValue.c</tt>.
+The <tt>removeValue()</tt> function has two arguments: a doubly-linked list and a value (to be removed). 
+The function <tt>removeValue()</tt> removes all the nodes from the given doubly-linked list <b>where node value is same as a given value</b>. 
+The method resets "current" node in the list to the first node (for example, <tt>L->curr = L->first</tt>).
+
+<p>The following examples show how the function works:
+</p>
+<pre>
+removeValue( [4, <b>8</b>, 10, 5] , 8)  <span style="font-family:sans-serif;font-size:14pt;">&rightarrow;</span>  [4, 10, 5]
+removeValue( [4, <b>3</b>, 10, 5, <b>3</b>, 1, 7, <b>3</b>, 4, 1], 3)  <span style="font-family:sans-serif;font-size:14pt;">&rightarrow;</span>  [4, 10, 5, 1, 7, 4, 1]
+removeValue( [3, 16, <b>16, 16, 16</b>, 20], 16)  <span style="font-family:sans-serif;font-size:14pt;">&rightarrow;</span>  [3, 20]
+removeValue( [4, 16, 9, 12, 45], 11)  <span style="font-family:sans-serif;font-size:14pt;">&rightarrow;</span>  [4, 16, 9, 12, 45]
+</pre>
+
+
+
+<p>
+You can compile and test your function using the following commands:
+</p>
+<pre>
+$ <b>make </b>   <span class="comment"># builds the required program testRemoveValue</span>
+$ <b>./autotest</b>  <span class="comment"># apply all the tests in the tests directory to the program testRemoveValue</span>
+$ <b>./autotest &#60;test-number&#62; </b>  <span class="comment"># apply only one given test case from the tests directory to the program testRemoveValue</span>
+</pre>
+<p>
+You can find out more about the behaviour of the <tt>testRemoveValue</tt> program
+by looking at the files <tt>testRemoveValue.c</tt>, <tt>autotest</tt> and the files in the <tt>tests</tt> directory.
+
+The files named <tt>t<i>X</i>.in</tt> are input files for the test program <tt>testRemoveValue</tt> and 
+the corresponding expected output are in <tt>t<i>X</i>.exp</tt>.
+
+<p>
+If you want to run say test case 2, use the following command:
+</p>
+<pre>
+$ <b>./autotest 2 </b> 
+</pre>
+
+<p>
+If you want to run all the sample test cases provided, use the following command:
+</p>
+<pre>
+$ <b>./autotest  </b> 
+</pre>
+
+<p>
+After you run the tests, additional files will appear in the <tt>tests</tt>
+directory: <tt>t<i>X</i>.out</tt> contains the output (from your function) of running 
+test <tt>t<i>X</i></tt>.
+</p>
+<p>
+IMPORTANT: You can add debugging code to <tt>removeValue.c</tt> or <tt>testRemoveValue.c</tt> if you
+want, however, make sure that you remove it before testing and submitting,
+otherwise your output won't match the expected output and you'll fail all
+the tests.
+You can also add any auxiliary functions to <tt>removeValue.c</tt>
+that you think are necessary.
+</p>
+<p>
+Once you are satisfied with your program, submit it using the command:
+</p>
+<pre>
+$ <b>submit q1</b>
+</pre>
+<p>
+This will make a copy of the <tt>removeValue.c</tt> file from the <tt>q1</tt>
+directory as your answer for this question.
+You can run the <tt>submit</tt> command as many times as you like,
+but make sure that your final submission compiles without any errors
+or warnings.
+<p>
+Testing: Test your program thoroughly, possibly using test cases additional
+to those supplied. Your program will be tested using test
+cases different to the example test cases provided in the <tt>tests</tt> directory.
+</p>
+
+</div>
+
+<p>
+</p>
+<hr>
+
+
+
+</div>
+</body>
+</html>
