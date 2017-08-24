@@ -1,4 +1,6 @@
-* Lectures
+#+TITLE: COMP2521 - Data Structures and Algorithms
+#+LATEX_CLASS: article
+#+OPTIONS: toc:nil
 * <2017-07-26 Wed> Introduction 
 ** Handling Command Line Arguments
 Use ~sscanf~ to handle command line arguments and error checking. Here is a
@@ -7,37 +9,82 @@ correct number of command line arguments. We then check that the command line
 arguments are valid by assigning it to an integer and checking the return status
 of that assignment.
 #+BEGIN_SRC C
-  #include <stdio.h>
-  #include <stdlib.h>
+	#include <stdio.h>
+	#include <stdlib.h>
 
-  int main(int argc, char *argv[])
-  {
-      char * monthStr;
-      if(argc != 2){
-          fprintf(stderr, "Usage: month 1...12 \n");
-          return EXIT_FAILURE;
-      }
-      int count;
-      int num;
-      //assignment and error checking is handled in the one line
-      if((count = sscanf(argv[1], "%d", &num)) == 0){
-          fprintf(stderr, "Usage: month 1...12 \n");
-          return EXIT_FAILURE;
-      }
+	int main(int argc, char *argv[])
+	{
+			char * monthStr;
+			if(argc != 2){
+					fprintf(stderr, "Usage: month 1...12 \n");
+					return EXIT_FAILURE;
+			}
+			int count;
+			int num;
+			//assignment and error checking is handled in the one line
+			if((count = sscanf(argv[1], "%d", &num)) == 0){
+					fprintf(stderr, "Usage: month 1...12 \n");
+					return EXIT_FAILURE;
+			}
 
-      switch(num){
-          case 1: monthStr = "January"; break;
-          case 2: monthStr = "February"; break;
-          default: monthStr = "Other"; break;
-      }
+			switch(num){
+					case 1: monthStr = "January"; break;
+					case 2: monthStr = "February"; break;
+					default: monthStr = "Other"; break;
+			}
 
-      printf("%s\n", monthStr);
+			printf("%s\n", monthStr);
 
-      return EXIT_SUCCESS;
-  }
+			return EXIT_SUCCESS;
+	}
+#+END_SRC
+** Compiling C programs
+*** Header Files and Implementation files
+As a general rule, we keep function headers in .h files and their corresponding
+implementations in a .c file. When we include a file, it literally copies that
+code into the current file.
+*** Object Files 
+If we compile with ~gcc -Wall -Werror -c file.c~, it creates an object file. We
+can take two object files and link them together with ~gcc -o programName
+file1.o file2.o~. For each library we have a .c implementation file and a .h
+header file. As a general workflow,
+1. We compile the libraries into an object file
+2. Compile the program that uses these libraries into an object file
+3. We link these object files together into the final 
+*** Makefiles
+A make file is a recipe for compiling a complex program. Unless you define the
+target, it will only execute the first target. But in order to build the first
+target, it must resolve and build all its dependencies first.
+#+BEGIN_SRC makefile
+	targetName : dependency1.o dependency2.o 
+		gcc -Wall -Werror dependency1.o dependency2.o -o programName
+
+	dependency1.o : source1.c
+		gcc -Wall -Werror -c source1.c
+
+	dependency1.o : source2.c
+		gcc -Wall -Werror -c source2.c
+
+	rm :
+		rm -f *.o programName
+#+END_SRC
+We can use several shortcuts and variables in a Makefile to make the process
+more readable. But it is doing everything implicitly.
+#+BEGIN_SRC makefile
+	CC=gcc
+	CFLAGS=-Wall -Werror
+
+	programName : library1.o library2.o
+
+	library1.o : library1.c
+
+	library2.o : library2.c
+
+	rm :
+		rm -f *.o programName
 #+END_SRC
 * <2017-08-01 Tue> Algorithmic Efficiency 
-[[file:lectures/week2.html][Lecture Slides]]
+	[[file:lectures/week2.html][Lecture Slides]]
 ** Measuring the efficiency of an algorithm
 We want our programs to be /correct/, /reliable/, /maintainable/ and
 /efficient/. To determine algorithmic efficiency, we measure program execution
@@ -111,13 +158,19 @@ n = (*fp)(2); //call the timesTwo function with input 2
 n = fp(2); //we can also use normal function notation
 #+END_SRC 
 *** Higher Order Functions
+A simple use of a function pointer is to create higher order functions. A higher
+order function takes a function pointer in as a parameter. An example of a
+higher order function is a function that traverses a list and performs and
+operation on each elemenent (such as squaring the value).
 ** Generic Types in C
-C provides a pointer to void ~void *p~ which can be used to create *generic data
-types* by declaring values to be of type ~void *~. For example:
+*Polymorphism* refers to the ability of the same code to perform the same action
+ on different types of data. C provides a pointer to void ~void *p~ which can be
+ used to create *generic data types* by declaring values to be of type ~void *~.
 #+BEGIN_SRC C
-struct Node{
-   
-}
+	struct Node{
+		void *value;
+		struct Node *next;
+	};
 #+END_SRC
 * <2017-08-15 Tue> Sorting Algorithms
 ** Merge Sort
