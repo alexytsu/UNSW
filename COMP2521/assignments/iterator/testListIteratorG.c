@@ -21,15 +21,14 @@ int main(int argc, char *argv[])
 
   IteratorG it1 = IteratorGNew(positiveIntCompare, positiveIntNew, positiveIntFree);
 
-  int a[MAXARRAY] = { 1, 2, 6, 2 , 3};
+  int a[MAXARRAY] = { 25, 12, 6, 82 , 11};
 
-  int i;
+  int i; 
   for(i=0; i<MAXARRAY; i++){
     int result = add(it1 , &a[i]);
     printf("Inserting %d: %s \n", a[i], (result==1 ? "Success" : "Failed") );
+    printIteratorG(it1);
   }
-
-	printIteratorG(it1);
 	/*
 	The above loop should print ...
 		Inserting 25: Success
@@ -40,23 +39,23 @@ int main(int argc, char *argv[])
 	*/
 
   int *v1 = (int *) previous(it1);
-  printf("Previous value is: %d \n", *v1 );  // should print "Previous value is: 11"
+  printf("Previous value is: %02d \n", *v1 );  // should print "Previous value is: 11"
 	printIteratorG(it1);
 
   int *v2 = (int *) previous(it1);
-  printf("Previous value is: %d \n", *v2 );  // should print "Previous value is: 82"
+  printf("Previous value is: %02d \n", *v2 );  // should print "Previous value is: 82"
 	printIteratorG(it1);
 
   int *v3 = (int *) next(it1);
-  printf("Next value is: %d \n", *v3 );     // should print "Next value is: 82"
+  printf("Next value is: %02d \n", *v3 );     // should print "Next value is: 82"
 	printIteratorG(it1);
 
   int *v5 = (int *) previous(it1);
-  printf("Previous value is: %d \n", *v5 );  // should print "Previous value is: 82"
+  printf("Previous value is: %02d \n", *v5 );  // should print "Previous value is: 82"
 	printIteratorG(it1);
 
   int *v4 = (int *) next(it1);
-  printf("Next value is: %d \n", *v4 );     // should print "Next value is: 82"
+  printf("Next value is: %02d \n", *v4 );     // should print "Next value is: 82"
 	printIteratorG(it1);
 
   /* =======================================

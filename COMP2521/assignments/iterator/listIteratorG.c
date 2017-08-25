@@ -93,14 +93,14 @@ void printIteratorG(IteratorG it)
 	Node *N;
 	for(N = it->head; N != NULL; N = N->next){
 		int *val = (int *) N->value;
-		printf(" [%d]->", *val);
+		printf(" [%d]", *val);
 	}
-	printf(" [X]\n");
+    printf("\n");
 	int i;
 	int cursor = abs(it->cursorPos);
 	for(i = 0; i < it->nelems * 2 + 1; i ++){
 		if(i == cursor*2) printf("%c", it->cursorPos > 0 ? '<':'>');
-		else printf("%s", (i%2 == 0) ? ".":"     ");
+		else printf("%s", (i%2 == 0) ? ".":"    ");
 	}
 	printf("\n");
 }
@@ -112,11 +112,10 @@ void *previous(IteratorG it)
 		return NULL;
 	}else if(it->cursorPos < 0){
 		prev = it->curr->prev;
-		it->cursorPos = it->cursorPos * -1 + 1;
 	}else{
 		prev = it->curr;
-		it->cursorPos --;
 	}
+    it->cursorPos = -(abs(it->cursorPos) - 1);
 	it->curr = it->curr->prev;
 	return prev->value;
 }
@@ -124,16 +123,17 @@ void *previous(IteratorG it)
 void *next(IteratorG it) // some funny business going on atm
 {
 	Node *next;
-	assert(it->cursorPos <= it->nelems * 2 + 1);
+
+    // if next called 
+
 	if(abs(it->cursorPos) == it->nelems* 2 + 1){
 		return NULL;
 	}else if(it->cursorPos < 0){
 		next = it->curr;
-		it->cursorPos --;
 	}else{
 		next = it->curr->next;
-		it->cursorPos = it->cursorPos * -1  -1;
 	}
+    it->cursorPos = abs(it->cursorPos) + 1;
 	it->curr = it->curr->next;
 	return next->value;
 }

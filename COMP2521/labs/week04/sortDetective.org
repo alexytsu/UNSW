@@ -1,0 +1,186 @@
+#+TITLE: Sort Detective
+#+AUTHOR: Joanne Sun and Alex Su
+
+* Experimental Method
+** General Outline
+Since we are given the set of algorithms that sortA and sortB are
+selected from, we deduce their identities by a process of
+elimination. In order to begin this, we should examine definitive
+characteristics such as stability rather than trying to deduce their
+Big O time complexity - which is a rather more vague and fuzzy
+attribute. Another concrete characteristic to examine is to compare
+each sort against itself on reversed, sorted and randomised input
+lists. By beginning here, we can hopefully narrow each sort down to a
+small group of possibilities. Then, we can examine how quickly the
+execution time grows for each sort in order to deduce their Big O time
+complexity.
+** Distinguishing Characteristics
+We can construct a sort of binary tree to assist our process of
+elimination.
+
+| Unstable Sorts             | Stable Sorts                |
+|----------------------------+-----------------------------|
+| Oblivious Bubble Sort      | Bubble Sort with Early Exit |
+| Vanilla Quick Sort         | Insertion Sort              |
+| Quick Sort Median of Three | Selection Sort              |
+| Randomised Quick Sort      | Shell Sort Powers of 4      |
+|                            | Shell Sort Sedgewick-Like   |
+|                            | Pseudo-Bogo Sort            |
+
+We can also make a set of predictions for which type of list (random,
+reversed or sorted) will be sorted fastest by each algorithm.
+
+| Sort                   | Fastest Input                                                   |
+|------------------------+-----------------------------------------------------------------|
+| Oblivious Bubble Sort  | Equal for all                                                   |
+| Bubble Sort Early Exit | Sorted                                                          |
+| Insertion Sort         | Reversed                                                        |
+| Selection Sort         | Equal for all                                                   |
+| Merge Sort             | Equal for all                                                   |
+| Vanilla Quick Sort     | Sorted or Reversed is slowest depending on pivot implementation |
+| Quick Sort (Median)    | Equal for all                                                   |
+| Randomised Quick Sort  | Equal for all                                                   |
+| Shell Sort (^4)        | Sorted                                                          |
+| Shell Sort (Sedgewick) | Sorted                                                          |
+| Psuedo-Bogo Sort       | Equal for all                                                   |                                                                                                                                                                                       |
+
+** Experimental Tools
+*** Our own bubble sort
+
+We implemented a simple bubblesort in C that could read from the same
+lists as the sorting algorithms and would sort them stably. Although this sort
+is quite slow, we are only interested in its correctness and stability so that we 
+can use its output to compare to sortA and sortB.
+
+#+BEGIN_SRC c
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+typedef struct node{
+    int value;
+    char *identifier;
+    struct node *next;
+}Node;
+
+typedef struct list{
+    struct node *head;
+    struct node *tail;
+    int size;
+}List;
+
+List *createNewList()
+{
+    List *newList = malloc(sizeof(List));
+    newList->size = 0;
+    newList->head = NULL;
+    newList->tail = NULL;
+    return newList;
+}
+
+Node *createNewNode(int val, char* id)
+{
+    Node *newNode = malloc(sizeof(Node));
+    newNode->identifier = malloc(10*sizeof(char));
+    strcpy(newNode->identifier, id);
+    newNode->value = val;
+    newNode->next = NULL;
+    return newNode; 
+}
+
+void append(Node *new, List *old)
+{
+    if(old->head == NULL){
+        old->head = new;
+    }
+    if(old->tail) old->tail->next = new;
+    old->tail = new;
+    old->size++;
+}
+
+int readFromFile(FILE *fin, List *newList)
+{
+    char buffer[30] = {0};
+    Node *temp;
+    int val;
+    char id[20];
+    while(fgets(buffer, 30, fin)){
+        sscanf(buffer, "%d %s", &val, &id);
+        temp = createNewNode(val, id);
+        append(temp, newList);
+    }
+    return 1;
+}
+
+void printList(List *list)
+{
+    Node *temp;
+    for(temp = list->head; temp != NULL; temp = temp->next){
+        printf("%d %s\n", temp->value, temp->identifier);
+    }
+}
+
+void swap(Node *a, Node *b)
+{
+    int temp = a->value;
+    char *tempid = a->identifier;
+    a->value = b->value;
+    a->identifier = b->identifier;
+    b->value = temp;
+    b->identifier = tempid;
+}
+
+void bubbleSort(List *input)
+{
+    int swapped, i;
+    Node *ptr1 = input->head;
+    Node *lptr = NULL;
+
+    if(ptr1 == NULL) return;
+
+    do{
+        swapped = 0;
+        ptr1 = input->head; 
+
+        while(ptr1->next != lptr){
+            if(ptr1->value > ptr1->next->value){
+                swap(ptr1, ptr1->next);
+                swapped = 1;
+            }
+            ptr1 = ptr1->next;
+        }
+        lptr = ptr1;
+    }
+    while (swapped);
+}
+
+int main(void)
+{
+    List *input = createNewList();
+    FILE *random_duplicates = fopen("duplicates", "r");
+    readFromFile(random_duplicates, input);
+    //printList(input);
+    //printf("================= Beginning bubble sort ==================\n");
+    bubbleSort(input);
+    //printf("================= Sorted list ============================\n");
+    printList(input);
+}
+#+END_SRC
+
+We know that this sort is stable since the condition for swapping is
+if the first element is *strictly* greater than the second. Thus,
+equal elements are not swapped and since bubble sort only compares
+adjacent elements, stability is maintained.
+
+
+*** Correctness analysis
+*** Performance analysis
+We used a bash script to automate the generation of test data and
+timing results. 
+
+#+BEGIN_SRC bash
+
+#+END_SRC
+
+
