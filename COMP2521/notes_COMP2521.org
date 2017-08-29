@@ -190,3 +190,25 @@ A *stable sort* assures that if two of the same values appear in a sequence the
 sorted output will have the same order. Quick sort is not a stable sort whereas
 *merge sort* can be implemented as a stable sort.
 
+* <2017-08-29 Tue> gdb and debugging
+** Examining programming state
+A *debugger* allows you to inspect the state of the program that has crashed due
+to a run-time error. It does not modify the program: you can insert breakpoints
+and inspect values within the program at these points.
+** Using gdb
+To use gdb, we must use the =-g= flag. A standard compile command may look like
+=gcc -g -Wall -Werror -o prog prog.c=. Other times, we will use gdb after a
+runtime error to examine the core file. Here are a few commands to use in gdb.
+- run, cont: give normal execution
+- break: stop at a certain points
+- step, next: one statement at a time
+- print: examine program state
+- where: find which function the porgram was executing when crashed
+- list [LINE]: gives five lines either side of the specified one
+- quit: exits gdb
+- run [ARGS]: you can give arguments to the chosen file
+There are a few graphical debuggers including *xxgdb* and *ddd* 
+** Profiling programs
+A program such as =gprof= works at the function level, producing profiles of
+execution time within each function in the program. It can give us a flat graph
+or show us a graph of which functions are calling eachother.
