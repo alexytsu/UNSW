@@ -1,7 +1,7 @@
 /*
-  testListIteratorG.c ... Unit tests for my implementation of an Iterator
-	Written by Alexander Su (z5166086)
-*/
+   testListIteratorG.c ... Unit tests for my implementation of an Iterator
+   Written by Alexander Su (z5166086)
+   */
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -15,86 +15,99 @@
 
 int main(int argc, char *argv[])
 {
-  /* =======================================
-     --------- positiveIntType List Iterator ----------
-  */
+    /* =======================================
+       --------- positiveIntType List Iterator ----------
+       */
 
-  IteratorG it1 = IteratorGNew(positiveIntCompare, positiveIntNew, positiveIntFree);
+    IteratorG it1 = IteratorGNew(positiveIntCompare, positiveIntNew, positiveIntFree);
 
-  int a[MAXARRAY] = { 25, 12, 6, 82 , 11};
+    int a[MAXARRAY] = { 25, 12, 6, 82 , 11};
+    int *val;
 
-  int i; 
-  for(i=0; i<MAXARRAY; i++){
-    int result = add(it1 , &a[i]);
-    printf("Inserting %d: %s \n", a[i], (result==1 ? "Success" : "Failed") );
-    printIteratorG(it1);
-  }
-	/*
-	The above loop should print ...
-		Inserting 25: Success
-		Inserting 12: Success
-		Inserting 6: Success
-		Inserting 82: Success
-		Inserting 11: Success
-	*/
+    int i; 
+    for(i=0; i<MAXARRAY; i++){
+        printIterator(it1);
+        int result = add(it1 , &a[i]);
+        printf("Inserting %d: %s \n", a[i], (result==1 ? "Success" : "Failed") );
+    }
+    previous(it1);
+    previous(it1);
+    previous(it1);
+    previous(it1);
+    previous(it1);
+    previous(it1);
+    previous(it1);
+    previous(it1);
+    previous(it1);
+    previous(it1);
+    previous(it1);
+    previous(it1);
+    previous(it1);
+    previous(it1);
+    previous(it1);
+    previous(it1);
+    previous(it1);
+    previous(it1);
+    previous(it1);
+    previous(it1);
+    previous(it1);
+    previous(it1);
+    previous(it1);
+    previous(it1);
+    previous(it1);
+    previous(it1);
+    previous(it1);
+    previous(it1);
 
-  int *v1 = (int *) previous(it1);
-  printf("Previous value is: %02d \n", *v1 );  // should print "Previous value is: 11"
-	printIteratorG(it1);
+    val = (int *) next(it1);
+    printf("first element? %d\n", *val);
 
-  int *v2 = (int *) previous(it1);
-  printf("Previous value is: %02d \n", *v2 );  // should print "Previous value is: 82"
-	printIteratorG(it1);
+    next(it1);
+    next(it1);
+    next(it1);
+    next(it1);
+    next(it1);
+    next(it1);
+    next(it1);
+    next(it1);
+    next(it1);
+    next(it1);
+    next(it1);
+    next(it1);
+    next(it1);
+    next(it1);
+    next(it1);
+    next(it1);
+    next(it1);
+    next(it1);
+    next(it1);
+    next(it1);
+    next(it1);
+    next(it1);
+    next(it1);
+    next(it1);
+    next(it1);
+    next(it1);
+    next(it1);
+    next(it1);
+    next(it1);
+    next(it1);
+    
+    val = (int *)previous(it1);
+    printf("last element? %d\n", *val);
+    delete(it1);
+    next(it1);
+    next(it1);
+    next(it1);
+    next(it1);
+    val = (int *)previous(it1);
+    printf("last element? %d\n", *val);
 
-  int *v3 = (int *) next(it1);
-  printf("Next value is: %02d \n", *v3 );     // should print "Next value is: 82"
-	printIteratorG(it1);
+    reset(it1);
+    val = (int *)next(it1);
+    printf("first element after reset: %d\n", *val);
 
-  int *v5 = (int *) previous(it1);
-  printf("Previous value is: %02d \n", *v5 );  // should print "Previous value is: 82"
-	printIteratorG(it1);
 
-  int *v4 = (int *) next(it1);
-  printf("Next value is: %02d \n", *v4 );     // should print "Next value is: 82"
-	printIteratorG(it1);
-
-  /* =======================================
-     --------- stringType List Iterator ----------
-  */
-
-/*
-  IteratorG it2 = IteratorGNew(stringCompare, stringNew, stringFree);
-
-  char *strA[MAXARRAY];
-  strA[0] = strdup("john");
-  strA[1] = strdup("rita");
-  strA[2] = strdup("john");
-  strA[3] = strdup("abby");
-
-  int j;
-  for(j=0; j<4; j++){
-    int result = add(it2 , strA[j]);
-    printf("Inserting %s: %s \n", strA[j], (result==1 ? "Success" : "Failed") );
-  }
-*/
-	/*
-	The above loop should print ...
-		Inserting john: Success
-		Inserting rita: Success
-		Inserting john: Success
-		Inserting abby: Success
-	*/
-/*
-  char *v4 = (char *) previous(it2);
-  printf("Previous value is: %s \n", v4 );  // should print: "Previous value is: abby"
-
-  char *v5 = (char *) previous(it2);
-  printf("Previous value is: %s \n", v5 );  // should print: "Previous value is: john"
-
-  char *v6 = (char *) next(it2);
-  printf("Next value is: %s \n", v6 );      // should print: "Next value is: john"
-
-*/
-  return EXIT_SUCCESS;
+    return EXIT_SUCCESS;
 
 }

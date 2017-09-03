@@ -25,8 +25,7 @@ int  set(IteratorG it, void *vp);
 void *findNext(IteratorG it, void *vp);
 void *findPrevious(IteratorG it, void *vp);
 void reset(IteratorG it);
+void printIterator(IteratorG it);
 
-//testing functions
-void printIteratorG(IteratorG it);
 
 #endif
