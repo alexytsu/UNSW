@@ -26,6 +26,7 @@ void *findNext(IteratorG it, void *vp);
 void *findPrevious(IteratorG it, void *vp);
 void reset(IteratorG it);
 void printIterator(IteratorG it);
+void freeIt(IteratorG it);
 
 
 #endif
