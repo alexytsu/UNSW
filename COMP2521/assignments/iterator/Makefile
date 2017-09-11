@@ -1,6 +1,6 @@
 # Makefile for Generic List Iterator
 
-CC = gcc
+CC = dcc
 CFLAGS = -Wall -Werror -g
 
 all : testListIteratorG

@@ -18,6 +18,9 @@ typedef struct Node {
 } Node;
 
 typedef struct IteratorGRep {
+    //we hold a pointer to the left of the "cursor"
+    //and a pointer to the right of the "cursor"
+    //also a "last returned" value for quick modificaiton with set() etc.
     struct Node *left;
     struct Node *right;
     struct Node *lastRet;
@@ -28,14 +31,18 @@ typedef struct IteratorGRep {
     void  (*ElmFreeFp)(void *e1);
 
 } IteratorGRep;
-/*
+
+//moves the "cursor" one unit right
 static int shiftRight(IteratorG it){
+    if(!hasNext(it)) {
+        return 0;
+    }
     it->left = it->right;
     it->right = it->right->next;
     return 1;
 }
-*/
 
+//moves the "cursor" left
 static int shiftLeft(IteratorG it){
     if(!hasPrevious(it)) {
         return 0;
@@ -45,6 +52,7 @@ static int shiftLeft(IteratorG it){
     return 1;
 }
 
+//mallocs space for a new node
 Node * createNewNode(void *val, void *(*ElmNewFp)(void const *el))
 {
     Node *newNode;
@@ -54,6 +62,7 @@ Node * createNewNode(void *val, void *(*ElmNewFp)(void const *el))
     return newNode;
 }
 
+//mallocs necessary space for a new iterator and adds the relevant funtions
 IteratorG IteratorGNew(ElmCompareFp cmpFp, ElmNewFp newFp, ElmFreeFp freeFp)
 {
     IteratorG newIterator = malloc(sizeof(IteratorGRep));
@@ -64,26 +73,28 @@ IteratorG IteratorGNew(ElmCompareFp cmpFp, ElmNewFp newFp, ElmFreeFp freeFp)
     return newIterator;
 }
 
+//adds an element at a point
 int add(IteratorG it, void *vp)
 {
     Node *newNode = createNewNode(vp, it->ElmNewFp);
+    //makes sure functions such as set() can't run aferwards
     it->lastRet = NULL;
     newNode->prev = it->left;
     newNode->next = it->right;
     if(it->left != NULL) it->left->next = newNode;
     if(it->right != NULL) it->right->prev = newNode;
     it->left = newNode;
-    it->right = newNode->next;
-
     return 1;
 }
 
 void * next(IteratorG it)
 { 
+    //checks if at the end of the list
     if(!hasNext(it)){
         it->lastRet = NULL;
         return it->lastRet;
     }
+    //moves cursors and the returns the new value as "last returned"
     it->left = it->right;
     it->right = it->right->next;
     it->lastRet =  it->left;
@@ -92,10 +103,12 @@ void * next(IteratorG it)
 
 void * previous (IteratorG it)
 {
+    //checks if at the beginning of the list
     if(!hasPrevious(it)) {
         it->lastRet = NULL;
         return it->lastRet;
     }
+    //moves cursors and the returns the new value as "last returned"
     it->right = it->left;
     it->left = it->left->prev;
     it->lastRet = it->right;
@@ -114,6 +127,7 @@ int hasPrevious(IteratorG it)
     return (it->left == NULL) ? 0:1;
 }
 
+//since there is no head pointer, we rewind to the beginning
 void reset(IteratorG it)
 {
     while(it->left!=NULL){
@@ -122,6 +136,7 @@ void reset(IteratorG it)
     it->lastRet = NULL;
 }
 
+//create references to elements on either side and join those two nodes
 int delete(IteratorG it){
     if(it->lastRet == NULL) return 0; 
     if(it->lastRet == it->right){
@@ -137,6 +152,7 @@ int delete(IteratorG it){
         if(tempRight != NULL){
             tempRight->prev = tempLeft;
         }
+        free(it->lastRet);
         it->lastRet = NULL;
         return 1;
     }
@@ -146,10 +162,12 @@ int delete(IteratorG it){
     if(it->right != NULL){
         it->right->prev = it->left;
     }
+    free(it->lastRet);
     it->lastRet = NULL;
     return 1;
 }
 
+// replaces the value only of the last returned node
 int set(IteratorG it, void *vp)
 {
     if(it->lastRet == NULL) return 0;
@@ -167,9 +185,9 @@ void *findNext(IteratorG it, void *vp)
         return NULL;
     }
     if(originalLeft == NULL) {
-        it->left = it->right;
-        it->right = it->right->next;
+        shiftRight(it);
     }
+    //moves cursor into position
     while(it->ElmCompareFp(vp, it->left->value) != 0){
         if(it->right == NULL) {
             it->left = originalLeft;
@@ -177,9 +195,9 @@ void *findNext(IteratorG it, void *vp)
             it->lastRet = NULL;
             return NULL;
         }
-        it->left = it->left->next;
-        it->right = it->right->next;
+        shiftRight(it);
     }
+    //returns once cursor in place
     it->lastRet = it->left;
     return it->lastRet->value;
 }
@@ -193,6 +211,7 @@ void *findPrevious(IteratorG it, void *vp)
         return NULL;
     }
     if(originalRight == NULL) shiftLeft(it);
+    //move scursor into posution
     while(it->ElmCompareFp(vp, it->right->value) != 0){
         if(it->left == NULL) {
             it->left = originalLeft;
@@ -202,10 +221,12 @@ void *findPrevious(IteratorG it, void *vp)
         }
         shiftLeft(it);
     }
+    //returns when cursor is in place
     it->lastRet = it->right;
     return it->lastRet->value;
 }
 
+//fres every node in the iterator and then the iterator itself
 void freeIt(IteratorG it)
 {
     reset(it);
@@ -222,6 +243,7 @@ void freeIt(IteratorG it)
 #define GREEN "\x1B[32m"
 #define NORM "\x1B[0m"
 
+//print the list forwards and backwards to check sanity
 void printIterator(IteratorG it)
 {
     struct Node *trav = it->left;
@@ -246,6 +268,19 @@ void printIterator(IteratorG it)
         }
         printf("<->");
         trav = trav->next;
+    }
+    printf("X\n");
+
+    trav = it->right;
+    if(trav == NULL){
+        trav = it->left;
+    }
+    while(trav->next != NULL) trav = trav->next;
+    printf("X<->");
+    while(trav!=NULL){
+        int *temp = (int *) trav->value;
+        printf("%d<->", *temp);
+        trav=trav->prev;
     }
     printf("X\n");
 }

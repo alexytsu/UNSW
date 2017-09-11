@@ -44,12 +44,40 @@ int main(int argc, char *argv[]) {
    StrA = StrArray();
    IteratorG it1 = NULL;
    IteratorG it2 = NULL;
+   IteratorG it3 = NULL;
    //testNullList(it1);
    //testNullList(it2);
    it1 = IteratorGNew(positiveIntCompare, positiveIntNew, positiveIntFree);
    it2 = IteratorGNew(stringCompare, stringNew, stringFree);
    assert(it1 != NULL);
    assert(it2 != NULL);
+
+   it3 = IteratorGNew(positiveIntCompare, positiveIntNew, positiveIntFree);
+   for(int i = 0; i < 10; i ++){
+    add(it3, &i);
+   }
+   printIterator(it3);
+   previous(it3);
+   previous(it3);
+   printIterator(it3);
+   int hel = 72;
+   add(it3, &hel);
+   printIterator(it3);
+   printf("Previous\n");
+   previous(it3);
+   printIterator(it3);
+   printf("Set 73\n");
+   hel = 73;
+   set(it3, &hel);
+   printIterator(it3);
+   printf("Add 23");
+   hel = 23;
+   add(it3, &hel);
+   printIterator(it3);
+
+    
+
+
 
    testEmptyListInt(it1);
    testAddInt(it1);
