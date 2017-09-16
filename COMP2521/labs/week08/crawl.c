@@ -14,7 +14,8 @@
 #include "url_file.h"
 
 #define BUFSIZE 1024
-#define DEBUGGING 1
+#define DEBUGGING 0
+#define VERBOSE 0
 
 void setFirstURL(char *, char *);
 void normalise(char *, char *, char *, char *, int);
@@ -25,9 +26,12 @@ int main(int argc, char **argv)
 	char buffer[BUFSIZE];
 	char baseURL[BUFSIZE];
 	char firstURL[BUFSIZE];
+
 	char next[BUFSIZE];
+
 	int  maxURLs;
 
+    // Check command line arguments for validity
 	if (argc > 2) {
 		strcpy(baseURL,argv[1]);
 		setFirstURL(baseURL,firstURL);
@@ -47,12 +51,11 @@ int main(int argc, char **argv)
     }
 
     // Create set of seen URLs
-    //Set seenURLs = newSet();
+    Set visited = newSet();
 
     // Create a stack of URLs to visit
     Stack toVisit = newStack();
      
-		
 	// You need to modify the code below to implement:
 	//
 	// add firstURL to the ToDo list
@@ -75,30 +78,63 @@ int main(int argc, char **argv)
 	//    sleep(1)
 	// }
 
+    pushOnto(toVisit, firstURL);
+
+    /*
 	if (!(handle = url_fopen(firstURL, "r"))) {
 		fprintf(stderr,"Couldn't open %s\n", next);
 		exit(1);
 	}
+    */
+    int nVisited = 0;
 
-	while(!url_feof(handle)) {
-		url_fgets(buffer,sizeof(buffer),handle);
-		if(DEBUGGING){
-            fputs(buffer,stdout);
+    while(!emptyStack(toVisit)){
+        //get the next url to visit
+        strcpy(next, popFrom(toVisit));
+
+        //check if already seen
+        if(isElem(visited, next)){ 
+            if(DEBUGGING){
+                printf("Skipping %s because already visited\n", next);
+            }
+            continue;
         }
-		int pos = 0;
-		char result[BUFSIZE];
-		memset(result,0,BUFSIZE);
-		while ((pos = GetNextURL(buffer, firstURL, result, pos)) > 0) {
-			printf("Found: '%s'\n",result);
-            pushOnto(toVisit,result);
-			memset(result,0,BUFSIZE);
-		}
-        //handle = url_fopen(popFrom(toVisit), "r");
-	}
 
-	url_fclose(handle);
-	sleep(1);
+        if(nVisited >= maxURLs) break;
 
+        handle = url_fopen(next, "r");
+        nVisited ++;
+        if(DEBUGGING){
+            printf("Visiting %s\n", next);
+        }
+
+        while(!url_feof(handle)) {
+            url_fgets(buffer,sizeof(buffer),handle);
+            if(DEBUGGING && VERBOSE){
+                fputs(buffer,stdout);
+            }
+            int pos = 0;
+            char result[BUFSIZE];
+            memset(result,0,BUFSIZE);
+            while ((pos = GetNextURL(buffer, firstURL, result, pos)) > 0) {
+                if(DEBUGGING){
+                    printf("Found: '%s'\n",result);
+                }
+                addEdge(webGraph, next, result);
+                if(DEBUGGING && VERBOSE){
+                    showGraph(webGraph,1);
+                }
+                pushOnto(toVisit,result);
+                memset(result,0,BUFSIZE);
+            }
+        }
+        insertInto(visited, next);
+        url_fclose(handle);
+        sleep(1);
+        
+    }
+
+    showGraph(webGraph, 0);
 	return 0;
 }
 
