@@ -14,7 +14,7 @@
 #include "url_file.h"
 
 #define BUFSIZE 1024
-#define DEBUGGING 0
+#define DEBUGGING 1
 #define VERBOSE 0
 
 void setFirstURL(char *, char *);
@@ -56,58 +56,35 @@ int main(int argc, char **argv)
     // Create a stack of URLs to visit
     Stack toVisit = newStack();
      
-	// You need to modify the code below to implement:
-	//
-	// add firstURL to the ToDo list
-	// DONE initialise Graph to hold up to maxURLs
-	// DONE initialise set of Seen URLs
-	// while (ToDo list not empty and Graph not filled) {
-	//    grab Next URL from ToDo list
-	//    if (not allowed) continue
-	//    foreach line in the opened URL {
-	//       foreach URL on that line {
-	//          if (Graph not filled or both URLs in Graph)
-	//             add an edge from Next to this URL
-	//          if (this URL not Seen already) {
-	//             add it to the Seen set
-	//             add it to the ToDo list
-	//          }
-	//       }
-    //    }
-	//    close the opened URL
-	//    sleep(1)
-	// }
 
+    // Add the firstURL to the ToDo list
     pushOnto(toVisit, firstURL);
 
-    /*
-	if (!(handle = url_fopen(firstURL, "r"))) {
-		fprintf(stderr,"Couldn't open %s\n", next);
-		exit(1);
-	}
-    */
+
+    // Keep track of visited webpages to compare against maxURLs
     int nVisited = 0;
 
-    while(!emptyStack(toVisit)){
+    while(!emptyStack(toVisit) && nVisited <= maxURLs){
+
         //get the next url to visit
         strcpy(next, popFrom(toVisit));
 
-        //check if already seen
+        // check if already seen
         if(isElem(visited, next)){ 
-            if(DEBUGGING){
+            if(DEBUGGING && VERBOSE){
                 printf("Skipping %s because already visited\n", next);
             }
             continue;
         }
 
-        if(nVisited >= maxURLs) break;
-
+        // if new, open the webpage
         handle = url_fopen(next, "r");
         nVisited ++;
         if(DEBUGGING){
             printf("Visiting %s\n", next);
         }
 
+        // loop through the webpage
         while(!url_feof(handle)) {
             url_fgets(buffer,sizeof(buffer),handle);
             if(DEBUGGING && VERBOSE){
@@ -116,10 +93,13 @@ int main(int argc, char **argv)
             int pos = 0;
             char result[BUFSIZE];
             memset(result,0,BUFSIZE);
+            // jump to each URL
             while ((pos = GetNextURL(buffer, firstURL, result, pos)) > 0) {
-                if(DEBUGGING){
+                if(DEBUGGING && VERBOSE){
                     printf("Found: '%s'\n",result);
                 }
+
+                // add each new URL to the graph and toDo list
                 addEdge(webGraph, next, result);
                 if(DEBUGGING && VERBOSE){
                     showGraph(webGraph,1);
@@ -128,13 +108,19 @@ int main(int argc, char **argv)
                 memset(result,0,BUFSIZE);
             }
         }
+        
+        //every visited page gets added to a set of visited pages
         insertInto(visited, next);
         url_fclose(handle);
         sleep(1);
         
     }
 
+
     showGraph(webGraph, 0);
+    disposeGraph(webGraph);
+    disposeSet(visited);
+    disposeStack(toVisit);
 	return 0;
 }
 
