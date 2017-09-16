@@ -68,6 +68,7 @@ void enterQueue (Queue q, Item it)
 
 // remove Item from head of Queue; return it
 Item leaveQueue (Queue q)
+http://www.handbook.unsw.edu.au/2017 100
 {
     assert(q != NULL);
     Item it = q->head->item;
