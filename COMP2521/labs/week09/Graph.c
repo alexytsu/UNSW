@@ -7,6 +7,7 @@
 #include <string.h>
 #include "Graph.h"
 #include "Queue.h"
+#include <unistd.h>
 
 // graph representation (adjacency matrix)
 typedef struct GraphRep {
@@ -100,45 +101,62 @@ void showGraph(Graph g, char **names)
 // only allow edges whose weight is less than "max"
 int findPath(Graph g, Vertex src, Vertex dest, int max, int *path)
 {
-	assert(g != NULL);
+
+    int **adjM = g->edges;
+
+    int *predecessors = malloc(sizeof(int) * g->nV);
+    int aids;
+    for(aids = 0; aids < g->nV; aids++){
+        predecessors[aids] = -1;
+    } 
+
+    int currCity = src;
+    int *currDistances = adjM[currCity];
+
+    int arrived = 0;
+    int hops = 0;
+
+    Queue toVisit = newQueue();
+
+    while(!arrived){
+        int i = 0;
+        for(i = 0; i < g->nV; i ++){
+            if(currDistances[i] > max || i == currCity) {
+                continue;
+            }else{ // in here all paths are valid
+                printf("We are at %d, checking %d who has a predecessor %d\n", currCity, i, predecessors[i]);
+                if(predecessors[i] == -1){
+                    predecessors[i] = currCity;
+                    QueueJoin(toVisit, i);
+                    if(i == dest){
+                        arrived = 1;
+                        break;
+                    }
+                }
+            }
+        }
+
+        printf("Left the for loop\n");
+        sleep(1);
+
+        if(arrived || QueueIsEmpty(toVisit)) {
+            break;
+        }else{
+            printf("SHOWING THE QUEUEUEUEUE ");
+            showQueue(toVisit);
+            currCity = QueueLeave(toVisit);
+            currDistances = adjM[currCity];
+            hops ++;
+        }
+        
+
+    }
+    printf("hippity hops %d\n", hops);
+    if(arrived){
+        return hops;
+    }else{
+        return 0;
+    }
 
 
-	Queue toVisit = newQueue();
-
-	int hops;
-	int arrived = 0;
-
-	int currentV = src;
-	int *curr = g->edges[currentV];
-	int *predecessors = malloc(g->nV);
-	memset(predecessors, -1, g->nV);
-	
-	while(!arrived){		
-
-		for(int i = 0; i < g->nV; i++){	
-			if(curr[i] < max && i == dest){
-				arrived = 1;
-				break;
-			}else if(curr[i] < max){
-				QueueJoin(toVisit, i);
-				hops++;
-				predecessors[i] = currentV;
-			}
-		}
-
-		if(QueueIsEmpty(toVisit)){
-			break;
-		}
-		currentV = QueueLeave(toVisit);
-	}
-
-	path = malloc(sizeof(int) * hops);
-	if(arrived){
-		path = malloc(sizeof(int) * hops);
-		for(int i = 0; i < hops; i++){
-			path[hops-i] = currentV;
-			currentV = predecessors[currentV];
-		}
-	}
-	return hops; // never find a path ... you need to fix this
 }
