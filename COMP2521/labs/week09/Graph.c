@@ -102,6 +102,11 @@ void showGraph(Graph g, char **names)
 int findPath(Graph g, Vertex src, Vertex dest, int max, int *path)
 {
 
+    if(src == dest){
+        path[0] = src;
+        return 1;
+    }
+
     int **adjM = g->edges;
 
     int *predecessors = malloc(sizeof(int) * g->nV);
@@ -114,7 +119,6 @@ int findPath(Graph g, Vertex src, Vertex dest, int max, int *path)
     int *currDistances = adjM[currCity];
 
     int arrived = 0;
-    int hops = 0;
 
     Queue toVisit = newQueue();
 
@@ -124,7 +128,6 @@ int findPath(Graph g, Vertex src, Vertex dest, int max, int *path)
             if(currDistances[i] > max || i == currCity) {
                 continue;
             }else{ // in here all paths are valid
-                printf("We are at %d, checking %d who has a predecessor %d\n", currCity, i, predecessors[i]);
                 if(predecessors[i] == -1){
                     predecessors[i] = currCity;
                     QueueJoin(toVisit, i);
@@ -136,24 +139,41 @@ int findPath(Graph g, Vertex src, Vertex dest, int max, int *path)
             }
         }
 
-        printf("Left the for loop\n");
-        sleep(1);
 
         if(arrived || QueueIsEmpty(toVisit)) {
             break;
         }else{
-            printf("SHOWING THE QUEUEUEUEUE ");
-            showQueue(toVisit);
             currCity = QueueLeave(toVisit);
             currDistances = adjM[currCity];
-            hops ++;
         }
         
 
     }
-    printf("hippity hops %d\n", hops);
     if(arrived){
-        return hops;
+        int hops = 1;
+        path[0] = dest;
+
+        while(currCity != src){
+            path[hops] = currCity;
+            currCity = predecessors[currCity];
+            hops++;
+        }
+        path[hops] = src;
+
+        int i = hops;
+        int j = 0; 
+        while(i > j)
+        {
+            int temp = path[i];
+            path[i] = path[j];
+            path[j] = temp;
+            i--;
+            j++;
+        }
+
+
+        
+        return hops + 1;
     }else{
         return 0;
     }
