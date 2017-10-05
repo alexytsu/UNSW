@@ -7,6 +7,7 @@
 #include <string.h>
 #include "Graph.h"
 #include "Queue.h"
+#include <unistd.h>
 
 // graph representation (adjacency matrix)
 typedef struct GraphRep {
@@ -100,45 +101,106 @@ void showGraph(Graph g, char **names)
 // only allow edges whose weight is less than "max"
 int findPath(Graph g, Vertex src, Vertex dest, int max, int *path)
 {
-	assert(g != NULL);
+
+    // trivial case
+    if(src == dest){
+        path[0] = src;
+        return 1;
+    }
+
+    // takes the adjacency matrix from the graph
+    int **adjM = g->edges;
+
+    // for each node we visit we store its predecessor
+    int *predecessors = malloc(sizeof(int) * g->nV);
+    int i;
+
+    // default is -1 that means if we haven't visited a node it will be -1
+    // -1 is not a valid index so it can never be a valid path
+    for(i = 0; i < g->nV; i++){
+        predecessors[i] = -1;
+    } 
+
+    // we find the distance from the src to every other city 
+    // this information is held in the row corresponding to that cities number
+    // of the adjacency matrix
+    int currCity = src;
+    int *currDistances = adjM[currCity];
+
+    // we create a flag to determine if a valid path was ever found
+    int arrived = 0;
+
+    // using a Queue as our tovisit list creates a BFS
+    // since we are worried only about the number of hops, BFS always finds
+    // a shortest path as the first path it finds
+    Queue toVisit = newQueue();
+
+    // loop until break from within or we reach the destination
+    while(!arrived){
+        int i;
+        for(i = 0; i < g->nV; i ++){
+            // ignore branches to themselves or ones that are too long
+            if(currDistances[i] > max || i == currCity) {
+                continue;
+            }else{ // in here all paths are valid
+
+                // if its predecessors is -1 that means we havent visited it yet
+                // since we are performing BFS that means the fact that we have 
+                // reached it now is the most efficient way to do so
+                // Therefore, update the predecessor value, if we have reached
+                // it before, the value will not be -1 and that means there 
+                // was a shorter path to get there.
+                if(predecessors[i] == -1){
+                    predecessors[i] = currCity;
+                    QueueJoin(toVisit, i);
+                    if(i == dest){
+                        arrived = 1;
+                        break;
+                    }
+                }
+            }
+        }
+
+        // either we found a path or explored all possible paths
+        if(arrived || QueueIsEmpty(toVisit)) {
+            break;
+        }else{ // explore the next node in the Queue (BFS)
+            currCity = QueueLeave(toVisit);
+            currDistances = adjM[currCity];
+        }
+    }
 
 
-	Queue toVisit = newQueue();
+    // at this point we have all our predecessors set
+    // we simply backtrack and copy the nodes into the path array
 
-	int hops;
-	int arrived = 0;
+    if(arrived){
+        int hops = 1;
+        path[0] = dest;
 
-	int currentV = src;
-	int *curr = g->edges[currentV];
-	int *predecessors = malloc(g->nV);
-	memset(predecessors, -1, g->nV);
-	
-	while(!arrived){		
+        while(currCity != src){
+            path[hops] = currCity;
+            currCity = predecessors[currCity];
+            hops++;
+        }
+        path[hops] = src;
 
-		for(int i = 0; i < g->nV; i++){	
-			if(curr[i] < max && i == dest){
-				arrived = 1;
-				break;
-			}else if(curr[i] < max){
-				QueueJoin(toVisit, i);
-				hops++;
-				predecessors[i] = currentV;
-			}
-		}
 
-		if(QueueIsEmpty(toVisit)){
-			break;
-		}
-		currentV = QueueLeave(toVisit);
-	}
+        //reverse the array because of stuff
+        int i = hops;
+        int j = 0; 
+        while(i > j)
+        {
+            int temp = path[i];
+            path[i] = path[j];
+            path[j] = temp;
+            i--;
+            j++;
+        }
 
-	path = malloc(sizeof(int) * hops);
-	if(arrived){
-		path = malloc(sizeof(int) * hops);
-		for(int i = 0; i < hops; i++){
-			path[hops-i] = currentV;
-			currentV = predecessors[currentV];
-		}
-	}
-	return hops; // never find a path ... you need to fix this
+        // arrays start at 0
+        return hops + 1;
+    }else{
+        return 0;
+    }
 }
