@@ -43,6 +43,34 @@ uint8_t lowPowerEnable = false;
 uint8_t HPFEnable = false;
 uint8_t HPFCutoff = 0;
 
+int rspeed = 10;
+int rmotor1 = 8;//
+int rmotor2 = 9;
+
+// motor two
+int lspeed = 5;
+int lmotor1 = 7;
+int lmotor2 = 6;
+
+void stop()
+{
+  digitalWrite(rmotor1, LOW);
+  digitalWrite(rmotor2, LOW);
+  digitalWrite(lmotor1, LOW) ;
+  digitalWrite(lmotor2, LOW);
+}
+
+void turnRight()
+{
+  digitalWrite(rmotor1, HIGH);
+  digitalWrite(rmotor2, LOW);
+  analogWrite(rspeed, 200);
+  digitalWrite(lmotor1, LOW);
+  digitalWrite(lmotor2, HIGH);
+  analogWrite(lspeed, 250);
+
+}
+
 uint16_t begin()
 {
   // Once we have the scale values, we can calculate the resolution
@@ -317,17 +345,8 @@ static unsigned long lastPrint = 0; // Keep track of print time
 
 void setup() 
 {
-  Serial.begin(115200);
+  Serial.begin(9600);
   
-  // Before initializing the IMU, there are a few settings
-  // we may need to adjust. Use the settings struct to set
-  // the device's communication mode and addresses:
- // imu.settings.device.commInterface = IMU_MODE_I2C;
-//  imu.settings.device.mAddress = LSM9DS1_M;
-//  imu.settings.device.agAddress = LSM9DS1_AG;
-  // The above lines will only take effect AFTER calling
-  // imu.begin(), which verifies communication with the IMU
-  // and turns it on.
   if (!begin())
   {
     Serial.println("Failed to communicate with LSM9DS1.");
@@ -339,34 +358,45 @@ void setup()
     while (1)
       ;
   }
+  pinMode(rmotor1, OUTPUT);
+  pinMode(rmotor2, OUTPUT);
+  pinMode(rspeed, OUTPUT);
+  pinMode(lmotor1, OUTPUT);
+  pinMode(lmotor2, OUTPUT);
+  pinMode(lspeed, OUTPUT);
   
   calibrate(true);
 }
+double totalx;
+double totaly;
+double totalz;
 
 void loop()
 {
   // Update the sensor values whenever new data is available
   if ( gyroAvailable() )
-    // When it exits, it'll update the
-    // gx, gy, and gz variables with the most current data.
-  readGyro();   //to read specific axis: call imu.readGyro(X_AXIS)
+     readGyro();   //to read specific axis: call imu.readGyro(X_AXIS)
+
+   if(totalx < 90){
+     turnRight();
+   }else{
+     stop();
+   }
+
 printGyro();
 delay(10);
-  //sleepGyro(0);                               //to stop reading, set to 1. To begin reading again, set to 0.
 }
 
-double totalx;
-double totaly;
-double totalz;
+
 
 void printGyro()
 {
   // Now we can use the gx, gy, and gz variables as we please.
   // Either print them as raw ADC values, or calculated in DPS.
 
-  totalx += gRes * gx;
-  totaly += gRes * gy;
-  totalz += gRes * gz;
+  totalx += gRes * gx/100;
+  totaly += gRes * gy/100;
+  totalz += gRes * gz/100;
   
   /*
   Serial.print(gRes * gx, 2);
@@ -377,10 +407,10 @@ void printGyro()
   Serial.print("\t");
   Serial.println(millis());
   */
-  Serial.print(totalx, 2);
-  Serial.print("\t");
-  Serial.print(totaly, 2);
-  Serial.print("\t");
-  Serial.print(totalz, 2);
-  Serial.print("\t\n");
+  Serial.println(totalx, 2);
+  //Serial.print("\t");
+  //Serial.print(totaly, 2);
+  //Serial.print("\t");
+  //Serial.print(totalz, 2);
+  //Serial.print("\t\n");
 }

@@ -7,7 +7,7 @@ int minimumRange = 0; // Minimum range needed
 long duration, distance; // Duration used to calculate distance
 
 int rspeed = 10;
-int rmotor1 = 8;
+int rmotor1 = 8;//
 int rmotor2 = 9;
 
 // motor two
@@ -15,24 +15,22 @@ int lspeed = 5;
 int lmotor1 = 7;
 int lmotor2 = 6;
 
-void forward(int motorSpeed)
+void forward()
 {
-  Serial.println("Moving foward");
   digitalWrite(rmotor1, LOW);
   digitalWrite(rmotor2, HIGH);
+  analogWrite(rspeed, 250);
   digitalWrite(lmotor1, LOW);
-  digitalWrite(lmotor2, LOW);
-
-  analogWrite(rspeed, 200);
+  digitalWrite(lmotor2, HIGH);
   analogWrite(lspeed, 250);
+
 }
 
 void stop()
 {
-  Serial.println("STOP");
   digitalWrite(rmotor1, LOW);
   digitalWrite(rmotor2, LOW);
-  digitalWrite(lmotor1, LOW);
+  digitalWrite(lmotor1, LOW) ;
   digitalWrite(lmotor2, LOW);
 }
 
@@ -41,6 +39,13 @@ void setup() {
   pinMode(trigPin, OUTPUT);
   pinMode(echoPin, INPUT);
   pinMode(LEDPin, OUTPUT); // Use LED indicator (if required)
+  pinMode(rmotor1, OUTPUT);
+  pinMode(rmotor2, OUTPUT);
+  pinMode(rspeed, OUTPUT);
+  pinMode(lmotor1, OUTPUT);
+  pinMode(lmotor2, OUTPUT);
+  pinMode(lspeed, OUTPUT);
+
 }
 
 void loop() {
@@ -60,11 +65,11 @@ void loop() {
 
   Serial.println(distance);
 
-  if(distance < 20) {
+  if(distance < 50 && distance > 10) {
 
     stop();
   }else{
-    forward(200);
+    forward();
   }
 //Delay 50ms before next reading.
   delay(20);
