@@ -1,2 +1,4 @@
 pagerank:
-	gcc -Wall -lm -std=c11 *.c -o pagerank
+	gcc -g -std=c11 getLinks.c -o pagerank
+clean:
+	rm pagerank
