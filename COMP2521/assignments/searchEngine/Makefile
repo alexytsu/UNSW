@@ -1,4 +1,4 @@
-pagerank: getLinks.c
-	gcc -g -std=c11 getLinks.c -o pagerank
+pagerank: getLinks.c graph.c pagerank.c
+	gcc -g -std=c11 *.c -o pagerank
 clean:
-	rm pagerank
+	rm pagerank a.out

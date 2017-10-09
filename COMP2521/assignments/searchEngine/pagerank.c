@@ -2,17 +2,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
-#define MAX_URLS 1000
+#include "getLinks.h"
 
-typedef struct webpage{
-    char *name;    
-    int n_outlinks;
-    char** outlinks;
-    
-    double pageRank;
-}Webpage;
-
-int main()
+int main()	
 {
 
     //Get urls from collection.txt
@@ -29,76 +21,32 @@ int main()
         printPageDetails(pages[i]);
     }   
 
-    
-}
+    for(i = 0; i < nurls; i++){
+        printf("Assigning in degrees and IDs\n");
 
-void printPageDetails(Webpage page)
-{
-    printf("=====PRINTING PAGE DETAILS=====\n");
-    printf("Page Name:\t %s\n", page.name);
-    printf("Out Degrees:\t %d\n", page.n_outlinks);
-    printf("PageRank:\t %.7f\n", page.pageRank);	  
-    if(page.n_outlinks > 0){
-        printf("\nOutgoing Links: \n");
-        int i = 0;
-        for(i = 0; i < page.n_outlinks; i ++){
-            printf("\t%s\n", page.outlinks[i]);
+    }
+
+    /*Graph linkMatrix = newGraph(nurls);
+    
+    for(i = 0; i < nurls; i++){
+        Page p = pages[i];
+        int j = 0;        
+        for(j = 0; j < p.n_outlinks; j ++){
+            insertEdge(linkMatrix, p.name, p.outlinks[j]);
         }
     }
-    printf("\n");
-}
-
-Webpage newPage(char *url, int nurls)
-{
-    Webpage newPage;
+*/	
+    int iteration = 0;
+    double damping = 0.85;
     
-    newPage.name = malloc(sizeof(char) * 20);
-    strcpy(newPage.name, url);  
-
-    newPage.outlinks = malloc(sizeof(char *) * nurls);
-    
-    int i;
-    for(i = 0; i < nurls; i++){
-        newPage.outlinks[i] = malloc(sizeof(char) * 20);
+    while(iteration < 100){
+        iteration ++;
+        for(i = 0; i < nurls; i ++){
+            //pages[i].pageRank = (1-damping)/nurls + damping * 0.5 * 0.5;
+        }
+        
     }
-    newPage.n_outlinks = getOutgoingLinks(url, newPage.outlinks);
     
-    newPage.pageRank = 0;
-
-    return newPage;
 }
 
-int parseCollection(char *filename, char urls[MAX_URLS][20])
-{
-    FILE *fin = fopen(filename, "r");
-    int i = 0; 
-    while(fscanf(fin, "%s", urls[i]) != -1){
-        i++;
-    }
-    return i;
-}
 
-int getOutgoingLinks(char *url, char **links)
-{
-    char filename[30];
-
-    strcpy(filename, "Sample1/");
-    strcat(filename, url);
-    strcat(filename, ".txt");
-
-    FILE *fin = fopen(filename, "r");
-
-    char buffer[1000];
-    int n_outlinks = 0;
-    char outlink[20];
-    fgets(buffer, 1000, fin);
-    
-    assert(strcmp(buffer, "#start Section-1\n")==0);    
-    while(fscanf(fin, "%s", outlink) != -1){
-        if(strcmp(outlink, "#end") == 0) break;
-        strcpy(links[n_outlinks], outlink);
-        n_outlinks++;
-    } 
- 
-    return n_outlinks;
-}
