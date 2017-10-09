@@ -10,14 +10,7 @@ typedef struct webpage{
     char** outlinks;
     
     double pageRank;
-
 }Webpage;
-
-
-int parseCollection(char *filename, char urls[MAX_URLS][20]);
-Webpage newPage(char *url, int nurls);
-int getOutgoingLinks(char *url, char **links);
-void printPageDetails(Webpage page);
 
 int main()
 {
@@ -27,15 +20,16 @@ int main()
     int nurls;
     printf("Number of pages: %d\n", nurls = parseCollection("Sample1/collection.txt", urls));
 
-    //begin PageRank Calculation
+    //Create an array of all pages
     Webpage *pages = malloc(sizeof(Webpage) * nurls);
-    
     int i = 0;
     for(i = 0; i < nurls; i++){
         printf("Creating a webpage for %s\n", urls[i]);
         pages[i] = newPage(urls[i], nurls);
         printPageDetails(pages[i]);
     }   
+
+    
 }
 
 void printPageDetails(Webpage page)
@@ -59,7 +53,7 @@ Webpage newPage(char *url, int nurls)
     Webpage newPage;
     
     newPage.name = malloc(sizeof(char) * 20);
-    strcpy(newPage.name, url);
+    strcpy(newPage.name, url);  
 
     newPage.outlinks = malloc(sizeof(char *) * nurls);
     
