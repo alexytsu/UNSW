@@ -1,3 +1,4 @@
+#include "params.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -39,7 +40,7 @@ Webpage newPage(char *url, int nurls)
     //newPage.n_outIDs = getOutgoingIDs(url, newPage.outIDs);
     newPage.n_outlinks = getOutgoingLinks(url, newPage.outlinks);
     
-    newPage.pageRank = 1/nurls;
+    newPage.pageRank = 1.0/nurls;
 
     return newPage;
 }

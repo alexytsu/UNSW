@@ -1,3 +1,5 @@
+#include "params.h"
+
 typedef struct pageID{
     char *name;
     int id;
@@ -8,13 +10,12 @@ typedef struct webpage{
     int n_outlinks;
     char** outlinks;
 
-    PageID* outIDs;
-    
+    int n_inlinks;
+    char** inlinks;
     
     double pageRank;
 }Webpage;
 
-#define MAX_URLS 1000
 
 int parseCollection(char *filename, char urls[MAX_URLS][20]);
 Webpage newPage(char *url, int nurls);
