@@ -6,6 +6,55 @@
 #include "graph.h"
 #include "params.h"
 
+
+double w_in(char* v, char* u, Graph linkMatrix, char urls[MAX_URLS][20], Webpage *pages)
+{
+
+    double win = 0;
+    //url11 -> url31
+
+    int source = getIndex(v, urls);
+    int dest = getIndex(u, urls);
+
+    int destIncoming = 0;
+    for(int i = 0; i < linkMatrix.nvertices; i ++){
+        destIncoming += linkMatrix.edges[dest][i];
+    }
+
+    int sumOfInlinksOfPagesThatSourcePointsTo = 0; 
+    for(int i = 0; i <  pages[source].n_outlinks; i ++){
+        int pageThatSourcePointsTo = getIndex(pages[source].outlinks[i], urls); 
+        for(int j = 0; j < linkMatrix.nvertices; j++){
+            sumOfInlinksOfPagesThatSourcePointsTo += linkMatrix.edges[pageThatSourcePointsTo][j];
+        }
+    }
+
+    win = (double) destIncoming/ (double) sumOfInlinksOfPagesThatSourcePointsTo;
+    return win;
+}
+
+double w_out(char *v, char*u, Graph linkMatrix, char urls[MAX_URLS][20], Webpage *pages)
+{ 
+    double wout = 0.0;
+
+    int source = getIndex(v, urls);
+    int dest = getIndex(u, urls);
+
+    int destOutgoing = pages[dest].n_outlinks;
+
+    double sumOfOutlinksOfPagesThatSourcePointsTo = 0; 
+    for(int i = 0; i <  pages[source].n_outlinks; i ++){
+        int pageThatSourcePointsTo = getIndex(pages[source].outlinks[i], urls); 
+        sumOfOutlinksOfPagesThatSourcePointsTo += (pages[pageThatSourcePointsTo].n_outlinks == 0) ? 0.5:pages[pageThatSourcePointsTo].n_outlinks;
+    }
+
+    wout = (double)destOutgoing/(double)sumOfOutlinksOfPagesThatSourcePointsTo;
+    return wout;
+
+
+
+}
+
 int main()	
 {
 
@@ -43,7 +92,7 @@ int main()
     int iteration = 0;
     double damping = 0.85;
 
-    while(iteration < 10000){
+    while(iteration < 1){
         iteration ++;
         for(i = 0; i < nurls; i ++){
 
