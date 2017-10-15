@@ -10,10 +10,8 @@ typedef struct webpage{
     int n_outlinks;
     char** outlinks;
 
-    /*
     int n_inlinks;
     char** inlinks;
-    */
     
     double pageRank;
 }Webpage;

@@ -73,7 +73,6 @@ int getOutgoingLinks(char *url, char **links)
     assert(strcmp(buffer, "#start Section-1\n")==0);    
     while(fscanf(fin, "%s", outlink) != -1){
         if(strcmp(outlink, "#end") == 0) break;
-        if(strcmp(outlink, url) == 0) continue;
         strcpy(links[n_outlinks], outlink);
         n_outlinks++;
     } 
