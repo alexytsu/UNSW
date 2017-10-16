@@ -9,6 +9,7 @@ typedef struct webpage{
     char** inlinks;
     
     double pageRank;
+    double p_pageRank;
 }Webpage;
 
 typedef struct name_pageRank_outlinks{

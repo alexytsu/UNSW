@@ -73,28 +73,29 @@ int main(int argc, char *argv[])
 
             char *currentUrl = urls[j];
             double sum_right = 0.0;
-
             for(int k = 0; k < linkMatrix.nvertices; k++){
                 if(linkMatrix.edges[j][k]){
+            if(i == 0){
             printf("Comparison between %s & %s:\n", urls[j], urls[k]);
             printf("\t win: %.7lf\n", w_in(urls[k], currentUrl, linkMatrix, urls, pages));
             printf("\t wout: %.7lf\n", w_out(urls[k], currentUrl, linkMatrix, urls, pages));
+            }
                     sum_right += pages[k].pageRank * w_in(urls[k], currentUrl, linkMatrix, urls, pages) * w_out(urls[k], currentUrl, linkMatrix, urls, pages);   
                 }
             }
-            pages[j].pageRank = (1-damping)/(double)nurls + damping*sum_right;
+            pages[j].p_pageRank = pages[j].pageRank;
+            pages[j].pageRank = (double)(1-damping)/(double)nurls + damping*sum_right;
         }
 
-        double currentTotal =  0;
-        for(int l = 0; l < nurls; l++){
-            currentTotal += pages[i].pageRank;
-        }   
+        diff = 0;
+        for(int j = 0; j < nurls; j ++){
+            double new = pages[j].pageRank - pages[j].p_pageRank;
+            diff = (diff < 0) ? -diff:diff;
+            diff += new;
+        }
 
-
-        diff = lastTotalPageRank - currentTotal;
         diff = (diff < 0) ? -diff:diff;
         printf("iteration %d: %.7f\n", i+1, diff);
-        lastTotalPageRank = currentTotal;
 
         timesRan = i;
     }
@@ -120,19 +121,18 @@ int main(int argc, char *argv[])
         outputList[i].name = malloc(sizeof(char) * 20);
     }
 
-    mergeSort(outputList, 0, nurls);
 
     for(int i = 0; i < nurls; i++){
-        printf("%s: %.7lf\n", urls[i], pages[i].pageRank);
         strcpy(outputList[i].name, urls[i]);
         outputList[i].pageRank = pages[i].pageRank;
         outputList[i].outlinks = pages[i].n_outlinks;
     }
 
+    mergeSort(outputList, 0, nurls);
 
-
-    printf("\n\n\n TOTAL PAGERANK: %.7lf\n", totalPagerank);
-
+    for(int i = 0; i < nurls; i++){
+        printf("%s: %.7lf\n", urls[i], pages[i].pageRank);
+    }
 }
 
 
@@ -150,7 +150,7 @@ double w_in(char* v, char* u, Graph linkMatrix, char urls[MAX_URLS][20], Webpage
         destIncoming += linkMatrix.edges[dest][i];
     }
 
-    int sumOfInlinksOfPagesThatSourcePointsTo = 0; 
+    double sumOfInlinksOfPagesThatSourcePointsTo = 0; 
     for(int i = 0; i <  pages[source].n_outlinks; i ++){
         int pageThatSourcePointsTo = getIndex(pages[source].outlinks[i], urls); 
         for(int j = 0; j < linkMatrix.nvertices; j++){
@@ -162,14 +162,14 @@ double w_in(char* v, char* u, Graph linkMatrix, char urls[MAX_URLS][20], Webpage
     return win;
 }
 
-double w_out(char *v, char*u, Graph linkMatrix, char urls[MAX_URLS][20], Webpage *pages)
+double w_out(char *v, char *u, Graph linkMatrix, char urls[MAX_URLS][20], Webpage *pages)
 { 
     double wout = 0.0;
 
     int source = getIndex(v, urls);
     int dest = getIndex(u, urls);
 
-    int destOutgoing = pages[dest].n_outlinks;
+    double destOutgoing = (pages[dest].n_outlinks == 0) ? 0.5:pages[dest].n_outlinks;
 
     double sumOfOutlinksOfPagesThatSourcePointsTo = 0; 
     for(int i = 0; i <  pages[source].n_outlinks; i ++){
@@ -179,8 +179,5 @@ double w_out(char *v, char*u, Graph linkMatrix, char urls[MAX_URLS][20], Webpage
 
     wout = (double)destOutgoing/(double)sumOfOutlinksOfPagesThatSourcePointsTo;
     return wout;
-
-
-
 }
 
