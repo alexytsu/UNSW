@@ -8,12 +8,11 @@
 
 void printPageDetails(Webpage page)
 {
-    printf("=====PRINTING PAGE DETAILS=====\n");
-    printf("Page Name:\t %s\n", page.name);
+    printf("------ Page Name:\t %s\n", page.name);
     printf("Out Degrees:\t %d\n", page.n_outlinks);
     printf("PageRank:\t %.7f\n", page.pageRank);	  
     if(page.n_outlinks > 0){
-        printf("\nOutgoing Links: \n");
+        printf("Outgoing Links: \n");
         int i = 0;
         for(i = 0; i < page.n_outlinks; i ++){
             printf("\t%s\n", page.outlinks[i]);

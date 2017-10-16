@@ -1,10 +1,5 @@
 #include "params.h"
 
-typedef struct pageID{
-    char *name;
-    int id;
-}PageID;
-
 typedef struct webpage{
     char *name;    
     int n_outlinks;
@@ -17,6 +12,11 @@ typedef struct webpage{
     
     double pageRank;
 }Webpage;
+
+typedef struct pageAndRank{
+    char *name;
+    double pageRank;
+}PageAndRank;
 
 
 int parseCollection(char *filename, char urls[MAX_URLS][20]);

@@ -14,12 +14,13 @@ int main(int argc, char *argv[])
     char urls[MAX_URLS][20];
     int nurls;
     printf("Number of pages: %d\n", nurls = parseCollection("Sample1/collection.txt", urls));
-
+    
+    printf("====================== Initializing Pages ======================\n");
     //Create an array of all pages
     Webpage *pages = malloc(sizeof(Webpage) * nurls);
     int i = 0;
     for(i = 0; i < nurls; i++){
-        printf("Creating a webpage for %s\n\n", urls[i]);
+        printf("Creating a webpage for %s\n", urls[i]);
         pages[i] = newPage(urls[i], nurls);
     }   
 
@@ -33,6 +34,7 @@ int main(int argc, char *argv[])
         }
     }
 
+    printf("\n=================== GRAPH ADJACENCY MATRIX ======================\n");
     for(int i = 0; i < linkMatrix.nvertices; i++){
         for(int j = 0; j < linkMatrix.nvertices; j++){
             printf("%d", linkMatrix.edges[i][j]);
@@ -48,13 +50,14 @@ int main(int argc, char *argv[])
         damping = 0.85;
         diffPR = 0.0001;
         maxIterations = 1000; 
-        printf("ADFASDFDSFDSAAFDSFDASFDAS DEFAULT VALUES USED");
+        printf("DEFAULT VALUES USED\n");
     } else if(argc == 4){
         damping = atof(argv[1]);
         diffPR = atof(argv[2]);
         maxIterations = atoi(argv[3]);
     }else{
-        fprintf(stderr, "USE THE RIGHT NUMBER OF ARGMUNETS MONGO");
+        fprintf(stderr, "Incorrect number of arguments supplied\n");
+        fprintf(stderr, "USAGE: ./pagerank [damping] [diffPR] [maxIterations]\n");
         exit(1);
     }
 
@@ -86,13 +89,13 @@ int main(int argc, char *argv[])
 
         diff = lastTotalPageRank - currentTotal;
         diff = (diff < 0) ? -diff:diff;
-        printf("iteration %d: %.7f\n", i, diff);
+        printf("iteration %d: %.7f\n", i+1, diff);
         lastTotalPageRank = currentTotal;
 
         timesRan = i;
     }
 
-    printf("Times Ran: %d\n", timesRan);
+    printf("Times Ran: %d\n", timesRan+1);
 
     /*
        printf("We want to list all links coming into url11\n");
@@ -108,8 +111,23 @@ int main(int argc, char *argv[])
         totalPagerank += pages[i].pageRank;
     }   
 
+    PageAndRank *outputList = malloc(sizeof(PageAndRank) * nurls);    
+
+    for(int i = 0; i < nurls; i++){
+        printf("%s: %.7lf\n", urls[i], pages[i].pageRank);
+        strcpy(outputList[i].name, urls[i]);
+        outputList[i].pageRank = pages[i].pageRank;
+    }
+
+
+
     printf("\n\n\n TOTAL PAGERANK: %.7lf\n", totalPagerank);
 
+}
+
+void sortByPageRank(PageAndRank *list)
+{
+    
 }
 
 double w_in(char* v, char* u, Graph linkMatrix, char urls[MAX_URLS][20], Webpage *pages)
