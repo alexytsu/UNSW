@@ -63,13 +63,13 @@ int main()
     int nurls;
     printf("Number of pages: %d\n", nurls = parseCollection("Sample1/collection.txt", urls));
 
+
     //Create an array of all pages
     Webpage *pages = malloc(sizeof(Webpage) * nurls);
     int i = 0;
     for(i = 0; i < nurls; i++){
         printf("Creating a webpage for %s\n", urls[i]);
         pages[i] = newPage(urls[i], nurls);
-        printPageDetails(pages[i]);
     }   
 
     Graph linkMatrix = newGraph(nurls);
@@ -91,6 +91,9 @@ int main()
 
     int iteration = 0;
     double damping = 0.85;
+
+    printf("WIN URL 23->11: %.7lf\n", w_in("url23","url11",linkMatrix, urls, pages));
+    printf("WOUT URL 23->11: %.7lf\n", w_out("url23", "url11", linkMatrix, urls, pages));
 
     while(iteration < 1){
         iteration ++;
