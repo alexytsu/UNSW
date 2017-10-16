@@ -5,6 +5,7 @@
 #include "getLinks.h"
 #include "graph.h"
 #include "params.h"
+#include "sorts.h"
 double w_out(char *v, char*u, Graph linkMatrix, char urls[MAX_URLS][20], Webpage *pages);
 double w_in(char* v, char* u, Graph linkMatrix, char urls[MAX_URLS][20], Webpage *pages);
 int main(int argc, char *argv[])	
@@ -75,6 +76,9 @@ int main(int argc, char *argv[])
 
             for(int k = 0; k < linkMatrix.nvertices; k++){
                 if(linkMatrix.edges[j][k]){
+            printf("Comparison between %s & %s:\n", urls[j], urls[k]);
+            printf("\t win: %.7lf\n", w_in(urls[k], currentUrl, linkMatrix, urls, pages));
+            printf("\t wout: %.7lf\n", w_out(urls[k], currentUrl, linkMatrix, urls, pages));
                     sum_right += pages[k].pageRank * w_in(urls[k], currentUrl, linkMatrix, urls, pages) * w_out(urls[k], currentUrl, linkMatrix, urls, pages);   
                 }
             }
@@ -111,16 +115,18 @@ int main(int argc, char *argv[])
         totalPagerank += pages[i].pageRank;
     }   
 
-    PageAndRank *outputList = malloc(sizeof(PageAndRank) * nurls);    
+    part1Output *outputList = malloc(sizeof(part1Output) * nurls);    
     for(int i = 0; i < nurls; i++){
         outputList[i].name = malloc(sizeof(char) * 20);
     }
 
+    mergeSort(outputList, 0, nurls);
+
     for(int i = 0; i < nurls; i++){
-        printf("%d\n", i);
         printf("%s: %.7lf\n", urls[i], pages[i].pageRank);
         strcpy(outputList[i].name, urls[i]);
         outputList[i].pageRank = pages[i].pageRank;
+        outputList[i].outlinks = pages[i].n_outlinks;
     }
 
 
