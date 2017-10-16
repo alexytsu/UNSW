@@ -112,8 +112,12 @@ int main(int argc, char *argv[])
     }   
 
     PageAndRank *outputList = malloc(sizeof(PageAndRank) * nurls);    
+    for(int i = 0; i < nurls; i++){
+        outputList[i].name = malloc(sizeof(char) * 20);
+    }
 
     for(int i = 0; i < nurls; i++){
+        printf("%d\n", i);
         printf("%s: %.7lf\n", urls[i], pages[i].pageRank);
         strcpy(outputList[i].name, urls[i]);
         outputList[i].pageRank = pages[i].pageRank;
@@ -125,11 +129,6 @@ int main(int argc, char *argv[])
 
 }
 
-
-void sortByPageRank(PageAndRank *list)
-{
-    
-}
 
 double w_in(char* v, char* u, Graph linkMatrix, char urls[MAX_URLS][20], Webpage *pages)
 {
