@@ -5,17 +5,27 @@ typedef struct webpage{
     int n_outlinks;
     char** outlinks;
 
+    /*
     int n_inlinks;
     char** inlinks;
+    */
     
+    int n_words;
+    char *words;
+
     double pageRank;
     double p_pageRank;
 }Webpage;
 
 
-typedef struct outputList{
+typedef struct outputListNode{
     struct webpage *page;
-    struct outputList *next;
+    struct outputListNode *next;
+}OutputListNode;
+
+typedef struct outputListRep{
+    struct outputListNode *first;
+    struct outputListNode *last;
 }OutputList;
 
 int parseCollection(char *filename, char urls[MAX_URLS][20]);
