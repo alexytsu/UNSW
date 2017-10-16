@@ -12,13 +12,11 @@ typedef struct webpage{
     double p_pageRank;
 }Webpage;
 
-typedef struct name_pageRank_outlinks{
-    char *name;
-    double pageRank;
-    int outlinks;
 
-}part1Output;
-
+typedef struct outputList{
+    struct webpage *page;
+    struct outputList *next;
+}OutputList;
 
 int parseCollection(char *filename, char urls[MAX_URLS][20]);
 Webpage newPage(char *url, int nurls);

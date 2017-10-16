@@ -5,9 +5,9 @@
 #include "getLinks.h"
 #include "graph.h"
 #include "params.h"
-#include "sorts.h"
 double w_out(char *v, char*u, Graph linkMatrix, char urls[MAX_URLS][20], Webpage *pages);
 double w_in(char* v, char* u, Graph linkMatrix, char urls[MAX_URLS][20], Webpage *pages);
+OutputList *insertOrdered(OutputList *head, Webpage page);
 int main(int argc, char *argv[])	
 {
 
@@ -49,7 +49,7 @@ int main(int argc, char *argv[])
 
     if(argc == 1){
         damping = 0.85;
-        diffPR = 0.0001;
+        diffPR = 0.00001;
         maxIterations = 1000; 
         printf("DEFAULT VALUES USED\n");
     } else if(argc == 4){
@@ -100,7 +100,28 @@ int main(int argc, char *argv[])
         timesRan = i;
     }
 
+    printf("\n=========================\n");
     printf("Times Ran: %d\n", timesRan+1);
+
+    OutputList *head = malloc(sizeof(OutputList *));    
+    head->page = malloc(sizeof(Webpage *));
+    head->next = malloc(sizeof(OutputList *));
+    head->page = &pages[0];
+    head->next = NULL;
+
+    OutputList *curr = head;
+
+    for(int i = 1; i < nurls; i++){
+        printf("Ran %d times\n", i);
+        insertOrdered(head, pages[i]);
+    }
+
+    while(curr != NULL){
+        printPageDetails(*curr->page);
+        curr = curr->next;
+        printf("New pointer %p\n", curr);
+    }
+
 
     /*
        printf("We want to list all links coming into url11\n");
@@ -110,31 +131,29 @@ int main(int argc, char *argv[])
        }
        */
 
-    double totalPagerank = 0;
-    for(int i = 0; i < nurls; i++){
-        printPageDetails(pages[i]);
-        totalPagerank += pages[i].pageRank;
-    }   
-
-    part1Output *outputList = malloc(sizeof(part1Output) * nurls);    
-    for(int i = 0; i < nurls; i++){
-        outputList[i].name = malloc(sizeof(char) * 20);
-    }
-
-
-    for(int i = 0; i < nurls; i++){
-        strcpy(outputList[i].name, urls[i]);
-        outputList[i].pageRank = pages[i].pageRank;
-        outputList[i].outlinks = pages[i].n_outlinks;
-    }
-
-    mergeSort(outputList, 0, nurls);
-
-    for(int i = 0; i < nurls; i++){
-        printf("%s: %.7lf\n", urls[i], pages[i].pageRank);
-    }
 }
 
+OutputList *insertOrdered(OutputList *head, Webpage page)
+{
+    OutputList *curr = head;
+    OutputList *prev = NULL;
+    while(curr!=NULL && curr->page->pageRank > page.pageRank){
+        prev = curr;
+        curr = curr->next;
+    } 
+    OutputList *new = malloc(sizeof(OutputList));
+    new->page = malloc(sizeof(Webpage *));
+    new->next = malloc(sizeof(OutputList *));
+    new->page = &page;
+    if(prev == NULL){
+        new->next = curr;    
+    }else{
+        prev->next = new;
+        new->next = curr;
+    }
+
+    return head;
+}
 
 double w_in(char* v, char* u, Graph linkMatrix, char urls[MAX_URLS][20], Webpage *pages)
 {
