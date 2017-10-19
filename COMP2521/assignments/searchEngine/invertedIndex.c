@@ -28,7 +28,7 @@ int main(int argc, char *argv[]){
         pages[i] = newPage(urls[i], nurls);
     }   
     
-    char wordsInUrl[1000][40];
+    char wordsInUrl[1000][PNEUMONOULTRAMICROSCOPICSILICOVOLCANOCONIOSIS];
 
     Set *wordSetArray = malloc(nurls*sizeof(Set));  //creates an array of sets of words in each webpage.
     for(int i = 0; i <nurls; i++){
