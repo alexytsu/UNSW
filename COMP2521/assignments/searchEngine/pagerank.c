@@ -112,7 +112,7 @@ int main(int argc, char *argv[])
     outputL->last = NULL;
 
 
-    FILE *fout = fopen("results.txt", "w");
+    FILE *fout = fopen("pagerankList.txt", "w");
 
     for(int i = 0; i < nurls; i++){
         printf("Ran %d times\n", i);
@@ -125,15 +125,6 @@ int main(int argc, char *argv[])
     }
 
     fclose(fout);
-
-    /*
-       printf("We want to list all links coming into url11\n");
-       int index11 = getIndex("url11", urls);
-       for(int i = 0; i < linkMatrix.nvertices; i ++){
-       printf("%d",linkMatrix.edges[index11][i]);
-       }
-       */
-
 }
 
 
