@@ -259,7 +259,7 @@ void clearList(List l){
     while(curr!=NULL){
         tmp = prev;
         prev = curr;
-        curr-curr->next;
+        curr = curr->next;
         free(tmp);
     }
     free(prev);
