@@ -24,7 +24,6 @@ double idf(char *term){
     char line[MAX_LINE_LENGTH];
 
     int docsWithTerm = 0;
-    printf("Handled inital FILE/IO\n");
     //each line in invertedIndex is dedicated to a specific word, so no. words = no. lines
     while(fgets(line, MAX_LINE_LENGTH, invIndex)!=NULL){
         char *word = malloc(sizeof(char) * PNEUMONOULTRAMICROSCOPICSILICOVOLCANOCONIOSIS);

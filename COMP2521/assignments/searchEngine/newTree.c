@@ -70,7 +70,7 @@ void printFromLargest(Tree root)
     if(root == NULL) return;
     if(root->right != NULL) printFromLargest(root->right);
     //printf("%d: %s: %.6lf\n", printed, root->url, root->tfidf);
-
+    printf("%s %.6lf\n", root->url, root->tfidf);
     printed++;
     if(root->left!=NULL) printFromLargest(root->left);
 }
