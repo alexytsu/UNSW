@@ -7,6 +7,6 @@
 #include "linkedList.h"
 
 double tf(List l, char *term);
-double idf(char *term, int docCount);
-double tfidf(char *term, int wCount, int docCount);
+double idf(char *term);
+double tf_idf(char *term, char *url, char urls[MAX_URLS][20]);
 int urlCount(char sentence[MAX_LINE_LENGTH]);
