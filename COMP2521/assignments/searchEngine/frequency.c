@@ -30,12 +30,13 @@ double idf(char *term, int docCount){
         wordCount++;  
     }
 
-    //holds first character of each line, which should be the word
-    char *first = malloc(PNEUMONOULTRAMICROSCOPICSILICOVOLCANOCONIOSIS*sizeof(char *));
+
+ /*   char *first = malloc(PNEUMONOULTRAMICROSCOPICSILICOVOLCANOCONIOSIS*sizeof(char *));
     for(int i = 0; i<PNEUMONOULTRAMICROSCOPICSILICOVOLCANOCONIOSIS; i++){
         first[i] = malloc(20*sizeof(char)); 
-    }
+    }*/
 
+    //holds first character of each line, which should be the word
     for(int j = 0; j<wordCount; j++){        
         sscanf(lines[j], "%s", first[j]);
         printf("j=%d, first word is %s \n", j, first[j]);
