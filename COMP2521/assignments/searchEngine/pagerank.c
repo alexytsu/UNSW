@@ -64,7 +64,6 @@ int main(int argc, char *argv[])
     }
 
     double diff = diffPR;
-    double lastTotalPageRank = 1;
 
     int timesRan = 0;
 
@@ -132,6 +131,7 @@ OutputListNode *newNode(Webpage *page){
     OutputListNode *new = malloc(sizeof(OutputListNode *));
     new->page = page;
     new->next = NULL;
+    return new;
 }
 
 void insertOrdered(OutputList *L, Webpage *page)

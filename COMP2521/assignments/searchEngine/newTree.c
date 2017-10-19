@@ -19,28 +19,25 @@ Tree newTreeNode(char *name, double tfidf, int matches)
 void printTree(Tree root)
 {
     if(root == NULL) return;
+    printf("%s: %d [%s] [%s]\n", root->url, root->matches, (root->right == NULL)? "X":root->right->url,(root->left == NULL)? "X":root->left->url);
     if(root->left != NULL) printTree(root->left);
-    printf("%s: %d\n", root->url, root->matches);
     if(root->right != NULL) printTree(root->right);
+}
+
+Tree insertNodeWithValues(Tree root, double tfidf, int matches, char *name)
+{
+    if(root == NULL)
+        return newTreeNode(name, tfidf, matches);
+    else if (tfidf < root->tfidf)
+        root->left = insertNodeWithValues(root->left, tfidf, matches, name);
+    else if (tfidf > root->tfidf)
+        root->right = insertNodeWithValues(root->right, tfidf, matches, name);
+    return root;
 }
 
 Tree insertNode(Tree root, Tree insert)
 {
-    printf("Printing tree\n");
-    printTree(root);
-    printf("Printing node\n");
-    printTree(insert);
-
 	if(root == NULL) return insert;
- 
-    if(insert->matches < root->matches){
-        root->left = insertNode(root->left, insert);
-    }else if(insert->matches > root->matches){
-        root->right = insertNode(root->left, insert);
-    }
-
-    printf("Same number of matches\n");
-    
     if(insert->tfidf < root->tfidf){
 		root->left = insertNode(root->left, insert);
 	}else if(insert->tfidf > root->tfidf){
@@ -56,14 +53,10 @@ void deleteNode(Tree t)
 
 int empty(Tree t)
 {
-    if(t->deleted == 0){
-        return 0;
-    }
     if(t == NULL) return 1;
-
+    else return 0;
     int left = empty(t->left);
-    int right = empty(t-right);
-
+    int right = empty(t->right);
     if(left == 1 && right == 1){
         return 1;
     }
@@ -72,8 +65,12 @@ int empty(Tree t)
 
 void printFromLargest(Tree root)
 {
+    static int printed = 0;
+    if(printed >= 30) return;
+    if(root == NULL) return;
     if(root->right != NULL) printFromLargest(root->right);
-    printf("%s: %.6lf\n", root->url, root->tfidf);
-    deleteNode(root);
+    //printf("%d: %s: %.6lf\n", printed, root->url, root->tfidf);
+    printf("%s %.6lf\n", root->url, root->tfidf);
+    printed++;
     if(root->left!=NULL) printFromLargest(root->left);
 }
