@@ -48,29 +48,29 @@ Node newWordNode(char *word){
 
 int sortedWord(char *name1, char *name2)
 {
-  //  printf("String 1:%s and String 2: %s\n", name1, name2);
-	if(*name1 == '\0'&& *name2 == '\0'){
-		return 2;
-	}
+    //  printf("String 1:%s and String 2: %s\n", name1, name2);
+    if(*name1 == '\0'&& *name2 == '\0'){
+        return 2;
+    }
 
-	if(*name1 == '\0'){
-		return 1;
-	} else if(*name2 == '\0'){
-		return 0;
-	}
+    if(*name1 == '\0'){
+        return 1;
+    } else if(*name2 == '\0'){
+        return 0;
+    }
 
-	if(*name1 < *name2){
-		return 1;
-	} else if(*name1 > *name2){
-		return 0;
-	} else {
-		return sortedWord(name1+1, name2+1);
-	}
+    if(*name1 < *name2){
+        return 1;
+    } else if(*name1 > *name2){
+        return 0;
+    } else {
+        return sortedWord(name1+1, name2+1);
+    }
 }
 
 void insertWord(List l, char *w){    
     Node n = newNode(w);
-    
+
     if(l==NULL){
         List newL = newList();
         l = newL;
@@ -78,70 +78,70 @@ void insertWord(List l, char *w){
 
     Node curr = l->first;
     Node prev = NULL;
-    
-    //if the list is empty
-	if(curr == NULL){
-		l->first = n;
-		return;
-	}
-    
-	//move the pointers to the correct positions
-	while(curr!=NULL && sortedWord(curr->content, w)){
-		prev = curr;
-		curr = curr -> next;
-		
-	}
 
-	if(prev == NULL){ //a new smallest element in the list
-		l->first = n;
-		n->next = curr;
-	}else{ //insert elsewhere in the list
-		prev->next = n;
-		n->next = curr;
-		/*if(n->next == NULL){ //if it's the biggest element in the list
-			l->last = n;
-		}*/
-	}
-        l->length++;
-	/*
-    new->next = new->urlList=NULL;
-    if(l->first==NULL){
-        l->last=l->first=new;
-    }else{
-        l->last->next = l->last = new;
+    //if the list is empty
+    if(curr == NULL){
+        l->first = n;
+        return;
     }
-    */
+
+    //move the pointers to the correct positions
+    while(curr!=NULL && sortedWord(curr->content, w)){
+        prev = curr;
+        curr = curr -> next;
+
+    }
+
+    if(prev == NULL){ //a new smallest element in the list
+        l->first = n;
+        n->next = curr;
+    }else{ //insert elsewhere in the list
+        prev->next = n;
+        n->next = curr;
+        /*if(n->next == NULL){ //if it's the biggest element in the list
+          l->last = n;
+          }*/
+    }
+    l->length++;
+    /*
+       new->next = new->urlList=NULL;
+       if(l->first==NULL){
+       l->last=l->first=new;
+       }else{
+       l->last->next = l->last = new;
+       }
+       */
 }
 
 void insertWordsInPage(List l, char *word){
     Node new = newWordNode(word);
-    
+
     if(l==NULL){    //but this is never gonna happen. new list malloced before this is called who cares
-        List newL = newList;
+        List newL = newList();
         l = newL;
     }
-    
+
     Node curr = l->first;
     Node prev = NULL;
-    
+
     //if the list is empty
-	if(curr == NULL){
-		l->first = new;
-		return;
-	}
-	
-	while(curr!=NULL){
-		prev = curr;
-		curr = curr -> next;		
-	}
-	if(prev == NULL){ //a new smallest element in the list
-		l->first = new;
-		new->next = curr;
-	}else{elsewhere in the list
-		prev->next = new;
-		new->next = curr;
-	}
-        l->length++;
+    if(curr == NULL){
+        l->first = new;
+        return;
+    }
+
+    while(curr!=NULL && sortedWord(curr->content, word)){
+        prev = curr;
+        curr = curr -> next;		
+    }
+    if(prev == NULL){ //a new smallest element in the list
+        l->first = new;
+        new->next = curr;
+    }else{
+        prev->next = new;
+        new->next = curr;
+    }
+    l->length++;
 }
 
 
@@ -213,7 +213,7 @@ void removeNext(List l, Node keep){
 }
 
 void printIndex(List l, FILE *fout){
-    
+
     for(Node curr=l->first; curr!=NULL; curr=curr->next){
         fprintf(fout, "%s", curr->content);
         for(Node url=curr->urlList->first; url!=NULL; url=url->next){
@@ -225,20 +225,23 @@ void printIndex(List l, FILE *fout){
 }
 
 int dupWordCount(List l, char *word){
-    int count=0;
     if(l==NULL || l->length==0) return 0;
-    else Node curr = l->first;
+    int count = 0;
+    Node curr = l->first;
     while(curr!=NULL){
         if(strcmp(curr->content, word)==0) count++;
+        curr = curr->next;
     }
     return count;
 }  
 
 int find(List l, char *word){
+    Node curr = NULL;
     if(l==NULL || l->length==0) return 0;
-    else Node curr = l->first;
+    else curr = l->first;
     while(curr!=NULL){
         if(strcmp(curr->content, word)==0) return 1;
+        curr = curr->next;
     }
     return 0;
 }
@@ -249,7 +252,7 @@ int length(List l){
 }
 
 void clearList(List l){
-    assert(l!=NULL)
+    assert(l!=NULL);
     Node curr = l->first;
     Node prev = NULL;
     Node tmp = NULL;
