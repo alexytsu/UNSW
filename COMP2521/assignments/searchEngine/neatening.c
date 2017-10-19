@@ -42,3 +42,29 @@ void getWords(char *url, char wordArray[1000][40], Set *w)  //no. words containi
     } 
 }
 
+void parseWords(char *url, List l)  //parses through words on a specific webpage, chucks it all into list l
+{
+    char filename[30];
+
+    strcpy(filename, "Sample1/");
+    strcat(filename, url);
+    strcat(filename, ".txt");
+
+    FILE *fin = fopen(filename, "r");
+    char buffer[1000];
+    char word[PNEUMONOULTRAMICROSCOPICSILICOVOLCANOCONIOSIS];
+    int n_words=0;
+    while(fgets(buffer, 1000, fin)){
+        if(strcmp("#start Section-2\n", buffer) == 0) break;
+    }
+    //reading from section 2 onwards
+    assert(strcmp(buffer, "#start Section-2\n")==0);    
+    while(fscanf(fin, "%s", word) != -1){   
+        if(strcmp(word, "#end") == 0) break;    //end scan when end is reached
+                    
+        n_words++;      //+1 word for each thing fscanf reads
+        normalise(word);       //clean up the word
+        insertWordsInPage(l, word);   //insert word into linked list for each webpage
+    } 
+}
+

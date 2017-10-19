@@ -15,14 +15,13 @@ typedef struct node{
 
 typedef struct listRep{
     struct node *first;
-    struct node *last;
     int length;
 }listRep;
 
 List newList(){
     List new = malloc(sizeof(struct listRep));
     assert(new);
-    new->first=new->last=NULL;
+    new->first=NULL;
     new->length=0;
     return new;
 }
@@ -33,6 +32,16 @@ Node newNode(char *c){
     new->content=malloc(PNEUMONOULTRAMICROSCOPICSILICOVOLCANOCONIOSIS*sizeof(char));
     strcpy(new->content, c);
     new->urlList=newList();
+    new->next=NULL;
+    return new;
+}
+
+Node newWordNode(char *word){
+    Node new = malloc(sizeof(struct node*));
+    assert(new);
+    new->content=malloc(PNEUMONOULTRAMICROSCOPICSILICOVOLCANOCONIOSIS*sizeof(char));
+    strcpy(new->content, word);
+    new->urlList=NULL;
     new->next=NULL;
     return new;
 }
@@ -72,7 +81,7 @@ void insertWord(List l, char *w){
     
     //if the list is empty
 	if(curr == NULL){
-		l->first = l->last = n;
+		l->first = n;
 		return;
 	}
     
@@ -89,9 +98,9 @@ void insertWord(List l, char *w){
 	}else{ //insert elsewhere in the list
 		prev->next = n;
 		n->next = curr;
-		if(n->next == NULL){ //if it's the biggest element in the list
+		/*if(n->next == NULL){ //if it's the biggest element in the list
 			l->last = n;
-		}
+		}*/
 	}
         l->length++;
 	/*
@@ -103,6 +112,38 @@ void insertWord(List l, char *w){
     }
     */
 }
+
+void insertWordsInPage(List l, char *word){
+    Node new = newWordNode(word);
+    
+    if(l==NULL){    //but this is never gonna happen. new list malloced before this is called who cares
+        List newL = newList;
+        l = newL;
+    }
+    
+    Node curr = l->first;
+    Node prev = NULL;
+    
+    //if the list is empty
+	if(curr == NULL){
+		l->first = new;
+		return;
+	}
+	
+	while(curr!=NULL){
+		prev = curr;
+		curr = curr -> next;		
+	}
+	if(prev == NULL){ //a new smallest element in the list
+		l->first = new;
+		new->next = curr;
+	}else{elsewhere in the list
+		prev->next = new;
+		new->next = curr;
+	}
+        l->length++;
+}
+
 
 Node fromList(List l){
     return l->first;
@@ -181,4 +222,42 @@ void printIndex(List l, FILE *fout){
         fprintf(fout, "\n");
     }
 
+}
+
+int dupWordCount(List l, char *word){
+    int count=0;
+    if(l==NULL || l->length==0) return 0;
+    else Node curr = l->first;
+    while(curr!=NULL){
+        if(strcmp(curr->content, word)==0) count++;
+    }
+    return count;
+}  
+
+int find(List l, char *word){
+    if(l==NULL || l->length==0) return 0;
+    else Node curr = l->first;
+    while(curr!=NULL){
+        if(strcmp(curr->content, word)==0) return 1;
+    }
+    return 0;
+}
+
+int length(List l){
+    assert(l!=NULL);
+    return l->length;
+}
+
+void clearList(List l){
+    assert(l!=NULL)
+    Node curr = l->first;
+    Node prev = NULL;
+    Node tmp = NULL;
+    while(curr!=NULL){
+        tmp = prev;
+        prev = curr;
+        curr-curr->next;
+        free(tmp);
+    }
+    free(prev);
 }
