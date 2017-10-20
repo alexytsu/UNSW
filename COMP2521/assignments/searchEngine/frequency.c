@@ -115,9 +115,10 @@ double idf(char *term){
         char *word = malloc(sizeof(char) * PNEUMONOULTRAMICROSCOPICSILICOVOLCANOCONIOSIS);
         sscanf(line, "%s", word);
         if(strcmp(term, word) == 0){
-            docsWithTerm = urlCount(line); 
+            docsWithTerm = urlCount(line);
         }
     }
+    
     return log1p((double)docsWithTerm/(double)totalDoc);
 }
 
