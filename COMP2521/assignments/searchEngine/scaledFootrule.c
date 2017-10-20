@@ -22,7 +22,7 @@ int main (int argc, char *argv[]){
 
     //keeps track of each rank file from command arg
     for(int fileCounter = 1; fileCounter<argc; fileCounter++){
-        FILE *fin = fopen("argv[%d]", "r");  //for each file
+        FILE *fin = fopen(argv[fileCounter], "r");  //for each file
         rankLists[fileCounter-1] = newRatioList();   //make a new list for that file
         indivRank = 0;  //start counting how many ranks there are
         while (fgets(urls[rankTotal], 20, fin)!=NULL){      //reads each line/rank of file into urls[]         
@@ -31,23 +31,20 @@ int main (int argc, char *argv[]){
             addList(rankLists[fileCounter-1], urls[rankTotal]);   //inserts url read into list of urls from that file
             rankTotal++;        //increments 
         } 
-        calculateRatio(rankLists[fileCounter], indivRank);    //assigns a ratio to each url in rankLists respective to their individual rank in that list
-        
+        calculateRatio(rankLists[fileCounter-1], indivRank);    //assigns a ratio to each url in rankLists respective to their individual rank in that list
     }
     
     
 //    unionSize = nElems(fileUnion);  //find total amount of urls that are to be ranked, no duplicates
-    for(int fileCounter = 1; fileCounter<argc; fileCounter++){
+    for(int fileCounter = 1; fileCounter<argc-1; fileCounter++){
         combineLists(rankLists[0], rankLists[fileCounter]);    //combines urls read from all files with duplicates, in no particular order
     }    
-    
-    List findRank = newRatioList();
 
+    List findRank = newRatioList();
+    printf("HI YA MATE!\n");
     copyList(findRank, rankLists[0]);   //copies all urls from rankLists->findRank in alphabetical order
     computeAvgRatio(findRank);  //combines url duplicates and averages their ratio
     Tree urlsByRatio = makeTree(findRank);  //makes a tree out of the list, sorted by ratio size
-
     printAscending(urlsByRatio);    //prints tree from highest to lowest rank
-
     return 0;
 }

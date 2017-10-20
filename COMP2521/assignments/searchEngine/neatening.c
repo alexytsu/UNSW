@@ -20,8 +20,7 @@ void getWords(char *url, char wordArray[1000][40], Set *w)  //no. words containi
 {
     char filename[30];
 
-    strcpy(filename, "Sample1/");
-    strcat(filename, url);
+    strcpy(filename, url);
     strcat(filename, ".txt");
 
     FILE *fin = fopen(filename, "r");
@@ -48,8 +47,7 @@ void parseWords(char *url, List l)  //parses through words on a specific webpage
 {
     char filename[30];
 
-    strcpy(filename, "Sample1/");
-    strcat(filename, url);
+    strcpy(filename, url);
     strcat(filename, ".txt");
 
     FILE *fin = fopen(filename, "r");

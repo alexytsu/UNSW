@@ -106,7 +106,7 @@ double idf(char *term){
     FILE *invIndex = fopen("invertedIndex.txt", "r");
     char urls[MAX_URLS][20];
     //total amount of webpages = total amount of urls
-    double totalDoc = parseCollection("Sample1/collection.txt", urls);
+    double totalDoc = parseCollection("collection.txt", urls);
     char line[MAX_LINE_LENGTH];
 
     int docsWithTerm = 0;

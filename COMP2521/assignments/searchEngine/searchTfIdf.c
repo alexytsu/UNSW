@@ -15,7 +15,7 @@ int main(int argc, char *argv[]){
 
     char urls[MAX_URLS][20];
     
-    int nurls = parseCollection("Sample1/collection.txt", urls);
+    int nurls = parseCollection("collection.txt", urls);
     int n_terms = argc-1;
     int n_possible_matches = argc;
     int pageCounter = 0;
