@@ -111,27 +111,14 @@ double idf(char *term){
 
     int docsWithTerm = 0;
     //each line in invertedIndex is dedicated to a specific word, so no. words = no. lines
-<<<<<<< HEAD
-    while(fgets(lines[wordCount], MAX_LINE_LENGTH, invIndex)!=NULL){
-        //printf("%s\n", buff[wordCount]); //just for debugging
-        wordCount++;  
+    while(fgets(line, MAX_LINE_LENGTH, invIndex)!=NULL){
+        char *word = malloc(sizeof(char) * PNEUMONOULTRAMICROSCOPICSILICOVOLCANOCONIOSIS);
+        sscanf(line, "%s", word);
+        if(strcmp(term, word) == 0){
+            docsWithTerm = urlCount(line);
+        }
     }
-
-
- /*   char *first = malloc(PNEUMONOULTRAMICROSCOPICSILICOVOLCANOCONIOSIS*sizeof(char *));
-    for(int i = 0; i<PNEUMONOULTRAMICROSCOPICSILICOVOLCANOCONIOSIS; i++){
-        first[i] = malloc(20*sizeof(char)); 
-    }*/
-
-    //holds first character of each line, which should be the word
-    for(int j = 0; j<wordCount; j++){        
-        sscanf(lines[j], "%s", first[j]);
-        printf("j=%d, first word is %s \n", j, first[j]);
-    }
-
-    for (findWord = 0; findWord<wordCount; findWord++){
-        if(strcmp(first[findWord], term)==0) break;
-    }
+    
     return log1p((double)docsWithTerm/(double)totalDoc);
 }
 
