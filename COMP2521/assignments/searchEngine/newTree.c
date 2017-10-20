@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "newTree.h"
+#include "ratioList.h"
 #include "params.h"
 
 Tree newTreeNode(char *name, double tfidf, int matches)
@@ -73,4 +74,22 @@ void printFromLargest(Tree root)
     printf("%s %.6lf\n", root->url, root->tfidf);
     printed++;
     if(root->left!=NULL) printFromLargest(root->left);
+}
+
+void printAscending(Tree root){
+    if(root == NULL) return;
+    if(root->left != NULL) printAscending(root->left);
+    //printf("%d: %s: %.6lf\n", printed, root->url, root->tfidf);
+    printf("%s\n", root->url);
+    if(root->right!=NULL) printAscending(root->right);
+}
+
+Tree makeTree(List l){	
+    Node curr = l->first;
+    Tree new = newTreeNode(curr->url, curr->ratio, -1);
+    while(curr!=NULL){	
+        curr=curr->next;
+        new = insertNodeWithValues(new, curr->ratio, -1, curr->url);        
+    }
+    return new;
 }
