@@ -58,8 +58,7 @@ int getOutgoingLinks(char *url, char **links)
 {
     char filename[30];
 
-    strcpy(filename, "Sample1/");
-    strcat(filename, url);
+    strcpy(filename, url);
     strcat(filename, ".txt");
 
     FILE *fin = fopen(filename, "r");

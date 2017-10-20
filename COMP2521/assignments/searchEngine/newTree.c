@@ -1,9 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+#include "params.h"
+#include "linkedList.h"
 #include "newTree.h"
 #include "ratioList.h"
-#include "params.h"
 
 Tree newTreeNode(char *name, double tfidf, int matches)
 {

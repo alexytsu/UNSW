@@ -4,6 +4,7 @@
 #include <assert.h>
 
 #include "getLinks.h"
+#include "linkedList.h"
 #include "set.h"
 #include "params.h"
 #include "newTree.h"

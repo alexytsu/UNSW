@@ -1,14 +1,16 @@
 CC=gcc
 CFLAGS=-Wall -lm -std=c11
-HELPER=getLinks.c graph.c frequency.c linkedList.c neatening.c newTree.c set.c
-all: pagerank inverted searchTfIdf searchPagerank
+HELPER=getLinks.c graph.c frequency.c linkedList.c neatening.c newTree.c set.c ratioList.c
+all: pagerank inverted searchTfIdf searchPagerank scaledFootrule
 pagerank: $(HELPER) pagerank.c
 	$(CC) $(CFLAGS) pagerank.c $(HELPER) -o pagerank
-inverted: $(OBJS) inverted.c
+inverted: $(HELPER) inverted.c
 	$(CC) $(CFLAGS) inverted.c $(HELPER) -o inverted
-searchTfIdf: $(OBJS) searchTfIdf.c
+searchTfIdf: $(HELPER) searchTfIdf.c
 	$(CC) $(CFLAGS) searchTfIdf.c $(HELPER) -o searchTfIdf
-searchPagerank: $(OBJS) searchPagerank.c
+searchPagerank: $(HELPER) searchPagerank.c
 	$(CC) $(CFLAGS) searchPagerank.c $(HELPER) -o searchPagerank
+scaledFootrule: $(HELPER) scaledFootrule.c
+	$(CC) $(CFLAGS) scaledFootrule.c $(HELPER) -o scaledFootrule
 clean:
-	rm searchPagerank inverted searchTfIdf pagerank *.txt
+	rm searchPagerank inverted searchTfIdf pagerank scaledFootrule *.txt

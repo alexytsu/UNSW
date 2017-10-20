@@ -2,15 +2,14 @@
 #include <assert.h>
 #include <malloc.h>
 #include <string.h>
+
+#include "params.h"
 #include "ratioList.h"
 #include "newTree.h"
-#include "params.h"
 
-
-
-List newList(){
+List newRatioList(){
     List new = malloc(sizeof(struct listRep));
-    assert(listIntegrity(new));
+    assert(ratioListIntegrity(new));
     new->first=new->last=NULL;
     new->length=0;
     return new;
@@ -27,7 +26,7 @@ Node newListNode(char *page){
 }
 
 void addList(List l, char *page){ //adds page/url into end of list
-    assert(listIntegrity(l));
+    assert(ratioListIntegrity(l));
     Node new = newListNode(page);
     if(l->length==0){
         l->first=l->last=new;
@@ -41,7 +40,7 @@ void addList(List l, char *page){ //adds page/url into end of list
 }
 
 void insertOrder(List l, char *v){
-    assert(listIntegrity(l));
+    assert(ratioListIntegrity(l));
     Node new = newListNode(v);
     Node curr = l->first;
     Node prev = NULL;
@@ -52,7 +51,7 @@ void insertOrder(List l, char *v){
         return;
     }
 
-    while(curr!=NULL && sortedWord(curr->url, new->url)){
+    while(curr!=NULL && ratioSortedWord(curr->url, new->url)){
         prev = curr;
         curr = curr -> next;		
     }
@@ -69,7 +68,7 @@ void insertOrder(List l, char *v){
     l->length++;
 }
 
-void removeNext(List l, Node keep){
+void ratioRemoveNext(List l, Node keep){
     Node tmp = keep->next;
     keep->next = keep->next->next;
     free(tmp->url);
@@ -77,13 +76,13 @@ void removeNext(List l, Node keep){
 }
 
 //filters out duplicates in list
-void filterList(List l){
-    assert(listIntegrity(l));
+void ratioFilterList(List l){
+    assert(ratioListIntegrity(l));
     Node curr = l->first;
     while(curr->next!=NULL){
         if(strcmp(curr->url, curr->next->url)==0){
             while(strcmp(curr->url, curr->next->url)==0){
-                removeNext(l, curr);
+                ratioRemoveNext(l, curr);
                 if (curr->next==NULL) return;
             }
         }
@@ -92,7 +91,7 @@ void filterList(List l){
 }
 
 void computeAvgRatio(List l){
-    assert(listIntegrity(l));
+    assert(ratioListIntegrity(l));
     Node curr = l->first;
     Node flag = NULL;
     int dupCount = 0;
@@ -114,7 +113,7 @@ void computeAvgRatio(List l){
 }
 
 void calculateRatio(List l, int rank){
-    assert(listIntegrity(l));
+    assert(ratioListIntegrity(l));
     int i = 0;
     Node curr = l->first;
     while(curr!=NULL){
@@ -133,7 +132,7 @@ void combineLists(List dest, List src){ //merge src into dest with duplicates
 }
 
 void copyList(List dest, List src){
-    assert(listIntegrity(dest) && listIntegrity(src));
+    assert(ratioListIntegrity(dest) && ratioListIntegrity(src));
     Node curr = src->first;
     while(curr!=NULL){
         insertOrder(dest, curr->url);
@@ -143,7 +142,7 @@ void copyList(List dest, List src){
 }
 
 
-int listIntegrity(List l){    
+int ratioListIntegrity(List l){    
     if(l==NULL){
         fprintf(stderr, "list doesn't exist\n");
         return 0;
@@ -152,7 +151,7 @@ int listIntegrity(List l){
 }
 
  //sorts string in alphabetical order
-int sortedWord(char *name1, char *name2)
+int ratioSortedWord(char *name1, char *name2)
 {
     //  printf("String 1:%s and String 2: %s\n", name1, name2);
     if(*name1 == '\0'&& *name2 == '\0'){
@@ -170,7 +169,7 @@ int sortedWord(char *name1, char *name2)
     } else if(*name1 > *name2){
         return 0;
     } else {
-        return sortedWord(name1+1, name2+1);
+        return ratioSortedWord(name1+1, name2+1);
     }
 }
 

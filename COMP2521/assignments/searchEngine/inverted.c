@@ -11,13 +11,12 @@
 #include "linkedList.h"
 #include "neatening.h"
 
-
 int main(int argc, char *argv[]){
 
     //Get urls from collection.txt
     char urls[MAX_URLS][20];
     int nurls;
-    printf("Number of pages: %d\n", nurls = parseCollection("Sample1/collection.txt", urls));
+    printf("Number of pages: %d\n", nurls = parseCollection("collection.txt", urls));
 
     printf("====================== Initializing Pages ======================\n");
     //Create an array of all pages

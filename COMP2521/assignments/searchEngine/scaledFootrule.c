@@ -3,8 +3,9 @@
 #include "params.h"
 #include "ratioList.h"
 #include "newTree.h"
-#include "treeList.h"
+#include "linkedList.h"
 #include "set.h"
+
 int main (int argc, char *argv[]){
     int rankTotal = 0; //total amount of urls that have been ranked in the files
     int indivRank = 0;  //rank of urls in their individual files
@@ -21,8 +22,8 @@ int main (int argc, char *argv[]){
 
     //keeps track of each rank file from command arg
     for(int fileCounter = 1; fileCounter<argc; fileCounter++){
-        FILE *fin = fopen("argv[%d]", "r", fileCounter);  //for each file
-        rankLists[fileCounter-1] = newList();   //make a new list for that file
+        FILE *fin = fopen("argv[%d]", "r");  //for each file
+        rankLists[fileCounter-1] = newRatioList();   //make a new list for that file
         indivRank = 0;  //start counting how many ranks there are
         while (fgets(urls[rankTotal], 20, fin)!=NULL){      //reads each line/rank of file into urls[]         
             indivRank++;          //counts total ranks in specific file, also functions as set size for the rank file
@@ -40,7 +41,7 @@ int main (int argc, char *argv[]){
         combineLists(rankLists[0], rankLists[fileCounter]);    //combines urls read from all files with duplicates, in no particular order
     }    
     
-    List findRank = newList();
+    List findRank = newRatioList();
 
     copyList(findRank, rankLists[0]);   //copies all urls from rankLists->findRank in alphabetical order
     computeAvgRatio(findRank);  //combines url duplicates and averages their ratio
