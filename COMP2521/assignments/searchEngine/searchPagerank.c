@@ -31,8 +31,6 @@ int getPageRanksIndexFromUrl(char *url, RankedResultEntry PageRanks[MAX_URLS])
     return -1;
 }
 
-
-
 void printList(Entry list)
 {
     for(Entry curr = list; curr != NULL; curr = curr->next){
@@ -87,6 +85,7 @@ Entry insertEntry(Entry head, Entry n)
         return head;
     }
 }
+
 int main(int argc, char *argv[])
 {
 
@@ -130,14 +129,12 @@ int main(int argc, char *argv[])
     while(fgets(line, MAX_LINE_LENGTH, f_index) != NULL){
         char *term = malloc(sizeof(char) * PNEUMONOULTRAMICROSCOPICSILICOVOLCANOCONIOSIS);
         sscanf(line, "%s", term);
-        //printf("Looking at index term %s\n", term);
+        printf("Looking at index term %s\n", term);
         for(int i = 1; i <= nSearchTerms; i++){
             if(strcmp(term, argv[i]) == 0){
                 //printf("\tMatched with a term in the index\n");
-                
                 //here term is an entry in the index that matches a search term
                 //term is the first word in buffer "line" which holds all the urls containing the term
-                
                 char *page = strtok(line, " "); 
                 while((page = strtok(NULL, " ")) != NULL){ 
                     if(page[strlen(page)-1] == '\n'){
