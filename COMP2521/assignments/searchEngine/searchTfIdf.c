@@ -2,11 +2,12 @@
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
-#include "graph.h"
+
+#include "getLinks.h"
+#include "set.h"
 #include "params.h"
-#include "frequency.h"
 #include "newTree.h"
-#include "linkedList.h"
+#include "frequency.h"
 #include "neatening.h"
 
 int main(int argc, char *argv[]){

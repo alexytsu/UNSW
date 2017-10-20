@@ -2,8 +2,9 @@
 #include <assert.h>
 #include <malloc.h>
 #include <string.h>
-#include "linkedList.h"
+
 #include "params.h"
+#include "linkedList.h"
 
 struct listRep;
 
