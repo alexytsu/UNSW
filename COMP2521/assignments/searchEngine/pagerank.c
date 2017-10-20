@@ -16,7 +16,6 @@ int main(int argc, char *argv[])
     char urls[MAX_URLS][20];
     int nurls;
     printf("Number of pages: %d\n", nurls = parseCollection("Sample1/collection.txt", urls));
-    
     printf("====================== Initializing Pages ======================\n");
     //Create an array of all pages
     Webpage *pages = malloc(sizeof(Webpage) * nurls);
@@ -127,7 +126,7 @@ int main(int argc, char *argv[])
 }
 
 
-OutputListNode *newNode(Webpage *page){
+OutputListNode *newOutputNode(Webpage *page){
     OutputListNode *new = malloc(sizeof(OutputListNode *));
     new->page = page;
     new->next = NULL;
@@ -136,7 +135,7 @@ OutputListNode *newNode(Webpage *page){
 
 void insertOrdered(OutputList *L, Webpage *page)
 {
-    OutputListNode *n = newNode(page);
+    OutputListNode *n = newOuputNode(page);
     printf("%p\n", L);
     OutputListNode *curr = L->first;
     OutputListNode *prev = NULL;
