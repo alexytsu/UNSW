@@ -1,3 +1,5 @@
+#ifndef TREE
+#define TREE
 typedef struct treeNode{
 	char *url;
     int matches;
@@ -15,3 +17,4 @@ void deleteNode(Tree t);
 void printFromLargest(Tree root);
 void printTree(Tree root);
 int empty(Tree t);
+#endif

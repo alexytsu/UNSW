@@ -1,5 +1,5 @@
-#include <stdio.h>
-#include "params.h"
+#ifndef LINKLIST_H
+#define LINKLIST_H
 
 typedef struct node *Node;
 typedef struct listRep *List;
@@ -23,3 +23,4 @@ int dupWordCount(List l, char *word);    //counts duplicates of a particular wor
 int find(List l, char *word);     //returns 1 if finds word in list
 int length(List l);
 void clearList(List l);         
+#endif

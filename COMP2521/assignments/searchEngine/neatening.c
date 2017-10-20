@@ -2,6 +2,8 @@
 #include <ctype.h>
 #include <string.h>
 #include <assert.h>
+
+#include "params.h"
 #include "set.h"
 #include "neatening.h"
 

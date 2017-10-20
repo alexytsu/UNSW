@@ -1,7 +1,10 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 #include <unistd.h>
-#include "getLinks.c"
+#include <assert.h>
+
+#include "params.h"
 
 typedef struct rankedResultEntry{
     char *url;
@@ -16,8 +19,6 @@ Entry createEntry(char *url, double pageRank)
 {
     Entry newEntry = malloc(sizeof(Entry));
     strcpy(newEntry->url, url);
-
-
     return newEntry;
 }
 
@@ -129,7 +130,6 @@ int main(int argc, char *argv[])
     while(fgets(line, MAX_LINE_LENGTH, f_index) != NULL){
         char *term = malloc(sizeof(char) * PNEUMONOULTRAMICROSCOPICSILICOVOLCANOCONIOSIS);
         sscanf(line, "%s", term);
-        printf("Looking at index term %s\n", term);
         for(int i = 1; i <= nSearchTerms; i++){
             if(strcmp(term, argv[i]) == 0){
                 //printf("\tMatched with a term in the index\n");

@@ -1,6 +1,3 @@
-// set.h ... interface to simple Set of Strings
-// Written by John Shepherd, September 2015
-
 #ifndef SET_H
 #define SET_H
 
