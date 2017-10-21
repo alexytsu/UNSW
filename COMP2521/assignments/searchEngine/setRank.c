@@ -1,11 +1,12 @@
 // set.c ... simple, inefficient Set of Strings
 // Written by John Shepherd, September 2015
 
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <assert.h>
 #include <string.h>
-#include "set.h"
+#include "setRank.h"
 #include "params.h"
 
 #define strEQ(s,t) (strcmp((s),(t)) == 0)
@@ -15,6 +16,7 @@ typedef struct Node *Link;
 
 typedef struct Node {
 	char *val;
+    int pRank;
 	Link  next;
 } Node;
 	
@@ -25,14 +27,6 @@ typedef struct SetRep {
 
 // Function signatures
 
-Set newSet();
-int isEmpty(Set);
-void disposeSet(Set);
-void insertInto(Set,char *);
-void dropFrom(Set,char *);
-int  isElem(Set,char *);
-int  nElems(Set);
-char *nextElem(Set);
 
 static Link newNode(char *);
 static void disposeNode(Link);
@@ -41,7 +35,7 @@ static int  findNode(Link,char *,Link *,Link *);
 
 // newSet()
 // - create an initially empty Set
-Set newSet()
+Set newSetRank()
 {
 	Set new = malloc(sizeof(SetRep));
 	assert(new != NULL);
@@ -52,7 +46,7 @@ Set newSet()
 
 // disposeSet(Set)
 // - clean up memory associated with Set
-void disposeSet(Set s)
+void disposeSetRank(Set s)
 {
 	if (s == NULL) return;
 	Link next, curr = s->elems;
@@ -65,7 +59,7 @@ void disposeSet(Set s)
 
 // insertInto(Set,Str)
 // - ensure that Str is in Set
-void insertInto(Set s, char *str)
+void insertIntoRank(Set s, char *str)
 {
 	assert(s != NULL);
 	Link curr, prev;
@@ -87,7 +81,7 @@ void insertInto(Set s, char *str)
 
 // dropFrom(Set,Str)
 // - ensure that Str is not in Set
-void dropFrom(Set s, char *str)
+void dropFromRank(Set s, char *str)
 {
 	assert(s != NULL);
 	Link curr, prev;
@@ -103,7 +97,7 @@ void dropFrom(Set s, char *str)
 
 // isElem(Set,Str)
 // - check whether Str is contained in Set
-int isElem(Set s, char *str)
+int isElemRank(Set s, char *str)
 {
 	assert(s != NULL);
 	Link curr, prev;
@@ -112,7 +106,7 @@ int isElem(Set s, char *str)
 
 // nElems(Set)
 // - return # elements in Set
-int  nElems(Set s)
+int  nElemsRank(Set s)
 {
 	assert(s != NULL);
 	return s->nelems;
@@ -120,7 +114,7 @@ int  nElems(Set s)
 
 // showSet(Set)
 // - display Set (for debugging)
-void showSet(Set s)
+void showSetRank(Set s)
 {
 	Link curr;
 	if (s->nelems == 0)
@@ -145,7 +139,7 @@ static Link newNode(char *str)
 	assert(new != NULL);
 	new->val = malloc(PNEUMONOULTRAMICROSCOPICSILICOVOLCANOCONIOSIS*sizeof(char));
 	strcpy(new->val, str);
-	
+	new->pRank = 0;
 	new->next = NULL;
 	return new;
 }
@@ -174,7 +168,7 @@ static int findNode(Link list, char *str, Link *cur, Link *pre)
 }
 
 //returns word
-char *nextElem(Set s){
+char *nextElemRank(Set s){
     if(s->nelems==0){
         return NULL;
     }else if(s->elems->next==NULL){
@@ -195,8 +189,37 @@ char *nextElem(Set s){
         return wordCopy;    
     }
 }
-int isEmpty(Set s){
+int isEmptyRank(Set s){
     if(s->nelems==0) return 1;
     return 0;
 }
 
+void insertPRank(Set s, int *pVector){
+    assert(!isEmptyRank(s));
+    int rank = 0;
+    Link curr = s->elems;  
+    while(curr!=NULL){
+        curr->pRank = pVector[rank++];
+        curr=curr->next;
+    }
+}
+
+
+int findPRank(Set s, char *url){
+    Link curr=s->elems;
+    while(curr!=NULL && strcmp(curr->val, url)!=0){
+        curr=curr->next;
+    }
+    int rank = curr->pRank;
+    dropFromRank(s, curr->val);
+    return rank;
+}
+
+
+void copySet(Set dest, Set src){
+        Link curr = src->elems;
+        while(curr!=NULL){
+            insertIntoRank(dest, curr->val);
+            curr=curr->next;
+        }
+}

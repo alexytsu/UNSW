@@ -1,6 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include "set.h"
+void generateHungarianMatrix(int size, double costMatrix[size][size]);
+double findMinimum(int size, double costMatrix[size]);
+void hungarianSolve(int urls, double costMatrix[urls][urls], int *resultVector);
 
 void generateHungarianMatrix(int size, double costMatrix[size][size])
 {
@@ -69,7 +73,7 @@ void hungarianSolve(int urls, double costMatrix[urls][urls], int *resultVector)
     }
 }
 
-int main(){
+int main(int argc, char *argv[]){
 
 }
 

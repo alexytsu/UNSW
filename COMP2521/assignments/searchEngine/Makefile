@@ -1,7 +1,7 @@
 CC=gcc
 CFLAGS=-Wall -lm -std=c11
-HELPER=getLinks.c graph.c frequency.c linkedList.c neatening.c newTree.c set.c ratioList.c
-all: pagerank inverted searchTfIdf searchPagerank scaledFootrule
+HELPER=getLinks.c graph.c frequency.c linkedList.c neatening.c newTree.c set.c ratioList.c perms.c setRank.c
+all: pagerank inverted searchTfIdf searchPagerank bruteforce
 pagerank: $(HELPER) pagerank.c
 	$(CC) $(CFLAGS) pagerank.c $(HELPER) -o pagerank
 inverted: $(HELPER) inverted.c
@@ -10,7 +10,9 @@ searchTfIdf: $(HELPER) searchTfIdf.c
 	$(CC) $(CFLAGS) searchTfIdf.c $(HELPER) -o searchTfIdf
 searchPagerank: $(HELPER) searchPagerank.c
 	$(CC) $(CFLAGS) searchPagerank.c $(HELPER) -o searchPagerank
-scaledFootrule: $(HELPER) scaledFootrule.c
-	$(CC) $(CFLAGS) scaledFootrule.c $(HELPER) -o scaledFootrule
+#scaledFootrule: $(HELPER) scaledFootrule.c
+#	$(CC) $(CFLAGS) scaledFootrule.c $(HELPER) -o scaledFootrule
+brute: $(HELPER) bruteforce.c 
+	$(CC) $(CFLAGS) bruteforce.c $(HELPER) -o brute
 clean:
-	rm searchPagerank inverted searchTfIdf pagerank scaledFootrule
+	rm searchPagerank inverted searchTfIdf pagerank

@@ -2,34 +2,37 @@
 #include <assert.h>
 #include <malloc.h>
 #include <string.h>
-#include <math.h>
 
 #include "params.h"
-#include "ratioList.h"
-#include "setRank.h"
+#include "hunGraph.h"
 
-List newRatioList(){
-    List new = malloc(sizeof(struct listRep));
-    assert(ratioListIntegrity(new));
+RankList newRankList(int rank){
+    RankList new = malloc(sizeof(struct rankRep));
+    assert(rankListIntegrity(new));
     new->first=new->last=NULL;
-    new->length=0;
-    return new;
+    new->rank=rank;
+
 }
 
-Node newListNode(char *page){
-    Node new = malloc(sizeof(struct node));
+Vertex newVertex(char *url){
+    Vertex new = malloc(sizeof(struct vertex));
     assert(new);
     new->url=malloc(PNEUMONOULTRAMICROSCOPICSILICOVOLCANOCONIOSIS*sizeof(char));
-    strcpy(new->url, page);
-    new->ratio = 0;
     new->next=NULL;
+    new->ratio=0;
     return new;
 }
 
-void addRatioList(List l, char *page, double ratio){ //adds page/url into end of list
+void addUrl(List l, char *url){
+    Vertex new = newVertex
+
+}
+
+
+
+void addList(List l, char *page){ //adds page/url into end of list
     assert(ratioListIntegrity(l));
     Node new = newListNode(page);
-    new->ratio = ratio;
     if(l->length==0){
         l->first=l->last=new;
         l->length++;
@@ -57,13 +60,19 @@ void insertOrder(List l, char *v){
         prev = curr;
         curr = curr -> next;		
     }
-    if(prev == NULL){ //a new smallest element in the list
+    
+    if(prev == NULL){ //a new smallest element in the list    
         l->first = new;
         new->next = curr;
-    }else if(curr->next == NULL){ //a new largest element in list
-        l->last->next=curr->next=new;
+        l->last = new;
+    }else if(curr == NULL){ //a new largest element in list
+    
+        prev->next=new;
+        new->next=NULL;
         l->last=new;
+        
     }else{
+    
         prev->next = new;
         new->next = curr;
     }
@@ -92,7 +101,7 @@ void ratioFilterList(List l){
     }
 }
 
-/*void computeAvgRatio(List l){
+void computeAvgRatio(List l){
     assert(ratioListIntegrity(l));
     Node curr = l->first;
     Node flag = NULL;
@@ -108,11 +117,17 @@ void ratioFilterList(List l){
                 flag = flag->next;
             }
             curr->ratio = ratio/dupCount;
+          //  printf("Was here\n");
+            
         }
+       
         curr=curr->next;
+        printf("%s\n", curr->url);
+        if(curr->next==NULL) break;
+        printf("avg ratio exited\n");
     }
-
-} */
+   
+}
 
 void calculateRatio(List l, int rank){
     assert(ratioListIntegrity(l));
@@ -120,7 +135,7 @@ void calculateRatio(List l, int rank){
     Node curr = l->first;
     while(curr!=NULL){
         i++;
-        curr->ratio = (double)i/(double)rank;   //this function is called for lists whose urls are already sorted by rank
+        curr->ratio = i/rank;   //this function is called for lists whose urls are already sorted by rank
         curr=curr->next;
     }
 }
@@ -128,7 +143,7 @@ void calculateRatio(List l, int rank){
 void combineLists(List dest, List src){ //merge src into dest with duplicates
     Node curr = src->first;
     while(curr!=NULL){
-        addRatioList(dest, curr->url, curr->ratio);
+        addList(dest, curr->url);
         curr=curr->next;
     }
 }
@@ -137,14 +152,14 @@ void copyList(List dest, List src){
     assert(ratioListIntegrity(dest) && ratioListIntegrity(src));
     Node curr = src->first;
     while(curr!=NULL){
-        insertOrder(dest, curr->url);
+        insertOrder(dest, curr->url);        
         curr=curr->next;
     }
 
 }
 
 
-int ratioListIntegrity(List l){    
+int rankListIntegrity(List l){    
     if(l==NULL){
         fprintf(stderr, "list doesn't exist\n");
         return 0;
@@ -155,6 +170,7 @@ int ratioListIntegrity(List l){
  //sorts string in alphabetical order
 int ratioSortedWord(char *name1, char *name2)
 {
+
     //  printf("String 1:%s and String 2: %s\n", name1, name2);
     if(*name1 == '\0'&& *name2 == '\0'){
         return 2;
@@ -175,14 +191,11 @@ int ratioSortedWord(char *name1, char *name2)
     }
 }
 
-double findScaled(List l, Set s, int endSize){
-    Node curr = l->first;
-    int pRank = 0;
-    double scaled = 0;
-    while(curr!=NULL){
-        pRank = findPRank(s, curr->url);
-        scaled += fabsf(curr->ratio - pRank/endSize);
-        curr=curr->next;
+void showRatioList(List l)
+{
+    for(node *curr = l->first; curr!=NULL; curr = curr->next){
+        printf("%s -> ", curr->url);
     }
-    return scaled;
+    printf("X\n");
 }
+

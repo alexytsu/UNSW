@@ -10,7 +10,7 @@
 void normalise(char *word){
     for(int ch = 0; word[ch]!='\0'; ch++){
             word[ch] = tolower(word[ch]);
-            if (!isalpha(word[ch])){
+            if (!isalpha(word[ch])&&word[ch+1]=='\0'){ //only remove punctuation from end of word
                 word[ch]='\0';
             }
     }
