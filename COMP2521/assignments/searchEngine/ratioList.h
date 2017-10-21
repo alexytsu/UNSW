@@ -20,7 +20,7 @@ typedef struct listRep *List;
 List newRatioList();
 Node newListNode(char*page);  //nodes created with no ratio, they are added later on
 
-void addList(List l, char *page); //adds page into list
+void addList(List l, char *page, double ratio); //adds page into list
 void insertOrder(List l, char *v); //inserts n in alphabetical order into l
 
 void ratioRemoveNext(List l, Node keep); //removes element after keep

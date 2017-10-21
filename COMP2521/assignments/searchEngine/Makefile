@@ -13,4 +13,4 @@ searchPagerank: $(HELPER) searchPagerank.c
 scaledFootrule: $(HELPER) scaledFootrule.c
 	$(CC) $(CFLAGS) scaledFootrule.c $(HELPER) -o scaledFootrule
 clean:
-	rm searchPagerank inverted searchTfIdf pagerank scaledFootrule *.txt
+	rm searchPagerank inverted searchTfIdf pagerank scaledFootrule

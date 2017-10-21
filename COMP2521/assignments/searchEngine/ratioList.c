@@ -16,7 +16,7 @@ List newRatioList(){
 }
 
 Node newListNode(char *page){
-    Node new = malloc(sizeof(struct node*));
+    Node new = malloc(sizeof(struct node));
     assert(new);
     new->url=malloc(PNEUMONOULTRAMICROSCOPICSILICOVOLCANOCONIOSIS*sizeof(char));
     strcpy(new->url, page);
@@ -25,9 +25,10 @@ Node newListNode(char *page){
     return new;
 }
 
-void addList(List l, char *page){ //adds page/url into end of list
+void addList(List l, char *page, double ratio){ //adds page/url into end of list
     assert(ratioListIntegrity(l));
     Node new = newListNode(page);
+    new->ratio = ratio;
     if(l->length==0){
         l->first=l->last=new;
         l->length++;
@@ -118,7 +119,7 @@ void calculateRatio(List l, int rank){
     Node curr = l->first;
     while(curr!=NULL){
         i++;
-        curr->ratio = i/rank;   //this function is called for lists whose urls are already sorted by rank
+        curr->ratio = (double)i/(double)rank;   //this function is called for lists whose urls are already sorted by rank
         curr=curr->next;
     }
 }
@@ -126,7 +127,7 @@ void calculateRatio(List l, int rank){
 void combineLists(List dest, List src){ //merge src into dest with duplicates
     Node curr = src->first;
     while(curr!=NULL){
-        addList(dest, curr->url);
+        addList(dest, curr->url, curr->ratio);
         curr=curr->next;
     }
 }
