@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <malloc.h>
 #include <math.h>
+#include <string.h>
 #include "setRank.h"
 #include "ratioList.h"
 #include "perms.h"
@@ -13,15 +14,19 @@ int main(int argc, char *argv[]){
     char urls[MAX_URLS][20];
     int unionSize = 0;
     int rankTotal = 0;
+    char *filename = malloc(PNEUMONOULTRAMICROSCOPICSILICOVOLCANOCONIOSIS*sizeof(char));
 
     
     List *fileLists = malloc((argc)*sizeof(List));  //contains urls from each file
     Set fileUnion = newSetRank();
 
     int fileSize;  //amount of urls in each respective file
+
     while (fileCounter<=numberOfFiles){
+            strcpy(filename, argv[fileCounter]);
             fileSize = 0;
-            FILE *fin = fopen(argv[fileCounter], "r");  //for each file
+            FILE *fin = fopen(filename, "r");  //for each file
+
             fileLists[fileCounter-1] = newRatioList();   //make a new list for that file, counter-1 because array should start at 0
 
             while (fgets(urls[rankTotal], 20, fin)!=NULL){      //reads each line/rank of file into urls[]         
