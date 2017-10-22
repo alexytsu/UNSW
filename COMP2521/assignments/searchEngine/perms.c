@@ -11,33 +11,35 @@
         *y = temp;
     }
 
-    double heappermute(Set s, Set *final, List l, int v[], int n, int scaledFootRank, int endSize) {
+    double heappermute(Set s, Set *final, List l, int v[], int n, int minFootRank, int endSize) {
+printf("perm no. = %d\n", n);
         int i;
-		double minFootRank = 0;
         double indivScaledFoot = 0;
         if (n == 1) {
-            return scaledFootRank;
+            return minFootRank;
     	}
 
         else {
-
             for(i = 0; i < n; i++) {
-                scaledFootRank = heappermute(s, final, l, v, n-1, scaledFootRank, endSize);
+
                 if(n % 2 == 1) {
                     permSwap(&v[0], &v[n-1]);
     	   		 }else{
                     permSwap(&v[i], &v[n-1]);
                  }
-	        	insertPRank(s, v);	//assigns the permutated pRank to all elms in set
 
-                indivScaledFoot = findScaled(l, s, endSize);
-
-                if(scaledFootRank==0 || scaledFootRank<minFootRank){
-                    scaledFootRank=indivScaledFoot;
-                    copySet(*final, s);
-
-                }
             }
+
+        	insertPRank(s, v);	//assigns the permutated pRank to all elms in set
+
+            indivScaledFoot = findScaled(l, s, endSize);
+            if(minFootRank==0||indivScaledFoot<minFootRank){
+
+                 minFootRank = indivScaledFoot;
+
+                 copySet(*final, s);
+            }
+            minFootRank = heappermute(s, final, l, v, n-1, minFootRank, endSize);
         }
-        return scaledFootRank;
+        return minFootRank;
     }     

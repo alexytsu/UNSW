@@ -185,7 +185,6 @@ printf("endSize: %d\n", endSize);
     while(curr!=NULL){
         pRank = findPRank(s, curr->url);
 
-    printf("segfault check\n");
         scaled += fabsf(curr->ratio - pRank/endSize);
         curr=curr->next;
     }
