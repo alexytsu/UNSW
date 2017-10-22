@@ -130,7 +130,6 @@ void showSet(Set s)
 		int id = 0;
 		curr = s->elems;
 		while (curr != NULL) {
-			printf("[%03d] %s\n", id, curr->val);
 			id++;
 			curr = curr->next;
 		}

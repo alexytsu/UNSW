@@ -117,14 +117,13 @@ int  nElemsRank(Set s)
 void showSetRank(Set s)
 {
 	Link curr;
-	if (s->nelems == 0)
+	if (s->nelems == 0){
 		printf("Set is empty\n");
+	}
 	else {
-		printf("Set has %d elements:\n",s->nelems);
 		int id = 0;
 		curr = s->elems;
 		while (curr != NULL) {
-			printf("[%03d] %s\n", id, curr->val);
 			id++;
 			curr = curr->next;
 		}
