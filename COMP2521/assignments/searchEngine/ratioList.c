@@ -29,6 +29,7 @@ Node newListNode(char *page){
 void addRatioList(List l, char *page, double ratio){ //adds page/url into end of list
     assert(ratioListIntegrity(l));
     Node new = newListNode(page);
+printf("%s\n", new->url);
     new->ratio = ratio;
     if(l->length==0){
         l->first=l->last=new;
@@ -176,13 +177,29 @@ int ratioSortedWord(char *name1, char *name2)
 }
 
 double findScaled(List l, Set s, int endSize){
+printf("length: %d\n", l->length);
+printf("endSize: %d\n", endSize);
     Node curr = l->first;
     int pRank = 0;
     double scaled = 0;
     while(curr!=NULL){
         pRank = findPRank(s, curr->url);
+
+    printf("segfault check\n");
         scaled += fabsf(curr->ratio - pRank/endSize);
         curr=curr->next;
     }
+
     return scaled;
 }
+
+void show(List l){
+    Node curr = l->first;
+    if(curr==NULL) printf("emptylist\n");
+    while(curr!=NULL){
+        printf("%lf ", curr->ratio);
+        curr=curr->next;
+    }
+    printf("\n");
+}
+

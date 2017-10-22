@@ -207,11 +207,14 @@ void insertPRank(Set s, int *pVector){
 
 int findPRank(Set s, char *url){
     Link curr=s->elems;
+printf("%s\n", url);
+printf("actual set size: %d\n",nElemsRank(s));
     while(curr!=NULL && strcmp(curr->val, url)!=0){
         curr=curr->next;
     }
     int rank = curr->pRank;
-    dropFromRank(s, curr->val);
+
+
     return rank;
 }
 

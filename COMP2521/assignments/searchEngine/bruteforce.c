@@ -37,9 +37,11 @@ int main(int argc, char *argv[]){
                 rankTotal++;        //increments 
             }
             calculateRatio(fileLists[fileCounter-1], fileSize);    //assigns a ratio to each url in fileListss respective to their individual rank in that list
+            show(fileLists[fileCounter-1]);
             fileCounter++;
     }
 
+showSetRank(fileUnion);
     printf("Read all files\n");
 
     List allUrls = newRatioList();
@@ -58,7 +60,10 @@ int main(int argc, char *argv[]){
     for(int i=0; i<unionSize; i++){
         pVector[i] = i;
     }
-    scaledFootRank = heappermute(fileUnion, &ranked, allUrls, pVector, unionSize, scaledFootRank); //calculates scaledfootrank for all permutations
+
+    scaledFootRank = heappermute(fileUnion, &ranked, allUrls, pVector, unionSize, scaledFootRank, unionSize); //calculates scaledfootrank for all permutations
+
+    printf("segfault check\n");
     printf("%lf\n", scaledFootRank);
 
 }

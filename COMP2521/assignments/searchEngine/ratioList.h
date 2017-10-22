@@ -36,4 +36,6 @@ int ratioListIntegrity(List l);
 int ratioSortedWord(char *name1, char *name2);
 double findScaled(List l, Set s, int endSize);
 
+void show(List l);
+
 #endif
