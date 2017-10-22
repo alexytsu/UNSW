@@ -22,7 +22,7 @@ int main(int argc, char *argv[]){
 
     int fileSize;  //amount of urls in each respective file
 
-    while (fileCounter<=numberOfFiles){
+    while (fileCounter < numberOfFiles){
             fileSize = 0;
             FILE *fin = fopen(argv[fileCounter], "r");  //for each file
 
@@ -30,7 +30,6 @@ int main(int argc, char *argv[]){
 
             while (fgets(urls[rankTotal], 20, fin)!=NULL){      //reads each line/rank of file into urls[]         
                 fileSize++;          //counts total ranks in specific file, also functions as set size for the rank file
-printf("sigh\n");
                 //Set
                 insertIntoRank(fileUnion, urls[rankTotal]);     //inserts url read into a union
                 //Linked List
@@ -39,14 +38,19 @@ printf("sigh\n");
             }
             calculateRatio(fileLists[fileCounter-1], fileSize);    //assigns a ratio to each url in fileListss respective to their individual rank in that list
             fileCounter++;
-    printf("sigh\n");
     }
+
+    printf("Read all files\n");
+
     List allUrls = newRatioList();
-    for(int listCounter=0; listCounter<numberOfFiles; listCounter++){
+    
+    printf("Initialised a new Ratio list\n");
+
+    for(int listCounter = 0; listCounter < numberOfFiles-1; listCounter++){
         combineLists(allUrls, fileLists[listCounter]);
     }
 
-printf("sigh\n");
+    printf("Combined all lists\n");
    
     unionSize = nElemsRank(fileUnion);
     Set ranked = newSetRank();
