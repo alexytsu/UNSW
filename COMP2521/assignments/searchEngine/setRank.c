@@ -227,13 +227,13 @@ void copySet(Set dest, Set src){
 }
 
 void printOrdered(Set s, int n, int size){
-        if(s==NULL || n==size) return;
+        if(s==NULL || n>size) return;
         Link curr = s->elems;
         while(curr->pRank!=n){
             curr=curr->next;
         }
 
-        printf("%s\n", curr->val);
+        printf("%s", curr->val);
         dropFromRank(s, curr->val);
         printOrdered(s, n+1, size);
 }

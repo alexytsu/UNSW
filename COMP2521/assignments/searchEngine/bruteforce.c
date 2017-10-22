@@ -55,13 +55,15 @@ int main(int argc, char *argv[]){
     unionSize = nElemsRank(fileUnion);
     Set ranked = newSetRank();
     copySet(ranked, fileUnion);
+showSetRank(fileUnion);
     int *pVector = malloc(unionSize*sizeof(int));
     for(int i=0; i<unionSize; i++){
-        pVector[i] = i;
+        pVector[i] = i+1;
     }
+printf("should have %d outputs\n", unionSize);
+
 
     scaledFootRank = heappermute(fileUnion, &ranked, allUrls, pVector, unionSize, scaledFootRank, unionSize); //calculates scaledfootrank for all permutations
-
     printf("%lf\n", scaledFootRank);
     printOrdered(ranked, 1, unionSize);
 }

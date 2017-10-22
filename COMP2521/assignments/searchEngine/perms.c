@@ -35,7 +35,7 @@
                  minFootRank = indivScaledFoot;
 
                  insertPRank(*final, v);
-
+//showSetRank(*final);
             }
             minFootRank = heappermute(s, final, l, v, n-1, minFootRank, endSize);
         }
