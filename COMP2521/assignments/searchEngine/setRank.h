@@ -17,5 +17,6 @@ char *nextElemRank(Set);
 int isEmptyRank(Set);
 void insertPRank(Set s, int *pVector);
 int findPRank(Set s, char *url);
+void printOrdered(Set s, int n, int size);
 
 #endif

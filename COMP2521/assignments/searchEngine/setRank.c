@@ -207,7 +207,6 @@ void insertPRank(Set s, int *pVector){
 
 int findPRank(Set s, char *url){
     Link curr=s->elems;
-printf("actual set size: %d\n",nElemsRank(s));
     while(curr!=NULL && strcmp(curr->val, url)!=0){
         curr=curr->next;
     }
@@ -222,6 +221,19 @@ void copySet(Set dest, Set src){
         Link curr = src->elems;
         while(curr!=NULL){
             insertIntoRank(dest, curr->val);
+            
             curr=curr->next;
         }
+}
+
+void printOrdered(Set s, int n, int size){
+        if(s==NULL || n==size) return;
+        Link curr = s->elems;
+        while(curr->pRank!=n){
+            curr=curr->next;
+        }
+
+        printf("%s\n", curr->val);
+        dropFromRank(s, curr->val);
+        printOrdered(s, n+1, size);
 }

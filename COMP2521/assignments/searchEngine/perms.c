@@ -12,7 +12,6 @@
     }
 
     double heappermute(Set s, Set *final, List l, int v[], int n, int minFootRank, int endSize) {
-printf("perm no. = %d\n", n);
         int i;
         double indivScaledFoot = 0;
         if (n == 1) {
@@ -21,13 +20,11 @@ printf("perm no. = %d\n", n);
 
         else {
             for(i = 0; i < n; i++) {
-
                 if(n % 2 == 1) {
                     permSwap(&v[0], &v[n-1]);
     	   		 }else{
                     permSwap(&v[i], &v[n-1]);
                  }
-
             }
 
         	insertPRank(s, v);	//assigns the permutated pRank to all elms in set
@@ -37,7 +34,8 @@ printf("perm no. = %d\n", n);
 
                  minFootRank = indivScaledFoot;
 
-                 copySet(*final, s);
+                 insertPRank(*final, v);
+
             }
             minFootRank = heappermute(s, final, l, v, n-1, minFootRank, endSize);
         }
