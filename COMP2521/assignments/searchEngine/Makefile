@@ -1,6 +1,6 @@
 CC=gcc
-CFLAGS=-Wall -lm -std=c11 -g
-HELPER=getLinks.c graph.c frequency.c linkedList.c neatening.c newTree.c set.c ratioList.c perms.c setRank.c scaled.c
+CFLAGS=-Wall -lm -std=c11 -g -pg
+HELPER=getLinks.c graph.c frequency.c linkedList.c neatening.c newTree.c set.c ratioList.c perms.c setRank.c
 all: pagerank inverted searchTfIdf searchPagerank scaledFootrule
 pagerank: $(HELPER) pagerank.c
 	$(CC) $(CFLAGS) pagerank.c $(HELPER) -o pagerank

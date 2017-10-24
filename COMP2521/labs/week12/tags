@@ -1,0 +1,54 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+CC	Makefile	/^CC=gcc$/;"	m
+CFLAGS	Makefile	/^CFLAGS=-Wall -Werror -pg$/;"	m
+HASHTAB_H	HashTable.h	5;"	d
+HashTabRep	HashTable.c	/^typedef struct HashTabRep {$/;"	s	file:
+HashTabRep	HashTable.c	/^} HashTabRep;$/;"	t	typeref:struct:HashTabRep	file:
+HashTable	HashTable.h	/^typedef struct HashTabRep *HashTable;$/;"	t	typeref:struct:HashTabRep
+HashTableDelete	HashTable.c	/^void HashTableDelete(HashTable ht, Key k)$/;"	f
+HashTableInsert	HashTable.c	/^void HashTableInsert(HashTable ht, Item it)$/;"	f
+HashTableSearch	HashTable.c	/^Item *HashTableSearch(HashTable ht, Key k)$/;"	f
+HashTableStats	HashTable.c	/^void HashTableStats(HashTable ht)$/;"	f
+ITEM_H	Item.h	5;"	d
+Item	Item.h	/^typedef Key Item; \/\/ item is just a key$/;"	t
+ItemGet	Item.c	/^Item ItemGet(FILE *f)$/;"	f
+ItemShow	Item.c	/^void ItemShow(Item it)$/;"	f
+Key	Item.h	/^typedef char *Key;$/;"	t
+LIST_H	List.h	5;"	d
+List	List.h	/^typedef struct ListRep *List;$/;"	t	typeref:struct:ListRep
+ListDelete	List.c	/^void ListDelete(List L, Key k)$/;"	f
+ListInsert	List.c	/^void ListInsert(List L, Item it)$/;"	f
+ListLength	List.c	/^int ListLength(List L)$/;"	f
+ListNode	List.c	/^typedef struct ListNode {$/;"	s	file:
+ListNode	List.c	/^} ListNode;$/;"	t	typeref:struct:ListNode	file:
+ListRep	List.c	/^typedef struct ListRep {$/;"	s	file:
+ListRep	List.c	/^} ListRep;$/;"	t	typeref:struct:ListRep	file:
+ListSearch	List.c	/^Item *ListSearch(List L, Key k)$/;"	f
+cmp	Item.c	/^int cmp(Key k1, Key k2)$/;"	f
+dropHashTable	HashTable.c	/^void dropHashTable(HashTable ht)$/;"	f
+dropItem	Item.c	/^void dropItem(Item it)$/;"	f
+dropList	List.c	/^void dropList(List L)$/;"	f
+eq	Item.h	17;"	d
+first	List.c	/^	ListNode *first;  \/\/ ptr to first node$/;"	m	struct:ListRep	file:
+hash	HashTable.c	/^unsigned int hash(Key k, int tableSize)$/;"	f
+key	Item.h	13;"	d
+last	List.c	/^	ListNode *last;   \/\/ ptr to last node$/;"	m	struct:ListRep	file:
+less	Item.h	16;"	d
+lists	HashTable.c	/^	List *lists;  \/\/ either use this$/;"	m	struct:HashTabRep	file:
+main	mkwords.c	/^int main(int argc, char *argv[])$/;"	f
+main	words.c	/^int main(int argc, char *argv[])$/;"	f
+newHashTable	HashTable.c	/^HashTable newHashTable(int N)$/;"	f
+newItem	Item.c	/^Item newItem(char *s)$/;"	f
+newList	List.c	/^List newList()$/;"	f
+next	List.c	/^	struct ListNode *next;$/;"	m	struct:ListNode	typeref:struct:ListNode::ListNode	file:
+nitems	HashTable.c	/^	int   nitems; \/\/ # items stored in HashTable$/;"	m	struct:HashTabRep	file:
+nslots	HashTable.c	/^	int   nslots; \/\/ # elements in array$/;"	m	struct:HashTabRep	file:
+showList	List.c	/^void showList(List L)$/;"	f
+usage	mkwords.c	/^void usage(char *prog)$/;"	f
+usage	words.c	/^void usage(char *prog)$/;"	f
+value	List.c	/^	Item value;$/;"	m	struct:ListNode	file:
