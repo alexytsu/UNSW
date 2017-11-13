@@ -79,6 +79,8 @@ void HashTableStats(HashTable ht)
         if(distribution[i] != 0)
             printf("%8d %8d\n", i, distribution[i]);
     }
+
+    //Extra information for finding efficient hashtable configurations
     printf("Percentage chains used: %.2lf\n", 1-((double)distribution[0]/ht->nslots));
     printf("Percentage of length 1 & 2: %.2lf\n",(double) (distribution[1]+distribution[2])/(double)ht->nitems);
 }
