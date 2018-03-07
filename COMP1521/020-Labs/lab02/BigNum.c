@@ -39,8 +39,7 @@ void addBigNums(BigNum n, BigNum m, BigNum *res)
 		int ndigit = 0;
 		if(i < m.nbytes) mdigit = m.bytes[i];
 		if(i < n.nbytes) ndigit = n.bytes[i];
-		int result = (mdigit) + (ndigit);
-		if(carryover) result++;
+		int result = mdigit + ndigit + carryover;
 		carryover = (result > 10);
 		res->bytes[i] = result % 10;
 	}
@@ -52,36 +51,24 @@ void addBigNums(BigNum n, BigNum m, BigNum *res)
 // Returns 1 if it *was* a string of digits, 0 otherwise
 int scanBigNum(char *s, BigNum *n)
 {
-	int length = strlen(s);
-	int i = length - 1;
+
+	while(*s == '0' || *s == ' '){
+		s++;
+		if(*s == '\0') return 0;
+	}
+
+	int s_len = strlen(s);
+	int i;
+	for(i = s_len - 1; i >= 0; i--) {
+		if(s[i] != ' ') break;
+	}
+	s[++i] = 0;
+
+	s_len = strlen(s);
 	int j = 0;
-
-	int k;
-	int first_space = -2;
-	for(k = 0; k < length; k++){
-		if(s[k] == ' ' && first_space == -2) continue;
-		if(s[k] >= '0' && s[k] <= '9' && first_space < 0) first_space = -1;
-		if(s[k] == ' ' && first_space == -1){
-			first_space = 1;
-			s[k] = '\0';
-		}
-
-	}
-
-	length = strlen(s);
-
-	while(s[j] == '0' || s[j] == ' '){
-		j++;
-		i--;
-	}
-
-	for(; i >= 0 && j<length; i--, j++){
-		if(s[j] <= '9' && s[j] >= '0'){
-			n->bytes[i] = s[j] - '0';
-		}else{
-			return 0;
-		}
-
+	for(i = s_len - 1; i >=0; i--, j++) {
+		if(s[i] >= '0' && s[i] <= '9') n->bytes[j] = s[i] - '0';
+		else return 0;
 	}
 	return 1;
 }

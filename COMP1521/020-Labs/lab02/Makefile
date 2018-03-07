@@ -1,6 +1,6 @@
 # COMP1521 18s1 Lab02 Makefile
 
-CC=dcc
+CC=gcc
 CFLAGS=-Wall -Werror
 
 add : add.o BigNum.o
