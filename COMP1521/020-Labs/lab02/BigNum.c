@@ -53,13 +53,29 @@ void addBigNums(BigNum n, BigNum m, BigNum *res)
 int scanBigNum(char *s, BigNum *n)
 {
 	int length = strlen(s);
-	int i;
+	int i = length - 1;
 	int j = 0;
-	while(s[j] == '0'){
-		j++;
-	}
-	for(i = length - 1; i >= 0; i--, j++){
 
+	int k;
+	int first_space = -2;
+	for(k = 0; k < length; k++){
+		if(s[k] == ' ' && first_space == -2) continue;
+		if(s[k] >= '0' && s[k] <= '9' && first_space < 0) first_space = -1;
+		if(s[k] == ' ' && first_space == -1){
+			first_space = 1;
+			s[k] = '\0';
+		}
+
+	}
+
+	length = strlen(s);
+
+	while(s[j] == '0' || s[j] == ' '){
+		j++;
+		i--;
+	}
+
+	for(; i >= 0 && j<length; i--, j++){
 		if(s[j] <= '9' && s[j] >= '0'){
 			n->bytes[i] = s[j] - '0';
 		}else{
