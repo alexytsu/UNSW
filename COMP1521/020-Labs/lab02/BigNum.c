@@ -29,6 +29,7 @@ void addBigNums(BigNum n, BigNum m, BigNum *res)
 		res->nbytes = length;
 		free(res->bytes);
 		res->bytes = calloc(length, sizeof(Byte));
+		assert(res->bytes != NULL);
 	}
 
 	int carryover = 0;
@@ -40,7 +41,7 @@ void addBigNums(BigNum n, BigNum m, BigNum *res)
 		if(i < m.nbytes) mdigit = m.bytes[i];
 		if(i < n.nbytes) ndigit = n.bytes[i];
 		int result = mdigit + ndigit + carryover;
-		carryover = (result > 10);
+		carryover = (result/10);
 		res->bytes[i] = result % 10;
 	}
 
@@ -65,6 +66,13 @@ int scanBigNum(char *s, BigNum *n)
 	s[++i] = 0;
 
 	s_len = strlen(s);
+	if(s_len >= n->nbytes) {
+		n->nbytes = s_len;
+		free(n->bytes);
+		n->bytes = calloc(s_len, sizeof(Byte));
+		assert(n->bytes != NULL);
+	}
+
 	int j = 0;
 	for(i = s_len - 1; i >=0; i--, j++) {
 		if(s[i] >= '0' && s[i] <= '9') n->bytes[j] = s[i] - '0';
