@@ -84,21 +84,21 @@ int scanBigNum(char *s, BigNum *n)
 // Display a BigNum in decimal format
 void showBigNum(BigNum n)
 {
-    int i;
-    int flag = 0;
-    for(i = n.nbytes - 1; i >= 0; i--){
- 		Byte curr = n.bytes[i];
- 		if(flag == 0){
- 			if(curr == 0){
- 				continue;
- 			}else{
- 				flag = 1;
- 				printf("%d", curr);
- 			}
- 		}else{
- 			printf("%d", curr);
- 		}
-    }
+	int i;
+	int flag = 0;
+	for(i = n.nbytes - 1; i >= 0; i--){
+		Byte curr = n.bytes[i];
+		if(flag == 0){
+			if(curr == 0){
+				continue;
+			}else{
+				flag = 1;
+				printf("%d", curr);
+			}
+		}else{
+			printf("%d", curr);
+		}
+	}
 	return;
 }
 
