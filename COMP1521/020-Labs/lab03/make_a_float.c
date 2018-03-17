@@ -11,10 +11,7 @@
 typedef uint32_t Word;
 
 struct _float {
-   // define bit_fields for sign, exp and frac
-   // obviously they need to be larger than 1-bit each
-   // and may need to be defined in a different order
-   unsigned int sign:1, exp:1, frac:1;
+   unsigned int frac:23, exp:8, sign:1;
 };
 typedef struct _float Float32;
 
@@ -26,7 +23,7 @@ union _bits32 {
 typedef union _bits32 Union32;
 
 void    checkArgs(int, char **);
-Union32 getBits(char *, char *, char *);
+Union32 getBits(char *, char *, char *); 
 char   *showBits(Word, char *);
 int     justBits(char *, int);
 
@@ -63,10 +60,13 @@ Union32 getBits(char *sign, char *exp, char *frac)
    new.bits.sign = new.bits.exp = new.bits.frac = 0;
 
    // convert char *sign into a single bit in new.bits
+   new.bits.sign = strtol(sign, NULL, 2);
 
    // convert char *exp into an 8-bit value in new.bits
+   new.bits.exp = strtol(exp, NULL, 2);
 
    // convert char *frac into a 23-bit value in new.bits
+   new.bits.frac = strtol(frac, NULL, 2);
 
    return new;
 }
@@ -77,9 +77,15 @@ Union32 getBits(char *sign, char *exp, char *frac)
 // return a pointer to buf
 char *showBits(Word val, char *buf)
 {
-   // this line is just to keep gcc happy
-   // delete it when you have implemented the function
-   buf[0] = '\0';
+   int i, j;
+   for(i = 0, j = 0; i < 32; i++, j++){
+      if(i == 1 || i == 9){
+         buf[j++] = ' ';
+      }
+      buf[j] = '0' + ((val >> (31-i)) & 1U);
+   }
+   buf[34] = 0;
+
    return buf;
 }
 
