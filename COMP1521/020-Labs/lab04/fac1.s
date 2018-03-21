@@ -48,6 +48,10 @@ fac:
    bne   $t0, $s0, fac
 endfac:
    
+   la    $a0, msg2
+   li    $v0, 4
+   syscall
+
    move $a0, $s2
    li    $v0, 1
    syscall

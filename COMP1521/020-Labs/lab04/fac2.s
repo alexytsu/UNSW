@@ -30,7 +30,22 @@ main:
    li    $v0, 4
    syscall                  # printf("n  = ");
 
-## ... rest of code for main() goes here ...
+   li    $v0, 5
+   syscall
+   move  $t0, $v0
+
+   la    $a0, msg2
+   li    $v0, 4
+   syscall   
+
+   move  $a0, $t0
+   jal   fac
+   nop
+
+   move $a0, $v0
+   li $v0, 1
+   syscall
+
  
    la    $a0, eol
    li    $v0, 4
@@ -40,7 +55,7 @@ main:
    lw    $s0, -8($fp)       # restore $s0 value
    lw    $ra, -4($fp)       # restore $ra for return
    la    $sp, 4($fp)        # restore $sp (remove stack frame)
-   lw    $fp, ($fp)          # restore $fp (remove stack frame)
+   lw    $fp, ($fp)         # restore $fp (remove stack frame)
 
    li    $v0, 0
    jr    $ra                # return 0
@@ -49,13 +64,22 @@ main:
 
 fac:
    # setup stack frame
+   addi $sp, $sp, -4
+   sw $ra, ($sp)
 
-## ... code for prologue goes here ...
+   move $t0, $a0
+   li $t1, 1
+   li $t2, 1
 
-   # code for fac()
-
-## ... code for fac() goes here ...
-
-   # clean up stack frame
-
-## ... code for epilogue goes here ...
+loop:
+   mul $t2, $t1, $t2
+   move $t4, $t1
+   addi $t1, 1
+   beq $t4, $t0, end
+   bne $t4, $t0, loop
+end:
+   
+   move $v0, $t2
+   lw $ra, ($sp)
+   addi $sp, $sp, 4
+   jr $ra
