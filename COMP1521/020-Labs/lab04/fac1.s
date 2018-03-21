@@ -28,12 +28,29 @@ main:
 
    # code for main()
    li    $s0, 0             # n = 0;
-   
+   li    $s1, 1             # i = 1;
+   li    $s2, 1             # fac = 1;
+
    la    $a0, msg1
    li    $v0, 4
    syscall                  # printf("n  = ");
 
-## ... rest of code for main() goes here ...
+   li    $v0, 5             # read int from stdin
+   syscall                  # n
+
+   move $s0, $v0
+
+fac:
+   mul   $s2,$s1,$s2
+   move  $t0, $s1
+   addi  $s1, 1    
+   beq   $t0, $s0, endfac
+   bne   $t0, $s0, fac
+endfac:
+   
+   move $a0, $s2
+   li    $v0, 1
+   syscall
 
    la    $a0, eol
    li    $v0, 4
