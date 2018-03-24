@@ -64,10 +64,14 @@ main:
 
 fac:
    # setup stack frame
-   addi $sp, $sp, -4
-   sw $ra, ($sp)
+   sw    $fp, -4($sp)       # push $fp onto stack
+   la    $fp, -4($sp)       # set up $fp for this function
+   sw    $ra, -4($fp)       # save return address
+   sw    $s0, -8($fp)       # save $s0 to use as ... int n;
+   addi  $sp, $sp, -12      # reset $sp to last pushed item
 
-   move $t0, $a0
+
+   move $s0, $a0
    li $t1, 1
    li $t2, 1
 
@@ -75,11 +79,13 @@ loop:
    mul $t2, $t1, $t2
    move $t4, $t1
    addi $t1, 1
-   beq $t4, $t0, end
-   bne $t4, $t0, loop
+   beq $t4, $s0, end
+   j loop
 end:
-   
+
+   lw    $s0, -8($fp)       # restore $s0 value
+   lw    $ra, -4($fp)       # restore $ra for return
+   la    $sp, 4($fp)        # restore $sp (remove stack frame)
+   lw    $fp, ($fp)         # restore $fp (remove stack frame)
    move $v0, $t2
-   lw $ra, ($sp)
-   addi $sp, $sp, 4
    jr $ra
