@@ -32,13 +32,13 @@ main:
 
    li    $v0, 5
    syscall
-   move  $t0, $v0
+   move  $s0, $v0
 
    la    $a0, msg2
    li    $v0, 4
    syscall   
 
-   move  $a0, $t0
+   move  $a0, $s0
    jal   fac
    nop
 
@@ -72,14 +72,13 @@ fac:
 
 
    move $s0, $a0
-   li $t1, 1
-   li $t2, 1
+   li $t1, 1    #$t1 = i
+   li $v0, 1
 
 loop:
-   mul $t2, $t1, $t2
-   move $t4, $t1
-   addi $t1, 1
-   beq $t4, $s0, end
+   bgt $t1, $s0, end
+   mul $v0, $v0, $t1
+   addi $t1, $t1, 1
    j loop
 end:
 
@@ -87,5 +86,4 @@ end:
    lw    $ra, -4($fp)       # restore $ra for return
    la    $sp, 4($fp)        # restore $sp (remove stack frame)
    lw    $fp, ($fp)         # restore $fp (remove stack frame)
-   move $v0, $t2
    jr $ra

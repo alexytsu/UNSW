@@ -39,20 +39,21 @@ main:
    syscall                  # n
 
    move $s0, $v0
+   li $t1, 1
+   li $s1, 1
 
 fac:
-   mul   $s2,$s1,$s2
-   move  $t0, $s1
-   addi  $s1, 1    
-   beq   $t0, $s0, endfac
-   bne   $t0, $s0, fac
+   bgt $t1, $s0, endfac
+   mul $s1, $s1, $t1
+   addi $t1, $t1, 1
+   j fac
 endfac:
    
    la    $a0, msg2
    li    $v0, 4
    syscall
 
-   move $a0, $s2
+   move $a0, $s1
    li    $v0, 1
    syscall
 

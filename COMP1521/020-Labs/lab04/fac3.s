@@ -32,7 +32,13 @@ main:
 
    li    $v0, 5
    syscall
-   move  $a0, $v0
+   move  $s0, $v0           # scanf
+
+   la    $a0, msg2
+   li    $v0, 4
+   syscall                  # printf("n  = ");
+
+   move $a0, $s0
 
    jal   fac
    move  $a0, $v0
