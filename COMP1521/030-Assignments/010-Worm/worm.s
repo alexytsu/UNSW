@@ -243,12 +243,38 @@ main_i_cond:
 
 ###################### DEBUGGING ##########################
 	
-	li $s2
+	# print worm row, worm col	
+# 	addi	$a0, $0, x
+# 	addiu	$v0, $0, 11
+# 	syscall
 
+	li	$t0, 0
+	move	$t1, $s2
+	li	$t4, 4
 	debug_loop:
+	bge	$t0, $t1, end_debug_loop
+
+	mul	$t2, $t0, $t4
+
+	lw	$a0, wormCol($t2)
+	addiu	$v0, $0, 1
+	syscall
+
+	li	$a0, ','
+	addiu	$v0, $0, 11
+	syscall
+
+	lw	$a0, wormRow($t2)
+	addiu	$v0, $0, 1
+	syscall
+
+    	li $a0, 10
+	addiu	$v0, $0, 11
+	syscall
 
 
-
+	addi	$t0, $t0, 1
+	j debug_loop
 	end_debug_loop:
 
 
@@ -418,7 +444,7 @@ drawGrid:
 		j c_loop_drawGrid
 		end_c_drawGrid:
 
-    li $a0, '\n'
+    li $a0, 10
     li $v0, 11
     syscall
 
@@ -472,8 +498,8 @@ initWorm:
 	li	$t2, 40
 	beq	$t0, $t2, seg_end_initWorm
 
-	li	$t2, 4	#size of int
-	mul	$t2, $t2, $t1 #4 * nsegs
+	li	$t4, 4	#size of int
+	mul	$t2, $t4, $t1 #4 * nsegs
 	
 	sw	$t0, wormCol($t2)
 	addi	$t0, $t0, 1
@@ -482,7 +508,8 @@ initWorm:
 
 	# NROWS = 20
 	# NCOLS = 40
-
+	addi	$t1, $t1, 1
+	j seg_loop_initWorm
 	seg_end_initWorm:
 
 
