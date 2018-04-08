@@ -241,7 +241,19 @@ main_i_cond:
 	# drawGrid();
 	jal	drawGrid
 
-	# Debugging? print worm pos as (r1,c1) (r2,c2) ...
+###################### DEBUGGING ##########################
+	
+	li $s2
+
+	debug_loop:
+
+
+
+	end_debug_loop:
+
+
+
+##########################################################
 
 	# if (!moveWorm(length)) {...break}
 	add	$a0, $0, $s2
@@ -510,26 +522,26 @@ onGrid:
 	# return (col >= 0 && col < NCOLS && row >= 0 && row < NROWS);
 	# if any of the conditions fails, j to return_0
 	# if(0 > col) return 0;
-	bgt	$t0, $a0, return_0
+	bgt	$t0, $a0, return_0_onGrid
 
 	# if (col >= NCOLS) return 0
 	li	$t1, 40
-	bgt	$a0, $t1, return_0
+	bgt	$a0, $t1, return_0_onGrid
 
 	#if(0 > row) return 0;
-	bgt	$t0, $a1, return_0
+	bgt	$t0, $a1, return_0_onGrid
 
 	# if(row >=)
 	li	$t1, 20
-	bgt	$a1, $t1, return_0
+	bgt	$a1, $t1, return_0_onGrid
 
 	
 	# tear down stack frame
-	j return
-	return_0:
+	j return_onGrid
+	return_0_onGrid:
 	li	$v0, 0
 	
-	return:
+	return_onGrid:
 	lw	$ra, -4($fp)
 	la	$sp, 4($fp)
 	lw	$fp, ($fp)
@@ -553,13 +565,39 @@ overlaps:
 
 # Code:
 
-### TODO: complete this function
+	sw	$fp, -4($sp)
+	sw	$ra, -8($sp)
+	la	$fp, -4($sp)
+	addiu	$sp, $sp, -8
 
-	# set up stack frame
+	li 	$v0, 0 #return 0 by default
 
-    # code for function
+	li	$t4, 4
+	li	$t6, 0
+	loop_overlaps:
+	bge	$t6, $a2, end_loop_overlaps #while (i < len)
 
-	# tear down stack frame
+	mul	$t3, $t6, $t4
+	lw	$t2, wormCol($t3)
+	beq	$t2, $a0, second_condition
+	j loop_overlaps
+	second_condition:
+	lw	$t2, wormRow($t3)
+	beq	$t2, $a1, return_1_overlaps
+
+	addi	$t6, $t6, 1
+	j loop_overlaps
+	end_loop_overlaps:
+
+	j return_overlaps
+	return_1_overlaps:
+	li	$v0, 1
+	return_overlaps:
+	lw	$ra, -4($fp)
+	la	$sp, 4($fp)
+	lw	$fp, ($fp)
+	jr	$ra
+
 
 
 ####################################
@@ -644,6 +682,8 @@ addWormToGrid:
 #	- `len' in $a0
 #	- `&wormCol[i]' in $s0
 #	- `&wormRow[i]' in $s1
+#	- `row` in $s2
+#	- `col` in $s3
 #	- `grid[row][col]'
 #	- `i' in $t0
 
@@ -658,7 +698,38 @@ addWormToGrid:
 	la	$fp, -4($sp)
 	addiu	$sp, $sp, -24
 
-### TODO: your code goes here
+	lw	$s2, wormRow #row = wormRow[0]
+	lw	$s3, wormCol #col = wormCol[0]
+
+	#find grid[row][col]
+	li	$t1, 40
+	mul	$t2, $s2, $t1
+	add	$t2, $t2, $s3
+
+	#set head
+	li	$t1, '@'
+	sb	$t1, grid($t2)
+
+	li	$t0, 1
+	li	$t4, 4
+	for_loop_addWormToGrid:
+	bge	$t0, $a0, end_loop_addWormToGrid
+
+	mul	$t1, $t0, $t4
+	lw	$s2, wormRow($t1)
+	lw	$s3, wormCol($t1)
+
+	li	$t3, 40
+	mul	$t2, $s2, $t3
+	add	$t2, $t2, $s3
+
+	li	$t1, 'o'
+	sb	$t1, grid($t2)
+
+	addi	$t0, $t0, 1
+	j for_loop_addWormToGrid
+	end_loop_addWormToGrid:
+
 
 	# tear down stack frame
 	lw	$s3, -20($fp)
