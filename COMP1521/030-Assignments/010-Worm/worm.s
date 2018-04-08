@@ -257,6 +257,7 @@ main_i_cond:
 	j	main_i_end
 
 main_moveWorm_phi:
+
 	addi	$a0, $0, 1
 	jal	delay
 
@@ -327,24 +328,28 @@ clearGrid:
 
 	li	$s0, 0 # row = 0
 	r_loop_clearGrid:
+	#while row < 20
 	li	$t0, 20
 	bge	$s0, $t0, end_r_clearGrid #while(row < 20)
 
 		li	$s1, 0		# col = 0
 		c_loop_clearGrid:
+		# while col < 40
 		li	$t0, 40
-		bge	$s1, $t0, end_c_clearGrid #while(col < 40)
+		bge	$s1, $t0, end_c_clearGrid
 
 		mul	$t1, $s0, $t0	#row offset = $s0 * NCOLS
 		add	$t1, $t1, $s1	#col offset = $s1
 
 		li	$t2, '.'
-		sw	$t2, grid($t1)
+		sb	$t2, grid($t1)
 
 		addi $s1, $s1, 1
+		j c_loop_clearGrid
 		end_c_clearGrid:
 
 	addi	$s0, $s0, 1
+	j r_loop_clearGrid
 	end_r_clearGrid:
 	# tear down stack frame
 	lw	$s1, -12($fp)
@@ -392,15 +397,17 @@ drawGrid:
 		mul	$t1, $s0, $t0	#row offset = $s0 * NCOLS
 		add	$t1, $t1, $s1	#col offset = $s1
 
-		lw	$a0, grid($t1)
+		lb	$a0, grid($t1)
 		li	$v0, 11
 		syscall
 		
 
 		addi $s1, $s1, 1
+		j c_loop_drawGrid
 		end_c_drawGrid:
 
 	addi	$s0, $s0, 1
+	j r_loop_drawGrid
 	end_r_drawGrid:
 
 	# tear down stack frame
@@ -487,14 +494,42 @@ onGrid:
 
 # Code:
 
-### TODO: complete this function
+	sw	$fp, -4($sp)
+	sw	$ra, -8($sp)
+	la	$fp, -4($sp)
+	addiu	$sp, $sp, -8
 
-	# set up stack frame
+	# NROWS = 20
+	# NCOLS = 40
 
-    # code for function
+	li	$v0, 1 #return 1 by default
+	# return (col >= 0 && col < NCOLS && row >= 0 && row < NROWS);
+	# if any of the conditions fails, j to return_0
+	# if(0 > col) return 0;
+	bgt	$t0, $a0, return_0
 
+	# if (col >= NCOLS) return 0
+	li	$t1, 40
+	bgt	$a0, $t1, return_0
+
+	#if(0 > row) return 0;
+	bgt	$t0, $a1, return_0
+
+	# if(row >=)
+	li	$t1, 20
+	bgt	$a1, $t1, return_0
+
+	
 	# tear down stack frame
-
+	j return
+	return_0:
+	li	$v0, 0
+	
+	return:
+	lw	$ra, -4($fp)
+	la	$sp, 4($fp)
+	lw	$fp, ($fp)
+	jr	$ra
 
 ####################################
 # overlaps(r,c,len) ... checks whether (r,c) holds a body segment
@@ -794,7 +829,7 @@ delay:
 
 	li	$t2, 0
 	for_k_delay:
-	bge	$t4, 1000
+	li	$t4, 1000
 	bge	$t2, $t4, end_for_k_delay
 
 	li	$t4, 3
