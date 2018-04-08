@@ -31,7 +31,6 @@ loop1:
    loop2: #s2shouldnt be -
       bge $s4, $s2, end2 #while(c < p)
       li $s6, 0 #sum
-      
       li $s5, 0 #i
       loop3:
          bge $s5, $s1, end3 #while(i < m)
@@ -65,19 +64,15 @@ loop1:
       mul $t0, $s3, $s2
       add $t0, $t0, $s4
       mul $t0, $t0, $t4
-      sw  $t0, C($t0)
-      
+      sw  $s6, C($t0)
       #find r_offset
-
       addi $s4,$s4, 1
       j loop2
    end2:
-   
    addi $s3, $s3, 1
    j loop1
-end1:
 
-   
+end1:
    lw $s6, -32($fp)
    lw $s5, -28($fp)
    lw $s4, -24($fp)
