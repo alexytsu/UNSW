@@ -306,13 +306,12 @@ clearGrid:
 
 # Frame:	$fp, $ra, $s0, $s1
 # Uses: 	$s0, $s1, $t1, $t2
-# Clobbers:	$t1, $t2
+# Clobbers:	$t0, $t1, $t2
 
 # Locals:
 #	- `row' in $s0
 #	- `col' in $s1
-#	- `&grid[row][col]' in $t1
-#	- '.' in $t2
+
 
 # Code:
 	# set up stack frame
@@ -326,17 +325,15 @@ clearGrid:
 	# NROWS = 20
 	# NCOLS = 40
 
-
-### TODO: clear grid function
 	li	$s0, 0 # row = 0
-	r_loop:
+	r_loop_clearGrid:
 	li	$t0, 20
-	bge	$s0, $t0, end_r #while(row < 20)
+	bge	$s0, $t0, end_r_clearGrid #while(row < 20)
 
 		li	$s1, 0		# col = 0
-		c_loop:
+		c_loop_clearGrid:
 		li	$t0, 40
-		bge	$s1, $t0, end_c #while(col < 40)
+		bge	$s1, $t0, end_c_clearGrid #while(col < 40)
 
 		mul	$t1, $s0, $t0	#row offset = $s0 * NCOLS
 		add	$t1, $t1, $s1	#col offset = $s1
@@ -345,10 +342,10 @@ clearGrid:
 		sw	$t2, grid($t1)
 
 		addi $s1, $s1, 1
-		end_c:
+		end_c_clearGrid:
 
 	addi	$s0, $s0, 1
-	end_r:
+	end_r_clearGrid:
 	# tear down stack frame
 	lw	$s1, -12($fp)
 	lw	$s0, -8($fp)
@@ -366,7 +363,7 @@ drawGrid:
 
 # Frame:	$fp, $ra, $s0, $s1, $t1
 # Uses: 	$s0, $s1
-# Clobbers:	$t1
+# Clobbers:	$t0, $t1
 
 # Locals:
 #	- `row' in $s0
@@ -382,7 +379,29 @@ drawGrid:
 	la	$fp, -4($sp)
 	addiu	$sp, $sp, -16
 
-### TODO: Your code goes here
+	li	$s0, 0 # row = 0
+	r_loop_drawGrid:
+	li	$t0, 20
+	bge	$s0, $t0, end_r_drawGrid #while(row < 20)
+
+		li	$s1, 0		# col = 0
+		c_loop_drawGrid:
+		li	$t0, 40
+		bge	$s1, $t0, end_c_drawGrid #while(col < 40)
+
+		mul	$t1, $s0, $t0	#row offset = $s0 * NCOLS
+		add	$t1, $t1, $s1	#col offset = $s1
+
+		lw	$a0, grid($t1)
+		li	$v0, 11
+		syscall
+		
+
+		addi $s1, $s1, 1
+		end_c_drawGrid:
+
+	addi	$s0, $s0, 1
+	end_r_drawGrid:
 
 	# tear down stack frame
 	lw	$s1, -12($fp)
@@ -420,7 +439,29 @@ initWorm:
 	la	$fp, -4($sp)
 	addiu	$sp, $sp, -8
 
-### TODO: Your code goes here
+	addi	$t0, $a0, 1	# newCol = col + 1
+	sw	$a0, wormCol	# wormCol[0] = col
+	sw	$a1, wormRow	# wormRow[0] = row
+
+	li	$t1, 1 #nsegs = 1
+	seg_loop_initWorm:
+	bge	$t1, $a2, seg_end_initWorm	#while(nsegs < len)
+	li	$t2, 40
+	beq	$t0, $t2, seg_end_initWorm
+
+	li	$t2, 4	#size of int
+	mul	$t2, $t2, $t1 #4 * nsegs
+	
+	sw	$t0, wormCol($t2)
+	addi	$t0, $t0, 1
+
+	sw	$a1, wormRow($t2)	
+
+	# NROWS = 20
+	# NCOLS = 40
+
+	seg_end_initWorm:
+
 
 	# tear down stack frame
 	lw	$ra, -4($fp)
