@@ -406,6 +406,10 @@ drawGrid:
 		j c_loop_drawGrid
 		end_c_drawGrid:
 
+    li $a0, '\n'
+    li $v0, 11
+    syscall
+
 	addi	$s0, $s0, 1
 	j r_loop_drawGrid
 	end_r_drawGrid:
