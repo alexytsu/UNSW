@@ -323,8 +323,32 @@ clearGrid:
 	la	$fp, -4($sp)
 	addiu	$sp, $sp, -16
 
-### TODO: Your code goes here
+	# NROWS = 20
+	# NCOLS = 40
 
+
+### TODO: clear grid function
+	li	$s0, 0 # row = 0
+	r_loop:
+	li	$t0, 20
+	bge	$s0, $t0, end_r #while(row < 20)
+
+		li	$s1, 0		# col = 0
+		c_loop:
+		li	$t0, 40
+		bge	$s1, $t0, end_c #while(col < 40)
+
+		mul	$t1, $s0, $t0	#row offset = $s0 * NCOLS
+		add	$t1, $t1, $s1	#col offset = $s1
+
+		li	$t2, '.'
+		sw	$t2, grid($t1)
+
+		addi $s1, $s1, 1
+		end_c:
+
+	addi	$s0, $s0, 1
+	end_r:
 	# tear down stack frame
 	lw	$s1, -12($fp)
 	lw	$s0, -8($fp)
