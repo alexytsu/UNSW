@@ -765,14 +765,14 @@ delay:
 
 # Frame:	$fp, $ra
 # Uses: 	$a0
-# Clobbers:	$t0, $t1, $t2
+# Clobbers:	$t0, $t1, $t2, $t3
 
 # Locals:
 #	- `n' in $a0
-#	- `x' in $f6
 #	- `i' in $t0
 #	- `j' in $t1
 #	- `k' in $t2
+#	- `x' in $t3
 
 # Code:
 	# set up stack frame
@@ -781,7 +781,33 @@ delay:
 	la	$fp, -4($sp)
 	addiu	$sp, $sp, -8
 
-### TODO: your code goes here
+	li	$t3, 3
+
+	li	$t0, 0
+	for_delay:
+	bge	$t0, $a0, end_for_delay
+	
+	li	$t1, 0
+	for_j_delay:
+	li	$t4, 40000
+	bge 	$t1, $t4, end_for_j_delay
+
+	li	$t2, 0
+	for_k_delay:
+	bge	$t4, 1000
+	bge	$t2, $t4, end_for_k_delay
+
+	li	$t4, 3
+	mul	$t3, $t3, $t4
+
+	end_for_k_delay:
+
+
+	addi	$t1, $t1, 1
+	end_for_j_delay:
+
+	addi	$t0, $t0, 1
+	end_for_delay:
 
 	# tear down stack frame
 	lw	$ra, -4($fp)
