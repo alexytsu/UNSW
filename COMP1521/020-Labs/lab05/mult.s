@@ -1,19 +1,3 @@
-# COMP1521 18s1 Week 05 Lab
-#
-# void multMatrices(int n, int m, int p,
-#                   int A[n][m], int B[m][p], int C[n][p])
-# {
-#    for (int r = 0; r < n; r++) {
-#       for (int c = 0; c < p; c++) {
-#          int sum = 0;
-#          for (int i = 0; i < m; i++) {
-#             sum += A[r][i] * B[i][c];
-#          }
-#          C[r][c] = sum;
-#       }
-#    }
-# }
-
    .text
    .globl multMatrices
 multMatrices:
@@ -37,86 +21,59 @@ multMatrices:
    # setup n and m and p
    move $s0, $a0
    move $s1, $a1
-   move $s2, $s2
+   move $s2, $a2
 
    li $s3, 0 #r
 loop1:
    bge $s3,$s0, end1 #while(r < n)
 
    li $s4, 0 #c
-loop2: #s2shouldnt be -
-   bge $s4, $s2, end2 #while(c < p)
-   li $s6, 0 #sum
+   loop2: #s2shouldnt be -
+      bge $s4, $s2, end2 #while(c < p)
+      li $s6, 0 #sum
+      
+      li $s5, 0 #i
+      loop3:
+         bge $s5, $s1, end3 #while(i < m)
+
+         #sum += A[r][i] * B[i][c]
+         #A[n][m] B[m][p]
+
+         #find A[r][i]
+         li $t4, 4 #sizeof(int)
+         mul $t0, $s3, $s1 # $t0 = r * m
+         add $t0, $t0, $s5 # $t0 += i
+         mul $t0, $t0, $t4 # $t0 *= 4 (size of int)
+
+         #find B[i][c]
+         mul $t1, $s5, $s2
+         add $t1, $t1, $s4
+         mul $t1, $t1, $t4
+
+         lw $t2, A($t0)
+         lw $t3, B($t1)
+
+         mul $t5, $t2, $t3
+         add $s6, $s6, $t5
+
+
+         addi $s5, $s5, 1
+         j loop3
+      end3:
+
+      #C[r][c] = sum;
+      mul $t0, $s3, $s2
+      add $t0, $t0, $s4
+      mul $t0, $t0, $t4
+      sw  $t0, C($t0)
+      
+      #find r_offset
+
+      addi $s4,$s4, 1
+      j loop2
+   end2:
    
-   li $s5, 0 #i
-loop3:
-   bge $s5, $s1, end3 #while(i < m)
-   # 4($fp) = &C
-   # 8($fp) = &B
-   # 12($fp) = &A
-
-   la $t5, 12($fp) #start of A 
-   la $t6, 8($fp) #start of B
-
-   #sum += A[r][i] * B[i][c]
-
-   #find relevant A
-   #find r_offset
-   mul $t1, $s3, $s1 #r * columns in A (m)
-   li $t4, 4
-   mul $t1, $t1, $t4
-   #find i_offset
-   mul $t2, $s5, 4
-   
-   #find A
-   add $t1, $t1, $t2
-   add $t5, $t5, $t1
-
-   #find relevant B
-   #find i_offset
-   mul $t1, $s5, $s2  #i * columns in B
-   mul $t1, $t1, 4
-   #find c_offset
-   mul $t2, $s4, 4
-
-   #find B 
-   add $t1, $t1, $t2
-   add $t6, $t6, $t1
-
-   lw $t0, ($t5)
-   lw $t1, ($t6)
-   mul $t0, $t5, $t6
-
-   add $s6, $s6, $t0
-
-
-   addi $s5, 1
-   j loop3
-end3:
-
-   la $t5, 4($fp) #start of C[n][p]
-
-   #C[r][c] = sum;
-   
-   #find r_offset
-   mul $t1, $s3, $s2
-   mul $t1, $t1, $t4
-   #find c_offset
-   mul $t2, $s4, $t4
-   add $t1, $t1, $t2
-   add $t5, $t5, $t1
-
-   sw $s6, ($t5)
-
-   li $v0, 1
-   move $a0, $s6
-   syscall
-
-   addi $s4, 1
-   j loop2
-end2:
-   
-   addi $s3, 1
+   addi $s3, $s3, 1
    j loop1
 end1:
 
@@ -131,5 +88,4 @@ end1:
    lw $ra, -4($fp)
    la $sp, 4($fp)
    lw $fp, ($fp)
-
    jr $ra
