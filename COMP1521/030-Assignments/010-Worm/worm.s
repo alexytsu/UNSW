@@ -676,8 +676,124 @@ moveWorm:
 	la	$fp, -4($sp)
 	addiu	$sp, $sp, -40
 
-### TODO: Your code goes here
+	la	$s5, possibleCol
+	la	$s6, possibleRow
 
+	li	$s7, 0	#n=0
+	
+	li	$s3, -1	#dx = -1
+	loop_dx_moveWorm:
+	li	$t1, 1
+	bgt	$s3, $t1, end_dx_moveWorm
+	li	$s4, -1 #dy = -1
+		loop_dy_moveWorm:
+		bgt	$s4, $t1, end_dy_moveWorm
+
+		lw	$t2, wormCol
+		lw	$t3, wormRow
+
+		add	$s0, $t2, $s3	#col = wormCol[0] + dx
+		add	$s1, $t3, $s4	#row = wormRow[0] + dy  
+
+		move	$a0, $s0
+		move	$a1, $s1
+		jal	onGrid
+		bne	$v0, $t1, continue_dy_moveWorm
+
+		move	$a0, $s0
+		move	$a1, $s1
+		move	$a2, $s2
+		jal	overlaps
+		bne	$v0, $t1, continue_dy_moveWorm
+
+		li	$t4, 4
+		mul	$t5, $t4, $s7
+		sw	$s0, possibleCol($t5)
+		sw	$s1, possibleRow($t5)
+		addi	$s7, $s7, 1
+
+
+		continue_dy_moveWorm:
+		addi	$s4, $s4, 1
+		j loop_dy_moveWorm
+		end_dy_moveWorm:
+	addi	$s3, $s3, 1
+	j loop_dx_moveWorm
+	end_dx_moveWorm:
+
+######################## DEBUG LOOP ####################################################
+
+	li	$t0, 0
+	li	$t1, 8
+	li	$t4, 4
+	debug_loop_1:
+	bge	$t0, $t1, end_debug_loop_1
+
+	mul	$t2, $t0, $t4
+
+	lw	$a0, possibleCol($t2)
+	addiu	$v0, $0, 1
+	syscall
+
+	li	$a0, ','
+	addiu	$v0, $0, 11
+	syscall
+
+	lw	$a0, possibleRow($t2)
+	addiu	$v0, $0, 1
+	syscall
+
+    	li $a0, 10
+	addiu	$v0, $0, 11
+	syscall
+
+
+	addi	$t0, $t0, 1
+	j debug_loop_1
+	end_debug_loop_1:
+
+
+##########################################################################333333
+
+	beq	$s7, $0, return_0_moveWorm
+
+	addi	$t0, $s2, -1
+	for_length_moveWorm:
+	beqz	$t0, end_length_moveWorm
+
+	li	$t4, 4
+	mul	$t5, $t4, $t0
+	addi	$t6, $t4, -4
+
+	lw	$t7, wormRow($t6)
+	sw	$t7, wormRow($t5)
+
+	lw	$t7, wormCol($t6)
+	sw	$t7, wormCol($t5)
+
+	addi	$t0, $t0, -1
+	j	for_length_moveWorm
+	end_length_moveWorm:
+
+	move	$a0, $s7
+	jal	randValue
+	move	$v0, $t0
+
+	li	$t4, 4
+	mul	$t0, $t0, $t4
+	lw	$t1, possibleRow($t0)
+	lw	$t2, possibleCol($t0)
+	sw	$t1, wormRow
+	sw	$t2, wormCol
+	j	return_1_moveWorm
+
+	return_1_moveWorm:
+	li	$v0, 1
+	j	return_moveWorm
+	return_0_moveWorm:
+	li	$v0, 0
+	j	return_moveWorm
+	return_moveWorm:
 	# tear down stack frame
 	lw	$s7, -36($fp)
 	lw	$s6, -32($fp)
