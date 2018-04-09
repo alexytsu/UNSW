@@ -607,6 +607,7 @@ overlaps:
 	mul	$t3, $t6, $t4
 	lw	$t2, wormCol($t3)
 	beq	$t2, $a0, second_condition
+	addi	$t6, $t6, 1
 	j loop_overlaps
 	second_condition:
 	lw	$t2, wormRow($t3)
@@ -698,12 +699,14 @@ moveWorm:
 		move	$a0, $s0
 		move	$a1, $s1
 		jal	onGrid
+		li	$t1, 1
 		bne	$v0, $t1, continue_dy_moveWorm
 
 		move	$a0, $s0
 		move	$a1, $s1
 		move	$a2, $s2
 		jal	overlaps
+		li	$t1, 1
 		bne	$v0, $t1, continue_dy_moveWorm
 
 		li	$t4, 4
@@ -721,40 +724,6 @@ moveWorm:
 	j loop_dx_moveWorm
 	end_dx_moveWorm:
 
-######################## DEBUG LOOP ####################################################
-
-	li	$t0, 0
-	li	$t1, 8
-	li	$t4, 4
-	debug_loop_1:
-	bge	$t0, $t1, end_debug_loop_1
-
-	mul	$t2, $t0, $t4
-
-	lw	$a0, possibleCol($t2)
-	addiu	$v0, $0, 1
-	syscall
-
-	li	$a0, ','
-	addiu	$v0, $0, 11
-	syscall
-
-	lw	$a0, possibleRow($t2)
-	addiu	$v0, $0, 1
-	syscall
-
-    	li $a0, 10
-	addiu	$v0, $0, 11
-	syscall
-
-
-	addi	$t0, $t0, 1
-	j debug_loop_1
-	end_debug_loop_1:
-
-
-##########################################################################333333
-
 	beq	$s7, $0, return_0_moveWorm
 
 	addi	$t0, $s2, -1
@@ -765,11 +734,11 @@ moveWorm:
 	mul	$t5, $t4, $t0
 	addi	$t6, $t4, -4
 
-	lw	$t7, wormRow($t6)
-	sw	$t7, wormRow($t5)
+	lw	$t7, wormRow($t5)
+	sw	$t7, wormRow($t6)
 
-	lw	$t7, wormCol($t6)
-	sw	$t7, wormCol($t5)
+	lw	$t7, wormCol($t5)
+	sw	$t7, wormCol($t6)
 
 	addi	$t0, $t0, -1
 	j	for_length_moveWorm
@@ -777,7 +746,7 @@ moveWorm:
 
 	move	$a0, $s7
 	jal	randValue
-	move	$v0, $t0
+	move	$t0, $v0
 
 	li	$t4, 4
 	mul	$t0, $t0, $t4
