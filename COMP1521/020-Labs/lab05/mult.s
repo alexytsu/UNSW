@@ -49,12 +49,16 @@ loop1:
          add $t1, $t1, $s4
          mul $t1, $t1, $t4
 
-         lw $t2, A($t0)
-         lw $t3, B($t1)
+         lw  $t3, 12($fp)
+         add $t3, $t3, $t0
+         lw  $t2, ($t3)
+         
+         lw  $t4, 8($fp)
+         add $t4, $t4, $t1
+         lw  $t3, ($t4)
 
          mul $t5, $t2, $t3
          add $s6, $s6, $t5
-
 
          addi $s5, $s5, 1
          j loop3
@@ -63,8 +67,13 @@ loop1:
       #C[r][c] = sum;
       mul $t0, $s3, $s2
       add $t0, $t0, $s4
+      li  $t4, 4
       mul $t0, $t0, $t4
-      sw  $s6, C($t0)
+
+      lw $t3, 4($fp)
+      add $t3, $t3, $t0
+      sw $s6, ($t3)
+
       #find r_offset
       addi $s4,$s4, 1
       j loop2
