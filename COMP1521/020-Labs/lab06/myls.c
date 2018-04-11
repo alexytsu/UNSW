@@ -23,9 +23,9 @@ int main(int argc, char *argv[])
 {
    // string buffers for various names
    char dirname[MAXDIRNAME];
-   // char uname[MAXNAME+1]; // UNCOMMENT this line
-   // char gname[MAXNAME+1]; // UNCOMMENT this line
-   // char mode[MAXNAME+1]; // UNCOMMENT this line
+   char uname[MAXNAME+1]; // UNCOMMENT this line
+   char gname[MAXNAME+1]; // UNCOMMENT this line
+   char mode[MAXNAME+1]; // UNCOMMENT this line
 
    // collect the directory name, with "." as default
    if (argc < 2)
@@ -41,23 +41,57 @@ int main(int argc, char *argv[])
       { fprintf(stderr, "%s: Not a directory\n",argv[0]); exit(EXIT_FAILURE); }
 
    // open the directory to start reading
-   // DIR *df; // UNCOMMENT this line
-   // ... TODO ...
+   DIR *df;
+   df = opendir(dirname);
 
    // read directory entries
-   // struct dirent *entry; // UNCOMMENT this line
-   // ... TODO ...
+   struct dirent *entry; // UNCOMMENT this line
+   while ((entry = readdir(df)) != NULL) {
+      
+      if(entry->d_name[0] == '.') continue;
+
+      struct stat Object;
+      mode_t ModeInfo = Object.st_mode;
+      lstat(entry->d_name, &Object);
+      uid_t OwnerUID = (uid_t) Object.st_uid;
+      gid_t GroupGID = (gid_t) Object.st_gid;
+      long long ObjectSize = Object.st_size;
+
+      printf("%s  %-8.8s %-8.8s %8lld  %s\n",
+       rwxmode(ModeInfo, mode),
+       username(OwnerUID, uname),
+       groupname(GroupGID, gname),
+       (long long) ObjectSize,
+       entry->d_name);
+   }
 
    // finish up
-   // closedir(df); // UNCOMMENT this line
+   closedir(df); // UNCOMMENT this line
    return EXIT_SUCCESS;
 }
 
 // convert octal mode to -rwxrwxrwx string
 char *rwxmode(mode_t mode, char *str)
 {
-   return NULL;
-   // ... TODO ...
+
+   str[11] = 0;
+   for(int i = 0; i < 9; i++){
+      str[9-i] = ( (mode>>i) && 1 ) ? 'a':'b';
+   }
+
+   switch ((unsigned long)mode & S_IFMT) {
+     case S_IFBLK:  str[0] = '?';                         break;
+     case S_IFCHR:  str[0] = '?';                         break;
+     case S_IFDIR:  str[0] = 'd';                         break;
+     case S_IFIFO:  str[0] = '?';                         break;
+     case S_IFLNK:  str[0] = 'l';                         break;
+     case S_IFREG:  str[0] = '-';           break;
+     case S_IFSOCK: str[0] = '?';               break;
+     default:       str[0] = '?';               break;
+  }
+
+
+   return str;
 }
 
 // convert user id to user name
