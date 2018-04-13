@@ -1009,32 +1009,36 @@ delay:
 	la	$fp, -4($sp)
 	addiu	$sp, $sp, -8
 
-	li	$t3, 3
+	li	$t5, 3 #t5 is x
 
-	li	$t0, 0
+	li	$t0, 0 #t0 is i
 	for_delay:
 	bge	$t0, $a0, end_for_delay
 	
-	li	$t1, 0
+	li	$t1, 0 #t1 is j
 	for_j_delay:
-	li	$t4, 40000
+	li	$t4, 400
 	bge 	$t1, $t4, end_for_j_delay
 
-	li	$t2, 0
+	li	$t2, 0 #t2 is k
 	for_k_delay:
-	li	$t4, 1000
+	li	$t4, 100
 	bge	$t2, $t4, end_for_k_delay
 
-	li	$t4, 3
-	mul	$t3, $t3, $t4
+    li $t3, 3
+    mul $t5, $t5, $t3
 
+    addi    $t2, 1
+    j for_k_delay
 	end_for_k_delay:
 
 
 	addi	$t1, $t1, 1
+    j for_j_delay
 	end_for_j_delay:
 
 	addi	$t0, $t0, 1
+    j for_delay
 	end_for_delay:
 
 	# tear down stack frame
