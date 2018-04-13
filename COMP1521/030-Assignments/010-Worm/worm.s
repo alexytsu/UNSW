@@ -241,16 +241,14 @@ main_i_cond:
 	# drawGrid();
 	jal	drawGrid
 
+	li	$t0, 0
+	move	$t1, $s2
+	li	$t4, 4
+
 ###################### DEBUGGING ##########################
 	
 	# print worm row, worm col	
-# 	addi	$a0, $0, x
-# 	addiu	$v0, $0, 11
-# 	syscall
 
-#	li	$t0, 0
-#	move	$t1, $s2
-#	li	$t4, 4
 #	debug_loop:
 #	bge	$t0, $t1, end_debug_loop
 #
