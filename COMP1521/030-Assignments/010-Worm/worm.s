@@ -241,10 +241,6 @@ main_i_cond:
 	# drawGrid();
 	jal	drawGrid
 
-	li	$t0, 0
-	move	$t1, $s2
-	li	$t4, 4
-
 ###################### DEBUGGING ##########################
 	
 	# print worm row, worm col	
@@ -486,6 +482,7 @@ initWorm:
 	la	$fp, -4($sp)
 	addiu	$sp, $sp, -8
 
+    li  $t0, 0
 	addi	$t0, $a0, 1	# newCol = col + 1
 	sw	$a0, wormCol	# wormCol[0] = col
 	sw	$a1, wormRow	# wormRow[0] = row
@@ -547,6 +544,7 @@ onGrid:
 	# return (col >= 0 && col < NCOLS && row >= 0 && row < NROWS);
 	# if any of the conditions fails, j to return_0
 	# if(0 > col) return 0;
+    li  $t0, 0
 	bgt	$t0, $a0, return_0_onGrid
 
 	# if (col >= NCOLS) return 0
@@ -679,51 +677,57 @@ moveWorm:
 	la	$s6, possibleRow
 
 	li	$s7, 0	#n=0
-	
 	li	$s3, -1	#dx = -1
 	loop_dx_moveWorm:
-	li	$t1, 1
-	bgt	$s3, $t1, end_dx_moveWorm
-	li	$s4, -1 #dy = -1
-		loop_dy_moveWorm:
-		bgt	$s4, $t1, end_dy_moveWorm
+        li	$t1, 1
+        bgt	$s3, $t1, end_dx_moveWorm
 
-		lw	$t2, wormCol
-		lw	$t3, wormRow
+        li	$s4, -1 #dy = -1
+        loop_dy_moveWorm:
+            li $t1, 1
+            bgt	$s4, $t1, end_dy_moveWorm
 
-		add	$s0, $t2, $s3	#col = wormCol[0] + dx
-		add	$s1, $t3, $s4	#row = wormRow[0] + dy  
+            lw	$t2, wormCol
+            lw	$t3, wormRow
 
-		move	$a0, $s0
-		move	$a1, $s1
-		jal	onGrid
-		li	$t1, 1
-		bne	$v0, $t1, continue_dy_moveWorm
+            #s0 is col
+            #s1 is row
+            add	$s0, $t2, $s3	#col = wormCol[0] + dx
+            add	$s1, $t3, $s4	#row = wormRow[0] + dy  
 
-		move	$a0, $s0
-		move	$a1, $s1
-		move	$a2, $s2
-		jal	overlaps
-		li	$t1, 0
-		bne	$v0, $t1, continue_dy_moveWorm
+            move	$a0, $s0
+            move	$a1, $s1
 
-		li	$t4, 4
-		mul	$t5, $t4, $s7
-		sw	$s0, possibleCol($t5)
-		sw	$s1, possibleRow($t5)
-		addi	$s7, $s7, 1
+            jal	onGrid
+            li	$t1, 1
+            bne	$v0, $t1, continue_dy_moveWorm
+
+            move	$a0, $s0
+            move	$a1, $s1
+            move	$a2, $s2
+            jal	overlaps
+            li	$t1, 0
+            bne	$v0, $t1, continue_dy_moveWorm
+
+            li	$t4, 4
+            mul	$t5, $t4, $s7
+            sw	$s0, possibleCol($t5)
+            sw	$s1, possibleRow($t5)
+            addi	$s7, $s7, 1
 
 
-		continue_dy_moveWorm:
-		addi	$s4, $s4, 1
-		j loop_dy_moveWorm
-		end_dy_moveWorm:
-	addi	$s3, $s3, 1
+            continue_dy_moveWorm:
+            addi	$s4, $s4, 1
+            j loop_dy_moveWorm
+        end_dy_moveWorm:
+
+        addi	$s3, $s3, 1
 	j loop_dx_moveWorm
 	end_dx_moveWorm:
 
 	beq	$s7, $0, return_0_moveWorm
 
+    li      $t0, 0
 	addi	$t0, $s2, -1
 	for_length_moveWorm:
 	beqz	$t0, end_length_moveWorm
