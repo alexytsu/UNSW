@@ -248,34 +248,34 @@ main_i_cond:
 # 	addiu	$v0, $0, 11
 # 	syscall
 
-	li	$t0, 0
-	move	$t1, $s2
-	li	$t4, 4
-	debug_loop:
-	bge	$t0, $t1, end_debug_loop
-
-	mul	$t2, $t0, $t4
-
-	lw	$a0, wormCol($t2)
-	addiu	$v0, $0, 1
-	syscall
-
-	li	$a0, ','
-	addiu	$v0, $0, 11
-	syscall
-
-	lw	$a0, wormRow($t2)
-	addiu	$v0, $0, 1
-	syscall
-
-    	li $a0, 10
-	addiu	$v0, $0, 11
-	syscall
-
-
-	addi	$t0, $t0, 1
-	j debug_loop
-	end_debug_loop:
+#	li	$t0, 0
+#	move	$t1, $s2
+#	li	$t4, 4
+#	debug_loop:
+#	bge	$t0, $t1, end_debug_loop
+#
+#	mul	$t2, $t0, $t4
+#
+#	lw	$a0, wormCol($t2)
+#	addiu	$v0, $0, 1
+#	syscall
+#
+#	li	$a0, ','
+#	addiu	$v0, $0, 11
+#	syscall
+#
+#	lw	$a0, wormRow($t2)
+#	addiu	$v0, $0, 1
+#	syscall
+#
+#    	li $a0, 10
+#	addiu	$v0, $0, 11
+#	syscall
+#
+#
+#	addi	$t0, $t0, 1
+#	j debug_loop
+#	end_debug_loop:
 
 
 
@@ -706,7 +706,7 @@ moveWorm:
 		move	$a1, $s1
 		move	$a2, $s2
 		jal	overlaps
-		li	$t1, 1
+		li	$t1, 0
 		bne	$v0, $t1, continue_dy_moveWorm
 
 		li	$t4, 4
@@ -732,28 +732,32 @@ moveWorm:
 
 	li	$t4, 4
 	mul	$t5, $t4, $t0
-	addi	$t6, $t4, -4
+	addi	$t6, $t5, -4
 
-	lw	$t7, wormRow($t5)
-	sw	$t7, wormRow($t6)
+	# $t6 is [i-1] and $t5 is [i]
+	lw	$t7, wormRow($t6)
+	sw	$t7, wormRow($t5)
 
-	lw	$t7, wormCol($t5)
-	sw	$t7, wormCol($t6)
+	lw	$t7, wormCol($t6)
+	sw	$t7, wormCol($t5)
 
 	addi	$t0, $t0, -1
 	j	for_length_moveWorm
 	end_length_moveWorm:
 
+	# store rand value in $s7 (i)
 	move	$a0, $s7
 	jal	randValue
 	move	$t0, $v0
-
 	li	$t4, 4
 	mul	$t0, $t0, $t4
+
+	# get possibleRow[i] and store it in wormRow[0]
 	lw	$t1, possibleRow($t0)
 	lw	$t2, possibleCol($t0)
 	sw	$t1, wormRow
 	sw	$t2, wormCol
+
 	j	return_1_moveWorm
 
 	return_1_moveWorm:
