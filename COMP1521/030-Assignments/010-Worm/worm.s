@@ -548,14 +548,14 @@ onGrid:
 	bgt	$t0, $a0, return_0_onGrid
 
 	# if (col >= NCOLS) return 0
-	li	$t1, 40
+	li	$t1, 39
 	bgt	$a0, $t1, return_0_onGrid
 
 	#if(0 > row) return 0;
 	bgt	$t0, $a1, return_0_onGrid
 
 	# if(row >=)
-	li	$t1, 20
+	li	$t1, 19
 	bgt	$a1, $t1, return_0_onGrid
 
 	
