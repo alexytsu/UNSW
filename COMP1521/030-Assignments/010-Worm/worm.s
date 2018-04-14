@@ -548,7 +548,8 @@ onGrid:
 	# if any single one of the conditions fails, jump to return_0
 	
 	# if(0 > col) return 0;
-	bgt	$0, $a0, return_0_onGrid
+	li	$t0, 0
+	bgt	$t0, $a0, return_0_onGrid
 
 	# if (col >= NCOLS) return 0
 	li	$t1, 39
@@ -704,47 +705,47 @@ moveWorm:
 	bgt	$s3, $t1, end_dx_moveWorm # if(dx > 1) break;
 
 		# loop prologue (set up counters and end conditions) 
-        li	$s4, -1 # dy = -1
-        loop_dy_moveWorm: # for(dy = -1; dy <= 1; dy++)
-		li $t1, 1 
-		bgt	$s4, $t1, end_dy_moveWorm #if(dy > 1) break;
+	li	$s4, -1 # dy = -1
+	loop_dy_moveWorm: # for(dy = -1; dy <= 1; dy++)
+	li $t1, 1 
+	bgt	$s4, $t1, end_dy_moveWorm #if(dy > 1) break;
 			
-            lw	$t2, wormCol # $t2 = wormCol[0]
-            add	$s0, $t2, $s3 #col = wormCol[0] + dx
-            lw	$t3, wormRow # $t3 = wormRow[0]
-            add	$s1, $t3, $s4 #row = wormRow[0] + dy  
+		lw	$t2, wormCol # $t2 = wormCol[0]
+		add	$s0, $t2, $s3 #col = wormCol[0] + dx
+		lw	$t3, wormRow # $t3 = wormRow[0]
+		add	$s1, $t3, $s4 #row = wormRow[0] + dy  
 
 			# call onGrid(col, row)
-            move	$a0, $s0
-            move	$a1, $s1
-            jal	onGrid
+		move	$a0, $s0
+		move	$a1, $s1
+		jal	onGrid
 
 			# if not on grid, don't consider the square as possible
-            li	$t1, 1
-            bne	$v0, $t1, continue_dy_moveWorm
+		li	$t1, 1
+		bne	$v0, $t1, continue_dy_moveWorm
 
 			# call overlaps(col, row, len)
-            move	$a0, $s0
-            move	$a1, $s1
-            move	$a2, $s2
-            jal	overlaps
+		move	$a0, $s0
+		move	$a1, $s1
+		move	$a2, $s2
+		jal	overlaps
 
 			# if overlaps, don't consider the square as possible
-            li	$t1, 0
-            bne	$v0, $t1, continue_dy_moveWorm
+		li	$t1, 0
+		bne	$v0, $t1, continue_dy_moveWorm
 
 			# we reach here if the square is both onGrid and !overlaps
-            li	$t4, 4 # sizeof(int)
-            mul	$t5, $t4, $s7 # calculate the memory address offset given by the index n
-            sw	$s0, possibleCol($t5) # possibleCol[n] = col;
-            sw	$s1, possibleRow($t5) # possibleRow[n] = row;
-            addi	$s7, $s7, 1 # n ++;
+		li	$t4, 4 # sizeof(int)
+		mul	$t5, $t4, $s7 # calculate the memory address offset given by the index n
+		sw	$s0, possibleCol($t5) # possibleCol[n] = col;
+		sw	$s1, possibleRow($t5) # possibleRow[n] = row;
+		addi	$s7, $s7, 1 # n ++;
 
 		continue_dy_moveWorm: # label to jump to to emulate C's continue;
 		# loop epilogue (increment counter and jump to beginning)
 		addi	$s4, $s4, 1 
 		j loop_dy_moveWorm
-        end_dy_moveWorm:
+		end_dy_moveWorm:
 
 	# loop epilogue (increment counter and jump to beginning)
 	addi	$s3, $s3, 1
@@ -755,7 +756,7 @@ moveWorm:
 	beq	$s7, $0, return_0_moveWorm
 
 	# loop prologue (setup counters and end conditions)
-    li      $t0, 0 
+	li	$t0, 0 
 	addi	$t0, $s2, -1 # i = len - 1;
 	for_length_moveWorm: # for(i = len - 1; i > 0; i--)
 	beqz	$t0, end_length_moveWorm # if(i == 0) break;
@@ -765,7 +766,6 @@ moveWorm:
 		addi $t6, $t5, -4 # offset of [i-1]
 
 		# $t6 is [i-1] and $t5 is [i]
-
 		lw	$t7, wormRow($t6)
 		sw	$t7, wormRow($t5) #wormRow[i] = wormRow[i-1]
 
