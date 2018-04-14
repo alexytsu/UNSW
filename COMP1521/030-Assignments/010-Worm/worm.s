@@ -4,7 +4,11 @@
 # Base code by Jashank Jeremy and Wael Alghamdi
 # Tweaked (severely) by John Shepherd
 #
+
+
+#====================================================
 # Set your tabstop to 8 to make the formatting decent
+#====================================================
 
 # Requires:
 #  - [no external symbols]
@@ -242,8 +246,19 @@ main_i_cond:
 	jal	drawGrid
 
 ###################### DEBUGGING ##########################
-	
-	# print worm row, worm col	
+
+#	See the worm segments individually (useful to see
+#	where each worm segment is when the worm overlaps
+#	itself or goes off the grid...)
+
+#	for(int i = 0; i < length; i ++){
+#		printf ("(%d, %d)", worm row, worm col);
+#	}
+#		
+
+#	li	$t0, 0
+#	move	$t1, $s2
+#	li	$t4, 4
 
 #	debug_loop:
 #	bge	$t0, $t1, end_debug_loop
@@ -270,8 +285,6 @@ main_i_cond:
 #	addi	$t0, $t0, 1
 #	j debug_loop
 #	end_debug_loop:
-
-
 
 ##########################################################
 
@@ -338,13 +351,15 @@ main_giveup_common:
 clearGrid:
 
 # Frame:	$fp, $ra, $s0, $s1
-# Uses: 	$s0, $s1, $t1, $t2
+# Uses: 	$s0, $s1, ,$t0, $t1, $t2
 # Clobbers:	$t0, $t1, $t2
 
 # Locals:
 #	- `row' in $s0
 #	- `col' in $s1
-
+#	-  ROWS and COLS in $t0
+#	-  GRID_OFFSET in $t1
+#	-  char '.' in $t2
 
 # Code:
 	# set up stack frame
@@ -355,34 +370,36 @@ clearGrid:
 	la	$fp, -4($sp)
 	addiu	$sp, $sp, -16
 
-	# NROWS = 20
-	# NCOLS = 40
-
-	li	$s0, 0 # row = 0
-	r_loop_clearGrid:
-	#while row < 20
+	# loop prologue (sets up counters and end conditions)
+	li	$s0, 0	# row = 0
+	r_loop_clearGrid: # for(row = 0, row < 20, row ++)
 	li	$t0, 20
-	bge	$s0, $t0, end_r_clearGrid #while(row < 20)
+	bge	$s0, $t0, end_r_clearGrid # if(row >= 20) break;
 
-		li	$s1, 0		# col = 0
-		c_loop_clearGrid:
-		# while col < 40
+		li	$s1, 0 # col = 0
+		c_loop_clearGrid: # for(col = 0; col < 40, col ++)
 		li	$t0, 40
-		bge	$s1, $t0, end_c_clearGrid
+		bge	$s1, $t0, end_c_clearGrid #if(col >= 40) break;
 
-		mul	$t1, $s0, $t0	#row offset = $s0 * NCOLS
-		add	$t1, $t1, $s1	#col offset = $s1
+			# calculate and sum the respective offsets contributed
+			# the row and column index we are accessing
+			mul	$t1, $s0, $t0	#row offset = $s0 * NCOLS
+			add	$t1, $t1, $s1	#col offset = $s1
 
-		li	$t2, '.'
-		sb	$t2, grid($t1)
+			# save a dot to that grid location
+			li	$t2, '.'
+			sb	$t2, grid($t1)
 
+		# loop epilogue (increments and returns to loop's beginning)
 		addi $s1, $s1, 1
 		j c_loop_clearGrid
 		end_c_clearGrid:
 
+	# loop epilogue (increments and returns to the loop's beginning)
 	addi	$s0, $s0, 1
 	j r_loop_clearGrid
 	end_r_clearGrid:
+	
 	# tear down stack frame
 	lw	$s1, -12($fp)
 	lw	$s0, -8($fp)
@@ -391,21 +408,21 @@ clearGrid:
 	lw	$fp, ($fp)
 	jr	$ra
 
-
 ####################################
 # drawGrid() ... display current grid[][] matrix
 # .TEXT <drawGrid>
 	.text
 drawGrid:
 
-# Frame:	$fp, $ra, $s0, $s1, $t1
-# Uses: 	$s0, $s1
-# Clobbers:	$t0, $t1
+# Frame:	$fp, $ra, $s0, $s1
+# Uses: 	$s0, $s1, $t0, $t1, $t2
+# Clobbers:	$t0, $t1, $t2
 
 # Locals:
 #	- `row' in $s0
 #	- `col' in $s1
 #	- `&grid[row][col]' in $t1
+#	-  NCOLS and NROWS in $t2
 
 # Code:
 	# set up stack frame
@@ -416,32 +433,39 @@ drawGrid:
 	la	$fp, -4($sp)
 	addiu	$sp, $sp, -16
 
+	# loop prologue (sets up counters and end conditions)
 	li	$s0, 0 # row = 0
-	r_loop_drawGrid:
+	r_loop_drawGrid: # for(row = 0; row < 20; row ++)
 	li	$t0, 20
-	bge	$s0, $t0, end_r_drawGrid #while(row < 20)
+	bge	$s0, $t0, end_r_drawGrid # if(row >= 20) break;
 
-		li	$s1, 0		# col = 0
-		c_loop_drawGrid:
-		li	$t0, 40
-		bge	$s1, $t0, end_c_drawGrid #while(col < 40)
+		# loop prologue (sets up counters and end conditions)
+		li	$s1, 0	# col = 0
+		c_loop_drawGrid: # for(col = 0; col < 40; col++)
+		li	$t0, 40 
+		bge	$s1, $t0, end_c_drawGrid # if(col >= 40) break;
 
-		mul	$t1, $s0, $t0	#row offset = $s0 * NCOLS
-		add	$t1, $t1, $s1	#col offset = $s1
+			# calculate and sum the respective offsets contributed
+			# by the row and col index we are accessing
+			mul	$t1, $s0, $t0	#row offset = $s0 * NCOLS
+			add	$t1, $t1, $s1	#col offset = $s1
 
-		lb	$a0, grid($t1)
-		li	$v0, 11
-		syscall
+			# load the char from that grid index and print it
+			lb	$a0, grid($t1)
+			li	$v0, 11
+			syscall
 		
-
+		# loop epilogue (increment and return to start)
 		addi $s1, $s1, 1
 		j c_loop_drawGrid
 		end_c_drawGrid:
 
-    li $a0, 10
-    li $v0, 11
-    syscall
+		# print an ascii newline after each row
+		li $a0, 10 # $a0 = '\n'
+		li $v0, 11
+		syscall
 
+	# loop epilogue (increment and return to start)
 	addi	$s0, $s0, 1
 	j r_loop_drawGrid
 	end_r_drawGrid:
@@ -473,7 +497,7 @@ initWorm:
 #	- `len' in $a2
 #	- `newCol' in $t0
 #	- `nsegs' in $t1
-#	- temporary in $t2
+#	-  temporary in $t2
 
 # Code:
 	# set up stack frame
@@ -482,31 +506,31 @@ initWorm:
 	la	$fp, -4($sp)
 	addiu	$sp, $sp, -8
 
-    li  $t0, 0
+   	li  $t0, 0
 	addi	$t0, $a0, 1	# newCol = col + 1
 	sw	$a0, wormCol	# wormCol[0] = col
 	sw	$a1, wormRow	# wormRow[0] = row
 
+	# loop prologue (sets up counter and end condition)
 	li	$t1, 1 #nsegs = 1
-	seg_loop_initWorm:
-	bge	$t1, $a2, seg_end_initWorm	#while(nsegs < len)
-	li	$t2, 40
-	beq	$t0, $t2, seg_end_initWorm
+	seg_loop_initWorm: # for(nsegs = 1; nsegs < len; nsegs ++)
+	bge	$t1, $a2, seg_end_initWorm # if(nsegs >= len) break;
 
-	li	$t4, 4	#size of int
-	mul	$t2, $t4, $t1 #4 * nsegs
-	
-	sw	$t0, wormCol($t2)
-	addi	$t0, $t0, 1
+		li	$t2, 40 
+		beq	$t0, $t2, seg_end_initWorm #if(newCol == NCOLS) break;
 
-	sw	$a1, wormRow($t2)	
+		# add the (x,y) coords of the body segments to wormCol
+		li	$t4, 4	# size of int
+		mul	$t2, $t4, $t1 # 4 * nsegs	
+		sw	$t0, wormCol($t2) # wormCol[nsegs] = newCol
+		addi	$t0, $t0, 1 #newCol ++
 
-	# NROWS = 20
-	# NCOLS = 40
+		sw	$a1, wormRow($t2) #wormCol[nsegs] = row
+
+	# loop epilogue (increments counter and returns to start)
 	addi	$t1, $t1, 1
 	j seg_loop_initWorm
 	seg_end_initWorm:
-
 
 	# tear down stack frame
 	lw	$ra, -4($fp)
@@ -537,14 +561,11 @@ onGrid:
 	la	$fp, -4($sp)
 	addiu	$sp, $sp, -8
 
-	# NROWS = 20
-	# NCOLS = 40
-
-	li	$v0, 1 #return 1 by default
-	# return (col >= 0 && col < NCOLS && row >= 0 && row < NROWS);
-	# if any of the conditions fails, j to return_0
+	# return (col >= 0 && col < NCOLS && row >= 0 && row < NROWS)'
+	# if any single one of the conditions fails, jump to return_0
+	
 	# if(0 > col) return 0;
-    li  $t0, 0
+	li  $t0, 0
 	bgt	$t0, $a0, return_0_onGrid
 
 	# if (col >= NCOLS) return 0
@@ -554,17 +575,20 @@ onGrid:
 	#if(0 > row) return 0;
 	bgt	$t0, $a1, return_0_onGrid
 
-	# if(row >=)
+	# if(row >= NROWS)
 	li	$t1, 19
 	bgt	$a1, $t1, return_0_onGrid
-
 	
-	# tear down stack frame
-	j return_onGrid
-	return_0_onGrid:
-	li	$v0, 0
+	j return_1_onGrid # if all conditions passed then return 1
 	
+	return_0_onGrid: # sets $v0 to 0 then returns the function
+	li	$v0, 0	
+	j	return_onGrid
+	return_1_onGrid: # sets $v0 to 1 and then returns the function
+	li	$v0, 1
 	return_onGrid:
+
+	# tear down stack frame
 	lw	$ra, -4($fp)
 	la	$sp, 4($fp)
 	lw	$fp, ($fp)
@@ -586,8 +610,9 @@ overlaps:
 #	- `len' in $a2
 #	- `i' in $t6
 
-# Code:
+# TODO: COMMENTED UP TO HERE SO FAR
 
+# Code:
 	sw	$fp, -4($sp)
 	sw	$ra, -8($sp)
 	la	$fp, -4($sp)
@@ -617,6 +642,7 @@ overlaps:
 	return_1_overlaps:
 	li	$v0, 1
 	return_overlaps:
+	# tear down stackframe
 	lw	$ra, -4($fp)
 	la	$sp, 4($fp)
 	lw	$fp, ($fp)
@@ -834,6 +860,8 @@ addWormToGrid:
 	bge	$t0, $a0, end_loop_addWormToGrid
 
 	mul	$t1, $t0, $t4
+
+	#TODO: use $s2 and $s3 maybe?
 	lw	$s2, wormRow($t1)
 	lw	$s3, wormCol($t1)
 
