@@ -228,7 +228,8 @@ int main(int argc, char *argv[])
 char *rwxmode(mode_t mode, char *str)
 {
     str[10] = 0;
-    for(int i = 0; i < 9; i++){
+    int i;
+    for(i = 0; i < 9; i++){
         // if the bit is 1 set the appropriate letter
         if( (mode >> i) & 1){
             if( i %3 == 0){
