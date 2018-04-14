@@ -70,13 +70,16 @@ void printQueue(QueueNode * head, char *dirname){
 
     QueueNode * it = head;
     while(it != NULL){
+        
         struct stat Object;
         char *originalName = malloc(sizeof(char) * 1000);
         strcpy(originalName, it->name);
+        
         char *name;
         name = malloc(1000 * sizeof(char));
+        name[0] = 0;
         if(strcmp(dirname, ".") != 0){
-            name = strcat(name, dirname);
+            strcat(name, dirname);
             int i = strlen(name);
             if(name[i-1] != '/'){
                 strcat(name, "/");
@@ -85,18 +88,37 @@ void printQueue(QueueNode * head, char *dirname){
         }else{
             strcpy(name, it->name);
         }
+
         lstat(name, &Object);
         mode_t ModeInfo = Object.st_mode;
         uid_t OwnerUID = (uid_t) Object.st_uid;
         gid_t GroupGID = (gid_t) Object.st_gid;
         long long ObjectSize = Object.st_size;
 
-        printf("%s  %-8.8s %-8.8s %8lld  %s\n",
-         rwxmode(ModeInfo, mode),
-         username(OwnerUID, uname),
-         groupname(GroupGID, gname),
-         (long long) ObjectSize,
-         originalName);
+
+        char *temp = rwxmode(ModeInfo, mode);
+
+        if(temp[0] == 'l') {    
+            char* linkName = malloc(1000 *sizeof(char));
+            realpath(name, linkName);
+
+            printf("%s  %-8.8s %-8.8s %8lld  %s %s\n",
+             rwxmode(ModeInfo, mode),
+             username(OwnerUID, uname),
+             groupname(GroupGID, gname),
+             (long long) ObjectSize,
+             originalName,
+             linkName);
+        }else{
+            printf("%s  %-8.8s %-8.8s %8lld  %s\n",
+             rwxmode(ModeInfo, mode),
+             username(OwnerUID, uname),
+             groupname(GroupGID, gname),
+             (long long) ObjectSize,
+             originalName);
+
+        }
+
 
         it = it->next;
 
@@ -169,6 +191,7 @@ int main(int argc, char *argv[])
         struct stat Object;
         char *name;
         name = malloc(1000 * sizeof(char));
+        name[0] = 0;
         if(strcmp(dirname, ".") != 0){
             name = strcat(name, dirname);
             int i = strlen(name);
@@ -194,7 +217,7 @@ int main(int argc, char *argv[])
          entry->d_name);
     }
 
-    printf("\n\n\n And now in alphabetical order....!!!\n\n\n");
+    printf("\n\n\n Challenge Accepted! \n\n\n");
     printQueue(head, dirname);
     // finish up
     closedir(df); // UNCOMMENT this line
