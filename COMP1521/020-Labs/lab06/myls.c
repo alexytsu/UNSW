@@ -102,7 +102,7 @@ void printQueue(QueueNode * head, char *dirname){
             char* linkName = malloc(1000 *sizeof(char));
             realpath(name, linkName);
 
-            printf("%s  %-8.8s %-8.8s %8lld  %s %s\n",
+            printf("%s  %-8.8s %-8.8s %8lld  %s -> %s\n",
              rwxmode(ModeInfo, mode),
              username(OwnerUID, uname),
              groupname(GroupGID, gname),
