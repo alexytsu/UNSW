@@ -36,24 +36,6 @@
 	# Let me use $at, please.
 	.set	noat
 
-# The following notation is used to suggest places in
-# the program, where you might like to add debugging code
-#
-# If you see e.g. putc('a'), replace by the three lines
-# below, with each x replaced by 'a'
-#
-# print out a single character
-# define putc(x)
-# 	addi	$a0, $0, x
-# 	addiu	$v0, $0, 11
-# 	syscall
-# 
-# print out a word-sized int
-# define putw(x)
-# 	add 	$a0, $0, x
-# 	addiu	$v0, $0, 1
-# 	syscall
-
 ####################################
 # .DATA
 	.data
@@ -547,12 +529,13 @@ initWorm:
 onGrid:
 
 # Frame:	$fp, $ra
-# Uses: 	$a0, $a1, $v0
-# Clobbers:	$v0
+# Uses: 	$a0, $a1, $v0, $t1
+# Clobbers:	$v0, $t1
 
 # Locals:
 #	- `col' in $a0
 #	- `row' in $a1
+#	- NCOLS and NROWS in $t1
 
 # Code:
 
@@ -565,8 +548,7 @@ onGrid:
 	# if any single one of the conditions fails, jump to return_0
 	
 	# if(0 > col) return 0;
-	li  $t0, 0
-	bgt	$t0, $a0, return_0_onGrid
+	bgt	$0, $a0, return_0_onGrid
 
 	# if (col >= NCOLS) return 0
 	li	$t1, 39
@@ -601,16 +583,15 @@ onGrid:
 overlaps:
 
 # Frame:	$fp, $ra
-# Uses: 	$a0, $a1, $a2
-# Clobbers:	$t6, $t7
+# Uses: 	$a0, $a1, $a2, $t4, $t3, $t2, $t6
+# Clobbers:	$t6
 
 # Locals:
 #	- `col' in $a0
 #	- `row' in $a1
 #	- `len' in $a2
 #	- `i' in $t6
-
-# TODO: COMMENTED UP TO HERE SO FAR
+#	- `sizeof(int)` in $t4
 
 # Code:
 	sw	$fp, -4($sp)
@@ -618,27 +599,42 @@ overlaps:
 	la	$fp, -4($sp)
 	addiu	$sp, $sp, -8
 
-	li 	$v0, 0 #return 0 by default
-
+	# $t4 holds size of int
 	li	$t4, 4
-	li	$t6, 0
-	loop_overlaps:
-	bge	$t6, $a2, end_loop_overlaps #while (i < len)
 
-	mul	$t3, $t6, $t4
-	lw	$t2, wormCol($t3)
-	beq	$t2, $a0, second_condition
-	addi	$t6, $t6, 1
-	j loop_overlaps
-	second_condition:
-	lw	$t2, wormRow($t3)
-	beq	$t2, $a1, return_1_overlaps
+	# loop prologue (sets up counter and end conditions)
+	li	$t6, 0 # i = 0
+	loop_overlaps: # for(i = 0; i < len; i++)
+	bge	$t6, $a2, end_loop_overlaps # if(i >= len) break;
 
+		# for each segment of the worm, load the column
+		mul	$t3, $t6, $t4
+		lw	$t2, wormCol($t3)
+
+		# if the column matches, check to see if the row matches too
+		beq	$t2, $a0, second_condition
+
+		# if column doesn't match, increment counter and continue
+		addi	$t6, $t6, 1
+		j loop_overlaps
+
+		# if column matched, see if row matches too
+		second_condition:
+		lw	$t2, wormRow($t3)
+		# if row matches as well, then return 1
+		beq	$t2, $a1, return_1_overlaps
+
+	# loop epilogue (increments counter and jumps to beginning)
 	addi	$t6, $t6, 1
 	j loop_overlaps
 	end_loop_overlaps:
 
+	# returns 0 then tears down stackframe
+	# executes this case by default
+	li	$v0, 0
 	j return_overlaps
+
+	# returns 1 then tears down stackframe
 	return_1_overlaps:
 	li	$v0, 1
 	return_overlaps:
@@ -647,8 +643,6 @@ overlaps:
 	la	$sp, 4($fp)
 	lw	$fp, ($fp)
 	jr	$ra
-
-
 
 ####################################
 # moveWorm() ... work out new location for head
@@ -667,8 +661,8 @@ possibleRow: .space 8 * 4	# sizeof(word)
 moveWorm:
 
 # Frame:	$fp, $ra, $s0, $s1, $s2, $s3, $s4, $s5, $s6, $s7
-# Uses: 	$s0, $s1, $s2, $s3, $s4, $s5, $s6, $s7, $t0, $t1, $t2, $t3
-# Clobbers:	$t0, $t1, $t2, $t3
+# Uses: 	$s0, $s1, $s2, $s3, $s4, $s7, $t0, $t1, $t2, $t3
+# Clobbers:	$t0, $t1, $t2, $t3, $a0, $a1, $a2
 
 # Locals:
 #	- `col' in $s0
@@ -681,8 +675,6 @@ moveWorm:
 #	- tmp in $t1
 #	- tmp in $t2
 #	- tmp in $t3
-# 	- `&possibleCol[0]' in $s5
-#	- `&possibleRow[0]' in $s6
 
 # Code:
 	# set up stack frame
@@ -699,76 +691,88 @@ moveWorm:
 	la	$fp, -4($sp)
 	addiu	$sp, $sp, -40
 
-	la	$s5, possibleCol
-	la	$s6, possibleRow
+	# Since wormCol and wormRow are global variables in the C code,
+	# in MIPS we can use the equivalent labels. No need to load and save
+	# their addresses since their addresses are not passed in a defined manner
+	# to functions anyway...
 
-	li	$s7, 0	#n=0
+	# loop prologue (set up counters and end conditions)
+	li	$s7, 0	# n = 0
 	li	$s3, -1	#dx = -1
-	loop_dx_moveWorm:
-        li	$t1, 1
-        bgt	$s3, $t1, end_dx_moveWorm
+	loop_dx_moveWorm: # for(dx = -1; dx <= 1; dx++)
+	li	$t1, 1
+	bgt	$s3, $t1, end_dx_moveWorm # if(dx > 1) break;
 
-        li	$s4, -1 #dy = -1
-        loop_dy_moveWorm:
-            li $t1, 1
-            bgt	$s4, $t1, end_dy_moveWorm
+		# loop prologue (set up counters and end conditions) 
+        li	$s4, -1 # dy = -1
+        loop_dy_moveWorm: # for(dy = -1; dy <= 1; dy++)
+		li $t1, 1 
+		bgt	$s4, $t1, end_dy_moveWorm #if(dy > 1) break;
+			
+            lw	$t2, wormCol # $t2 = wormCol[0]
+            add	$s0, $t2, $s3 #col = wormCol[0] + dx
+            lw	$t3, wormRow # $t3 = wormRow[0]
+            add	$s1, $t3, $s4 #row = wormRow[0] + dy  
 
-            lw	$t2, wormCol
-            lw	$t3, wormRow
-
-            #s0 is col
-            #s1 is row
-            add	$s0, $t2, $s3	#col = wormCol[0] + dx
-            add	$s1, $t3, $s4	#row = wormRow[0] + dy  
-
+			# call onGrid(col, row)
             move	$a0, $s0
             move	$a1, $s1
-
             jal	onGrid
+
+			# if not on grid, don't consider the square as possible
             li	$t1, 1
             bne	$v0, $t1, continue_dy_moveWorm
 
+			# call overlaps(col, row, len)
             move	$a0, $s0
             move	$a1, $s1
             move	$a2, $s2
             jal	overlaps
+
+			# if overlaps, don't consider the square as possible
             li	$t1, 0
             bne	$v0, $t1, continue_dy_moveWorm
 
-            li	$t4, 4
-            mul	$t5, $t4, $s7
-            sw	$s0, possibleCol($t5)
-            sw	$s1, possibleRow($t5)
-            addi	$s7, $s7, 1
+			# we reach here if the square is both onGrid and !overlaps
+            li	$t4, 4 # sizeof(int)
+            mul	$t5, $t4, $s7 # calculate the memory address offset given by the index n
+            sw	$s0, possibleCol($t5) # possibleCol[n] = col;
+            sw	$s1, possibleRow($t5) # possibleRow[n] = row;
+            addi	$s7, $s7, 1 # n ++;
 
-
-            continue_dy_moveWorm:
-            addi	$s4, $s4, 1
-            j loop_dy_moveWorm
+		continue_dy_moveWorm: # label to jump to to emulate C's continue;
+		# loop epilogue (increment counter and jump to beginning)
+		addi	$s4, $s4, 1 
+		j loop_dy_moveWorm
         end_dy_moveWorm:
 
-        addi	$s3, $s3, 1
+	# loop epilogue (increment counter and jump to beginning)
+	addi	$s3, $s3, 1
 	j loop_dx_moveWorm
 	end_dx_moveWorm:
 
+	# if no valid squares were found, return 0
 	beq	$s7, $0, return_0_moveWorm
 
-    li      $t0, 0
-	addi	$t0, $s2, -1
-	for_length_moveWorm:
-	beqz	$t0, end_length_moveWorm
+	# loop prologue (setup counters and end conditions)
+    li      $t0, 0 
+	addi	$t0, $s2, -1 # i = len - 1;
+	for_length_moveWorm: # for(i = len - 1; i > 0; i--)
+	beqz	$t0, end_length_moveWorm # if(i == 0) break;
 
-	li	$t4, 4
-	mul	$t5, $t4, $t0
-	addi	$t6, $t5, -4
+		li	$t4, 4 # size of int
+		mul	$t5, $t4, $t0 # offset of [i]
+		addi $t6, $t5, -4 # offset of [i-1]
 
-	# $t6 is [i-1] and $t5 is [i]
-	lw	$t7, wormRow($t6)
-	sw	$t7, wormRow($t5)
+		# $t6 is [i-1] and $t5 is [i]
 
-	lw	$t7, wormCol($t6)
-	sw	$t7, wormCol($t5)
+		lw	$t7, wormRow($t6)
+		sw	$t7, wormRow($t5) #wormRow[i] = wormRow[i-1]
 
+		lw	$t7, wormCol($t6)
+		sw	$t7, wormCol($t5) #wormCol[i] = wormCol[i-1]
+
+	# loop epilogue (decrement counter and jump to beginning)
 	addi	$t0, $t0, -1
 	j	for_length_moveWorm
 	end_length_moveWorm:
@@ -780,12 +784,14 @@ moveWorm:
 	li	$t4, 4
 	mul	$t0, $t0, $t4
 
-	# get possibleRow[i] and store it in wormRow[0]
-	lw	$t1, possibleRow($t0)
-	lw	$t2, possibleCol($t0)
-	sw	$t1, wormRow
-	sw	$t2, wormCol
+	# get possibleRow[i] and store it in wormRow[0] 
+	# change the location of the head based off the randValue in $s7
+	lw	$t1, possibleRow($t0) # possibleRow[i]
+	lw	$t2, possibleCol($t0) # possibleCol[i]
+	sw	$t1, wormRow # wormRow[0] = possibleRow[i]
+	sw	$t2, wormCol # wormCol[0] = possibleCol[i]
 
+	# if we reach the end successfully, return 1
 	j	return_1_moveWorm
 
 	return_1_moveWorm:
@@ -795,6 +801,7 @@ moveWorm:
 	li	$v0, 0
 	j	return_moveWorm
 	return_moveWorm:
+
 	# tear down stack frame
 	lw	$s7, -36($fp)
 	lw	$s6, -32($fp)
@@ -824,8 +831,6 @@ addWormToGrid:
 
 # Locals:
 #	- `len' in $a0
-#	- `&wormCol[i]' in $s0
-#	- `&wormRow[i]' in $s1
 #	- `row` in $s2
 #	- `col` in $s3
 #	- `grid[row][col]'
@@ -842,40 +847,46 @@ addWormToGrid:
 	la	$fp, -4($sp)
 	addiu	$sp, $sp, -24
 
-	lw	$s2, wormRow #row = wormRow[0]
-	lw	$s3, wormCol #col = wormCol[0]
+	# row, col
+	lw	$s2, wormRow # $s2 = wormRow[0]
+	lw	$s3, wormCol # $s3 = wormCol[0]
 
-	#find grid[row][col]
-	li	$t1, 40
-	mul	$t2, $s2, $t1
-	add	$t2, $t2, $s3
+	# find grid[row][col] for the head
+	li	$t1, 40 
+	mul	$t2, $s2, $t1 # row*ncols
+	add	$t2, $t2, $s3 # + col
 
-	#set head
+	# set head
 	li	$t1, '@'
 	sb	$t1, grid($t2)
 
-	li	$t0, 1
-	li	$t4, 4
-	for_loop_addWormToGrid:
-	bge	$t0, $a0, end_loop_addWormToGrid
+	# loop prologue (init counters and set end conditions)
+	li	$t0, 1 # i = 1
+	for_loop_addWormToGrid: # for (i = 1; i < len; i ++)
+	bge	$t0, $a0, end_loop_addWormToGrid # if (i >= len) break;
 
-	mul	$t1, $t0, $t4
+		# find the offset in multiples of (size of int)
+		# keep i and i*4 separate for easy increment during the loop
+		li	$t4, 4
+		# $t0 = 1, $t1 represents [i] as an address offset
+		mul	$t1, $t0, $t4
 
-	#TODO: use $s2 and $s3 maybe?
-	lw	$s2, wormRow($t1)
-	lw	$s3, wormCol($t1)
+		lw	$s2, wormRow($t1) # row = wormRow[i]
+		lw	$s3, wormCol($t1) # col = wormCol[i]
 
-	li	$t3, 40
-	mul	$t2, $s2, $t3
-	add	$t2, $t2, $s3
+		# find the address for the grid[row][col]
+		li	$t3, 40 # ncols
+		mul	$t2, $s2, $t3 # row * ncols
+		add	$t2, $t2, $s3 # + col
 
-	li	$t1, 'o'
-	sb	$t1, grid($t2)
+		# save an 'o' to represent worm body
+		li	$t1, 'o'
+		sb	$t1, grid($t2)
 
+	# loop epilogue (increment counter and jump to beginning)
 	addi	$t0, $t0, 1
 	j for_loop_addWormToGrid
 	end_loop_addWormToGrid:
-
 
 	# tear down stack frame
 	lw	$s3, -20($fp)
@@ -1031,6 +1042,11 @@ delay:
 #	- `x' in $t3
 
 # Code:
+
+	# a direct translation of the C code leads to a much longer delay than practical
+	# the 40,000 and 1,000 constaants have been replaced by 400,100 for more reasonable
+	# animation playback speed
+
 	# set up stack frame
 	sw	$fp, -4($sp)
 	sw	$ra, -8($sp)
@@ -1039,32 +1055,39 @@ delay:
 
 	li	$t5, 3 #t5 is x
 
+	# loop prologue (init counters and set end conditions)
 	li	$t0, 0 #t0 is i
 	for_delay:
 	bge	$t0, $a0, end_for_delay
 	
-	li	$t1, 0 #t1 is j
-	for_j_delay:
-	li	$t4, 400
-	bge 	$t1, $t4, end_for_j_delay
+		# loop prologue (init counters and set end conditions)
+		li	$t1, 0 #t1 is j
+		for_j_delay:
+		li	$t4, 400
+		bge 	$t1, $t4, end_for_j_delay
 
-	li	$t2, 0 #t2 is k
-	for_k_delay:
-	li	$t4, 100
-	bge	$t2, $t4, end_for_k_delay
+			# loop prologue (init counters and set end conditions)
+			li	$t2, 0 #t2 is k
+			for_k_delay:
+			li	$t4, 100
+			bge	$t2, $t4, end_for_k_delay
 
-    li $t3, 3
-    mul $t5, $t5, $t3
+				# x = x*3
+				li $t3, 3
+				mul $t5, $t5, $t3
 
-    addi    $t2, 1
-    j for_k_delay
-	end_for_k_delay:
+			# loop epilogue (increment counters and jump to beginning)
+			addi    $t2, 1
+			j for_k_delay
+			end_for_k_delay:
 
 
-	addi	$t1, $t1, 1
-    j for_j_delay
-	end_for_j_delay:
+		# loop epilogue (increment counters and jump to beginning)
+		addi	$t1, $t1, 1
+		j for_j_delay
+		end_for_j_delay:
 
+	# loop epilogue (increment counters and jump to beginning)
 	addi	$t0, $t0, 1
     j for_delay
 	end_for_delay:
@@ -1160,4 +1183,3 @@ rand__post:
 	la	$sp, 4($fp)
 	lw	$fp, ($fp)
 	jr	$ra
-
