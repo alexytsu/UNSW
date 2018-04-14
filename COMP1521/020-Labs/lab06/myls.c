@@ -63,13 +63,46 @@ char *strlwr(char *string){
     return newStr;
 }
 
-void printQueue(QueueNode * head){
+void printQueue(QueueNode * head, char *dirname){
+    char uname[MAXNAME+1];
+    char gname[MAXNAME+1];
+    char mode[MAXNAME+1];
+
     QueueNode * it = head;
     while(it != NULL){
-        printf("%s\n", it->name);
+        struct stat Object;
+        char *originalName = malloc(sizeof(char) * 1000);
+        strcpy(originalName, it->name);
+        char *name;
+        name = malloc(1000 * sizeof(char));
+        if(strcmp(dirname, ".") != 0){
+            name = strcat(name, dirname);
+            int i = strlen(name);
+            if(name[i-1] != '/'){
+                strcat(name, "/");
+            }
+            name = strcat(name, it->name);
+        }else{
+            strcpy(name, it->name);
+        }
+        lstat(name, &Object);
+        mode_t ModeInfo = Object.st_mode;
+        uid_t OwnerUID = (uid_t) Object.st_uid;
+        gid_t GroupGID = (gid_t) Object.st_gid;
+        long long ObjectSize = Object.st_size;
+
+        printf("%s  %-8.8s %-8.8s %8lld  %s\n",
+         rwxmode(ModeInfo, mode),
+         username(OwnerUID, uname),
+         groupname(GroupGID, gname),
+         (long long) ObjectSize,
+         originalName);
+
         it = it->next;
+
     }
 }
+
 
 
 int main(int argc, char *argv[])
@@ -87,6 +120,7 @@ int main(int argc, char *argv[])
         strlcpy(dirname, argv[1], MAXDIRNAME);
 
    // check that the name really is a directory
+
     struct stat info;
     if (stat(dirname, &info) < 0){
         perror(argv[0]); exit(EXIT_FAILURE);
@@ -132,23 +166,36 @@ int main(int argc, char *argv[])
 
         }
 
-
         struct stat Object;
-        lstat(entry->d_name, &Object);
+        char *name;
+        name = malloc(1000 * sizeof(char));
+        if(strcmp(dirname, ".") != 0){
+            name = strcat(name, dirname);
+            int i = strlen(name);
+            if(name[i-1] != '/'){
+                strcat(name, "/");
+            }
+            name = strcat(name, entry->d_name);
+        }else{
+            strcpy(name, entry->d_name);
+        }
+      
+        lstat(name, &Object);
         mode_t ModeInfo = Object.st_mode;
         uid_t OwnerUID = (uid_t) Object.st_uid;
         gid_t GroupGID = (gid_t) Object.st_gid;
         long long ObjectSize = Object.st_size;
 
         printf("%s  %-8.8s %-8.8s %8lld  %s\n",
-           rwxmode(ModeInfo, mode),
-           username(OwnerUID, uname),
-           groupname(GroupGID, gname),
-           (long long) ObjectSize,
-           entry->d_name);
+         rwxmode(ModeInfo, mode),
+         username(OwnerUID, uname),
+         groupname(GroupGID, gname),
+         (long long) ObjectSize,
+         entry->d_name);
     }
 
-    printQueue(head);
+    printf("\n\n\n And now in alphabetical order....!!!\n\n\n");
+    printQueue(head, dirname);
     // finish up
     closedir(df); // UNCOMMENT this line
     return EXIT_SUCCESS;
@@ -171,41 +218,41 @@ char *rwxmode(mode_t mode, char *str)
         }else{ // otherwise default to -
             str[9-i] = '-';
         }
-}
+    }
 
-switch ((unsigned long)mode & S_IFMT) {
- case S_IFBLK:  str[0] = '?';                         break;
- case S_IFCHR:  str[0] = '?';                         break;
- case S_IFDIR:  str[0] = 'd';                         break;
- case S_IFIFO:  str[0] = '?';                         break;
- case S_IFLNK:  str[0] = 'l';                         break;
- case S_IFREG:  str[0] = '-';           break;
- case S_IFSOCK: str[0] = '?';               break;
- default:       str[0] = '?';               break;
-}
+    switch ((unsigned long)mode & S_IFMT) {
+       case S_IFBLK:  str[0] = '?'; break;
+       case S_IFCHR:  str[0] = '?'; break;
+       case S_IFDIR:  str[0] = 'd'; break;
+       case S_IFIFO:  str[0] = '?'; break;
+       case S_IFLNK:  str[0] = 'l'; break;
+       case S_IFREG:  str[0] = '-'; break;
+       case S_IFSOCK: str[0] = '?'; break;
+       default:       str[0] = '?'; break;
+   }
 
 
-return str;
+   return str;
 }
 
 // convert user id to user name
 char *username(uid_t uid, char *name)
 {
-   struct passwd *uinfo = getpwuid(uid);
-   if (uinfo == NULL)
-      snprintf(name, MAXNAME, "%d?", (int)uid);
-  else
-      snprintf(name, MAXNAME, "%s", uinfo->pw_name);
-  return name;
+ struct passwd *uinfo = getpwuid(uid);
+ if (uinfo == NULL)
+  snprintf(name, MAXNAME, "%d?", (int)uid);
+else
+  snprintf(name, MAXNAME, "%s", uinfo->pw_name);
+return name;
 }
 
 // convert group id to group name
 char *groupname(gid_t gid, char *name)
 {
-   struct group *ginfo = getgrgid(gid);
-   if (ginfo == NULL)
-      snprintf(name, MAXNAME, "%d?", (int)gid);
-  else
-      snprintf(name, MAXNAME, "%s", ginfo->gr_name);
-  return name;
+ struct group *ginfo = getgrgid(gid);
+ if (ginfo == NULL)
+  snprintf(name, MAXNAME, "%d?", (int)gid);
+else
+  snprintf(name, MAXNAME, "%s", ginfo->gr_name);
+return name;
 }
