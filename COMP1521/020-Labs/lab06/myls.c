@@ -51,7 +51,21 @@ int main(int argc, char *argv[])
     if(entry->d_name[0] == '.') continue;
 
     struct stat Object;
-    lstat(entry->d_name, &Object);
+    
+    char *name;
+    name = malloc(1000 * sizeof(char));
+    if(strcmp(dirname, ".") != 0){
+        name = strcat(name, dirname);
+        int i = strlen(name);
+        if(name[i-1] != '/'){
+            strcat(name, "/");
+        }
+        name = strcat(name, entry->d_name);
+    }else{
+        strcpy(name, entry->d_name);
+    }
+
+    lstat(name, &Object);
     mode_t ModeInfo = Object.st_mode;
     uid_t OwnerUID = (uid_t) Object.st_uid;
     gid_t GroupGID = (gid_t) Object.st_gid;
@@ -73,9 +87,9 @@ int main(int argc, char *argv[])
 // convert octal mode to -rwxrwxrwx string
  char *rwxmode(mode_t mode, char *str)
  {
-
    str[10] = 0;
-   for(int i = 0; i < 9; i++){
+   int i = 0;
+   for(i = 0; i < 9; i++){
     if( (mode >> i) & 1){
       if( i %3 == 0){
         str[9-i] = 'x';
