@@ -253,22 +253,22 @@ int main(int argc, char *argv[])
 // convert octal mode to -rwxrwxrwx string
 char *rwxmode(mode_t mode, char *str)
 {
-	// set the terminating character
-	str[10] = 0;
-	for(int i = 0; i < 9; i++){
-		// if the bit is 1 set the appropriate letter
-		if( (mode >> i) & 1){
-			if( i %3 == 0){
-				str[9-i] = 'x';
-			}else if(i % 3 == 1){
-				str[9-i] = 'w';
-			}else if(i % 3 == 2){
-				str[9-i] = 'r';
-			}
-		}else{ // otherwise default to -
-			str[9-i] = '-';
-		}
-	}
+    str[10] = 0;
+    int i;
+    for(i = 0; i < 9; i++){
+        // if the bit is 1 set the appropriate letter
+        if( (mode >> i) & 1){
+            if( i %3 == 0){
+                str[9-i] = 'x';
+            }else if(i % 3 == 1){
+                str[9-i] = 'w';          
+            }else if(i % 3 == 2){
+                str[9-i] = 'r';          
+            }
+        }else{ // otherwise default to -
+            str[9-i] = '-';
+        }
+    }
 
 	// get the file type
 	switch ((unsigned long)mode & S_IFMT) {
