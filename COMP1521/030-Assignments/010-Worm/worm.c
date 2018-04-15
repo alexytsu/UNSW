@@ -76,7 +76,7 @@ int main(int argc, char **argv)
 			printf("Blocked!\n");
 			break;
 		}
-		delay(1);
+		//delay(1);
 	}
 	exit(EXIT_SUCCESS);
 }

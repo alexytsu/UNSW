@@ -286,7 +286,7 @@ main_i_cond:
 main_moveWorm_phi:
 
 	addi	$a0, $0, 1
-	jal	delay
+	#jal	delay
 
 main_i_step:
 	addi	$s4, $s4, 1
