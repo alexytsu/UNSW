@@ -63,40 +63,40 @@ int main (int argc, char **argv)
    int  pAddr;     // physical address (signed)
 
    if (argc < 3) {
-      fprintf(stderr, "Usage: %s #pages #frames < refFile\n", argv[0]);
-      exit(1);
+		fprintf(stderr, "Usage: %s #pages #frames < refFile\n", argv[0]);
+	  exit(1);
    }
 
    nPages = atoi(argv[1]);
    nFrames = atoi(argv[2]);
    // Value 2 also picks up invalid argv[x]
    if (nPages < 1 || nFrames < 1) {
-      fprintf(stderr, "Invalid page or frame count\n");
-      exit(1);
+	  fprintf(stderr, "Invalid page or frame count\n");
+	  exit(1);
    }
 
    initPageTable(); initMemFrames();
 
    // read from standard input
    while (fgets(line,100,stdin) != NULL) {
-      // get next line; check valid (barely)
-      if ((sscanf(line, "%c %d\n", &action, &vAddr) != 2)
-                     || !(action == 'R' || action == 'W')) {
-         printf("Ignoring invalid instruction %s\n", line);
-         continue;
-      }
-      // do address mapping
-      pAddr = physicalAddress(vAddr, action);
-      if (pAddr < 0) {
-         printf("\nInvalid address %d\n", vAddr);
-         exit(1);
-      }
-      // debugging ...
-      printf("\n@ t=%d, %s pA=%d (vA=%d)\n",
-             clock, actionName(action), pAddr, vAddr);
-      // tick clock and show state
-      showState();
-      clock++;
+	  // get next line; check valid (barely)
+	  if ((sscanf(line, "%c %d\n", &action, &vAddr) != 2)
+					 || !(action == 'R' || action == 'W')) {
+		 printf("Ignoring invalid instruction %s\n", line);
+		 continue;
+	  }
+	  // do address mapping
+	  pAddr = physicalAddress(vAddr, action);
+	  if (pAddr < 0) {
+		 printf("\nInvalid address %d\n", vAddr);
+		 exit(1);
+	  }
+	  // debugging ...
+	  printf("\n@ t=%d, %s pA=%d (vA=%d)\n",
+			 clock, actionName(action), pAddr, vAddr);
+	  // tick clock and show state
+	  showState();
+	  clock++;
    }
    printf("\n#loads = %d, #saves = %d, #replacements = %d\n", nLoads, nSaves, nReplaces);
    return 0;
@@ -107,8 +107,41 @@ int main (int argc, char **argv)
 
 int physicalAddress(uint vAddr, char action)
 {
-   // TODO: write this function
-   return -1; // replace this line
+	int n = vAddr / PAGESIZE;
+	int offset = vAddr % PAGESIZE;
+
+	if(n < 0 || n >= nPages) return -1;
+
+	if(PageTable[n].status != NotLoaded) {
+		if(action == 'W') {
+			PageTable[n].status = Modified;
+		}
+		PageTable[n].lastAccessed = clock;
+		return PageTable[n].frameNo * PAGESIZE + offset;
+	}
+
+	int frame = 0;
+	for(frame = 0; frame < nFrames; frame ++) {
+		if(MemFrames[frame] == -1) {
+			MemFrames[frame] = n;
+			break;
+		}
+	}
+
+	PageTable[n].frameNo = frame;
+	PageTable[n].lastAccessed = clock;
+	
+	if(action == 'R'){
+		PageTable[n].status = Loaded;
+	}else{
+		PageTable[n].status = Modified;
+	}
+
+	
+	nLoads ++;
+	
+
+	return frame * PAGESIZE + offset;
 }
 
 // allocate and initialise Page Table
@@ -117,13 +150,13 @@ void initPageTable()
 {
    PageTable = malloc(nPages * sizeof(PTE));
    if (PageTable == NULL) {
-      fprintf(stderr, "Insufficient memory for Page Table\n");
-      exit(1);
+	  fprintf(stderr, "Insufficient memory for Page Table\n");
+	  exit(1);
    }
    for (int i = 0; i < nPages; i++) {
-      PageTable[i].status = NotLoaded;
-      PageTable[i].frameNo = -1;
-      PageTable[i].lastAccessed = -1;
+	  PageTable[i].status = NotLoaded;
+	  PageTable[i].frameNo = -1;
+	  PageTable[i].lastAccessed = -1;
    }
 }
 
@@ -133,11 +166,11 @@ void initMemFrames()
 {
    MemFrames = malloc(nFrames * sizeof(int));
    if (MemFrames == NULL) {
-      fprintf(stderr, "Insufficient memory for Memory Frames\n");
-      exit(1);
+	  fprintf(stderr, "Insufficient memory for Memory Frames\n");
+	  exit(1);
    }
    for (int i = 0; i < nFrames; i++) {
-      MemFrames[i] = -1;
+	  MemFrames[i] = -1;
    }
 }
 
@@ -147,22 +180,22 @@ void showState()
 {
    printf("\nPageTable (Stat,Acc,Frame)\n");
    for (int pno = 0; pno < nPages; pno++) {
-      uint s; char stat;
-      s = PageTable[pno].status;
-      if (s == NotLoaded)
-         stat = '-';
-      else if (s & Modified)
-         stat = 'M';
-      else
-         stat = 'L';
-      int f = PageTable[pno].frameNo;
-      printf("[%2d] %2c, %2d, %2d",
-             pno, stat, PageTable[pno].lastAccessed, PageTable[pno].frameNo);
-      if (f >= 0) printf(" @ %d", f*PAGESIZE);
-      printf("\n");
+	  uint s; char stat;
+	  s = PageTable[pno].status;
+	  if (s == NotLoaded)
+		 stat = '-';
+	  else if (s & Modified)
+		 stat = 'M';
+	  else
+		 stat = 'L';
+	  int f = PageTable[pno].frameNo;
+	  printf("[%2d] %2c, %2d, %2d",
+			 pno, stat, PageTable[pno].lastAccessed, PageTable[pno].frameNo);
+	  if (f >= 0) printf(" @ %d", f*PAGESIZE);
+	  printf("\n");
    }
    printf("MemFrames\n");
    for (int fno = 0; fno < nFrames; fno++) {
-      printf("[%2d] %2d @ %d\n", fno, MemFrames[fno], fno*PAGESIZE);
+	  printf("[%2d] %2d @ %d\n", fno, MemFrames[fno], fno*PAGESIZE);
    }
 }
