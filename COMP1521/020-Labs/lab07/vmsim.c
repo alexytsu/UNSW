@@ -126,7 +126,6 @@ int physicalAddress(uint vAddr, char action)
 	int frameFound = 0;
 	for(frame = 0; frame <= nFrames; frame ++) {
 		if(MemFrames[frame] == -1) {
-			MemFrames[frame] = n;
 			frameFound = 1;
 			break;
 		}
@@ -138,23 +137,24 @@ int physicalAddress(uint vAddr, char action)
 		int oldestFrame = 0;
 		for(int i = 0; i < nFrames; i++){
 			int pageNo = MemFrames[i];
-			if(PageTable[pageNo].lastAccessed < clock){
+			if(PageTable[pageNo].lastAccessed < oldestTime){
 				oldestTime = PageTable[pageNo].lastAccessed;
 				oldestFrame = i;
 			}
 		}
 		frame = oldestFrame;
-		pageNo = MemFrames[oldestFrame];
+		int pageNo = MemFrames[oldestFrame];
 		if(PageTable[pageNo].status == Modified){
 			nSaves++;
 		
 		}
 		//reset that page (no longer loaded)
-		PageTable[pageNo].status = -1;
+		PageTable[pageNo].status = NotLoaded;
 		PageTable[pageNo].frameNo = -1;
 		PageTable[pageNo].lastAccessed = -1;
 	}
 
+	MemFrames[frame] = n;
 	PageTable[n].frameNo = frame;
 	PageTable[n].lastAccessed = clock;
 	
