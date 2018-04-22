@@ -120,12 +120,39 @@ int physicalAddress(uint vAddr, char action)
 		return PageTable[n].frameNo * PAGESIZE + offset;
 	}
 
+	// if page was NotLoaded, find a frame for it
+
 	int frame = 0;
-	for(frame = 0; frame < nFrames; frame ++) {
+	int frameFound = 0;
+	for(frame = 0; frame <= nFrames; frame ++) {
 		if(MemFrames[frame] == -1) {
 			MemFrames[frame] = n;
+			frameFound = 1;
 			break;
 		}
+	}
+
+	if (!frameFound) {
+		nReplaces ++;
+		int oldestTime = clock;
+		int oldestFrame = 0;
+		for(int i = 0; i < nFrames; i++){
+			int pageNo = MemFrames[i];
+			if(PageTable[pageNo].lastAccessed < clock){
+				oldestTime = PageTable[pageNo].lastAccessed;
+				oldestFrame = i;
+			}
+		}
+		frame = oldestFrame;
+		pageNo = MemFrames[oldestFrame];
+		if(PageTable[pageNo].status == Modified){
+			nSaves++;
+		
+		}
+		//reset that page (no longer loaded)
+		PageTable[pageNo].status = -1;
+		PageTable[pageNo].frameNo = -1;
+		PageTable[pageNo].lastAccessed = -1;
 	}
 
 	PageTable[n].frameNo = frame;
