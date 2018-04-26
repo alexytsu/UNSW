@@ -107,11 +107,15 @@ int main (int argc, char **argv)
 
 int physicalAddress(uint vAddr, char action)
 {
+	// Calculate page number and offset
 	int n = vAddr / PAGESIZE;
 	int offset = vAddr % PAGESIZE;
 
+	// Check page number is valid
 	if(n < 0 || n >= nPages) return -1;
 
+	// If the page is in memory, make it modified if writing to it
+	// Then, update the page table entry
 	if(PageTable[n].status != NotLoaded) {
 		if(action == 'W') {
 			PageTable[n].status = Modified;
@@ -121,7 +125,6 @@ int physicalAddress(uint vAddr, char action)
 	}
 
 	// if page was NotLoaded, find a frame for it
-
 	int frame = 0;
 	int frameFound = 0;
 	for(frame = 0; frame <= nFrames; frame ++) {
@@ -132,6 +135,7 @@ int physicalAddress(uint vAddr, char action)
 	}
 
 	if (!frameFound) {
+		// if there are no empty frames, find the oldest frame and save it
 		nReplaces ++;
 		int oldestTime = clock;
 		int oldestFrame = 0;
@@ -143,30 +147,32 @@ int physicalAddress(uint vAddr, char action)
 			}
 		}
 		frame = oldestFrame;
+
+		// get the page that was in this frame
 		int pageNo = MemFrames[oldestFrame];
 		if(PageTable[pageNo].status == Modified){
 			nSaves++;
-		
 		}
+
 		//reset that page (no longer loaded)
 		PageTable[pageNo].status = NotLoaded;
 		PageTable[pageNo].frameNo = -1;
 		PageTable[pageNo].lastAccessed = -1;
 	}
 
+	// load the new page into memory
 	MemFrames[frame] = n;
+
+	// update its pte
 	PageTable[n].frameNo = frame;
 	PageTable[n].lastAccessed = clock;
-	
 	if(action == 'R'){
 		PageTable[n].status = Loaded;
 	}else{
 		PageTable[n].status = Modified;
 	}
 
-	
 	nLoads ++;
-	
 
 	return frame * PAGESIZE + offset;
 }
@@ -186,7 +192,7 @@ void initPageTable()
 	  PageTable[i].lastAccessed = -1;
    }
 }
-
+/
 // allocate and initialise Memory Frames
 
 void initMemFrames()
