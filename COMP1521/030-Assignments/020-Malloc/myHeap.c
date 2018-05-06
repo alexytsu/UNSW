@@ -4,8 +4,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
 #include "myHeap.h"
+
+#define max(A, B) ((A > B) ? (A) : (B))
 
 // minimum total space for heap
 #define MIN_HEAP  4096
@@ -38,9 +39,17 @@ int initHeap(int size)
         size += 4 - (size % 4);
     }
 
-    
-    heapMem =   
+    heapMem = calloc(1, size); 
+    if(heapMem == NULL) return -1;
 
+    Header *initialHeap = (Header *) heapMem;
+    initialHeap->status = FREE;
+    initialHeap->size = size - sizeof(Header);
+
+    freeElems = size/MIN_CHUNK;
+    freeList = calloc(sizeof(Addr), freeElems);
+    freeList[0] = heapMem;
+    nFree = 1;
 
    return 0; // this just keeps the compiler quiet
 }
@@ -78,6 +87,7 @@ int  heapOffset(void *p)
 // dump contents of heap (for testing/debugging)
 void dumpHeap()
 {
+    printf("Heap being dumped!\n");
    Addr    curr;
    Header *chunk;
    Addr    endHeap = (Addr)((char *)heapMem + heapSize);

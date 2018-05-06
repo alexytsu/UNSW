@@ -29,8 +29,12 @@ int main(int argc, char *argv[])
    char line[MAXLINE];  char var;  int size;
    while (fgets(line, MAXLINE, stdin) != NULL) {
       if (sscanf(line, "%c = malloc %d\n", &var, &size) == 2) {
-         if ('a' <= var && var <= 'z')
-            vars[var-'a'] = myMalloc(size);
+         if ('a' <= var && var <= 'z') {
+            if ((vars[var-'a'] = myMalloc(size)) == NULL) {
+               printf("Can't allocate space to '%c'\n", var);
+               exit(1);
+            }
+         }
          else
             printf("Invalid variable %c\n", var);
       }
