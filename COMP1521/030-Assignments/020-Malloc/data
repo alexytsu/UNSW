@@ -5,4 +5,5 @@ free b
 d = malloc 200
 free c
 free a
-free b
+e = malloc 400
+free d

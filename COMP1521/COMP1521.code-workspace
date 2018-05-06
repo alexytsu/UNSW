@@ -1,0 +1,16 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"sync-rsync.sites": [
+            {
+                "localPath": "Repositories/02-University/A18-COMP1521/",
+                "remotePath": "z5166086@login.cse.unsw.edu.au:~/A18-COMP1521/"
+            }
+		],
+		"sync-rsync.onSave": true
+	}
+}
