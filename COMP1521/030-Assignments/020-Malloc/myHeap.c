@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 #include "myHeap.h"
 
 // minimum total space for heap
@@ -32,7 +33,15 @@ static int   nFree;          // number of free chunks
 // initialise heap
 int initHeap(int size)
 {
-   // TODO
+    size = max(size, MIN_HEAP); // establish a minimum heap size
+    if((size % 4) != 0){ // round up to the nearest multiple of 4
+        size += 4 - (size % 4);
+    }
+
+    
+    heapMem =   
+
+
    return 0; // this just keeps the compiler quiet
 }
 

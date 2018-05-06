@@ -192,7 +192,6 @@ void initPageTable()
 	  PageTable[i].lastAccessed = -1;
    }
 }
-/
 // allocate and initialise Memory Frames
 
 void initMemFrames()
