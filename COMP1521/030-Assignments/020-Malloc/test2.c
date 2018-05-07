@@ -24,6 +24,7 @@ int main(int argc, char *argv[])
       list = insert(list, rand()%100);
       printf("L = ");
       showList(list);
+      dumpHeap();
    }
    freeList(list);
    printf("After freeList ...\n");
