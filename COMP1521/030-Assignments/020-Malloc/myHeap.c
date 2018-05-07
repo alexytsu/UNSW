@@ -121,8 +121,7 @@ void *myMalloc(int size)
 // free a chunk of memory
 void myFree(void *block)
 {
-	printf("Freeing!\n");
-	block -= sizeof(Header);
+    block -= sizeof(Header);
 	Header * chunk = (Header *) block;
 	if(chunk->status != ALLOC){
 		fprintf(stderr, "Attempt to free unallocated chunk\n");
@@ -150,16 +149,16 @@ void myFree(void *block)
 
 static void mergeFree()
 {
-	printf("\tTesting Merging\n");
 	int merged = 0;
 
 	Header * chunk;
 	Header * mergeChunk;
 	int previousFree = 0;
+    Addr adjacentChunk = NULL;
 	for(int i = 0; i < nFree; i ++){
 		chunk = (Header *) freeList[i];
 		
-		if(chunk->status == FREE && previousFree){
+		if(chunk->status == FREE && previousFree && chunk == adjacentChunk){
 			chunk = (Header *) freeList[i-1];
 			mergeChunk = (Header *) freeList[i];
 			
@@ -172,11 +171,15 @@ static void mergeFree()
 			nFree--;
 			
 			merged = 1;
-			printf("\t\tMerged!\n");
 			dumpHeap();
 			break;
 		}
-		previousFree = (chunk->status == FREE) ? 1:0;
+        if(chunk->status == FREE){
+            previousFree = 1;
+            adjacentChunk = (Addr)chunk + chunk->size;
+        }else{
+            previousFree = 0;
+        }
 	}
 
 
