@@ -81,8 +81,8 @@ void *myMalloc(int size)
 	int freeListIndex = -1;
 	for(int i = 0; i < nFree; i++) {
 		chunk = (Header *)freeList[i];
-		if(chunk->status == FREE){
-			if(chunk->size > desiredSize && chunk->size < minChunkSize){
+            if(chunk->status == FREE){
+                if(chunk->size >= desiredSize && chunk->size < minChunkSize){
 				minChunkSize = chunk->size;
 				minChunkAddr = freeList[i];
 				freeListIndex = i;
@@ -123,6 +123,11 @@ void myFree(void *block)
 {
     block -= sizeof(Header);
 	Header * chunk = (Header *) block;
+	Addr heapTop = (Addr)((char *)heapMem + heapSize);
+    if(chunk == NULL || (Addr) chunk < heapMem || (Addr) chunk >= heapTop){
+		fprintf(stderr, "Attempt to free unallocated chunk\n");
+		exit(1);
+    }
 	if(chunk->status != ALLOC){
 		fprintf(stderr, "Attempt to free unallocated chunk\n");
 		exit(1);
@@ -171,7 +176,6 @@ static void mergeFree()
 			nFree--;
 			
 			merged = 1;
-			dumpHeap();
 			break;
 		}
         if(chunk->status == FREE){
