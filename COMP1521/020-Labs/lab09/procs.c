@@ -16,9 +16,11 @@ int main(void)
    memset (&act, 0, sizeof(act));
 
    if (fork() != 0) {
+       signal(SIGINT, SIG_IGN);
       copyInput("Parent");
    }
    else if (fork() != 0) {
+       signal(SIGINT, SIG_IGN);
       copyInput("Child");
    }
    else {
