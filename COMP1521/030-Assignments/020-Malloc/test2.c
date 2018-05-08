@@ -20,7 +20,7 @@ int main(int argc, char *argv[])
 {
    initHeap(10000);
    List list = NULL;
-   for (int i = 0; i < 100; i++) {
+   for (int i = 0; i < 20; i++) {
       list = insert(list, rand()%100);
       printf("L = ");
       showList(list);

@@ -1,2 +1,2 @@
 # deleting all of a small tree
-./test4 < tree1
+./test4 < tree3

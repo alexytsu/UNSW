@@ -21,9 +21,9 @@ New Tree:  #nodes=6,    depth=3
  /   \    16
 10   12
 
-> d 15
+> d 14
 New Tree:  #nodes=5,    depth=3
-     14
+     15
      / \
     /   \
    11   16
@@ -31,7 +31,7 @@ New Tree:  #nodes=5,    depth=3
  /   \
 10   12
 
-> d 14
+> d 15
 New Tree:  #nodes=4,    depth=3
     16
     /
@@ -40,22 +40,24 @@ New Tree:  #nodes=4,    depth=3
  /   \
 10   12
 
+> d 16
+New Tree:  #nodes=3,    depth=2
+  11
+  / \
+ /   \
+10   12
+
 > d 11
-New Tree:  #nodes=3,    depth=3
-   16
-   /
-  12
+New Tree:  #nodes=2,    depth=2
+ 12
  /
 10
 
 > d 12
-New Tree:  #nodes=2,    depth=2
- 16
- /
+New Tree:  #nodes=1,    depth=1
 10
 
 > d 10
-New Tree:  #nodes=1,    depth=1
-16
+New Tree:  #nodes=0,    depth=0
 
 > q
