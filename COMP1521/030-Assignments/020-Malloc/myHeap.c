@@ -89,7 +89,7 @@ void *myMalloc(int size)
 	for(int i = 0; i < nFree; i++) {
 		chunk = (Header *)freeList[i];
 		// first check if the chunk is FREE and large enough
-		if(chunk->status == FREE && chunk >= desiredSize){
+		if(chunk->status == FREE && chunk->size >= desiredSize){
 			// only consider a chunk if it's smaller (more optimal) than a chunk we have already found
 			if(chunk->size < minChunkSize){
 				minChunkSize = chunk->size;
