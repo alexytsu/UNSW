@@ -6,6 +6,7 @@
 #include <string.h>
 #include "myHeap.h"
 
+// a macro for a max "function"
 #define max(A, B) ((A > B) ? (A) : (B))
 
 // minimum total space for heap
@@ -36,6 +37,10 @@ static void mergeFree();
 // initialise heap
 int initHeap(int size)
 {
+	if(size < 0){
+		//either heapSize = MIN_HEAP
+		return -1;
+	}
 	heapSize = max(size, MIN_HEAP); // establish a minimum heap size
 	if((heapSize % 4) != 0){ // round up to the nearest multiple of 4
 		heapSize += 4 - (heapSize % 4);
@@ -53,6 +58,7 @@ int initHeap(int size)
 	// create a large enough array to hold max possible freeElems
 	freeElems = heapSize/MIN_CHUNK;
 	freeList = calloc(sizeof(Addr), freeElems);
+	if(freeList == NULL) return -1;
 	freeList[0] = heapMem;
 	nFree = 1;
 
