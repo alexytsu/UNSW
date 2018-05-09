@@ -38,3 +38,5 @@
 *.dSYM/
 *.su
 *.idb
+
+a.out
