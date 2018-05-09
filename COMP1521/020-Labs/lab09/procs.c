@@ -36,7 +36,7 @@ void copyInput(char *name)
    printf("%s (%d) ready\n", name, mypid);
    while (fgets(line, MAXLINE, stdin) != NULL) {
       printf("%s: %s", name, line);
-      sleep(random() % 3);
+      //sleep(random() % 3);
    }
    printf("%s quitting\n", name);
    return;
