@@ -1,6 +1,6 @@
 // mysh.c ... a very simple shell
 // Started by John Shepherd, October 2017
-// Completed by <<YOU>>, October 2017
+// Completed by Alexander Su, May 2018
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -13,8 +13,6 @@
 #include <unistd.h>
 #include <assert.h>
 
-#define DBUG
-
 extern char *strdup(char *);
 void trim(char *);
 char **tokenise(char *, char *);
@@ -25,7 +23,7 @@ void execute(char **, char **, char **);
 int main(int argc, char *argv[], char *envp[])
 {
    pid_t pid;   // pid of child process
-   int stat;    // return status of child
+ //  int stat;    // return status of child
    char **path; // array of directory names
 
    // set up command PATH from environment variable
@@ -55,16 +53,24 @@ int main(int argc, char *argv[], char *envp[])
       pid = fork();
       if(pid == 0){
          //child process
-         execute();
-      }else if (p > 0){
-         // parent process
+         //execute();
+         char **commands = tokenise(line, " ");
+         for(int i = 0; commands[i] != NULL; i ++){
+            printf("%s ", commands[i]);
+         }
+
+
+      }else if (pid > 0){
+        // parent process
+         waitpid(pid, NULL, 0);
+         printf("\n");
+         printf("\nmysh$ ");
       }else{
          // child process not created (error)
       }
 
-      printf("mysh$ ");
+
    }
-   printf("\n");
    return(EXIT_SUCCESS);
 }
 
