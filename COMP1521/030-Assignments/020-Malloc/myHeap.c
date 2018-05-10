@@ -37,10 +37,13 @@ static void mergeFree();
 // initialise heap
 int initHeap(int size)
 {
-	if(size < 0){
-		//either heapSize = MIN_HEAP
-		return -1;
-	}
+
+	// would make more sense to include
+	/*
+	if(size < 0) return -1;
+	but a strict interpretation of the specification doesn't require this
+	*/
+
 	heapSize = max(size, MIN_HEAP); // establish a minimum heap size
 	if((heapSize % 4) != 0){ // round up to the nearest multiple of 4
 		heapSize += 4 - (heapSize % 4);
@@ -75,6 +78,22 @@ void freeHeap()
 // allocate a chunk of memory
 void *myMalloc(int size)
 {
+	/* This function first does a search through freeList to search for the
+	best useable chunk. If no useable chunk is found, it returns NULL. Else,
+	it returns the address of the useable memory with two subcases:
+
+	1. There is enough free space but not enough for another MIN_CHUNK to be 
+	created with the excess.
+		- Alloc the whole chunk
+
+	2. There is enough free space and enough leftover for a new FREE chunk to 
+	be kept in the heap
+		- Alloc the necessary space and create a "new" free chunk from the 
+		remaining space
+
+	Then the function tidies up and updates the freeList as necessary 
+	*/
+
 	// myMalloc cannot return zero or negative memory...
 	if(size < 1) return NULL;
 
@@ -82,12 +101,11 @@ void *myMalloc(int size)
 		size += 4 - (size % 4);
 	}
 
-	// our chunk needs "size" free space but the chunk also includes the header which cannot 
-	// be used for storage. The chunk we are looking for needs to be big enough to fit the
-	// desired data while still retaining its header.
+	// our chunk needs "size" free space but the chunk also includes the header
+	// (which cannot be used for storage).
 	int desiredSize = size + sizeof(Header);
 
-	// find the smallest useable chunk
+	// find the smallest useable chunk (if multiple same, use the first one)
 	Header * chunk;
 	Addr minChunkAddr = NULL;
 	int minChunkSize = heapSize + 1;
@@ -96,7 +114,7 @@ void *myMalloc(int size)
 		chunk = (Header *)freeList[i];
 		// first check if the chunk is FREE and large enough
 		if(chunk->status == FREE && chunk->size >= desiredSize){
-			// only consider a chunk if it's smaller (more optimal) than a chunk we have already found
+			// if it is smaller than the current smallest, it is more optimal
 			if(chunk->size < minChunkSize){
 				minChunkSize = chunk->size;
 				minChunkAddr = freeList[i];
@@ -107,13 +125,15 @@ void *myMalloc(int size)
 		}
 	}
 
-	// if freeListIndex hasn't been updated, no free chunk large enough was found
+	// if freeListIndex hasn't been updated, 
+	// no free chunk large enough was found
 	if(freeListIndex == -1){
 		return NULL;
 	}
 
 	// if the chunk is larger than we need, mark the unused portion of
-	// the chunk as FREE. (only do this if the unused portion is large enough to be a chunk itself)
+	// the chunk as FREE. (only do this if the unused portion is large 
+	// enough to be a chunk itself)
 	if(minChunkSize >= desiredSize + MIN_CHUNK){
 		// the slot in freeList holding the newly allocated chunk is perfectly positioned to hold
 		// the address of its trailing half
@@ -149,20 +169,25 @@ void *myMalloc(int size)
 // free a chunk of memory
 void myFree(void *block)
 {
+	/*
+	This function sets the header of the chunk to be freed to FREE and then updates 
+	freeList and merges any adcjacent FREE blocks in the heap.
+	*/
+
 	// find the header of the memory in question
-    block -= sizeof(Header);
+	block -= sizeof(Header);
 	Header * chunk = (Header *) block;
 
 	// check the chunk is valid for free-ing
 	Addr heapTop = (Addr)((char *)heapMem + heapSize);
-    if(chunk == NULL || (Addr) chunk < heapMem || (Addr) chunk >= heapTop || chunk->status != ALLOC){
+	if(chunk == NULL || (Addr) chunk < heapMem || (Addr) chunk >= heapTop || chunk->status != ALLOC){
 		fprintf(stderr, "Attempt to free unallocated chunk\n");
 		exit(1);
-    }
+	}
 
 	// mark the chunk as freed
 	chunk->status = FREE;
-	
+
 	// find where to slot it in to freeList
 	int index = 0;
 	while(block > freeList[index]){
@@ -183,20 +208,22 @@ void myFree(void *block)
 	mergeFree();
 }
 
+// merge adjacent FREE chunks in the heap
 static void mergeFree()
 {
 	// no merging possible
 	if(nFree <= 1) return;
 
 	/*
-	this works because we know that freeList stores all freeChunks and stores them 
+	We know that freeList stores all freeChunks and stores them 
 	in ascending order by address.
 
-	we loop through all the free chunks (stored in freeList). For each chunk,
-	we store the addr of its adjacent chunk in adjacentChunk. As we loop through
-	each freeChunk, we can compare its value to adjacentChunk. If it matches, then
-	we know it is adjacent to the previously checked chunk and we can make a merge.
-	If not, we know that there is some ALLOC block between the two free chunks.
+	So we go through this list and find if any of the free chunks
+	are adjacent to eachother.
+	- For each chunk, we store the addr of the next chunk in "adjacentChunk"
+	- If the next chunk in freeList matches the addr of "adjacentChunk" then
+	we know that these two chunks are adjacent and are both FREE (since they
+	must come from freeList)
 	*/
 
 	int merged = 0; // flag to check if a merge occurred
@@ -225,10 +252,12 @@ static void mergeFree()
 			merged = 1;
 			break;
 		}
-        adjacentChunk = (Addr)chunk + chunk->size;
+		adjacentChunk = (Addr)chunk + chunk->size;
 	}
 
-	// if a merge occurred, it may make more merges possible so check again	
+	// if a merge occurred, there may be another merge necessary say we free B of
+	// A|B|C where A and C are both FREE. By running the second check we know that
+	// after A and B are merged, the new (AB) and C will also be merged.
 	if(merged){ 
 		mergeFree();
 	}
