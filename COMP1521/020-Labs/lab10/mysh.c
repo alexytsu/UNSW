@@ -22,62 +22,79 @@ void execute(char **, char **, char **);
 
 int main(int argc, char *argv[], char *envp[])
 {
-   pid_t pid;   // pid of child process
+    pid_t pid;   // pid of child process
  //  int stat;    // return status of child
-   char **path; // array of directory names
+    char **path; // array of directory names
 
    // set up command PATH from environment variable
    int i;
    for (i = 0; envp[i] != NULL; i++) {
       if (strncmp(envp[i], "PATH", 4) == 0) break;
    }
-   if (envp[i] == NULL)
+   if (envp[i] == NULL){
       path = tokenise("/bin:/usr/bin",":");
-   else
+   }
+   else{
       // &envp[i][5] ignores "PATH="
       path = tokenise(&envp[i][5],":");
-
-#ifdef DBUG
-   for (i = 0; path[i] != NULL;i++)
-      printf("dir[%d] = %s\n",i,path[i]);
-#endif
+    }
 
    // main loop: print prompt, read line, execute command
-   char line[BUFSIZ];
-   printf("mysh$ ");
-   while (fgets(line, BUFSIZ, stdin) != NULL) {
-      trim(line); // remove leading/trailing space
-      if (strcmp(line,"exit") == 0) break;
-      if (strcmp(line,"") == 0) { printf("mysh$ "); continue; }
+    char line[BUFSIZ];
+    printf("mysh$ ");
+    while (fgets(line, BUFSIZ, stdin) != NULL) {
+        trim(line); // remove leading/trailing space
+        if (strcmp(line,"exit") == 0) break;
+        if (strcmp(line,"") == 0) { printf("mysh$ "); continue; }
 
-      pid = fork();
-      if(pid == 0){
-         //child process
-         //execute();
-         char **commands = tokenise(line, " ");
-         for(int i = 0; commands[i] != NULL; i ++){
-            printf("%s ", commands[i]);
-         }
-
-
-      }else if (pid > 0){
-        // parent process
-         waitpid(pid, NULL, 0);
-         printf("\n");
-         printf("\nmysh$ ");
-      }else{
+        pid = fork();
+        if(pid == 0){
+            //child process
+             char **commands = tokenise(line, " ");
+             execute(commands, path, envp);
+        }else if (pid > 0){
+            // parent process
+             waitpid(pid, NULL, 0);
+             printf("mysh$ ");
+        }else{
          // child process not created (error)
-      }
+        }
 
 
-   }
-   return(EXIT_SUCCESS);
+        }
+        return(EXIT_SUCCESS);
 }
 
 // execute: run a program, given command-line args, path and envp
 void execute(char **args, char **path, char **envp)
 {
-   // TODO: implement the find-the-executable and execve() it code
+    // TODO: implement the find-the-executable and execve() it code
+    char *command = args[0];
+    if(command[0] == '/' ||command[0] == '.'){
+        if(isExecutable(command)){
+            printf("Executing %s\n", command);
+            if(-1 == execve(command, args, envp)){
+                perror("Exec failed");
+                exit(1);
+            }
+            exit(0);
+        }
+    }else{
+        for(int i = 0; path[i] != NULL; i ++){
+            char *execpath = strcat(path[i], "/");
+            execpath = strcat(execpath, command);
+            if(isExecutable(execpath)){
+                printf("Executing %s\n", execpath);
+                if(-1 == execve(execpath, args, envp)){
+                    perror("Exec failed");
+                    exit(1);
+                }
+                exit(0);
+            }
+        }
+    }
+    printf("%s: Command not found\n", command);
+    exit(1);
 }
 
 // isExecutable: check whether this process can execute a file
