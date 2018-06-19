@@ -1,1 +1,1 @@
-exe tests/s8.s
+./exe tests/s8.s

@@ -1,1 +1,1 @@
-exe tests/s3.s
+./exe tests/s3.s
