@@ -29,8 +29,53 @@ colSum:
 
 # suggestion for local variables (based on C code):
 # m=#s0, N=$s1, a=$s2, row=$s3, col=$s4, sum=$s5
+   move $s1, $a1
+   move $s0, $a0
+   move $s2, $a2
+   # col loop prologue
+   li $s4, 0 #col = 0
+   col_for_loop:
+   bge $s4, $s1, end_col_for_loop #if col >= N break
+      
+      #col loop body
+      li $s5, 0     #sum = 0
+      
+      #row loop prologue
+      li $s3, 0
+      row_for_loop:
+      bge $s3, $s1, end_row_for_loop
 
-   # add code for your colSum function here
+         #row loop body
+         #calculate index [row][col]
+         li $t0, 0
+         li $t4, 4
+         add $t0, $t0, $s4
+         mul $t1, $s1, $s3
+         add $t0, $t0, $t1
+         
+         mul $t0, $t0, $t4
+
+         add $t0, $t0, $s0
+         lw $t0, ($t0)
+
+         add $s5, $s5, $t0
+         
+
+
+      #row loop epilogue
+      addi $s3, $s3, 1
+      j row_for_loop
+      end_row_for_loop:
+
+      # load into result array
+      mul $t5, $s4, $t4
+      add $t0, $t5, $a2
+      sw $s5, ($t0)
+
+   # col loop epilogue
+   addi $s4, $s4, 1
+   j col_for_loop
+   end_col_for_loop:
 
 # epilogue
    # if you saved more than six $s? registers

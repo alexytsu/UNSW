@@ -1,1 +1,1 @@
-exe tests/a4.s
+./exe tests/a4.s

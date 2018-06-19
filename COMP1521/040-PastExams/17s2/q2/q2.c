@@ -80,7 +80,7 @@ void boundingBox(int in, Coord *TL, Coord *BR)
 		}
 	}
 	TL->x = min_x;
-	TL->y = min_y;
+	TL->y = max_y;
 	BR->x = max_x;
-	BR->y = max_y;
+	BR->y = min_y;
 }
