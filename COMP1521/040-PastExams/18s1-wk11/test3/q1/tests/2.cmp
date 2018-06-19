@@ -1,0 +1,6 @@
+Your Output                        Expected Output                    
+
+s1 = FORMERLY UPPER CASE	   s1 = FORMERLY UPPER CASE
+s1 = FORMERLY UPPER CASE	   s1 = FORMERLY UPPER CASE
+s2 =				   s2 = formerly upper case
+n = 17				   n = 17

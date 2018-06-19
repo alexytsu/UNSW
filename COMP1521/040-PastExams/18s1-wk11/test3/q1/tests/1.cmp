@@ -1,0 +1,6 @@
+Your Output                        Expected Output                    
+
+s1 = No More UPPER Case		   s1 = No More UPPER Case
+s1 = No More UPPER Case		   s1 = No More UPPER Case
+s2 =				   s2 = no more upper case
+n = 8				   n = 8

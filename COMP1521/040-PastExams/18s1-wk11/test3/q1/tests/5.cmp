@@ -1,0 +1,6 @@
+Your Output                        Expected Output                    
+
+s1 = Now? Some, punctuation?	   s1 = Now? Some, punctuation?
+s1 = Now? Some, punctuation?	   s1 = Now? Some, punctuation?
+s2 =				   s2 = now? some, punctuation?
+n = 2				   n = 2
