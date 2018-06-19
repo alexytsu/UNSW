@@ -93,21 +93,59 @@ int main(int argc, char **argv)
 // create an empty job queue of size N
 JobQ *initQ(int N)
 {
-	// TODO ... replace this line by your code
+
+	JobQ * Queue = malloc(sizeof(Queue)); 
+	assert(Queue);	
+	Queue->jobs = malloc(N*sizeof(Job));
+	assert(Queue->jobs);
+	Queue->njobs = 0;
+	Queue->maxjobs = N;
+	for(int i = 0; i < N; i++) {
+		Queue->jobs[i].id = 0;
+		Queue->jobs[i].priority = 0;
+		Queue->jobs[i].user = 0;
+		Queue->jobs[i].size = 0;
+	}
+	return Queue;
 }
 
 // add a new job to the queue in priority order
 void addToQ(JobQ *q, Job j)
 {
+
 	assert(q != NULL);
-	// TODO ... replace this line by your code
+	if(q->njobs == 0){
+		q->jobs[0] = j;
+	}else{
+		int i = 0;
+		Job cur = q->jobs[i];
+		while(j.priority <= cur.priority){
+			i++;
+			cur = q->jobs[i];
+		}
+		if(i == q->njobs){
+			q->jobs[i] = j; 
+		}else{
+			for(int j = q->njobs-1; j >= i; j--) {
+				q->jobs[j+1] = q->jobs[j];
+			}
+			q->jobs[i] = j;
+		}
+	}
+
+	q->njobs ++;
 }
 
 // remove the first job from the queue
 Job removeQhead(JobQ * q)
 {
 	assert(q != NULL);
-	// TODO ... replace this line by your code
+	Job head = q->jobs[0];
+	for(int i = 0; i < q->njobs; i ++){
+		q->jobs[i] = q->jobs[i+1];
+	}
+	q->njobs --;
+	return head;
 }
 
 // check whether the queue is full

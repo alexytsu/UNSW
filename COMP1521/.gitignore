@@ -40,3 +40,5 @@
 *.idb
 
 a.out
+
+*.json
