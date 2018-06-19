@@ -25,7 +25,30 @@ typedef struct _students {
 // build a collection of student records from a file descriptor
 Students getStudents(int in)
 {
-	return NULL;  // TODO ... replace this by your code
+	// Create the Students object to return
+	Students students = malloc(sizeof(students_t));
+	if(students == NULL) return NULL;
+	
+	// Find the size of the file in bytes
+	off_t fileSize = lseek(in, 0, SEEK_END);
+	if(fileSize < 0) return NULL;
+	
+	// Number of students = tot_size/size_student
+	int n_students = fileSize/sizeof(sturec_t);
+	
+	// Initialise the Students->StuRec array
+	students->nstu = n_students;
+	students->recs = malloc(n_students * sizeof(sturec_t));
+	if(students->recs == NULL) return NULL;
+
+	lseek(in, 0, SEEK_SET);
+	// Read student records into the struct
+	for(int i = 0; i < n_students; i++){
+		int bytes_read = read(in, (void *) &students->recs[i], sizeof(sturec_t));
+		if(bytes_read < sizeof(sturec_t)) return NULL;
+	}
+
+	return students;	
 }
 
 // show a list of student records pointed to by ss
