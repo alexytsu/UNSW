@@ -1,0 +1,32 @@
+<ASSEMBLER_INFO>
+ <VERSION>2.2.7</VERSION>
+ <DEVICE>"ATmega2560"</DEVICE>
+ <WORKING_DIR>C:\Users\Alex\Documents\Atmel Studio\7.0\COMP2121_Tutorials\week3_4\Debug</WORKING_DIR>
+ <INCLUDE_PATH>
+  <DIR>C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.150\avrasm\inc</DIR>
+  <DIR>C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avrassembler\Include</DIR>
+  <DIR></DIR>
+ </INCLUDE_PATH>
+ <SOURCE_FILE>C:\Users\Alex\Documents\Atmel Studio\7.0\COMP2121_Tutorials\week3_4\taskC.asm</SOURCE_FILE>
+ <INCLUDED_FILES>
+  <FILE>C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.150\avrasm\inc\m2560def.inc</FILE>
+ </INCLUDED_FILES>
+ <OBJECT_FILES>
+  <FILE>C:\Users\Alex\Documents\Atmel Studio\7.0\COMP2121_Tutorials\week3_4\Debug\week3_4.obj</FILE>
+ </OBJECT_FILES>
+ <HEX_FILES>
+  <FILE>week3_4.hex</FILE>
+ </HEX_FILES>
+ <OUTPUT_FILES>
+  <FILE>week3_4.map</FILE>
+  <FILE>week3_4.lss</FILE>
+ </OUTPUT_FILES>
+ <LABELS>
+  <A><FILE>C:\Users\Alex\Documents\Atmel Studio\7.0\COMP2121_Tutorials\week3_4\taskC.asm</FILE><LINE>25</LINE></A>
+  <generate><FILE>C:\Users\Alex\Documents\Atmel Studio\7.0\COMP2121_Tutorials\week3_4\taskC.asm</FILE><LINE>32</LINE></generate>
+  <end_generate><FILE>C:\Users\Alex\Documents\Atmel Studio\7.0\COMP2121_Tutorials\week3_4\taskC.asm</FILE><LINE>89</LINE></end_generate>
+  <start_sum><FILE>C:\Users\Alex\Documents\Atmel Studio\7.0\COMP2121_Tutorials\week3_4\taskC.asm</FILE><LINE>98</LINE></start_sum>
+  <end_sum><FILE>C:\Users\Alex\Documents\Atmel Studio\7.0\COMP2121_Tutorials\week3_4\taskC.asm</FILE><LINE>110</LINE></end_sum>
+  <halt><FILE>C:\Users\Alex\Documents\Atmel Studio\7.0\COMP2121_Tutorials\week3_4\taskC.asm</FILE><LINE>113</LINE></halt>
+ </LABELS>
+</ASSEMBLER_INFO>
