@@ -5,14 +5,14 @@
  *   Author: Alex z5166086
  */ 
 
-; Replace with your application code
 .include "m2560def.inc"
 
-.def counter = r20
-.def char = r21	
+.def counter = r20 ;counter only counts to five
 
-.equ len = 6
+.def char = r21	; char is one byte long
+.equ len = 6 ; loop termination condition
 
+; ints are 4 bytes long
 .def n1 = r16
 .def n2 = r17
 .def n3 = r18
@@ -25,7 +25,7 @@
 
 .dseg
 .org 0x200
-;0 b100  1111 1000  0001 1010 (325658 needs three bytes to be stored) 04 f8 1a
+; b100  1111 1000  0001 1010 (325658 needs three bytes to be stored) 04 f8 1a
 result_n: .byte 3 
 
 .cseg
@@ -33,7 +33,6 @@ result_n: .byte 3
 s: .db "325658"
 
 start:
-
 	; char i -> R16
 	; unsigned int n -> N4, N3, N2, N1 (N4 most significant byte)
 	; n = 0;
@@ -42,19 +41,19 @@ start:
 	ldi n3, 0
 	ldi n4, 0
 
-	; for(i=0;i<=5;i++)
-	clr counter
-
+	; load string from memory (address needs to be doubled)
 	ldi zl, low(s<<1)
 	ldi zh, high(s<<1)
-
+	
+	; for(i=0;i<=5;i++)
+	clr counter
 begin_for:
 	cpi counter, len
 	brsh end_for
 	
 	; loop body
 	
-	; n *= 10 -> n = n + n << 2
+	; n *= 10 -> n = n + (n << 2)
 
 	lsl n1
 	rol n2

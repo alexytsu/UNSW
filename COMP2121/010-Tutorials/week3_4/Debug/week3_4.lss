@@ -1,10 +1,10 @@
 
-AVRASM ver. 2.2.7  C:\Users\Alex\Documents\Atmel Studio\7.0\COMP2121_Tutorials\week3_4\taskC.asm Tue Aug 07 14:22:15 2018
+AVRASM ver. 2.2.7  C:\Repositories\02-University\18-COMP2121\010-Tutorials\week3_4\taskC.asm Mon Aug 13 08:39:40 2018
 
 [builtin](2): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.150\avrasm\inc\m2560def.inc'
-C:\Users\Alex\Documents\Atmel Studio\7.0\COMP2121_Tutorials\week3_4\taskC.asm(8): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.150\avrasm\inc\m2560def.inc'
+C:\Repositories\02-University\18-COMP2121\010-Tutorials\week3_4\taskC.asm(8): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.150\avrasm\inc\m2560def.inc'
 [builtin](2): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.150\avrasm\inc\m2560def.inc'
-C:\Users\Alex\Documents\Atmel Studio\7.0\COMP2121_Tutorials\week3_4\taskC.asm(8): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.150\avrasm\inc\m2560def.inc'
+C:\Repositories\02-University\18-COMP2121\010-Tutorials\week3_4\taskC.asm(8): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.150\avrasm\inc\m2560def.inc'
                                  
                                  ;
                                  
@@ -1914,15 +1914,14 @@ C:\Users\Alex\Documents\Atmel Studio\7.0\COMP2121_Tutorials\week3_4\taskC.asm(8)
                                  
                                  .cseg
                                  
-                                 	; generate the array
+                                 ; generate the array
 000000 2766                      clr zero
 000001 2777                      clr counter
                                  generate:
 000002 307a                      	cpi counter, len
 000003 f518                      	brsh end_generate
                                  	
-                                 
-                                 	; << 3 + <<2 + <<1 +
+                                 	; implements multiplying the counter by 20
 000004 2744                      	clr result1
 000005 2755                      	clr result2
 000006 2722                      	clr temp1
@@ -1960,6 +1959,7 @@ C:\Users\Alex\Documents\Atmel Studio\7.0\COMP2121_Tutorials\week3_4\taskC.asm(8)
 00001b 0f42                      	add result1, temp1
 00001c 1f53                      	adc result2, temp2
                                  
+                                 	; modifies the memory where the array is to store the result
 00001d e0d2                      	ldi yh, high(A)
 00001e e0c0                      	ldi yl, low(A)
                                  
@@ -1983,6 +1983,7 @@ C:\Users\Alex\Documents\Atmel Studio\7.0\COMP2121_Tutorials\week3_4\taskC.asm(8)
 00002a e0f2                      	ldi zh, high(A)
 00002b e0e0                      	ldi zl, low(A)
                                  
+                                 	;adds the arrays
                                  start_sum:
 00002c 307a                      	cpi counter, len
 00002d f430                      	brsh end_sum

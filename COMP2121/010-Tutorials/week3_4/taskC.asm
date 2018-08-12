@@ -26,15 +26,14 @@ A: .byte 20
 
 .cseg
 
-	; generate the array
+; generate the array
 clr zero
 clr counter
 generate:
 	cpi counter, len
 	brsh end_generate
 	
-
-	; << 3 + <<2 + <<1 +
+	; implements multiplying the counter by 20
 	clr result1
 	clr result2
 	clr temp1
@@ -72,6 +71,7 @@ generate:
 	add result1, temp1
 	adc result2, temp2
 
+	; modifies the memory where the array is to store the result
 	ldi yh, high(A)
 	ldi yl, low(A)
 
@@ -95,6 +95,7 @@ end_generate:
 	ldi zh, high(A)
 	ldi zl, low(A)
 
+	;adds the arrays
 start_sum:
 	cpi counter, len
 	brsh end_sum
@@ -108,7 +109,7 @@ start_sum:
 	inc counter
 	rjmp start_sum
 end_sum:
-	
+	; result is stored in the registers r17:r16 which are equivalent to the c variable "sum"
 
 halt:
 	rjmp halt
