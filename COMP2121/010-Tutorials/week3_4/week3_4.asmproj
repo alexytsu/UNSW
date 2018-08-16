@@ -15,7 +15,7 @@
     <Name>week3_4</Name>
     <RootNamespace>week3_4</RootNamespace>
     <ToolchainFlavour>Native</ToolchainFlavour>
-    <EntryFile>$(MSBuildProjectDirectory)\taskC.asm</EntryFile>
+    <EntryFile>$(MSBuildProjectDirectory)\taskE.asm</EntryFile>
     <KeepTimersRunning>true</KeepTimersRunning>
     <OverrideVtor>false</OverrideVtor>
     <CacheFlash>true</CacheFlash>
@@ -90,6 +90,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="taskD.asm">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="taskE.asm">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>

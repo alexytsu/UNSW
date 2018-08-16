@@ -7,7 +7,7 @@
   <DIR>C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avrassembler\Include</DIR>
   <DIR></DIR>
  </INCLUDE_PATH>
- <SOURCE_FILE>C:\Repositories\02-University\18-COMP2121\010-Tutorials\week3_4\taskC.asm</SOURCE_FILE>
+ <SOURCE_FILE>C:\Repositories\02-University\18-COMP2121\010-Tutorials\week3_4\taskE.asm</SOURCE_FILE>
  <INCLUDED_FILES>
   <FILE>C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.150\avrasm\inc\m2560def.inc</FILE>
  </INCLUDED_FILES>
@@ -22,11 +22,15 @@
   <FILE>week3_4.lss</FILE>
  </OUTPUT_FILES>
  <LABELS>
-  <A><FILE>C:\Repositories\02-University\18-COMP2121\010-Tutorials\week3_4\taskC.asm</FILE><LINE>25</LINE></A>
-  <generate><FILE>C:\Repositories\02-University\18-COMP2121\010-Tutorials\week3_4\taskC.asm</FILE><LINE>32</LINE></generate>
-  <end_generate><FILE>C:\Repositories\02-University\18-COMP2121\010-Tutorials\week3_4\taskC.asm</FILE><LINE>89</LINE></end_generate>
-  <start_sum><FILE>C:\Repositories\02-University\18-COMP2121\010-Tutorials\week3_4\taskC.asm</FILE><LINE>99</LINE></start_sum>
-  <end_sum><FILE>C:\Repositories\02-University\18-COMP2121\010-Tutorials\week3_4\taskC.asm</FILE><LINE>111</LINE></end_sum>
-  <halt><FILE>C:\Repositories\02-University\18-COMP2121\010-Tutorials\week3_4\taskC.asm</FILE><LINE>114</LINE></halt>
+  <ArrayA><FILE>C:\Repositories\02-University\18-COMP2121\010-Tutorials\week3_4\taskE.asm</FILE><LINE>25</LINE></ArrayA>
+  <ArrayB><FILE>C:\Repositories\02-University\18-COMP2121\010-Tutorials\week3_4\taskE.asm</FILE><LINE>26</LINE></ArrayB>
+  <ArrayC><FILE>C:\Repositories\02-University\18-COMP2121\010-Tutorials\week3_4\taskE.asm</FILE><LINE>27</LINE></ArrayC>
+  <main><FILE>C:\Repositories\02-University\18-COMP2121\010-Tutorials\week3_4\taskE.asm</FILE><LINE>38</LINE></main>
+  <fori1><FILE>C:\Repositories\02-University\18-COMP2121\010-Tutorials\week3_4\taskE.asm</FILE><LINE>40</LINE></fori1>
+  <forj1><FILE>C:\Repositories\02-University\18-COMP2121\010-Tutorials\week3_4\taskE.asm</FILE><LINE>43</LINE></forj1>
+  <fori2><FILE>C:\Repositories\02-University\18-COMP2121\010-Tutorials\week3_4\taskE.asm</FILE><LINE>75</LINE></fori2>
+  <forj2><FILE>C:\Repositories\02-University\18-COMP2121\010-Tutorials\week3_4\taskE.asm</FILE><LINE>85</LINE></forj2>
+  <fork><FILE>C:\Repositories\02-University\18-COMP2121\010-Tutorials\week3_4\taskE.asm</FILE><LINE>93</LINE></fork>
+  <stop><FILE>C:\Repositories\02-University\18-COMP2121\010-Tutorials\week3_4\taskE.asm</FILE><LINE>126</LINE></stop>
  </LABELS>
 </ASSEMBLER_INFO>

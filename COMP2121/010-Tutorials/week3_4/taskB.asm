@@ -29,8 +29,10 @@
 result_n: .byte 3 
 
 .cseg
-; alternate test s: .db "366213" 
-s: .db "325658"
+rjmp start
+
+s: .db "999999" 
+;s: .db "31645"
 
 start:
 	; char i -> R16

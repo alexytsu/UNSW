@@ -5,7 +5,6 @@
 ; Author : Alex
 ;
 
-
 ; Replace with your application code
 .include "m2560def.inc"
 start:
