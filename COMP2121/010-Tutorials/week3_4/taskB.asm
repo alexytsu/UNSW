@@ -40,7 +40,7 @@ start:
 	; n = 0;
 	ldi n1, 0
 	ldi n2, 0
-	ldi n3, 0
+	ldi n3, 	
 	ldi n4, 0
 
 	; load string from memory (address needs to be doubled)
@@ -48,8 +48,8 @@ start:
 	ldi zh, high(s<<1)
 	
 	; for(i=0;i<=5;i++)
-	clr counter
-begin_for:
+	clr counte
+rbegin_for:
 	cpi counter, len
 	brsh end_for
 	
