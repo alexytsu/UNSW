@@ -65,16 +65,17 @@ main:
 	ldi temp2, high(0)
 	std Y+3, temp1
 	std Y+4, temp2
+	std Y+5, temp2
 
 	ldi temp1, low(0)			; store local (result)
 	ldi temp2, high(0)
-	std Y+5, temp1
-	std Y+6, temp2
+	std Y+6, temp1
+	std Y+7, temp2
 
 	ldi temp1, low(array)		; store local (a *)
 	ldi temp2, high(array)		
-	std Y+7, temp1
-	std Y+8, temp2
+	std Y+8, temp1
+	std Y+9, temp2
 
 	; end main prologue 
 
@@ -82,16 +83,14 @@ main:
 	ldd r19, Y+2
 	lds r20, glob_n				; get global int n
 
-	ldd r26, Y+3				; get local sum (26:27)
-	ldd r27, Y+4
-	ldd r28, Y+9
+	
 
 loop_begin:
 	cp r20, r18					; if n < i, break
 	brlo loop_end
 	
-	ldd r30, Y+7				; get address of array
-	ldd r31, Y+8
+	ldd r30, Y+8				; get address of array
+	ldd r31, Y+9
 	add r30, r18				; get address of a[i]
 	adc r31, r19
 	st Z, r18					; a[i] = i
@@ -101,8 +100,11 @@ loop_begin:
 	mov r22, r18				; actual parameter i
 
 	call power					; power returns to r24:r25
-	std y+5, r24				; result = power(x,i)
-	std y+6, r25				
+	std y+6, r24				; result = power(x,i)
+	std y+7, r25			
+	
+	std y+8, r30
+	std y+9, r31	
 /*
 	; multiplication
 	.def res1 = r2
@@ -126,15 +128,22 @@ noCarry:
 
 	mult_16_by_8 r24, r25, r18				
 
+	ldd r26, Y+3				; get local sum (26:27)
+	ldd r27, Y+4
+	ldd temp2, Y+5
+
+	ldi temp1, 0
+
 	add r26, res1
 	adc r27, res2		
+	adc temp2, res3
 	
 	std Y+3, r26
-	std Y+4, r27		
+	std Y+4, r27
+	std Y+5, temp2		
 
 	inc_loop_counter r18, r19
-	
-	rjmp loop_begin
+		rjmp loop_begin
 loop_end:
 
 	std Y+3, r26				; save sum as local variable in main

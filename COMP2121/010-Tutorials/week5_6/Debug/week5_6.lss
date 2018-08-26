@@ -1,32 +1,32 @@
 
-AVRASM ver. 2.2.7  C:\_Repositories\03-University\18-COMP2121\010-Tutorials\week5_6\main.asm Mon Aug 27 03:36:07 2018
+AVRASM ver. 2.2.7  C:\_Repositories\03-University\18-COMP2121\010-Tutorials\week5_6\main.asm Mon Aug 27 03:56:17 2018
 
 [builtin](2): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.209\avrasm\inc\m2560def.inc'
 C:\_Repositories\03-University\18-COMP2121\010-Tutorials\week5_6\main.asm(1): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.209\avrasm\inc\m2560def.inc'
 C:\_Repositories\03-University\18-COMP2121\010-Tutorials\week5_6\main.asm(12): warning: .def: 'res1' redefinition (r2->r2)
-C:\_Repositories\03-University\18-COMP2121\010-Tutorials\week5_6\main.asm(196): macro 'mult_16_by_8' called here
+C:\_Repositories\03-University\18-COMP2121\010-Tutorials\week5_6\main.asm(206): macro 'mult_16_by_8' called here
 C:\_Repositories\03-University\18-COMP2121\010-Tutorials\week5_6\main.asm(12): warning: Register r2 already defined by the .DEF directive
-C:\_Repositories\03-University\18-COMP2121\010-Tutorials\week5_6\main.asm(196): macro 'mult_16_by_8' called here
+C:\_Repositories\03-University\18-COMP2121\010-Tutorials\week5_6\main.asm(206): macro 'mult_16_by_8' called here
 C:\_Repositories\03-University\18-COMP2121\010-Tutorials\week5_6\main.asm(13): warning: .def: 'res2' redefinition (r3->r3)
-C:\_Repositories\03-University\18-COMP2121\010-Tutorials\week5_6\main.asm(196): macro 'mult_16_by_8' called here
+C:\_Repositories\03-University\18-COMP2121\010-Tutorials\week5_6\main.asm(206): macro 'mult_16_by_8' called here
 C:\_Repositories\03-University\18-COMP2121\010-Tutorials\week5_6\main.asm(13): warning: Register r3 already defined by the .DEF directive
-C:\_Repositories\03-University\18-COMP2121\010-Tutorials\week5_6\main.asm(196): macro 'mult_16_by_8' called here
+C:\_Repositories\03-University\18-COMP2121\010-Tutorials\week5_6\main.asm(206): macro 'mult_16_by_8' called here
 C:\_Repositories\03-University\18-COMP2121\010-Tutorials\week5_6\main.asm(14): warning: .def: 'res3' redefinition (r4->r4)
-C:\_Repositories\03-University\18-COMP2121\010-Tutorials\week5_6\main.asm(196): macro 'mult_16_by_8' called here
+C:\_Repositories\03-University\18-COMP2121\010-Tutorials\week5_6\main.asm(206): macro 'mult_16_by_8' called here
 C:\_Repositories\03-University\18-COMP2121\010-Tutorials\week5_6\main.asm(14): warning: Register r4 already defined by the .DEF directive
-C:\_Repositories\03-University\18-COMP2121\010-Tutorials\week5_6\main.asm(196): macro 'mult_16_by_8' called here
+C:\_Repositories\03-University\18-COMP2121\010-Tutorials\week5_6\main.asm(206): macro 'mult_16_by_8' called here
 C:\_Repositories\03-University\18-COMP2121\010-Tutorials\week5_6\main.asm(16): warning: .def: 'm1L' redefinition (r24->r24)
-C:\_Repositories\03-University\18-COMP2121\010-Tutorials\week5_6\main.asm(196): macro 'mult_16_by_8' called here
+C:\_Repositories\03-University\18-COMP2121\010-Tutorials\week5_6\main.asm(206): macro 'mult_16_by_8' called here
 C:\_Repositories\03-University\18-COMP2121\010-Tutorials\week5_6\main.asm(16): warning: Register r24 already defined by the .DEF directive
-C:\_Repositories\03-University\18-COMP2121\010-Tutorials\week5_6\main.asm(196): macro 'mult_16_by_8' called here
+C:\_Repositories\03-University\18-COMP2121\010-Tutorials\week5_6\main.asm(206): macro 'mult_16_by_8' called here
 C:\_Repositories\03-University\18-COMP2121\010-Tutorials\week5_6\main.asm(17): warning: .def: 'm1M' redefinition (r25->r25)
-C:\_Repositories\03-University\18-COMP2121\010-Tutorials\week5_6\main.asm(196): macro 'mult_16_by_8' called here
+C:\_Repositories\03-University\18-COMP2121\010-Tutorials\week5_6\main.asm(206): macro 'mult_16_by_8' called here
 C:\_Repositories\03-University\18-COMP2121\010-Tutorials\week5_6\main.asm(17): warning: Register r25 already defined by the .DEF directive
-C:\_Repositories\03-University\18-COMP2121\010-Tutorials\week5_6\main.asm(196): macro 'mult_16_by_8' called here
+C:\_Repositories\03-University\18-COMP2121\010-Tutorials\week5_6\main.asm(206): macro 'mult_16_by_8' called here
 C:\_Repositories\03-University\18-COMP2121\010-Tutorials\week5_6\main.asm(18): warning: .def: 'm2' redefinition (r18->r26)
-C:\_Repositories\03-University\18-COMP2121\010-Tutorials\week5_6\main.asm(196): macro 'mult_16_by_8' called here
+C:\_Repositories\03-University\18-COMP2121\010-Tutorials\week5_6\main.asm(206): macro 'mult_16_by_8' called here
 C:\_Repositories\03-University\18-COMP2121\010-Tutorials\week5_6\main.asm(18): warning: Register r26 already defined by the .DEF directive
-C:\_Repositories\03-University\18-COMP2121\010-Tutorials\week5_6\main.asm(196): macro 'mult_16_by_8' called here
+C:\_Repositories\03-University\18-COMP2121\010-Tutorials\week5_6\main.asm(206): macro 'mult_16_by_8' called here
 [builtin](2): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.209\avrasm\inc\m2560def.inc'
 C:\_Repositories\03-University\18-COMP2121\010-Tutorials\week5_6\main.asm(1): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.209\avrasm\inc\m2560def.inc'
                                  
@@ -1962,8 +1962,8 @@ C:\_Repositories\03-University\18-COMP2121\010-Tutorials\week5_6\main.asm(1): In
 000007 9300 0201                 	sts glob_n, temp1 
                                  
                                  main:
-000009 efc7                      	ldi r28, low(RAMEND-8)		
-00000a e2d1                      	ldi r29, high(RAMEND-8)	
+000009 efc6                      	ldi r28, low(RAMEND-9)		
+00000a e2d1                      	ldi r29, high(RAMEND-9)	
                                  
 00000b bfcd                      	out spl, r28
 00000c bfde                      	out sph, r29
@@ -1977,43 +1977,46 @@ C:\_Repositories\03-University\18-COMP2121\010-Tutorials\week5_6\main.asm(1): In
 000012 e010                      	ldi temp2, high(0)
 000013 830b                      	std Y+3, temp1
 000014 831c                      	std Y+4, temp2
+000015 831d                      	std Y+5, temp2
                                  
-000015 e000                      	ldi temp1, low(0)			; store local (result)
-000016 e010                      	ldi temp2, high(0)
-000017 830d                      	std Y+5, temp1
-000018 831e                      	std Y+6, temp2
+000016 e000                      	ldi temp1, low(0)			; store local (result)
+000017 e010                      	ldi temp2, high(0)
+000018 830e                      	std Y+6, temp1
+000019 831f                      	std Y+7, temp2
                                  
-000019 e002                      	ldi temp1, low(array)		; store local (a *)
-00001a e012                      	ldi temp2, high(array)		
-00001b 830f                      	std Y+7, temp1
-00001c 8718                      	std Y+8, temp2
+00001a e002                      	ldi temp1, low(array)		; store local (a *)
+00001b e012                      	ldi temp2, high(array)		
+00001c 8708                      	std Y+8, temp1
+00001d 8719                      	std Y+9, temp2
                                  
                                  	; end main prologue 
                                  
-00001d 8129                      	ldd r18, Y+1				; get local int i
-00001e 813a                      	ldd r19, Y+2
-00001f 9140 0201                 	lds r20, glob_n				; get global int n
+00001e 8129                      	ldd r18, Y+1				; get local int i
+00001f 813a                      	ldd r19, Y+2
+000020 9140 0201                 	lds r20, glob_n				; get global int n
                                  
-000021 81ab                      	ldd r26, Y+3				; get local sum (26:27)
-000022 81bc                      	ldd r27, Y+4
+                                 	
                                  
                                  loop_begin:
-000023 1742                      	cp r20, r18					; if n < i, break
-000024 f0e8                      	brlo loop_end
+000022 1742                      	cp r20, r18					; if n < i, break
+000023 f128                      	brlo loop_end
                                  	
-000025 81ef                      	ldd r30, Y+7				; get address of array
-000026 85f8                      	ldd r31, Y+8
-000027 0fe2                      	add r30, r18				; get address of a[i]
-000028 1ff3                      	adc r31, r19
-000029 8320                      	st Z, r18					; a[i] = i
+000024 85e8                      	ldd r30, Y+8				; get address of array
+000025 85f9                      	ldd r31, Y+9
+000026 0fe2                      	add r30, r18				; get address of a[i]
+000027 1ff3                      	adc r31, r19
+000028 8320                      	st Z, r18					; a[i] = i
                                  
                                  	; prepare params for function call
-00002a 9150 0200                 	lds r21, glob_x  			; actual parameter x
-00002c 2f62                      	mov r22, r18				; actual parameter i
+000029 9150 0200                 	lds r21, glob_x  			; actual parameter x
+00002b 2f62                      	mov r22, r18				; actual parameter i
                                  
-00002d 940e 0045                 	call power					; power returns to r24:r25
-00002f 838d                      	std y+5, r24				; result = power(x,i)
-000030 839e                      	std y+6, r25				
+00002c 940e 004c                 	call power					; power returns to r24:r25
+00002e 838e                      	std y+6, r24				; result = power(x,i)
+00002f 839f                      	std y+7, r25			
+                                 	
+000030 87e8                      	std y+8, r30
+000031 87f9                      	std y+9, r31	
                                  /*
                                  	; multiplication
                                  	.def res1 = r2
@@ -2035,126 +2038,133 @@ C:\_Repositories\03-University\18-COMP2121\010-Tutorials\week5_6\main.asm(1): In
                                  noCarry:
                                  */
                                  
-000031 9f82
-000032 2c20
-000033 2c31
-000034 9f92
-000035 2c41
-000036 0c30
-000037 f408
-000038 9443                      	mult_16_by_8 r24, r25, r18				
+000032 9f82
+000033 2c20
+000034 2c31
+000035 9f92
+000036 2c41
+000037 0c30
+000038 f408
+000039 9443                      	mult_16_by_8 r24, r25, r18				
                                  
-000039 0da2                      	add r26, res1
-00003a 1db3                      	adc r27, res2		
-                                 	
-00003b 83ab                      	std Y+3, r26
-00003c 83bc                      	std Y+4, r27		
+00003a 81ab                      	ldd r26, Y+3				; get local sum (26:27)
+00003b 81bc                      	ldd r27, Y+4
+00003c 811d                      	ldd temp2, Y+5
                                  
-00003d e001
-00003e e010
-00003f 0f20
-000040 1f31                      	inc_loop_counter r18, r19
+00003d e000                      	ldi temp1, 0
+                                 
+00003e 0da2                      	add r26, res1
+00003f 1db3                      	adc r27, res2		
+000040 1d14                      	adc temp2, res3
                                  	
-000041 cfe1                      	rjmp loop_begin
+000041 83ab                      	std Y+3, r26
+000042 83bc                      	std Y+4, r27
+000043 831d                      	std Y+5, temp2		
+                                 
+000044 e001
+000045 e010
+000046 0f20
+000047 1f31                      	inc_loop_counter r18, r19
+000048 cfd9                      		rjmp loop_begin
                                  loop_end:
                                  
-000042 83ab                      	std Y+3, r26				; save sum as local variable in main
-000043 83bc                      	std Y+4, r27
+000049 83ab                      	std Y+3, r26				; save sum as local variable in main
+00004a 83bc                      	std Y+4, r27
                                  
-000044 c045                      	rjmp end_program
+00004b c045                      	rjmp end_program
                                  
                                  power:
-000045 93cf                      	push r28					; save the stack pointer of main
-000046 93df                      	push r29
+00004c 93cf                      	push r28					; save the stack pointer of main
+00004d 93df                      	push r29
                                  
                                  
-000047 b7cd                      	in r28, SPL					; load the stack pointer
-000048 b7de                      	in r29, SPH
-000049 9728                      	sbiw r29:r28, 8				; reserve space for locals and formal parameters
-00004a bfcd                      	out SPL, r28
-00004b bfde                      	out SPH, r29				; update the frame positions
+00004e b7cd                      	in r28, SPL					; load the stack pointer
+00004f b7de                      	in r29, SPH
+000050 9728                      	sbiw r29:r28, 8				; reserve space for locals and formal parameters
+000051 bfcd                      	out SPL, r28
+000052 bfde                      	out SPH, r29				; update the frame positions
                                  
                                  	; move actual parameters to formal parameters
-00004c e000                      	ldi temp1, 0
-00004d 8359                      	std Y+1, r21				; pass x to number
-00004e 830a                      	std Y+2, temp1
-00004f 836b                      	std Y+3, r22				; pass i to power
-000050 830c                      	std Y+4, temp1
+000053 e000                      	ldi temp1, 0
+000054 8359                      	std Y+1, r21				; pass x to number
+000055 830a                      	std Y+2, temp1
+000056 836b                      	std Y+3, r22				; pass i to power
+000057 830c                      	std Y+4, temp1
                                  	
                                  	
-000051 932f                      	push r18					; store conflict registers
-000052 933f                      	push r19
-000053 934f                      	push r20
-000054 935f                      	push r21
-000055 936f                      	push r22
-000056 937f                      	push r23
-000057 93af                      	push r26
-000058 93bf                      	push r27
+000058 932f                      	push r18					; store conflict registers
+000059 933f                      	push r19
+00005a 934f                      	push r20
+00005b 935f                      	push r21
+00005c 936f                      	push r22
+00005d 937f                      	push r23
+00005e 93af                      	push r26
+00005f 93bf                      	push r27
                                  
                                  	; initialise local variables
-000059 e011                      	ldi temp2, 1
-00005a 831d                      	std Y+5, temp2				; initialise local i
-00005b 830e                      	std Y+6, temp1
-00005c 831f                      	std Y+7, temp2
-00005d 8708                      	std Y+8, temp1
+000060 e011                      	ldi temp2, 1
+000061 831d                      	std Y+5, temp2				; initialise local i
+000062 830e                      	std Y+6, temp1
+000063 831f                      	std Y+7, temp2
+000064 8708                      	std Y+8, temp1
                                  
-00005e 81a9                      	ldd r26, y+1				; number(r26:r27)
-00005f 81ba                      	ldd r27, y+2
-000060 812b                      	ldd r18, y+3				; power(r18:r19)
-000061 813c                      	ldd r19, y+4
-000062 814d                      	ldd r20, y+5				; i(r20:r21)
-000063 815e                      	ldd r21, y+6
-000064 816f                      	ldd r22, y+7				; num(r22:r23)
-000065 8578                      	ldd r23, y+8
+000065 81a9                      	ldd r26, y+1				; number(r26:r27)
+000066 81ba                      	ldd r27, y+2
+000067 812b                      	ldd r18, y+3				; power(r18:r19)
+000068 813c                      	ldd r19, y+4
+000069 814d                      	ldd r20, y+5				; i(r20:r21)
+00006a 815e                      	ldd r21, y+6
+00006b 816f                      	ldd r22, y+7				; num(r22:r23)
+00006c 8578                      	ldd r23, y+8
                                  
                                  for_pow:
-000066 1724                      	cp r18, r20					; pow(18:19) < i(20:21) break
-000067 0735                      	cpc r19, r21
-000068 f088                      	brlo for_pow_end
+00006d 1724                      	cp r18, r20					; pow(18:19) < i(20:21) break
+00006e 0735                      	cpc r19, r21
+00006f f088                      	brlo for_pow_end
                                  
-000069 818f                      	ldd r24, Y+7
-00006a 8598                      	ldd r25, Y+8
+000070 818f                      	ldd r24, Y+7
+000071 8598                      	ldd r25, Y+8
                                  
-00006b 9f8a
-00006c 2c20
-00006d 2c31
-00006e 9f9a
-00006f 2c41
-000070 0c30
-000071 f408
-000072 9443                      	mult_16_by_8 r24, r25, r26
+000072 9f8a
+000073 2c20
+000074 2c31
+000075 9f9a
+000076 2c41
+000077 0c30
+000078 f408
+000079 9443                      	mult_16_by_8 r24, r25, r26
                                  
-000073 822f                      	std Y+7, res1
-000074 8638                      	std Y+8, res2
+00007a 822f                      	std Y+7, res1
+00007b 8638                      	std Y+8, res2
                                  	
-000075 e001
-000076 e010
-000077 0f40
-000078 1f51                      	inc_loop_counter r20, r21
-000079 cfec                      	rjmp for_pow
+00007c e001
+00007d e010
+00007e 0f40
+00007f 1f51                      	inc_loop_counter r20, r21
+000080 cfec                      	rjmp for_pow
                                  for_pow_end:
                                  
                                  	; store result into 24, 25
                                  
-00007a 91bf                      	pop r27
-00007b 91af                      	pop r26
-00007c 917f                      	pop r23
-00007d 916f                      	pop r22
-00007e 915f                      	pop r21
-00007f 914f                      	pop r20
-000080 913f                      	pop r19
-000081 912f                      	pop r18
+000081 91bf                      	pop r27
+000082 91af                      	pop r26
+000083 917f                      	pop r23
+000084 916f                      	pop r22
+000085 915f                      	pop r21
+000086 914f                      	pop r20
+000087 913f                      	pop r19
+000088 912f                      	pop r18
                                  
-000082 818f                      	ldd r24, y+7
-000083 8598                      	ldd r25, y+8
+000089 818f                      	ldd r24, y+7
+00008a 8598                      	ldd r25, y+8
                                  
-000084 9628                      	adiw r28, 8
-000085 bfde                      	out sph, r29
-000086 bfcd                      	out spl, r28
+00008b 9628                      	adiw r28, 8
+00008c bfde                      	out sph, r29
+00008d bfcd                      	out spl, r28
                                  
-000087 91df                      	pop r29
-000088 91cf                      	pop r28
-000089 9508                      	ret
+00008e 91df                      	pop r29
+00008f 91cf                      	pop r28
+000090 9508                      	ret
                                  
                                  end_program:
 
@@ -2174,15 +2184,15 @@ counted separately from r26..r31 here.
 .dseg memory usage only counts static data declared with .byte
 
 "ATmega2560" register use summary:
-x  :   0 y  :  42 z  :   1 r0 :   4 r1 :   4 r2 :   4 r3 :   6 r4 :   4 
+x  :   0 y  :  47 z  :   1 r0 :   4 r1 :   4 r2 :   4 r3 :   6 r4 :   5 
 r5 :   0 r6 :   0 r7 :   0 r8 :   0 r9 :   0 r10:   0 r11:   0 r12:   0 
-r13:   0 r14:   0 r15:   0 r16:  21 r17:  15 r18:  12 r19:   7 r20:   7 
+r13:   0 r14:   0 r15:   0 r16:  22 r17:  19 r18:  12 r19:   7 r20:   7 
 r21:   7 r22:   5 r23:   3 r24:   5 r25:   5 r26:   9 r27:   7 r28:   9 
-r29:   8 r30:   2 r31:   2 
+r29:   8 r30:   3 r31:   3 
 Registers used: 23 out of 35 (65.7%)
 
 "ATmega2560" instruction use summary:
-.lds  :   0 .sts  :   0 adc   :   4 add   :   6 adiw  :   1 and   :   0 
+.lds  :   0 .sts  :   0 adc   :   5 add   :   6 adiw  :   1 and   :   0 
 andi  :   0 asr   :   0 bclr  :   0 bld   :   0 brbc  :   0 brbs  :   0 
 brcc  :   2 brcs  :   0 break :   0 breq  :   0 brge  :   0 brhc  :   0 
 brhs  :   0 brid  :   0 brie  :   0 brlo  :   2 brlt  :   0 brmi  :   0 
@@ -2192,7 +2202,7 @@ clc   :   0 clh   :   0 cli   :   0 cln   :   0 clr   :   0 cls   :   0
 clt   :   0 clv   :   0 clz   :   0 com   :   0 cp    :   2 cpc   :   1 
 cpi   :   0 cpse  :   0 dec   :   0 eicall:   0 eijmp :   0 elpm  :   0 
 eor   :   0 fmul  :   0 fmuls :   0 fmulsu:   0 icall :   0 ijmp  :   0 
-in    :   2 inc   :   2 jmp   :   0 ld    :   0 ldd   :  18 ldi   :  18 
+in    :   2 inc   :   2 jmp   :   0 ld    :   0 ldd   :  19 ldi   :  19 
 lds   :   2 lpm   :   0 lsl   :   0 lsr   :   0 mov   :   7 movw  :   0 
 mul   :   4 muls  :   0 mulsu :   0 neg   :   0 nop   :   1 or    :   0 
 ori   :   0 out   :   6 pop   :  10 push  :  10 rcall :   0 ret   :   1 
@@ -2200,14 +2210,14 @@ reti  :   0 rjmp  :   3 rol   :   0 ror   :   0 sbc   :   0 sbci  :   0
 sbi   :   0 sbic  :   0 sbis  :   0 sbiw  :   1 sbr   :   0 sbrc  :   0 
 sbrs  :   0 sec   :   0 seh   :   0 sei   :   0 sen   :   0 ser   :   0 
 ses   :   0 set   :   0 sev   :   0 sez   :   0 sleep :   0 spm   :   0 
-st    :   1 std   :  24 sts   :   2 sub   :   0 subi  :   0 swap  :   0 
+st    :   1 std   :  28 sts   :   2 sub   :   0 subi  :   0 swap  :   0 
 tst   :   0 wdr   :   0 
 Instructions used: 25 out of 116 (21.6%)
 
 "ATmega2560" memory use summary [bytes]:
 Segment   Begin    End      Code   Data   Used    Size   Use%
 ---------------------------------------------------------------
-[.cseg] 0x000000 0x000116    272      6    278  262144   0.1%
+[.cseg] 0x000000 0x000124    286      6    292  262144   0.1%
 [.dseg] 0x000200 0x00020d      0     13     13    8192   0.2%
 [.eseg] 0x000000 0x000000      0      0      0    4096   0.0%
 

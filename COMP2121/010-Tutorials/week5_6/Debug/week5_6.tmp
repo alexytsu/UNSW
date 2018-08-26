@@ -30,10 +30,10 @@
   <main_result><FILE>C:\_Repositories\03-University\18-COMP2121\010-Tutorials\week5_6\main.asm</FILE><LINE>45</LINE></main_result>
   <main><FILE>C:\_Repositories\03-University\18-COMP2121\010-Tutorials\week5_6\main.asm</FILE><LINE>52</LINE></main>
   <loop_begin><FILE>C:\_Repositories\03-University\18-COMP2121\010-Tutorials\week5_6\main.asm</FILE><LINE>88</LINE></loop_begin>
-  <loop_end><FILE>C:\_Repositories\03-University\18-COMP2121\010-Tutorials\week5_6\main.asm</FILE><LINE>137</LINE></loop_end>
-  <power><FILE>C:\_Repositories\03-University\18-COMP2121\010-Tutorials\week5_6\main.asm</FILE><LINE>144</LINE></power>
-  <end_program><FILE>C:\_Repositories\03-University\18-COMP2121\010-Tutorials\week5_6\main.asm</FILE><LINE>227</LINE></end_program>
-  <for_pow><FILE>C:\_Repositories\03-University\18-COMP2121\010-Tutorials\week5_6\main.asm</FILE><LINE>188</LINE></for_pow>
-  <for_pow_end><FILE>C:\_Repositories\03-University\18-COMP2121\010-Tutorials\week5_6\main.asm</FILE><LINE>203</LINE></for_pow_end>
+  <loop_end><FILE>C:\_Repositories\03-University\18-COMP2121\010-Tutorials\week5_6\main.asm</FILE><LINE>147</LINE></loop_end>
+  <power><FILE>C:\_Repositories\03-University\18-COMP2121\010-Tutorials\week5_6\main.asm</FILE><LINE>154</LINE></power>
+  <end_program><FILE>C:\_Repositories\03-University\18-COMP2121\010-Tutorials\week5_6\main.asm</FILE><LINE>237</LINE></end_program>
+  <for_pow><FILE>C:\_Repositories\03-University\18-COMP2121\010-Tutorials\week5_6\main.asm</FILE><LINE>198</LINE></for_pow>
+  <for_pow_end><FILE>C:\_Repositories\03-University\18-COMP2121\010-Tutorials\week5_6\main.asm</FILE><LINE>213</LINE></for_pow_end>
  </LABELS>
 </ASSEMBLER_INFO>
