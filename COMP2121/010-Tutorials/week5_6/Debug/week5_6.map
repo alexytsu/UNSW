@@ -1,5 +1,5 @@
 
-AVRASM ver. 2.2.7  C:\_Repositories\03-University\18-COMP2121\010-Tutorials\week5_6\main.asm Mon Aug 27 03:56:17 2018
+AVRASM ver. 2.2.7  C:\Repositories\02-University\18-COMP2121\010-Tutorials\week5_6\main.asm Mon Aug 27 16:11:24 2018
 
 
 EQU  SIGNATURE_000 0000001e
@@ -1368,17 +1368,17 @@ CSEG main_i       00000000
 CSEG main_sum     00000001
 CSEG main_result  00000002
 CSEG main         00000009
-CSEG loop_begin   00000022
-CSEG loop_end     00000049
-CSEG power        0000004c
+CSEG loop_begin   00000029
+CSEG loop_end     00000050
+CSEG power        00000053
 DEF  res1         r2
 DEF  res2         r3
 DEF  res3         r4
 DEF  m1L          r24
 DEF  m1M          r25
 DEF  m2           r26
-CSEG noCarry@mult_16_by_8@3802 0000003a
-CSEG end_program  00000091
-CSEG for_pow      0000006d
-CSEG for_pow_end  00000081
-CSEG noCarry@mult_16_by_8@3906 0000007a
+CSEG noCarry@mult_16_by_8@3817 00000041
+CSEG end_program  00000098
+CSEG for_pow      00000074
+CSEG for_pow_end  00000088
+CSEG noCarry@mult_16_by_8@3921 00000081

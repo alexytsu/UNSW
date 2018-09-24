@@ -1,34 +1,34 @@
 
-AVRASM ver. 2.2.7  C:\_Repositories\03-University\18-COMP2121\010-Tutorials\week5_6\main.asm Mon Aug 27 03:56:17 2018
+AVRASM ver. 2.2.7  C:\Repositories\02-University\18-COMP2121\010-Tutorials\week5_6\main.asm Mon Aug 27 16:11:24 2018
 
-[builtin](2): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.209\avrasm\inc\m2560def.inc'
-C:\_Repositories\03-University\18-COMP2121\010-Tutorials\week5_6\main.asm(1): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.209\avrasm\inc\m2560def.inc'
-C:\_Repositories\03-University\18-COMP2121\010-Tutorials\week5_6\main.asm(12): warning: .def: 'res1' redefinition (r2->r2)
-C:\_Repositories\03-University\18-COMP2121\010-Tutorials\week5_6\main.asm(206): macro 'mult_16_by_8' called here
-C:\_Repositories\03-University\18-COMP2121\010-Tutorials\week5_6\main.asm(12): warning: Register r2 already defined by the .DEF directive
-C:\_Repositories\03-University\18-COMP2121\010-Tutorials\week5_6\main.asm(206): macro 'mult_16_by_8' called here
-C:\_Repositories\03-University\18-COMP2121\010-Tutorials\week5_6\main.asm(13): warning: .def: 'res2' redefinition (r3->r3)
-C:\_Repositories\03-University\18-COMP2121\010-Tutorials\week5_6\main.asm(206): macro 'mult_16_by_8' called here
-C:\_Repositories\03-University\18-COMP2121\010-Tutorials\week5_6\main.asm(13): warning: Register r3 already defined by the .DEF directive
-C:\_Repositories\03-University\18-COMP2121\010-Tutorials\week5_6\main.asm(206): macro 'mult_16_by_8' called here
-C:\_Repositories\03-University\18-COMP2121\010-Tutorials\week5_6\main.asm(14): warning: .def: 'res3' redefinition (r4->r4)
-C:\_Repositories\03-University\18-COMP2121\010-Tutorials\week5_6\main.asm(206): macro 'mult_16_by_8' called here
-C:\_Repositories\03-University\18-COMP2121\010-Tutorials\week5_6\main.asm(14): warning: Register r4 already defined by the .DEF directive
-C:\_Repositories\03-University\18-COMP2121\010-Tutorials\week5_6\main.asm(206): macro 'mult_16_by_8' called here
-C:\_Repositories\03-University\18-COMP2121\010-Tutorials\week5_6\main.asm(16): warning: .def: 'm1L' redefinition (r24->r24)
-C:\_Repositories\03-University\18-COMP2121\010-Tutorials\week5_6\main.asm(206): macro 'mult_16_by_8' called here
-C:\_Repositories\03-University\18-COMP2121\010-Tutorials\week5_6\main.asm(16): warning: Register r24 already defined by the .DEF directive
-C:\_Repositories\03-University\18-COMP2121\010-Tutorials\week5_6\main.asm(206): macro 'mult_16_by_8' called here
-C:\_Repositories\03-University\18-COMP2121\010-Tutorials\week5_6\main.asm(17): warning: .def: 'm1M' redefinition (r25->r25)
-C:\_Repositories\03-University\18-COMP2121\010-Tutorials\week5_6\main.asm(206): macro 'mult_16_by_8' called here
-C:\_Repositories\03-University\18-COMP2121\010-Tutorials\week5_6\main.asm(17): warning: Register r25 already defined by the .DEF directive
-C:\_Repositories\03-University\18-COMP2121\010-Tutorials\week5_6\main.asm(206): macro 'mult_16_by_8' called here
-C:\_Repositories\03-University\18-COMP2121\010-Tutorials\week5_6\main.asm(18): warning: .def: 'm2' redefinition (r18->r26)
-C:\_Repositories\03-University\18-COMP2121\010-Tutorials\week5_6\main.asm(206): macro 'mult_16_by_8' called here
-C:\_Repositories\03-University\18-COMP2121\010-Tutorials\week5_6\main.asm(18): warning: Register r26 already defined by the .DEF directive
-C:\_Repositories\03-University\18-COMP2121\010-Tutorials\week5_6\main.asm(206): macro 'mult_16_by_8' called here
-[builtin](2): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.209\avrasm\inc\m2560def.inc'
-C:\_Repositories\03-University\18-COMP2121\010-Tutorials\week5_6\main.asm(1): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.209\avrasm\inc\m2560def.inc'
+[builtin](2): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.150\avrasm\inc\m2560def.inc'
+C:\Repositories\02-University\18-COMP2121\010-Tutorials\week5_6\main.asm(1): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.150\avrasm\inc\m2560def.inc'
+C:\Repositories\02-University\18-COMP2121\010-Tutorials\week5_6\main.asm(12): warning: .def: 'res1' redefinition (r2->r2)
+C:\Repositories\02-University\18-COMP2121\010-Tutorials\week5_6\main.asm(221): macro 'mult_16_by_8' called here
+C:\Repositories\02-University\18-COMP2121\010-Tutorials\week5_6\main.asm(12): warning: Register r2 already defined by the .DEF directive
+C:\Repositories\02-University\18-COMP2121\010-Tutorials\week5_6\main.asm(221): macro 'mult_16_by_8' called here
+C:\Repositories\02-University\18-COMP2121\010-Tutorials\week5_6\main.asm(13): warning: .def: 'res2' redefinition (r3->r3)
+C:\Repositories\02-University\18-COMP2121\010-Tutorials\week5_6\main.asm(221): macro 'mult_16_by_8' called here
+C:\Repositories\02-University\18-COMP2121\010-Tutorials\week5_6\main.asm(13): warning: Register r3 already defined by the .DEF directive
+C:\Repositories\02-University\18-COMP2121\010-Tutorials\week5_6\main.asm(221): macro 'mult_16_by_8' called here
+C:\Repositories\02-University\18-COMP2121\010-Tutorials\week5_6\main.asm(14): warning: .def: 'res3' redefinition (r4->r4)
+C:\Repositories\02-University\18-COMP2121\010-Tutorials\week5_6\main.asm(221): macro 'mult_16_by_8' called here
+C:\Repositories\02-University\18-COMP2121\010-Tutorials\week5_6\main.asm(14): warning: Register r4 already defined by the .DEF directive
+C:\Repositories\02-University\18-COMP2121\010-Tutorials\week5_6\main.asm(221): macro 'mult_16_by_8' called here
+C:\Repositories\02-University\18-COMP2121\010-Tutorials\week5_6\main.asm(16): warning: .def: 'm1L' redefinition (r24->r24)
+C:\Repositories\02-University\18-COMP2121\010-Tutorials\week5_6\main.asm(221): macro 'mult_16_by_8' called here
+C:\Repositories\02-University\18-COMP2121\010-Tutorials\week5_6\main.asm(16): warning: Register r24 already defined by the .DEF directive
+C:\Repositories\02-University\18-COMP2121\010-Tutorials\week5_6\main.asm(221): macro 'mult_16_by_8' called here
+C:\Repositories\02-University\18-COMP2121\010-Tutorials\week5_6\main.asm(17): warning: .def: 'm1M' redefinition (r25->r25)
+C:\Repositories\02-University\18-COMP2121\010-Tutorials\week5_6\main.asm(221): macro 'mult_16_by_8' called here
+C:\Repositories\02-University\18-COMP2121\010-Tutorials\week5_6\main.asm(17): warning: Register r25 already defined by the .DEF directive
+C:\Repositories\02-University\18-COMP2121\010-Tutorials\week5_6\main.asm(221): macro 'mult_16_by_8' called here
+C:\Repositories\02-University\18-COMP2121\010-Tutorials\week5_6\main.asm(18): warning: .def: 'm2' redefinition (r18->r26)
+C:\Repositories\02-University\18-COMP2121\010-Tutorials\week5_6\main.asm(221): macro 'mult_16_by_8' called here
+C:\Repositories\02-University\18-COMP2121\010-Tutorials\week5_6\main.asm(18): warning: Register r26 already defined by the .DEF directive
+C:\Repositories\02-University\18-COMP2121\010-Tutorials\week5_6\main.asm(221): macro 'mult_16_by_8' called here
+[builtin](2): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.150\avrasm\inc\m2560def.inc'
+C:\Repositories\02-University\18-COMP2121\010-Tutorials\week5_6\main.asm(1): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.150\avrasm\inc\m2560def.inc'
                                  
                                  .include "m2560def.inc"
                                  
@@ -1937,7 +1937,7 @@ C:\_Repositories\03-University\18-COMP2121\010-Tutorials\week5_6\main.asm(1): In
                                  	add res2, r0
                                  	brcc noCarry				; skip carry if not needed
                                  	inc Res3
-                                 noCarry:
+                                 noCarry:	
                                  				
                                  .endmacro
                                  
@@ -1945,6 +1945,7 @@ C:\_Repositories\03-University\18-COMP2121\010-Tutorials\week5_6\main.asm(1): In
                                  .def temp2=r17
                                  
                                  .dseg
+                                 	; 
                                  	.org 0x200
 000200                           	glob_x: .byte 1
 000201                           	glob_n: .byte 1
@@ -1953,70 +1954,84 @@ C:\_Repositories\03-University\18-COMP2121\010-Tutorials\week5_6\main.asm(1): In
                                  .cseg
                                  
 000000 0000                      	main_i: .dw 0				; store initial values in
-000001 0001                      	main_sum: .dw 1				; code segment
+000001 0000                      	main_sum: .dw 0				; code segment
 000002 0000                      	main_result: .dw 0			
                                  
-000003 e003                      	ldi temp1, 3				; load global variables
+000003 e002                      	ldi temp1, 2				; load global variables into data
 000004 9300 0200                 	sts glob_x, temp1			
 000006 e00a                      	ldi temp1, 10				
 000007 9300 0201                 	sts glob_n, temp1 
                                  
                                  main:
+                                 
 000009 efc6                      	ldi r28, low(RAMEND-9)		
 00000a e2d1                      	ldi r29, high(RAMEND-9)	
                                  
 00000b bfcd                      	out spl, r28
 00000c bfde                      	out sph, r29
                                  
-00000d e000                      	ldi temp1, low(0)			; store local (int i)
-00000e e010                      	ldi temp2, high(0)			
-00000f 8309                      	std Y+1, temp1
-000010 831a                      	std Y+2, temp2
+00000d e0e0                      	ldi zl, low(main_i<<1)
+00000e e0f0                      	ldi zh, high(main_i<<1)
                                  
-000011 e000                      	ldi temp1, low(0)			; store local (sum = 0)
-000012 e010                      	ldi temp2, high(0)
-000013 830b                      	std Y+3, temp1
-000014 831c                      	std Y+4, temp2
-000015 831d                      	std Y+5, temp2
+00000f 9105                      	lpm temp1, Z+				;store local i from prog mem
+000010 9115                      	lpm temp2, Z+
+                                 		
+000011 8309                      	std Y+1, temp1
+000012 831a                      	std Y+2, temp2
                                  
-000016 e000                      	ldi temp1, low(0)			; store local (result)
-000017 e010                      	ldi temp2, high(0)
-000018 830e                      	std Y+6, temp1
-000019 831f                      	std Y+7, temp2
+000013 e0e2                      	ldi zl, low(main_sum<<1)
+000014 e0f0                      	ldi zh, high(main_sum<<1)
                                  
-00001a e002                      	ldi temp1, low(array)		; store local (a *)
-00001b e012                      	ldi temp2, high(array)		
-00001c 8708                      	std Y+8, temp1
-00001d 8719                      	std Y+9, temp2
+000015 9105                      	lpm temp1, Z+
+000016 9115                      	lpm temp2, Z+
                                  
-                                 	; end main prologue 
+000017 830b                      	std Y+3, temp1				; store local sum from prog mem to stack
+000018 831c                      	std Y+4, temp2
+000019 e010                      	ldi temp2, 0
+00001a 831d                      	std Y+5, temp2
                                  
-00001e 8129                      	ldd r18, Y+1				; get local int i
-00001f 813a                      	ldd r19, Y+2
-000020 9140 0201                 	lds r20, glob_n				; get global int n
+00001b e0e4                      	ldi zl, low(main_result<<1)
+00001c e0f0                      	ldi zh, high(main_result<<1)
+                                 
+00001d 9105                      	lpm temp1, Z+				; store local result from prog mem
+00001e 9115                      	lpm temp2, Z+
+                                 
+00001f 830e                      	std Y+6, temp1
+000020 831f                      	std Y+7, temp2
+                                 
+000021 e002                      	ldi temp1, low(array)		; store local (a *)
+000022 e012                      	ldi temp2, high(array)		
+000023 8708                      	std Y+8, temp1
+000024 8719                      	std Y+9, temp2
+                                 
+                                 	; end main prologue a
+                                 
+000025 8129                      	ldd r18, Y+1				; get local int i
+000026 813a                      	ldd r19, Y+2
+000027 9140 0201                 	lds r20, glob_n				; get global int n
                                  
                                  	
                                  
                                  loop_begin:
-000022 1742                      	cp r20, r18					; if n < i, break
-000023 f128                      	brlo loop_end
+000029 1742                      	cp r20, r18					; if n < i, break
+00002a f128                      	brlo loop_end
                                  	
-000024 85e8                      	ldd r30, Y+8				; get address of array
-000025 85f9                      	ldd r31, Y+9
-000026 0fe2                      	add r30, r18				; get address of a[i]
-000027 1ff3                      	adc r31, r19
-000028 8320                      	st Z, r18					; a[i] = i
+00002b 85e8                      	ldd r30, Y+8				; get address of array
+00002c 85f9                      	ldd r31, Y+9
+00002d 0fe2                      	add r30, r18				; get address of a[i]
+00002e 1ff3                      	adc r31, r19
+00002f 8320                      	st Z, r18					; a[i] = i
                                  
                                  	; prepare params for function call
-000029 9150 0200                 	lds r21, glob_x  			; actual parameter x
-00002b 2f62                      	mov r22, r18				; actual parameter i
+000030 9150 0200                 	lds r21, glob_x  			; actual parameter x
+000032 2f62                      	mov r22, r18				; actual parameter i
                                  
-00002c 940e 004c                 	call power					; power returns to r24:r25
-00002e 838e                      	std y+6, r24				; result = power(x,i)
-00002f 839f                      	std y+7, r25			
+000033 940e 0053                 	call power					; power returns to r24:r25
+000035 838e                      	std y+6, r24				; result = power(x,i)
+000036 839f                      	std y+7, r25			
                                  	
-000030 87e8                      	std y+8, r30
-000031 87f9                      	std y+9, r31	
+000037 87e8                      	std y+8, r30
+000038 87f9                      	std y+9, r31	
                                  /*
                                  	; multiplication
                                  	.def res1 = r2
@@ -2038,133 +2053,133 @@ C:\_Repositories\03-University\18-COMP2121\010-Tutorials\week5_6\main.asm(1): In
                                  noCarry:
                                  */
                                  
-000032 9f82
-000033 2c20
-000034 2c31
-000035 9f92
-000036 2c41
-000037 0c30
-000038 f408
-000039 9443                      	mult_16_by_8 r24, r25, r18				
+000039 9f82
+00003a 2c20
+00003b 2c31
+00003c 9f92
+00003d 2c41
+00003e 0c30
+00003f f408
+000040 9443                      	mult_16_by_8 r24, r25, r18				
                                  
-00003a 81ab                      	ldd r26, Y+3				; get local sum (26:27)
-00003b 81bc                      	ldd r27, Y+4
-00003c 811d                      	ldd temp2, Y+5
+000041 81ab                      	ldd r26, Y+3				; get local sum (26:27)
+000042 81bc                      	ldd r27, Y+4
+000043 811d                      	ldd temp2, Y+5
                                  
-00003d e000                      	ldi temp1, 0
+000044 e000                      	ldi temp1, 0
                                  
-00003e 0da2                      	add r26, res1
-00003f 1db3                      	adc r27, res2		
-000040 1d14                      	adc temp2, res3
+000045 0da2                      	add r26, res1
+000046 1db3                      	adc r27, res2		
+000047 1d14                      	adc temp2, res3
                                  	
-000041 83ab                      	std Y+3, r26
-000042 83bc                      	std Y+4, r27
-000043 831d                      	std Y+5, temp2		
+000048 83ab                      	std Y+3, r26
+000049 83bc                      	std Y+4, r27
+00004a 831d                      	std Y+5, temp2		
                                  
-000044 e001
-000045 e010
-000046 0f20
-000047 1f31                      	inc_loop_counter r18, r19
-000048 cfd9                      		rjmp loop_begin
+00004b e001
+00004c e010
+00004d 0f20
+00004e 1f31                      	inc_loop_counter r18, r19
+00004f cfd9                      		rjmp loop_begin
                                  loop_end:
                                  
-000049 83ab                      	std Y+3, r26				; save sum as local variable in main
-00004a 83bc                      	std Y+4, r27
+000050 83ab                      	std Y+3, r26				; save sum as local variable in main
+000051 83bc                      	std Y+4, r27
                                  
-00004b c045                      	rjmp end_program
+000052 c045                      	rjmp end_program
                                  
                                  power:
-00004c 93cf                      	push r28					; save the stack pointer of main
-00004d 93df                      	push r29
+000053 93cf                      	push r28					; save the stack pointer of main
+000054 93df                      	push r29
                                  
                                  
-00004e b7cd                      	in r28, SPL					; load the stack pointer
-00004f b7de                      	in r29, SPH
-000050 9728                      	sbiw r29:r28, 8				; reserve space for locals and formal parameters
-000051 bfcd                      	out SPL, r28
-000052 bfde                      	out SPH, r29				; update the frame positions
+000055 b7cd                      	in r28, SPL					; load the stack pointer
+000056 b7de                      	in r29, SPH
+000057 9728                      	sbiw r29:r28, 8				; reserve space for locals and formal parameters
+000058 bfcd                      	out SPL, r28
+000059 bfde                      	out SPH, r29				; update the frame positions
                                  
                                  	; move actual parameters to formal parameters
-000053 e000                      	ldi temp1, 0
-000054 8359                      	std Y+1, r21				; pass x to number
-000055 830a                      	std Y+2, temp1
-000056 836b                      	std Y+3, r22				; pass i to power
-000057 830c                      	std Y+4, temp1
+00005a e000                      	ldi temp1, 0
+00005b 8359                      	std Y+1, r21				; pass x to number
+00005c 830a                      	std Y+2, temp1
+00005d 836b                      	std Y+3, r22				; pass i to power
+00005e 830c                      	std Y+4, temp1
                                  	
                                  	
-000058 932f                      	push r18					; store conflict registers
-000059 933f                      	push r19
-00005a 934f                      	push r20
-00005b 935f                      	push r21
-00005c 936f                      	push r22
-00005d 937f                      	push r23
-00005e 93af                      	push r26
-00005f 93bf                      	push r27
+00005f 932f                      	push r18					; store conflict registers
+000060 933f                      	push r19
+000061 934f                      	push r20
+000062 935f                      	push r21
+000063 936f                      	push r22
+000064 937f                      	push r23
+000065 93af                      	push r26
+000066 93bf                      	push r27
                                  
                                  	; initialise local variables
-000060 e011                      	ldi temp2, 1
-000061 831d                      	std Y+5, temp2				; initialise local i
-000062 830e                      	std Y+6, temp1
-000063 831f                      	std Y+7, temp2
-000064 8708                      	std Y+8, temp1
+000067 e011                      	ldi temp2, 1
+000068 831d                      	std Y+5, temp2				; initialise local i
+000069 830e                      	std Y+6, temp1
+00006a 831f                      	std Y+7, temp2
+00006b 8708                      	std Y+8, temp1
                                  
-000065 81a9                      	ldd r26, y+1				; number(r26:r27)
-000066 81ba                      	ldd r27, y+2
-000067 812b                      	ldd r18, y+3				; power(r18:r19)
-000068 813c                      	ldd r19, y+4
-000069 814d                      	ldd r20, y+5				; i(r20:r21)
-00006a 815e                      	ldd r21, y+6
-00006b 816f                      	ldd r22, y+7				; num(r22:r23)
-00006c 8578                      	ldd r23, y+8
+00006c 81a9                      	ldd r26, y+1				; number(r26:r27)
+00006d 81ba                      	ldd r27, y+2
+00006e 812b                      	ldd r18, y+3				; power(r18:r19)
+00006f 813c                      	ldd r19, y+4
+000070 814d                      	ldd r20, y+5				; i(r20:r21)
+000071 815e                      	ldd r21, y+6
+000072 816f                      	ldd r22, y+7				; num(r22:r23)
+000073 8578                      	ldd r23, y+8
                                  
                                  for_pow:
-00006d 1724                      	cp r18, r20					; pow(18:19) < i(20:21) break
-00006e 0735                      	cpc r19, r21
-00006f f088                      	brlo for_pow_end
+000074 1724                      	cp r18, r20					; pow(18:19) < i(20:21) break
+000075 0735                      	cpc r19, r21
+000076 f088                      	brlo for_pow_end
                                  
-000070 818f                      	ldd r24, Y+7
-000071 8598                      	ldd r25, Y+8
+000077 818f                      	ldd r24, Y+7
+000078 8598                      	ldd r25, Y+8
                                  
-000072 9f8a
-000073 2c20
-000074 2c31
-000075 9f9a
-000076 2c41
-000077 0c30
-000078 f408
-000079 9443                      	mult_16_by_8 r24, r25, r26
+000079 9f8a
+00007a 2c20
+00007b 2c31
+00007c 9f9a
+00007d 2c41
+00007e 0c30
+00007f f408
+000080 9443                      	mult_16_by_8 r24, r25, r26
                                  
-00007a 822f                      	std Y+7, res1
-00007b 8638                      	std Y+8, res2
+000081 822f                      	std Y+7, res1
+000082 8638                      	std Y+8, res2
                                  	
-00007c e001
-00007d e010
-00007e 0f40
-00007f 1f51                      	inc_loop_counter r20, r21
-000080 cfec                      	rjmp for_pow
+000083 e001
+000084 e010
+000085 0f40
+000086 1f51                      	inc_loop_counter r20, r21
+000087 cfec                      	rjmp for_pow
                                  for_pow_end:
                                  
                                  	; store result into 24, 25
                                  
-000081 91bf                      	pop r27
-000082 91af                      	pop r26
-000083 917f                      	pop r23
-000084 916f                      	pop r22
-000085 915f                      	pop r21
-000086 914f                      	pop r20
-000087 913f                      	pop r19
-000088 912f                      	pop r18
+000088 91bf                      	pop r27
+000089 91af                      	pop r26
+00008a 917f                      	pop r23
+00008b 916f                      	pop r22
+00008c 915f                      	pop r21
+00008d 914f                      	pop r20
+00008e 913f                      	pop r19
+00008f 912f                      	pop r18
                                  
-000089 818f                      	ldd r24, y+7
-00008a 8598                      	ldd r25, y+8
+000090 818f                      	ldd r24, y+7
+000091 8598                      	ldd r25, y+8
                                  
-00008b 9628                      	adiw r28, 8
-00008c bfde                      	out sph, r29
-00008d bfcd                      	out spl, r28
+000092 9628                      	adiw r28, 8
+000093 bfde                      	out sph, r29
+000094 bfcd                      	out spl, r28
                                  
-00008e 91df                      	pop r29
-00008f 91cf                      	pop r28
-000090 9508                      	ret
+000095 91df                      	pop r29
+000096 91cf                      	pop r28
+000097 9508                      	ret
                                  
                                  end_program:
 
@@ -2184,11 +2199,11 @@ counted separately from r26..r31 here.
 .dseg memory usage only counts static data declared with .byte
 
 "ATmega2560" register use summary:
-x  :   0 y  :  47 z  :   1 r0 :   4 r1 :   4 r2 :   4 r3 :   6 r4 :   5 
+x  :   0 y  :  47 z  :   7 r0 :   4 r1 :   4 r2 :   4 r3 :   6 r4 :   5 
 r5 :   0 r6 :   0 r7 :   0 r8 :   0 r9 :   0 r10:   0 r11:   0 r12:   0 
-r13:   0 r14:   0 r15:   0 r16:  22 r17:  19 r18:  12 r19:   7 r20:   7 
+r13:   0 r14:   0 r15:   0 r16:  22 r17:  20 r18:  12 r19:   7 r20:   7 
 r21:   7 r22:   5 r23:   3 r24:   5 r25:   5 r26:   9 r27:   7 r28:   9 
-r29:   8 r30:   3 r31:   3 
+r29:   8 r30:   6 r31:   6 
 Registers used: 23 out of 35 (65.7%)
 
 "ATmega2560" instruction use summary:
@@ -2202,8 +2217,8 @@ clc   :   0 clh   :   0 cli   :   0 cln   :   0 clr   :   0 cls   :   0
 clt   :   0 clv   :   0 clz   :   0 com   :   0 cp    :   2 cpc   :   1 
 cpi   :   0 cpse  :   0 dec   :   0 eicall:   0 eijmp :   0 elpm  :   0 
 eor   :   0 fmul  :   0 fmuls :   0 fmulsu:   0 icall :   0 ijmp  :   0 
-in    :   2 inc   :   2 jmp   :   0 ld    :   0 ldd   :  19 ldi   :  19 
-lds   :   2 lpm   :   0 lsl   :   0 lsr   :   0 mov   :   7 movw  :   0 
+in    :   2 inc   :   2 jmp   :   0 ld    :   0 ldd   :  19 ldi   :  20 
+lds   :   2 lpm   :   6 lsl   :   0 lsr   :   0 mov   :   7 movw  :   0 
 mul   :   4 muls  :   0 mulsu :   0 neg   :   0 nop   :   1 or    :   0 
 ori   :   0 out   :   6 pop   :  10 push  :  10 rcall :   0 ret   :   1 
 reti  :   0 rjmp  :   3 rol   :   0 ror   :   0 sbc   :   0 sbci  :   0 
@@ -2212,12 +2227,12 @@ sbrs  :   0 sec   :   0 seh   :   0 sei   :   0 sen   :   0 ser   :   0
 ses   :   0 set   :   0 sev   :   0 sez   :   0 sleep :   0 spm   :   0 
 st    :   1 std   :  28 sts   :   2 sub   :   0 subi  :   0 swap  :   0 
 tst   :   0 wdr   :   0 
-Instructions used: 25 out of 116 (21.6%)
+Instructions used: 26 out of 116 (22.4%)
 
 "ATmega2560" memory use summary [bytes]:
 Segment   Begin    End      Code   Data   Used    Size   Use%
 ---------------------------------------------------------------
-[.cseg] 0x000000 0x000124    286      6    292  262144   0.1%
+[.cseg] 0x000000 0x000132    300      6    306  262144   0.1%
 [.dseg] 0x000200 0x00020d      0     13     13    8192   0.2%
 [.eseg] 0x000000 0x000000      0      0      0    4096   0.0%
 

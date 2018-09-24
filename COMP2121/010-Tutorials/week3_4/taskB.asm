@@ -48,7 +48,7 @@ start:
 	ldi zh, high(s<<1)
 	
 	; for(i=0;i<=5;i++)
-	clr counte
+	clr counter
 rbegin_for:
 	cpi counter, len
 	brsh end_for

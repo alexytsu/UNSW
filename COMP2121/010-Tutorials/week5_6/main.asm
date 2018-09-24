@@ -25,7 +25,7 @@
 	add res2, r0
 	brcc noCarry				; skip carry if not needed
 	inc Res3
-noCarry:
+noCarry:	
 				
 .endmacro
 
@@ -33,6 +33,7 @@ noCarry:
 .def temp2=r17
 
 .dseg
+	; 
 	.org 0x200
 	glob_x: .byte 1
 	glob_n: .byte 1
@@ -41,34 +42,48 @@ noCarry:
 .cseg
 
 	main_i: .dw 0				; store initial values in
-	main_sum: .dw 1				; code segment
+	main_sum: .dw 0				; code segment
 	main_result: .dw 0			
 
-	ldi temp1, 3				; load global variables
+	ldi temp1, 2				; load global variables into data
 	sts glob_x, temp1			
 	ldi temp1, 10				
 	sts glob_n, temp1 
 
 main:
+
 	ldi r28, low(RAMEND-9)		
 	ldi r29, high(RAMEND-9)	
 
 	out spl, r28
 	out sph, r29
 
-	ldi temp1, low(0)			; store local (int i)
-	ldi temp2, high(0)			
+	ldi zl, low(main_i<<1)
+	ldi zh, high(main_i<<1)
+
+	lpm temp1, Z+				;store local i from prog mem
+	lpm temp2, Z+
+		
 	std Y+1, temp1
 	std Y+2, temp2
 
-	ldi temp1, low(0)			; store local (sum = 0)
-	ldi temp2, high(0)
-	std Y+3, temp1
+	ldi zl, low(main_sum<<1)
+	ldi zh, high(main_sum<<1)
+
+	lpm temp1, Z+
+	lpm temp2, Z+
+
+	std Y+3, temp1				; store local sum from prog mem to stack
 	std Y+4, temp2
+	ldi temp2, 0
 	std Y+5, temp2
 
-	ldi temp1, low(0)			; store local (result)
-	ldi temp2, high(0)
+	ldi zl, low(main_result<<1)
+	ldi zh, high(main_result<<1)
+
+	lpm temp1, Z+				; store local result from prog mem
+	lpm temp2, Z+
+
 	std Y+6, temp1
 	std Y+7, temp2
 
@@ -77,7 +92,7 @@ main:
 	std Y+8, temp1
 	std Y+9, temp2
 
-	; end main prologue 
+	; end main prologue a
 
 	ldd r18, Y+1				; get local int i
 	ldd r19, Y+2
