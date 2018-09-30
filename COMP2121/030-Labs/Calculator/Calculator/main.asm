@@ -42,6 +42,7 @@
 
 .def prevop = r26
 .def rmp = r27
+.def invalid = r28
 
 .equ PORTLDIR = 0xF0
 .equ INITCOLMASK = 0xEF
@@ -59,6 +60,7 @@ jmp RESET	; set the reset vector
 
 .org 0x72
 overflowmsg: .db "Overflow occured"
+invalidmsg: .db "Incorrect Expression"
 RESET:
 	; initialise the stack pointer
 	ldi temp, low(RAMEND)
@@ -150,36 +152,7 @@ main:
 			inc col ; increment column value
 			jmp colloop ; and check the next column
 
-	.macro accumulate
-	; multiply by 10
-		clr temp1
-		clr temp2
 
-		lsl curr1
-		rol curr2
-
-		add temp1, curr1
-		adc temp2, curr2
-	
-
-		lsl curr1
-		rol curr2
-
-		lsl curr1
-		rol curr2
-
-		add temp1, curr1
-		adc temp2, curr2
-
-		; add the current digit in
-		add temp1, temp
-		brcc skip_inc
-		inc temp2
-		skip_inc:
-
-		mov curr1, temp1
-		mov curr2, temp2
-	.endmacro
 
 
 	; convert function converts the row and column given to a
@@ -191,7 +164,8 @@ main:
 		breq letters
 		cpi row, 3 ; if row is 3 we have a symbol or 0
 		breq symbols
-	
+		
+		clr invalid
 		mov temp, row ; otherwise we have a number (1-9)
 		lsl temp ; temp = row * 2
 		add temp, row ; temp = row * 3
@@ -199,13 +173,22 @@ main:
 		; to get the offset from 1
 		inc temp ; add 1. Value of switch is
 		; row*3 + col + 1.
-		accumulate
+		rcall accumulate
 		jmp convert_end
 	
 	letters:
+		cpi invalid, 0xff
+		breq gotoinvalid
+		ser invalid
+
+		jmp skipinvalid
+		gotoinvalid:
+		rcall invalid_func
+
+		skipinvalid:
 
 		cpi prevop, 0
-		breq addition
+		breq addition		
 			
 		cpi prevop, 1
 		breq subtraction
@@ -217,14 +200,19 @@ main:
 		addition:
 			add acc1, curr1
 			adc acc2, curr2
-			brvs overflow
+			brvs gooverflow
 			jmp skip_eval
 
 		subtraction:
 			sub acc1, curr1
 			sbc acc2, curr2
-			brvs overflow
+			brvs gooverflow
 			jmp skip_eval
+
+		rjmp skipgoovflow
+		gooverflow:
+		rcall overflow
+		skipgoovflow:
 
 		skip_eval:
 
@@ -238,6 +226,13 @@ main:
 		breq B		; +
 		cpi row, 2
 		breq C		; =
+		cpi row, 3
+		breq leave
+
+		rjmp skipleave
+		leave:
+		ret
+		skipleave:
 		
 		A:
 		ldi temp, -3
@@ -258,39 +253,13 @@ main:
 		cpi col, 1 ; or if we have zero
 		breq zero
 		ldi temp, 0xF ; else we'll output 0xF for hash
-		jmp convert_end
+		ret
 		star:
-			ldi temp, 0xE ; we'll output 0xE for star
-			jmp convert_end
+			ret
 		zero:
 			clr temp ; set to zero
-			accumulate
+			rcall accumulate
 			jmp convert_end
-
-	overflow:
-		do_lcd_command 0b00111000 ; 2x5x7
-		rcall sleep_5ms
-		do_lcd_command 0b00111000 ; 2x5x7
-		rcall sleep_1ms
-		do_lcd_command 0b00111000 ; 2x5x7
-		do_lcd_command 0b00111000 ; 2x5x7
-		do_lcd_command 0b00001000 ; display off?
-		do_lcd_command 0b00000001 ; clear display
-		do_lcd_command 0b00000110 ; increment, no display shift
-		do_lcd_command 0b00001110 ; Cursor on, bar, no blink
-
-		ldi zl, low(overflowmsg<<1)
-		ldi zh, high(overflowmsg<<1)
-		ldi prevop, 20
-		loop_overflow:
-
-		lpm disp, z+
-		do_lcd_data
-
-		subi prevop, 1
-		brne loop_overflow
-		
-		jmp halt
 
 	convert_end:
 		
@@ -344,7 +313,102 @@ main:
 	halt:
 		jmp halt
 
+overflow:
+		do_lcd_command 0b00111000 ; 2x5x7
+		rcall sleep_5ms
+		do_lcd_command 0b00111000 ; 2x5x7
+		rcall sleep_1ms
+		do_lcd_command 0b00111000 ; 2x5x7
+		do_lcd_command 0b00111000 ; 2x5x7
+		do_lcd_command 0b00001000 ; display off?
+		do_lcd_command 0b00000001 ; clear display
+		do_lcd_command 0b00000110 ; increment, no display shift
+		do_lcd_command 0b00001110 ; Cursor on, bar, no blink
 
+		ldi zl, low(overflowmsg<<1)
+		ldi zh, high(overflowmsg<<1)
+		ldi prevop, 20
+		loop_overflow:
+
+		lpm disp, z+
+		do_lcd_data
+
+		subi prevop, 1
+		brne loop_overflow
+		
+		jmp halt
+
+	invalid_func:
+		do_lcd_command 0b00111000 ; 2x5x7
+		rcall sleep_5ms
+		do_lcd_command 0b00111000 ; 2x5x7
+		rcall sleep_1ms
+		do_lcd_command 0b00111000 ; 2x5x7
+		do_lcd_command 0b00111000 ; 2x5x7
+		do_lcd_command 0b00001000 ; display off?
+		do_lcd_command 0b00000001 ; clear display
+		do_lcd_command 0b00000110 ; increment, no display shift
+		do_lcd_command 0b00001110 ; Cursor on, bar, no blink
+
+		ldi zl, low(invalidmsg<<1)
+		ldi zh, high(invalidmsg<<1)
+		ldi prevop, 20
+		loop_overflow2:
+
+		lpm disp, z+
+		do_lcd_data
+
+		subi prevop, 1
+		brne loop_overflow2
+		
+		jmp halt
+
+accumulate:
+	; multiply by 10
+		clr temp1
+		clr temp2
+
+		lsl curr1
+		rol curr2
+		brcs gotooverflow
+
+		add temp1, curr1
+		adc temp2, curr2
+		brvs gotooverflow
+	
+
+		lsl curr1
+		rol curr2
+		brcs gotooverflow
+
+
+		lsl curr1
+		rol curr2
+		brcs gotooverflow
+
+
+		add temp1, curr1
+		adc temp2, curr2
+		brvs gotooverflow
+
+
+		; add the current digit in
+		add temp1, temp
+		push temp
+		ldi temp, 0
+		adc temp2, temp
+		brvs gotooverflow
+		pop temp
+
+		mov curr1, temp1
+		mov curr2, temp2
+
+		jmp skipme
+		gotooverflow:
+		rcall overflow
+		skipme:
+
+		ret
 
 
 ; LCD CODE -----------------
