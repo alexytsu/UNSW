@@ -22,35 +22,7 @@
 	rcall lcd_wait
 .endmacro
 
-.macro accumulate
-	; multiply by 10
-	clr temp1
-	clr temp2
 
-	lsl curr1
-	rol curr2
-
-	add temp1, curr1
-	adc temp2, curr2
-
-	lsl curr1
-	rol curr2
-
-	lsl curr1
-	rol curr2
-
-	add temp1, curr1
-	adc temp2, curr2
-
-	; add the current digit in
-	add temp1, temp
-	brcc skip_inc
-	inc temp2
-	skip_inc:
-
-	mov curr1, temp1
-	mov curr2, temp2
-.endmacro
 
 .def disp = r16
 
@@ -178,7 +150,36 @@ main:
 			inc col ; increment column value
 			jmp colloop ; and check the next column
 
+	.macro accumulate
+	; multiply by 10
+		clr temp1
+		clr temp2
 
+		lsl curr1
+		rol curr2
+
+		add temp1, curr1
+		adc temp2, curr2
+	
+
+		lsl curr1
+		rol curr2
+
+		lsl curr1
+		rol curr2
+
+		add temp1, curr1
+		adc temp2, curr2
+
+		; add the current digit in
+		add temp1, temp
+		brcc skip_inc
+		inc temp2
+		skip_inc:
+
+		mov curr1, temp1
+		mov curr2, temp2
+	.endmacro
 
 
 	; convert function converts the row and column given to a
@@ -455,9 +456,6 @@ sleep_100ms:
 	ret
 
 debounce:
-	rcall sleep_100ms
-	rcall sleep_100ms
-	rcall sleep_100ms
 	rcall sleep_100ms
 	rcall sleep_100ms
 	ret

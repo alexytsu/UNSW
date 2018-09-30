@@ -1,11 +1,11 @@
 
-AVRASM ver. 2.2.7  C:\Repositories\02-University\COMP2121\030-Labs\Calculator\Calculator\main.asm Sun Sep 30 16:38:17 2018
+AVRASM ver. 2.2.7  C:\Repositories\02-University\COMP2121\030-Labs\Calculator\Calculator\main.asm Sun Sep 30 16:46:27 2018
 
 [builtin](2): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.150\avrasm\inc\m2560def.inc'
 C:\Repositories\02-University\COMP2121\030-Labs\Calculator\Calculator\main.asm(12): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.150\avrasm\inc\m2560def.inc'
-C:\Repositories\02-University\COMP2121\030-Labs\Calculator\Calculator\main.asm(61): warning: Register r27 already defined by the .DEF directive
-C:\Repositories\02-University\COMP2121\030-Labs\Calculator\Calculator\main.asm(71): warning: Register r26 already defined by the .DEF directive
-C:\Repositories\02-University\COMP2121\030-Labs\Calculator\Calculator\main.asm(72): warning: Register r27 already defined by the .DEF directive
+C:\Repositories\02-University\COMP2121\030-Labs\Calculator\Calculator\main.asm(33): warning: Register r27 already defined by the .DEF directive
+C:\Repositories\02-University\COMP2121\030-Labs\Calculator\Calculator\main.asm(43): warning: Register r26 already defined by the .DEF directive
+C:\Repositories\02-University\COMP2121\030-Labs\Calculator\Calculator\main.asm(44): warning: Register r27 already defined by the .DEF directive
 [builtin](2): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.150\avrasm\inc\m2560def.inc'
 C:\Repositories\02-University\COMP2121\030-Labs\Calculator\Calculator\main.asm(12): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.150\avrasm\inc\m2560def.inc'
                                  
@@ -1913,35 +1913,7 @@ C:\Repositories\02-University\COMP2121\030-Labs\Calculator\Calculator\main.asm(1
                                  	rcall lcd_wait
                                  .endmacro
                                  
-                                 .macro accumulate
-                                 	; multiply by 10
-                                 	clr temp1
-                                 	clr temp2
                                  
-                                 	lsl curr1
-                                 	rol curr2
-                                 
-                                 	add temp1, curr1
-                                 	adc temp2, curr2
-                                 
-                                 	lsl curr1
-                                 	rol curr2
-                                 
-                                 	lsl curr1
-                                 	rol curr2
-                                 
-                                 	add temp1, curr1
-                                 	adc temp2, curr2
-                                 
-                                 	; add the current digit in
-                                 	add temp1, temp
-                                 	brcc skip_inc
-                                 	inc temp2
-                                 	skip_inc:
-                                 
-                                 	mov curr1, temp1
-                                 	mov curr2, temp2
-                                 .endmacro
                                  
                                  .def disp = r16
                                  
@@ -2092,7 +2064,37 @@ C:\Repositories\02-University\COMP2121\030-Labs\Calculator\Calculator\main.asm(1
 0000c5 9523                      			inc col ; increment column value
 0000c6 940c 00ab                 			jmp colloop ; and check the next column
                                  
+                                 	.macro accumulate
+                                 	; multiply by 10
                                  
+                                 	clr temp1
+                                 	clr temp2
+                                 
+                                 	lsl curr1
+                                 	rol curr2
+                                 
+                                 	add temp1, curr1
+                                 	adc temp2, curr2
+                                 	
+                                 
+                                 	lsl curr1
+                                 	rol curr2
+                                 
+                                 	lsl curr1
+                                 	rol curr2
+                                 
+                                 	add temp1, curr1
+                                 	adc temp2, curr2
+                                 
+                                 	; add the current digit in
+                                 	add temp1, temp
+                                 	brcc skip_inc
+                                 	inc temp2
+                                 	skip_inc:
+                                 
+                                 	mov curr1, temp1
+                                 	mov curr2, temp2
+                                 	.endmacro
                                  
                                  
                                  	; convert function converts the row and column given to a
@@ -2291,7 +2293,7 @@ C:\Repositories\02-University\COMP2121\030-Labs\Calculator\Calculator\main.asm(1
                                  
 000162 e0f2                      		ldi zh, high(ascii_result)
 000163 e0ee                      		ldi zl, low(ascii_result)
-000164 d057                      		rcall Bin2ToAsc5
+000164 d054                      		rcall Bin2ToAsc5
                                  		
 000165 e0a5                      		ldi prevop, 5
                                  		display_loop:
@@ -2423,10 +2425,7 @@ C:\Repositories\02-University\COMP2121\030-Labs\Calculator\Calculator\main.asm(1
                                  debounce:
 0001b6 dffa                      	rcall sleep_100ms
 0001b7 dff9                      	rcall sleep_100ms
-0001b8 dff8                      	rcall sleep_100ms
-0001b9 dff7                      	rcall sleep_100ms
-0001ba dff6                      	rcall sleep_100ms
-0001bb 9508                      	ret
+0001b8 9508                      	ret
                                  
                                  ; Bin2ToAsc5
                                  ; ==========
@@ -2440,28 +2439,28 @@ C:\Repositories\02-University\COMP2121\030-Labs\Calculator\Calculator\main.asm(1
                                  ; Called subroutines: Bin2ToBcd5
                                  ;
                                  Bin2ToAsc5:
-0001bc d012                      	rcall Bin2ToBcd5 ; convert binary to BCD
-0001bd e0b4                      	ldi rmp,4 ; Counter is 4 leading digits
-0001be 2f4b                      	mov temp1,rmp
+0001b9 d012                      	rcall Bin2ToBcd5 ; convert binary to BCD
+0001ba e0b4                      	ldi rmp,4 ; Counter is 4 leading digits
+0001bb 2f4b                      	mov temp1,rmp
                                  Bin2ToAsc5a:
-0001bf 81b0                      	ld rmp,z ; read a BCD digit
-0001c0 23bb                      	tst rmp ; check if leading zero
-0001c1 f429                      	brne Bin2ToAsc5b ; No, found digit >0
-0001c2 e2b0                      	ldi rmp,' ' ; overwrite with blank
-0001c3 93b1                      	st z+,rmp ; store and set to next position
-0001c4 954a                      	dec temp1 ; decrement counter
-0001c5 f7c9                      	brne Bin2ToAsc5a ; further leading blanks
-0001c6 81b0                      	ld rmp,z ; Read the last BCD
+0001bc 81b0                      	ld rmp,z ; read a BCD digit
+0001bd 23bb                      	tst rmp ; check if leading zero
+0001be f429                      	brne Bin2ToAsc5b ; No, found digit >0
+0001bf e2b0                      	ldi rmp,' ' ; overwrite with blank
+0001c0 93b1                      	st z+,rmp ; store and set to next position
+0001c1 954a                      	dec temp1 ; decrement counter
+0001c2 f7c9                      	brne Bin2ToAsc5a ; further leading blanks
+0001c3 81b0                      	ld rmp,z ; Read the last BCD
                                  Bin2ToAsc5b:
-0001c7 9543                      	inc temp1 ; one more char
+0001c4 9543                      	inc temp1 ; one more char
                                  Bin2ToAsc5c:
-0001c8 5db0                      	subi rmp,-'0' ; Add ASCII-0
-0001c9 93b1                      	st z+,rmp ; store and inc pointer
-0001ca 81b0                      	ld rmp,z ; read next char
-0001cb 954a                      	dec temp1 ; more chars?
-0001cc f7d9                      	brne Bin2ToAsc5c ; yes, go on
-0001cd 9735                      	sbiw ZL,5 ; Pointer to beginning of the BCD
-0001ce 9508                      	ret ; done
+0001c5 5db0                      	subi rmp,-'0' ; Add ASCII-0
+0001c6 93b1                      	st z+,rmp ; store and inc pointer
+0001c7 81b0                      	ld rmp,z ; read next char
+0001c8 954a                      	dec temp1 ; more chars?
+0001c9 f7d9                      	brne Bin2ToAsc5c ; yes, go on
+0001ca 9735                      	sbiw ZL,5 ; Pointer to beginning of the BCD
+0001cb 9508                      	ret ; done
                                  ;
                                  
                                  ; Bin2ToBcd5
@@ -2475,33 +2474,33 @@ C:\Repositories\02-University\COMP2121\030-Labs\Calculator\Calculator\main.asm(1
                                  ; Called subroutines: Bin2ToDigit
                                  ;
                                  Bin2ToBcd5:
-0001cf 939f                      	push acc2 ; Save number
-0001d0 938f                      	push acc1
-0001d1 e2b7                      	ldi rmp,HIGH(10000) ; Start with tenthousands
-0001d2 2f5b                      	mov temp2,rmp
-0001d3 e1b0                      	ldi rmp,LOW(10000)
-0001d4 2f4b                      	mov temp1,rmp
-0001d5 d014                      	rcall Bin2ToDigit ; Calculate digit
-0001d6 e0b3                      	ldi rmp,HIGH(1000) ; Next with thousands
-0001d7 2f5b                      	mov temp2,rmp
-0001d8 eeb8                      	ldi rmp,LOW(1000)
-0001d9 2f4b                      	mov temp1,rmp
-0001da d00f                      	rcall Bin2ToDigit ; Calculate digit
-0001db e0b0                      	ldi rmp,HIGH(100) ; Next with hundreds
-0001dc 2f5b                      	mov temp2,rmp
-0001dd e6b4                      	ldi rmp,LOW(100)
-0001de 2f4b                      	mov temp1,rmp
-0001df d00a                      	rcall Bin2ToDigit ; Calculate digit
-0001e0 e0b0                      	ldi rmp,HIGH(10) ; Next with tens
-0001e1 2f5b                      	mov temp2,rmp
-0001e2 e0ba                      	ldi rmp,LOW(10)
-0001e3 2f4b                      	mov temp1,rmp
-0001e4 d005                      	rcall Bin2ToDigit ; Calculate digit
-0001e5 8380                      	st z,acc1 ; Remainder are ones
-0001e6 9734                      	sbiw ZL,4 ; Put pointer to first BCD
-0001e7 918f                      	pop acc1 ; Restore original binary
-0001e8 919f                      	pop acc2
-0001e9 9508                      	ret ; and return
+0001cc 939f                      	push acc2 ; Save number
+0001cd 938f                      	push acc1
+0001ce e2b7                      	ldi rmp,HIGH(10000) ; Start with tenthousands
+0001cf 2f5b                      	mov temp2,rmp
+0001d0 e1b0                      	ldi rmp,LOW(10000)
+0001d1 2f4b                      	mov temp1,rmp
+0001d2 d014                      	rcall Bin2ToDigit ; Calculate digit
+0001d3 e0b3                      	ldi rmp,HIGH(1000) ; Next with thousands
+0001d4 2f5b                      	mov temp2,rmp
+0001d5 eeb8                      	ldi rmp,LOW(1000)
+0001d6 2f4b                      	mov temp1,rmp
+0001d7 d00f                      	rcall Bin2ToDigit ; Calculate digit
+0001d8 e0b0                      	ldi rmp,HIGH(100) ; Next with hundreds
+0001d9 2f5b                      	mov temp2,rmp
+0001da e6b4                      	ldi rmp,LOW(100)
+0001db 2f4b                      	mov temp1,rmp
+0001dc d00a                      	rcall Bin2ToDigit ; Calculate digit
+0001dd e0b0                      	ldi rmp,HIGH(10) ; Next with tens
+0001de 2f5b                      	mov temp2,rmp
+0001df e0ba                      	ldi rmp,LOW(10)
+0001e0 2f4b                      	mov temp1,rmp
+0001e1 d005                      	rcall Bin2ToDigit ; Calculate digit
+0001e2 8380                      	st z,acc1 ; Remainder are ones
+0001e3 9734                      	sbiw ZL,4 ; Put pointer to first BCD
+0001e4 918f                      	pop acc1 ; Restore original binary
+0001e5 919f                      	pop acc2
+0001e6 9508                      	ret ; and return
                                  ;
                                  ; Bin2ToDigit
                                  ; ===========
@@ -2516,21 +2515,21 @@ C:\Repositories\02-University\COMP2121\030-Labs\Calculator\Calculator\main.asm(1
                                  ; Called subroutines: -
                                  ;
                                  Bin2ToDigit:
-0001ea 27bb                      	clr rmp ; digit count is zero
+0001e7 27bb                      	clr rmp ; digit count is zero
                                  Bin2ToDigita:
-0001eb 1795                      	cp acc2,temp2 ; Number bigger than decimal?
-0001ec f038                      	brcs Bin2ToDigitc ; MSB smaller than decimal
-0001ed f411                      	brne Bin2ToDigitb ; MSB bigger than decimal
-0001ee 1784                      	cp acc1,temp1 ; LSB bigger or equal decimal
-0001ef f020                      	brcs Bin2ToDigitc ; LSB smaller than decimal
+0001e8 1795                      	cp acc2,temp2 ; Number bigger than decimal?
+0001e9 f038                      	brcs Bin2ToDigitc ; MSB smaller than decimal
+0001ea f411                      	brne Bin2ToDigitb ; MSB bigger than decimal
+0001eb 1784                      	cp acc1,temp1 ; LSB bigger or equal decimal
+0001ec f020                      	brcs Bin2ToDigitc ; LSB smaller than decimal
                                  Bin2ToDigitb:
-0001f0 1b84                      	sub acc1,temp1 ; Subtract LSB decimal
-0001f1 0b95                      	sbc acc2,temp2 ; Subtract MSB decimal
-0001f2 95b3                      	inc rmp ; Increment digit count
-0001f3 cff7                      	rjmp Bin2ToDigita ; Next loop
+0001ed 1b84                      	sub acc1,temp1 ; Subtract LSB decimal
+0001ee 0b95                      	sbc acc2,temp2 ; Subtract MSB decimal
+0001ef 95b3                      	inc rmp ; Increment digit count
+0001f0 cff7                      	rjmp Bin2ToDigita ; Next loop
                                  Bin2ToDigitc:
-0001f4 93b1                      	st z+,rmp ; Save digit and increment
-0001f5 9508                      	ret ; done
+0001f1 93b1                      	st z+,rmp ; Save digit and increment
+0001f2 9508                      	ret ; done
                                  
 
 
@@ -2570,7 +2569,7 @@ eor   :   2 fmul  :   0 fmuls :   0 fmulsu:   0 icall :   0 ijmp  :   0
 in    :   1 inc   :   8 jmp   :  16 ld    :   4 ldd   :   0 ldi   :  50 
 lds   :   1 lpm   :   1 lsl   :   8 lsr   :   0 mov   :  16 movw  :   0 
 mul   :   0 muls  :   0 mulsu :   0 neg   :   0 nop   :  20 or    :   0 
-ori   :   0 out   :  15 pop   :   5 push  :   5 rcall :  71 ret   :  13 
+ori   :   0 out   :  15 pop   :   5 push  :   5 rcall :  68 ret   :  13 
 reti  :   0 rjmp  :   3 rol   :   7 ror   :   0 sbc   :   2 sbci  :   0 
 sbi   :   5 sbic  :   0 sbis  :   0 sbiw  :   3 sbr   :   0 sbrc  :   1 
 sbrs  :   0 sec   :   1 seh   :   0 sei   :   0 sen   :   0 ser   :   3 
@@ -2582,7 +2581,7 @@ Instructions used: 44 out of 116 (37.9%)
 "ATmega2560" memory use summary [bytes]:
 Segment   Begin    End      Code   Data   Used    Size   Use%
 ---------------------------------------------------------------
-[.cseg] 0x000000 0x0003ec    764     16    780  262144   0.3%
+[.cseg] 0x000000 0x0003e6    758     16    774  262144   0.3%
 [.dseg] 0x000200 0x000213      0     19     19    8192   0.2%
 [.eseg] 0x000000 0x000000      0      0      0    4096   0.0%
 

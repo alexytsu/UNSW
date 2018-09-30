@@ -1,5 +1,5 @@
 
-AVRASM ver. 2.2.7  C:\Repositories\02-University\COMP2121\030-Labs\Calculator\Calculator\main.asm Sun Sep 30 16:38:17 2018
+AVRASM ver. 2.2.7  C:\Repositories\02-University\COMP2121\030-Labs\Calculator\Calculator\main.asm Sun Sep 30 16:46:27 2018
 
 
 EQU  SIGNATURE_000 0000001e
@@ -1394,7 +1394,7 @@ CSEG skipconv     000000bd
 CSEG convert      000000c8
 CSEG letters      000000e4
 CSEG symbols      0000010b
-CSEG skip_inc@accumulate@3914 000000e0
+CSEG skip_inc@accumulate@3916 000000e0
 CSEG convert_end  0000014d
 CSEG addition     000000ec
 CSEG subtraction  000000f1
@@ -1405,7 +1405,7 @@ CSEG B            00000103
 CSEG C            00000107
 CSEG star         00000112
 CSEG zero         00000115
-CSEG skip_inc@accumulate@4008 00000125
+CSEG skip_inc@accumulate@4012 00000125
 CSEG loop_overflow 00000146
 CSEG lcd_data     0000017a
 CSEG halt         0000016d
@@ -1414,7 +1414,7 @@ CSEG show_result  00000157
 CSEG skip_lcd     00000156
 CSEG invert       0000015b
 CSEG skipinvert   00000162
-CSEG Bin2ToAsc5   000001bc
+CSEG Bin2ToAsc5   000001b9
 CSEG display_loop 00000166
 CSEG skip_disp    0000016b
 EQU  LCD_RS       00000007
@@ -1427,11 +1427,11 @@ EQU  DELAY_1MS    00000f9c
 CSEG delayloop_1ms 000001a0
 CSEG sleep_25ms   000001ab
 CSEG sleep_100ms  000001b1
-CSEG Bin2ToBcd5   000001cf
-CSEG Bin2ToAsc5a  000001bf
-CSEG Bin2ToAsc5b  000001c7
-CSEG Bin2ToAsc5c  000001c8
-CSEG Bin2ToDigit  000001ea
-CSEG Bin2ToDigita 000001eb
-CSEG Bin2ToDigitc 000001f4
-CSEG Bin2ToDigitb 000001f0
+CSEG Bin2ToBcd5   000001cc
+CSEG Bin2ToAsc5a  000001bc
+CSEG Bin2ToAsc5b  000001c4
+CSEG Bin2ToAsc5c  000001c5
+CSEG Bin2ToDigit  000001e7
+CSEG Bin2ToDigita 000001e8
+CSEG Bin2ToDigitc 000001f1
+CSEG Bin2ToDigitb 000001ed
