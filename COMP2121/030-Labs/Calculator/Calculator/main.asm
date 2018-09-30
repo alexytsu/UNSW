@@ -22,6 +22,35 @@
 	rcall lcd_wait
 .endmacro
 
+.macro accumulate
+	; multiply by 10
+	clr temp1
+	clr temp2
+
+	lsl curr1
+	rol curr2
+
+	add temp1, curr1
+	adc temp2, curr2
+
+	lsl curr1
+	rol curr2
+
+	lsl curr1
+	rol curr2
+
+	add temp1, curr1
+	adc temp2, curr2
+
+	; add the current digit in
+	add temp1, temp
+	brcc skip_inc
+	inc temp2
+	skip_inc:
+
+	mov curr1, temp1
+	mov curr2, temp2
+.endmacro
 
 .def disp = r16
 
@@ -29,11 +58,18 @@
 .def col = r18
 .def mask = r19
 
-.def temp2 =r20
-.def temp = r21
+.def temp = r27
+.def temp1 = r20
+.def temp2 = r21
 
 .def curr1 = r22
 .def curr2 = r23
+
+.def acc1 = r24
+.def acc2 = r25
+
+.def prevop = r26
+.def rmp = r27
 
 .equ PORTLDIR = 0xF0
 .equ INITCOLMASK = 0xEF
@@ -43,19 +79,26 @@
 .dseg
 numbers: .byte 5*2
 operators: .byte 4
+ascii_result: .byte 5
 
 
 .cseg
 jmp RESET	; set the reset vector
 
 .org 0x72
+overflowmsg: .db "Overflow occured"
 RESET:
-
 	; initialise the stack pointer
 	ldi temp, low(RAMEND)
 	out SPL, temp
 	ldi temp, high(RAMEND)
 	out SPH, temp
+
+	clr acc1
+	clr acc2
+	clr curr1
+	clr curr2
+	clr prevop
 
 	; Keypad is connected on PORTL
 	ldi temp, PORTLDIR ; columns are outputs, rows are inputs
@@ -64,7 +107,7 @@ RESET:
 	; LED Strip is connected on PORTC
 	ser temp
 	out DDRC, temp ; Make PORTC all outputs
-	out PORTC, temp ; Turn on all the LEDs
+	out PORTC, acc1 ; Turn on all the LEDs
 
 	; Display is on PORTA and F
 	ser temp
@@ -75,8 +118,6 @@ RESET:
 	out PORTA, temp
 
 	; Reset the screen
-
-
 	do_lcd_command 0b00111000 ; 2x5x7
 	rcall sleep_5ms
 	do_lcd_command 0b00111000 ; 2x5x7
@@ -137,6 +178,9 @@ main:
 			inc col ; increment column value
 			jmp colloop ; and check the next column
 
+
+
+
 	; convert function converts the row and column given to a
 	; binary number and also outputs the value to PORTC.
 	; Inputs come from registers row and col and output is in
@@ -154,10 +198,57 @@ main:
 		; to get the offset from 1
 		inc temp ; add 1. Value of switch is
 		; row*3 + col + 1.
+		accumulate
 		jmp convert_end
+	
 	letters:
-		ldi temp, 0xA
-		add temp, row ; increment from 0xA by the row value
+
+		cpi prevop, 0
+		breq addition
+			
+		cpi prevop, 1
+		breq subtraction
+
+		cpi prevop, 2
+		breq addition
+
+		jmp skip_eval
+		addition:
+			add acc1, curr1
+			adc acc2, curr2
+			brvs overflow
+			jmp skip_eval
+
+		subtraction:
+			sub acc1, curr1
+			sbc acc2, curr2
+			brvs overflow
+			jmp skip_eval
+
+		skip_eval:
+
+		clr curr1
+		clr curr2
+		clr temp
+		
+		cpi row, 0
+		breq A		; -
+		cpi row, 1
+		breq B		; +
+		cpi row, 2
+		breq C		; =
+		
+		A:
+		ldi temp, -3
+		ldi prevop, 1
+		jmp convert_end
+		B:
+		ldi temp, -5
+		ldi prevop, 2
+		jmp convert_end
+		C:
+		ldi temp, 13
+		ldi prevop, 3
 		jmp convert_end
 
 	symbols:
@@ -172,14 +263,87 @@ main:
 			jmp convert_end
 		zero:
 			clr temp ; set to zero
+			accumulate
+			jmp convert_end
+
+	overflow:
+		do_lcd_command 0b00111000 ; 2x5x7
+		rcall sleep_5ms
+		do_lcd_command 0b00111000 ; 2x5x7
+		rcall sleep_1ms
+		do_lcd_command 0b00111000 ; 2x5x7
+		do_lcd_command 0b00111000 ; 2x5x7
+		do_lcd_command 0b00001000 ; display off?
+		do_lcd_command 0b00000001 ; clear display
+		do_lcd_command 0b00000110 ; increment, no display shift
+		do_lcd_command 0b00001110 ; Cursor on, bar, no blink
+
+		ldi zl, low(overflowmsg<<1)
+		ldi zh, high(overflowmsg<<1)
+		ldi prevop, 20
+		loop_overflow:
+
+		lpm disp, z+
+		do_lcd_data
+
+		subi prevop, 1
+		brne loop_overflow
+		
+		jmp halt
+
 	convert_end:
+		
+		out PORTC, acc1 ; write to led bar
 		mov disp, temp
-		subi disp, -'0'
+		subi disp, -'0' ; convert to ascii
 		do_lcd_data
 		rcall debounce
 
+		cpi prevop, 3
+		breq show_result
+
+		ret
+
 	skip_lcd:
 		ret ; return to caller
+
+	show_result:
+		out portC, acc1
+
+		; check if number is negative
+		tst acc2
+		brmi invert
+		rjmp skipinvert
+		invert:
+		ldi temp, 0xff
+		eor acc1, temp
+		eor acc2, temp
+		inc acc1
+		ldi disp, '-'
+		do_lcd_data
+		skipinvert:
+
+
+		ldi zh, high(ascii_result)
+		ldi zl, low(ascii_result)
+		rcall Bin2ToAsc5
+		
+		ldi prevop, 5
+		display_loop:
+		
+		ld disp, z+
+		cpi disp, ' '
+		breq skip_disp
+		do_lcd_data
+		skip_disp:
+		subi prevop, 1
+		brne display_loop
+	
+	
+	halt:
+		jmp halt
+
+
 
 
 ; LCD CODE -----------------
@@ -297,3 +461,108 @@ debounce:
 	rcall sleep_100ms
 	rcall sleep_100ms
 	ret
+
+; Bin2ToAsc5
+; ==========
+; converts a 16-bit-binary to a 5 digit ASCII-coded decimal
+; In: 16-bit-binary in acc2:L, Z points to the highest
+;   of 5 ASCII digits, where the result goes to
+; Out: Z points to the beginning of the ASCII string, lea-
+;   ding zeros are filled with blanks
+; Used registers: acc2:L (content is not changed),
+;   temp2:L (content is changed), rmp
+; Called subroutines: Bin2ToBcd5
+;
+Bin2ToAsc5:
+	rcall Bin2ToBcd5 ; convert binary to BCD
+	ldi rmp,4 ; Counter is 4 leading digits
+	mov temp1,rmp
+Bin2ToAsc5a:
+	ld rmp,z ; read a BCD digit
+	tst rmp ; check if leading zero
+	brne Bin2ToAsc5b ; No, found digit >0
+	ldi rmp,' ' ; overwrite with blank
+	st z+,rmp ; store and set to next position
+	dec temp1 ; decrement counter
+	brne Bin2ToAsc5a ; further leading blanks
+	ld rmp,z ; Read the last BCD
+Bin2ToAsc5b:
+	inc temp1 ; one more char
+Bin2ToAsc5c:
+	subi rmp,-'0' ; Add ASCII-0
+	st z+,rmp ; store and inc pointer
+	ld rmp,z ; read next char
+	dec temp1 ; more chars?
+	brne Bin2ToAsc5c ; yes, go on
+	sbiw ZL,5 ; Pointer to beginning of the BCD
+	ret ; done
+;
+
+; Bin2ToBcd5
+; ==========
+; converts a 16-bit-binary to a 5-digit-BCD
+; In: 16-bit-binary in acc2:L, Z points to first digit
+;   where the result goes to
+; Out: 5-digit-BCD, Z points to first BCD-digit
+; Used registers: acc2:L (unchanged), temp2:L (changed),
+;   rmp
+; Called subroutines: Bin2ToDigit
+;
+Bin2ToBcd5:
+	push acc2 ; Save number
+	push acc1
+	ldi rmp,HIGH(10000) ; Start with tenthousands
+	mov temp2,rmp
+	ldi rmp,LOW(10000)
+	mov temp1,rmp
+	rcall Bin2ToDigit ; Calculate digit
+	ldi rmp,HIGH(1000) ; Next with thousands
+	mov temp2,rmp
+	ldi rmp,LOW(1000)
+	mov temp1,rmp
+	rcall Bin2ToDigit ; Calculate digit
+	ldi rmp,HIGH(100) ; Next with hundreds
+	mov temp2,rmp
+	ldi rmp,LOW(100)
+	mov temp1,rmp
+	rcall Bin2ToDigit ; Calculate digit
+	ldi rmp,HIGH(10) ; Next with tens
+	mov temp2,rmp
+	ldi rmp,LOW(10)
+	mov temp1,rmp
+	rcall Bin2ToDigit ; Calculate digit
+	st z,acc1 ; Remainder are ones
+	sbiw ZL,4 ; Put pointer to first BCD
+	pop acc1 ; Restore original binary
+	pop acc2
+	ret ; and return
+;
+; Bin2ToDigit
+; ===========
+; converts one decimal digit by continued subraction of a
+;   binary coded decimal
+; Used by: Bin2ToBcd5, Bin2ToAsc5, Bin2ToAsc
+; In: 16-bit-binary in acc2:L, binary coded decimal in
+;   temp2:L, Z points to current BCD digit
+; Out: Result in Z, Z incremented
+; Used registers: acc2:L (holds remainder of the binary),
+;   temp2:L (unchanged), rmp
+; Called subroutines: -
+;
+Bin2ToDigit:
+	clr rmp ; digit count is zero
+Bin2ToDigita:
+	cp acc2,temp2 ; Number bigger than decimal?
+	brcs Bin2ToDigitc ; MSB smaller than decimal
+	brne Bin2ToDigitb ; MSB bigger than decimal
+	cp acc1,temp1 ; LSB bigger or equal decimal
+	brcs Bin2ToDigitc ; LSB smaller than decimal
+Bin2ToDigitb:
+	sub acc1,temp1 ; Subtract LSB decimal
+	sbc acc2,temp2 ; Subtract MSB decimal
+	inc rmp ; Increment digit count
+	rjmp Bin2ToDigita ; Next loop
+Bin2ToDigitc:
+	st z+,rmp ; Save digit and increment
+	ret ; done
+
