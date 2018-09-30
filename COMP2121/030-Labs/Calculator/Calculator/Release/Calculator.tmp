@@ -1,0 +1,52 @@
+<ASSEMBLER_INFO>
+ <VERSION>2.2.7</VERSION>
+ <DEVICE>"ATmega2560"</DEVICE>
+ <WORKING_DIR>c:\users\alex\Documents\Atmel Studio\7.0\Calculator\Calculator\Release</WORKING_DIR>
+ <INCLUDE_PATH>
+  <DIR>C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.209\avrasm\inc</DIR>
+  <DIR>C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avrassembler\Include</DIR>
+  <DIR></DIR>
+ </INCLUDE_PATH>
+ <SOURCE_FILE>c:\users\alex\Documents\Atmel Studio\7.0\Calculator\Calculator\main.asm</SOURCE_FILE>
+ <INCLUDED_FILES>
+  <FILE>C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.209\avrasm\inc\m2560def.inc</FILE>
+ </INCLUDED_FILES>
+ <OBJECT_FILES>
+  <FILE>c:\users\alex\Documents\Atmel Studio\7.0\Calculator\Calculator\Release\Calculator.obj</FILE>
+ </OBJECT_FILES>
+ <HEX_FILES>
+  <FILE>Calculator.hex</FILE>
+ </HEX_FILES>
+ <OUTPUT_FILES>
+  <FILE>Calculator.map</FILE>
+  <FILE>Calculator.lss</FILE>
+ </OUTPUT_FILES>
+ <LABELS>
+  <numbers><FILE>c:\users\alex\Documents\Atmel Studio\7.0\Calculator\Calculator\main.asm</FILE><LINE>44</LINE></numbers>
+  <operators><FILE>c:\users\alex\Documents\Atmel Studio\7.0\Calculator\Calculator\main.asm</FILE><LINE>45</LINE></operators>
+  <RESET><FILE>c:\users\alex\Documents\Atmel Studio\7.0\Calculator\Calculator\main.asm</FILE><LINE>52</LINE></RESET>
+  <lcd_command><FILE>c:\users\alex\Documents\Atmel Studio\7.0\Calculator\Calculator\main.asm</FILE><LINE>210</LINE></lcd_command>
+  <lcd_wait><FILE>c:\users\alex\Documents\Atmel Studio\7.0\Calculator\Calculator\main.asm</FILE><LINE>240</LINE></lcd_wait>
+  <sleep_5ms><FILE>c:\users\alex\Documents\Atmel Studio\7.0\Calculator\Calculator\main.asm</FILE><LINE>278</LINE></sleep_5ms>
+  <sleep_1ms><FILE>c:\users\alex\Documents\Atmel Studio\7.0\Calculator\Calculator\main.asm</FILE><LINE>266</LINE></sleep_1ms>
+  <main><FILE>c:\users\alex\Documents\Atmel Studio\7.0\Calculator\Calculator\main.asm</FILE><LINE>100</LINE></main>
+  <colloop><FILE>c:\users\alex\Documents\Atmel Studio\7.0\Calculator\Calculator\main.asm</FILE><LINE>105</LINE></colloop>
+  <delay><FILE>c:\users\alex\Documents\Atmel Studio\7.0\Calculator\Calculator\main.asm</FILE><LINE>109</LINE></delay>
+  <nextcol><FILE>c:\users\alex\Documents\Atmel Studio\7.0\Calculator\Calculator\main.asm</FILE><LINE>135</LINE></nextcol>
+  <rowloop><FILE>c:\users\alex\Documents\Atmel Studio\7.0\Calculator\Calculator\main.asm</FILE><LINE>121</LINE></rowloop>
+  <skipconv><FILE>c:\users\alex\Documents\Atmel Studio\7.0\Calculator\Calculator\main.asm</FILE><LINE>130</LINE></skipconv>
+  <convert><FILE>c:\users\alex\Documents\Atmel Studio\7.0\Calculator\Calculator\main.asm</FILE><LINE>149</LINE></convert>
+  <letters><FILE>c:\users\alex\Documents\Atmel Studio\7.0\Calculator\Calculator\main.asm</FILE><LINE>166</LINE></letters>
+  <symbols><FILE>c:\users\alex\Documents\Atmel Studio\7.0\Calculator\Calculator\main.asm</FILE><LINE>171</LINE></symbols>
+  <convert_end><FILE>c:\users\alex\Documents\Atmel Studio\7.0\Calculator\Calculator\main.asm</FILE><LINE>183</LINE></convert_end>
+  <star><FILE>c:\users\alex\Documents\Atmel Studio\7.0\Calculator\Calculator\main.asm</FILE><LINE>178</LINE></star>
+  <zero><FILE>c:\users\alex\Documents\Atmel Studio\7.0\Calculator\Calculator\main.asm</FILE><LINE>181</LINE></zero>
+  <lcd_data><FILE>c:\users\alex\Documents\Atmel Studio\7.0\Calculator\Calculator\main.asm</FILE><LINE>223</LINE></lcd_data>
+  <debounce><FILE>c:\users\alex\Documents\Atmel Studio\7.0\Calculator\Calculator\main.asm</FILE><LINE>301</LINE></debounce>
+  <skip_lcd><FILE>c:\users\alex\Documents\Atmel Studio\7.0\Calculator\Calculator\main.asm</FILE><LINE>189</LINE></skip_lcd>
+  <lcd_wait_loop><FILE>c:\users\alex\Documents\Atmel Studio\7.0\Calculator\Calculator\main.asm</FILE><LINE>246</LINE></lcd_wait_loop>
+  <delayloop_1ms><FILE>c:\users\alex\Documents\Atmel Studio\7.0\Calculator\Calculator\main.asm</FILE><LINE>271</LINE></delayloop_1ms>
+  <sleep_25ms><FILE>c:\users\alex\Documents\Atmel Studio\7.0\Calculator\Calculator\main.asm</FILE><LINE>286</LINE></sleep_25ms>
+  <sleep_100ms><FILE>c:\users\alex\Documents\Atmel Studio\7.0\Calculator\Calculator\main.asm</FILE><LINE>294</LINE></sleep_100ms>
+ </LABELS>
+</ASSEMBLER_INFO>
