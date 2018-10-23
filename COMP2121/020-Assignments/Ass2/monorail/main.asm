@@ -26,8 +26,7 @@
 
 ; temporary registers
 .def temp=r17
-.def temp1=r18
-.def temp2=r19
+.def temp2=r23
 
 ; keypad reading
 .def row = r20
@@ -94,36 +93,16 @@ SETUP:
 	do_lcd_command 0b00000110 ; increment, no display shift
 	do_lcd_command 0b00001111 ; Cursor on, bar, with blink
 	
-
-	; test subroutines
-	call get_num
-	mov disp, temp
-	subi disp, -'0'
-	do_lcd_data
-
-	rcall get_char
-	mov disp, temp
-	do_lcd_data
-
-	ldi disp, 'X'
-	do_lcd_data
-
-	rcall get_number_of_stations
-
-	ldi disp, 'B'
-	do_lcd_data
-
-
 	ldi r24, 1
 	rcall save_station_name
-	rcall save_station_time
-	ldi r24, 3
-	rcall save_station_name
-	rcall save_station_time
 
 ; code that should loop
 main:
-
+	ser temp
+	out PORTC, temp
+	rcall debounce
+	clr temp
+	out PORTC, temp
 
 	rjmp main
 
@@ -133,8 +112,14 @@ get_number_of_stations:
 	; function prologue
 	ldi XH, high(n_stations)
 	ldi XL, low(n_stations)
-
-	ldi disp, 'A'
+	
+	ldi disp, ' '
+	do_lcd_data
+	ldi disp, 'N'
+	do_lcd_data
+	ldi disp, '?'
+	do_lcd_data	
+	ldi disp, ':'
 	do_lcd_data
 
 	call get_num
@@ -180,13 +165,20 @@ save_station_name:
 	ldi XL, low(station_names)
 	; add increment for nth station name
 	clr r20
+
+	out PORTC, r20
+
 	add XL, r19
 	adc XH, r20
 
-	ldi r16, 'A'
-	st X+, r16
-	inc r16
-	st X+, r16
+	ldi temp2, 8
+	get_name_letter:
+		mov disp, temp2
+		subi disp, -'0'
+		do_lcd_data
+		rcall debounce
+		dec temp2
+		brne get_name_letter
 
 	; epilogue
 	pop r20
@@ -199,7 +191,6 @@ save_station_name:
 	
 	pop YH
 	pop YL 
-
 	ret
 
 ; save travel time for station n (r24)
@@ -412,6 +403,19 @@ debounce:
 	rcall sleep_100ms
 	ret
 
+pause:
+	rcall debounce
+	rcall debounce
+	rcall debounce
+	rcall debounce
+	rcall debounce
+	rcall debounce
+	rcall debounce
+	rcall debounce
+	rcall debounce
+	rcall debounce
+	ret
+
 ; takes no parameters, returns the number that entered
 get_num:
 get_num_start:
@@ -428,7 +432,7 @@ get_num_start:
 	LDS temp, PINL ; read PORTL. Cannot use in 
 	andi temp, ROWMASK ; read only the row bits
 	cpi temp, 0xF ; check if any rows are grounded
-	breq nextcol ; if not go to the next column
+	breq nextcolnum ; if not go to the next column
 	ldi mask, INITROWMASK ; initialise row check
 	clr row ; initial row
 	rowloopnum:      
@@ -442,7 +446,7 @@ get_num_start:
 	inc row ; else move to the next row
 	lsl mask ; shift the mask to the next bit
 	jmp rowloopnum          
-	nextcol:     
+	nextcolnum:     
 	cpi col, 3 ; check if we're on the last column
 	breq get_num_start  ; if so, no buttons were pushed,
 	; so start again.
@@ -460,25 +464,8 @@ get_num_start:
 	ret
 
 get_char:
-	; function prologue	
-	push YL	; save the current stack frame pointer
-	push YH
-	in YL, SPL ; get the stack frame
-	in YH, SPH
-	sbiw Y, 1
-	out SPL, YL
-	out SPH, YH ; update the frame position
-
-	; move actual parameters to formal parameters
-	std Y+1, r24
-	
-	; store conflict registers
-	push r18	; first character
-	push r19	; A B or C pressed?
-	push r20	;
-
+	push r18
 	clr r18
-	clr r19
 
 get_char_start:
 	ldi mask, INITCOLMASK ; initial column mask
@@ -494,46 +481,45 @@ get_char_start:
 	LDS temp, PINL ; read PORTL. Cannot use in 
 	andi temp, ROWMASK ; read only the row bits
 	cpi temp, 0xF ; check if any rows are grounded
-	breq nextcol ; if not go to the next column
+	breq nextcolchar ; if not go to the next column
 	ldi mask, INITROWMASK ; initialise row check
 	clr row ; initial row
 	rowloopchar:      
 	mov temp2, temp
 	and temp2, mask ; check masked bit
-	brne skipconvchar ; if the result is non-zero,
-	; we need to look again
-	rcall convert ; if bit is clear, convert the bitcode
+	brne skipconvchar ; if the result is non-zero look again
+
+	rcall convert 
+
 	; check if A B or C pressed
 	; A (abc def ghi)
 	; B (jkl mno pqr)
 	; C (stu vwx yz )
 
-	; if r19 is still zero, we need to look at the letter
-	cpi r19, 0
-	brne number_to_letter
-		ser r19 ; set the r19 "flag" so that next time we know to look for a number
+	cpi temp, 10
+	breq a_to_i
+	cpi temp, 11
+	breq j_to_r
+	cpi temp, 12
+	breq s_to_space
+	rjmp number_to_letter
 
-		cpi temp, 10
-		breq a_to_i
-		cpi temp, 11
-		breq j_to_r
-		cpi temp, 12
-		breq s_to_space
+	a_to_i:
+		ldi r18, 'A'
+		subi r18, 1
+		rjmp get_char_start
+	j_to_r:
+		ldi r18, 'I'
+		rjmp get_char_start
+	s_to_space:
+		ldi r18, 'R'
+		rjmp get_char_start
 
-		a_to_i:
-			ldi r18, 'A'
-			subi r18, 1
-		j_to_r:
-			ldi r18, 'I'
-		s_to_space:
-			ldi r18, 'R'
-	
-		jmp get_char_start
-	
 
 	number_to_letter:
-		add r18, temp
-		rjmp return_char
+		add temp, r18
+		pop r18
+		ret
 	
 	skipconvchar:
 	inc row ; else move to the next row
@@ -554,21 +540,6 @@ get_char_start:
 	inc col ; increment column value
 	jmp colloopchar ; and check the next column
 	
-	
-	; epilogue
-	return_char:
-	mov temp, r18
-	pop r20
-	pop r19
-	pop r18
-
-	adiw Y, 1
-	out SPH, YH
-	out SPL, YL
-	
-	pop YH
-	pop YL 
-	ret
 	
 
 ; convert function converts the row and column given to a
