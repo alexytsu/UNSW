@@ -80,7 +80,25 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Display.asm">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Emulator.asm">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TimeEntry.asm">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Config.asm">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="kpdInput.asm">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="main.asm">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="StnEntry.asm">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>

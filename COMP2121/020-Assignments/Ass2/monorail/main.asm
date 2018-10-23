@@ -52,8 +52,14 @@ n_stations: .byte 1
 rjmp SETUP
 
 .org 0x72
-station_prompt: .db "Enter name for station:"
-configuration_complete: .db "Configuration Complete. Initialising system ..."
+incorrect: .db "Incorrect!"
+
+.include "Config.asm"
+.include "Display.asm"
+.include "kpdInput.asm"
+.include "StnEntry.asm"
+.include "TimeEntry.asm"
+.include "Emulator.asm"
 
 ; initialisation etc. that should run once
 SETUP:
