@@ -59,6 +59,7 @@
       <AvrAssembler>
   <avrasm.assembler.general.AdditionalIncludeDirectories>
     <ListValues>
+      <Value>%24(PackRepoDir)\atmel\ATmega_DFP\1.2.150\avrasm\inc</Value>
     </ListValues>
   </avrasm.assembler.general.AdditionalIncludeDirectories>
   <avrasm.assembler.general.IncludeFile>m2560def.inc</avrasm.assembler.general.IncludeFile>
@@ -71,6 +72,7 @@
       <AvrAssembler>
   <avrasm.assembler.general.AdditionalIncludeDirectories>
     <ListValues>
+      <Value>%24(PackRepoDir)\atmel\ATmega_DFP\1.2.150\avrasm\inc</Value>
     </ListValues>
   </avrasm.assembler.general.AdditionalIncludeDirectories>
   <avrasm.assembler.general.IncludeFile>m2560def.inc</avrasm.assembler.general.IncludeFile>
@@ -78,6 +80,7 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
+<<<<<<< HEAD
     <Compile Include="Display.asm">
       <SubType>Code</SubType>
     </Compile>
@@ -93,6 +96,8 @@
     <Compile Include="KpdInput.asm">
       <SubType>Code</SubType>
     </Compile>
+=======
+>>>>>>> e6732dcbcb7a0cc42efdf904746c8c1e5c5546b9
     <Compile Include="main.asm">
       <SubType>Code</SubType>
     </Compile>
