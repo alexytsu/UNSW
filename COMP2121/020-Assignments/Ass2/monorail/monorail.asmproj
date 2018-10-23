@@ -86,13 +86,13 @@
     <Compile Include="Emulator.asm">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="TimeEntry.asm">
+    <Compile Include="MonoEntry.asm">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Config.asm">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="kpdInput.asm">
+    <Compile Include="KpdInput.asm">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="main.asm">
