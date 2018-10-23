@@ -52,19 +52,9 @@ n_stations: .byte 1
 rjmp SETUP
 
 .org 0x72
-<<<<<<< HEAD
-incorrect: .db "Incorrect!"
 
-.include "Config.asm"
-.include "Display.asm"
-.include "kpdInput.asm"
-.include "StnEntry.asm"
-.include "TimeEntry.asm"
-.include "Emulator.asm"
-=======
 station_prompt: .db "Station"
 configuration_complete: .db "Configuration Complete. Initialising system ..."
->>>>>>> 6b12fe7961d58e5be1abb22090b2d5db881e8841
 
 ; initialisation etc. that should run once
 SETUP:
@@ -106,6 +96,9 @@ SETUP:
 	
 	ldi r24, 1
 	rcall save_station_name
+	rcall print_station_name
+	ldi r24, 3
+	rcall save_station_name
 
 ; code that should loop
 main:
@@ -114,6 +107,7 @@ main:
 	rcall debounce
 	clr temp
 	out PORTC, temp
+	rcall debounce
 
 	rjmp main
 
@@ -141,6 +135,64 @@ get_number_of_stations:
 	
 	do_lcd_data
 
+	ret
+
+; pass in n as register r24
+print_station_name:
+	; function prologue	
+	push YL	; save the current stack frame pointer
+	push YH
+	in YL, SPL ; get the stack frame
+	in YH, SPH
+	sbiw Y, 1	; reserve two bytes for local loop counter and parameter station number
+	out SPL, YL
+	out SPH, YH ; update the frame position
+
+	; move actual parameters to formal parameters
+	std Y+1, r24
+	
+	; store conflict registers
+	push r18	; i
+	push r19	; n *10
+	push r20	; temp n
+
+	; makes r19 hold 10xr20
+	ldd r20, Y+1 
+	
+	lsl r20
+	mov r19, r20
+	lsl r20
+	lsl r20
+	add r19, r20
+
+	; get address of the station name's storage location
+	ldi XH, high(station_names)
+	ldi XL, low(station_names)
+	; add increment for nth station name
+	clr r20
+	add XL, r19
+	adc XH, r20
+
+	do_lcd_command 0b11000000
+
+	ldi temp2, 9
+	load_name_letter:
+		ld disp, X+
+		do_lcd_data
+		dec temp2
+		brne load_name_letter
+
+	; epilogue
+	pop r20
+	pop r19
+	pop r18
+
+	adiw Y, 1
+	out SPH, YH
+	out SPL, YL
+	
+	pop YH
+	pop YL 
 	ret
 
 ; pass in n as register r24
@@ -182,12 +234,16 @@ save_station_name:
 	add XL, r19
 	adc XH, r20
 
-	ldi temp2, 8
+	ldi temp2, 9
 	get_name_letter:
-		mov disp, temp2
-		subi disp, -'0'
+		rcall get_char
+		mov disp, temp
 		do_lcd_data
+
+		st X+, disp
+
 		rcall debounce
+
 		dec temp2
 		brne get_name_letter
 
@@ -476,6 +532,7 @@ get_num_start:
 
 get_char:
 	push r18
+	push temp2
 	clr r18
 
 get_char_start:
@@ -529,6 +586,7 @@ get_char_start:
 
 	number_to_letter:
 		add temp, r18
+		pop temp2
 		pop r18
 		ret
 	
