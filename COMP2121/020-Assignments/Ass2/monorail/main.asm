@@ -122,6 +122,7 @@ show_all_names:
 	rcall print_station_name
 	rcall pause
 	rcall get_station_time
+	mov disp, r25
 	display_integer
 	rcall pause
 	inc r24
