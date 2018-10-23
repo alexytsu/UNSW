@@ -52,7 +52,7 @@ n_stations: .byte 1
 rjmp SETUP
 
 .org 0x72
-station_prompt: .db "Enter name for station"
+station_prompt: .db "Enter name for station:"
 configuration_complete: .db "Configuration Complete. Initialising system ..."
 
 ; initialisation etc. that should run once
