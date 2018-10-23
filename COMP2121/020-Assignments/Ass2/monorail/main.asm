@@ -15,9 +15,14 @@
 	rcall lcd_wait
 .endmacro
 
-.macro do_lcd_data
+.macro display
 	rcall lcd_data
 	rcall lcd_wait
+.endmacro
+
+.macro display_integer
+	subi disp, -'0'
+	display
 .endmacro
 
 ; ==== aliases ====
@@ -94,20 +99,35 @@ SETUP:
 	do_lcd_command 0b00000110 ; increment, no display shift
 	do_lcd_command 0b00001111 ; Cursor on, bar, with blink
 	
-	ldi r24, 1
+	ldi r24, 0
+	get_all_names:
 	rcall save_station_name
 	rcall print_station_name
-	ldi r24, 3
-	rcall save_station_name
+	do_lcd_command 0b00000001
+	ldi disp, 't'
+	display
+	rcall save_station_time
+	rcall pause
+	inc r24
+	cpi r24, 2
+	brne get_all_names
+	
+
 
 ; code that should loop
 main:
-	ser temp
-	out PORTC, temp
-	rcall debounce
-	clr temp
-	out PORTC, temp
-	rcall debounce
+
+clr r24
+show_all_names:
+	rcall print_station_name
+	rcall pause
+	rcall get_station_time
+	display_integer
+	rcall pause
+	inc r24
+	cpi r24, 2
+	brne show_all_names
+
 
 	rjmp main
 
@@ -118,22 +138,18 @@ get_number_of_stations:
 	ldi XH, high(n_stations)
 	ldi XL, low(n_stations)
 	
-	ldi disp, ' '
-	do_lcd_data
 	ldi disp, 'N'
-	do_lcd_data
+	display
 	ldi disp, '?'
-	do_lcd_data	
+	display	
 	ldi disp, ':'
-	do_lcd_data
+	display
 
 	call get_num
 	st X, temp
 
 	ld disp, X
-	subi disp, -'0'
-	
-	do_lcd_data
+	display_integer
 
 	ret
 
@@ -173,12 +189,17 @@ print_station_name:
 	add XL, r19
 	adc XH, r20
 
+	do_lcd_command 0b0000001
+	
+	ldd disp, Y+1
+	display_integer
+
 	do_lcd_command 0b11000000
 
-	ldi temp2, 9
+	ldi temp2, 10
 	load_name_letter:
 		ld disp, X+
-		do_lcd_data
+		display
 		dec temp2
 		brne load_name_letter
 
@@ -213,6 +234,8 @@ save_station_name:
 	push r18	; i
 	push r19	; n *10
 	push r20	; temp n
+	
+	do_lcd_command 0b00000001
 
 	; makes r19 hold 10xr20
 	ldd r20, Y+1 
@@ -234,11 +257,11 @@ save_station_name:
 	add XL, r19
 	adc XH, r20
 
-	ldi temp2, 9
+	ldi temp2, 10
 	get_name_letter:
 		rcall get_char
 		mov disp, temp
-		do_lcd_data
+		display
 
 		st X+, disp
 
@@ -288,8 +311,52 @@ save_station_time:
 	adc XH, r18
 
 	; dummy 5 seconds
-	ldi r16, 5
-	st X+, r16
+	rcall get_num
+	st X, temp
+	out PORTC, temp
+	rcall pause
+
+	; epilogue
+	pop r19
+	pop r18
+
+	adiw Y, 1
+	out SPH, YH
+	out SPL, YL
+	
+	pop YH
+	pop YL 
+
+	ret
+
+; gets travel time for station n to station n+1 (r24) returns int in r25
+get_station_time:
+	; function prologue	
+	push YL	; save the current stack frame pointer
+	push YH
+	in YL, SPL ; get the stack frame
+	in YH, SPH
+	sbiw Y, 1	; reserve two bytes for local loop counter and parameter station number
+	out SPL, YL
+	out SPH, YH ; update the frame position
+
+	; move actual parameters to formal parameters
+	std Y+1, r24
+	
+	; store conflict registers
+	push r18	; temp
+	push r19	; temp n
+
+	ldd r19, Y+1
+	; get address of the station name's storage location
+	ldi XH, high(travel_times)
+	ldi XL, low(travel_times)
+	; add increment for nth station name
+	clr r18
+	add XL, r19
+	adc XH, r18
+
+	ld r25, X
 
 	; epilogue
 	pop r19
@@ -544,18 +611,20 @@ get_char_start:
 	ldi temp, 0xFF ; implement a delay so the
 	; hardware can stabilize
 	delaychar:
-	dec temp
-	brne delaychar
+		dec temp
+		brne delaychar
+	
 	LDS temp, PINL ; read PORTL. Cannot use in 
 	andi temp, ROWMASK ; read only the row bits
 	cpi temp, 0xF ; check if any rows are grounded
 	breq nextcolchar ; if not go to the next column
+	
 	ldi mask, INITROWMASK ; initialise row check
 	clr row ; initial row
 	rowloopchar:      
-	mov temp2, temp
-	and temp2, mask ; check masked bit
-	brne skipconvchar ; if the result is non-zero look again
+		mov temp2, temp
+		and temp2, mask ; check masked bit
+		brne skipconvchar ; if the result is non-zero look again
 
 	rcall convert 
 
