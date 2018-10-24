@@ -138,9 +138,15 @@ pause:
 	rcall debounce
 	ret
 
+<<<<<<< HEAD
  ; pass in n (number of characters to print) as register 24
  ; pass in cseg location with ZL and ZH
  print_Instruction:
+=======
+; pass in n (number of characters to print) as register 24
+; pass in cseg location with XL and XH
+print_Instruction:
+>>>>>>> 1653bc16d314c03a1fa28100708e8267741ad9f4
 	; function prologue	
 	push YL	; save the current stack frame pointer
 	push YH
