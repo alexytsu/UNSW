@@ -112,11 +112,9 @@ SETUP:
 	ldi disp, 'X'
 	do_lcd_data
 	*/
-<<<<<<< HEAD
-	rcall CollectInput;
-=======
->>>>>>> 1653bc16d314c03a1fa28100708e8267741ad9f4
 
+	rcall CollectInput;
+/*
 	ldi r24, 0
 	get_all_names:
 	ldi disp, 'n'
@@ -131,7 +129,7 @@ SETUP:
 	inc r24
 	cpi r24, 2
 	brne get_all_names
-	
+	*/
 
 
 ; code that should loop
