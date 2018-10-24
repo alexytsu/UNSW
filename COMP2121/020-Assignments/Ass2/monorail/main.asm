@@ -52,7 +52,6 @@ n_stations: .byte 1
 .org 0x0000
 rjmp SETUP
 
-
 .include "Config.asm"
 .include "Display.asm"
 .include "kpdInput.asm"
@@ -113,10 +112,7 @@ SETUP:
 	ldi disp, 'X'
 	do_lcd_data
 	*/
-	ldi ZH, 2*high(num_Stations)
-	ldi ZL, 2*low(num_Stations)
-	ldi r24, 25
-	rcall print_Instruction
+	rcall CollectInput;
 
 	/*
 	ldi r24, 0

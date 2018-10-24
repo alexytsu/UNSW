@@ -5,24 +5,74 @@
  *   Author: rowra
  */ 
  
+; starts the main sequence for station input
+CollectInput:
+	;Recieves input for number of stations
+	ldi ZH, 2*high(num_Stations)
+	ldi ZL, 2*low(num_Stations)
+	ldi r24, 26
+	rcall print_Instruction
+
+	rcall get_number_of_stations
+	rcall debounce 
+	rcall debounce
+	
+	;Recieves input for station names
+	ret
+
 ; gets from the user the number of stations and saves it to the relevant section in memory
 get_number_of_stations:
 	; function prologue
 	ldi XH, high(n_stations)
 	ldi XL, low(n_stations)
-	
-	ldi disp, 'N'
-	display
-	ldi disp, '?'
-	display	
-	ldi disp, ':'
-	display
+	push r20
+	push r19
+	push r18
+	push temp
 
 	call get_num
+	rcall debounce
+	cpi temp, 1
+	brne storeNStations
+
+	mov temp2, temp
+
+	call get_num
+	rcall debounce
+	rcall debounce
+	cpi temp, 0xf
+	breq storeNstations
+	
+	cpi temp, 0
+	breq digits2
+
+	ldi temp, 10
+	do_lcd_command 0x01
+	ldi ZH, high(incorrect)
+	ldi ZL, low(incorrect)
+	ldi r24, 11
+	rcall print_Instruction
+	ldi ZH, high(numSerror)
+	ldi ZL, low(numSerror)
+	ldi r24, 19
+	rcall print_Instruction
+
+	rjmp storeNStations
+
+digits2:
+	lsl r20
+	mov r19, r20
+	lsl r20
+	lsl r20
+	add r19, r20
+
+storeNStations:
 	st X, temp
 
-	ld disp, X
-	display_integer
+	pop temp
+	pop r18
+	pop r19
+	pop r20
 
 	ret
 

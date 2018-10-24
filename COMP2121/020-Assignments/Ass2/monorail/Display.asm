@@ -147,7 +147,7 @@ pause:
 	ret
 
  ; pass in n (number of characters to print) as register 24
- ; pass in cseg location with XL and XH
+ ; pass in cseg location with ZL and ZH
  print_Instruction:
 	; function prologue	
 	push YL	; save the current stack frame pointer
@@ -163,6 +163,7 @@ pause:
 	push r19	; n 
 	push r20
 
+	clr r18
 	mov r19, r24
 	;do_lcd_command 0xc0
 	;Loop from 0 to n-1 printing each character as it goes
@@ -170,10 +171,8 @@ pause:
 	inc r18
 	subi r19, 1
 	cpi r18, 17
-	breq lineChange
-	rjmp skipLineChange
-lineChange:
-	rcall debounce
+	out PORTC, r18
+	brlt skipLineChange
 	do_lcd_command 0b11000000
 	ldi r18, 1
 skipLineChange:
@@ -182,12 +181,8 @@ skipLineChange:
 	cpi r19, 1
 	brne displayLoop
 
-	do_lcd_command 0b11000000
-	ldi r16, 'X'
-	do_lcd_data
-	ldi r16, 'D'
-	do_lcd_data
 	; epilogue
+	pop r20
 	pop r19
 	pop r18
 
