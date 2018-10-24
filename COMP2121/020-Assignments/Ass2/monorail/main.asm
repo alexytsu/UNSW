@@ -134,8 +134,6 @@ SETUP:
 	cp r24, r25
 	brne get_all_names
 
-
-
 ; code that should loop
 main:
 
