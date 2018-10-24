@@ -113,10 +113,19 @@ SETUP:
 	do_lcd_data
 	*/
 
+<<<<<<< HEAD
 	rcall CollectInput;
 /*
+=======
+	rcall CollectInput
+
+	do_lcd_command 0b00000001
+
+
+	/*
+>>>>>>> 996f3fc788814b247cf081c9856dded8180b957b
 	ldi r24, 0
-	get_all_names:
+	get_all_names:	
 	ldi disp, 'n'
 	display
 	rcall save_station_name
@@ -129,12 +138,17 @@ SETUP:
 	inc r24
 	cpi r24, 2
 	brne get_all_names
+<<<<<<< HEAD
 	*/
 
+=======
+	
+	*/
+>>>>>>> 996f3fc788814b247cf081c9856dded8180b957b
 
 ; code that should loop
 main:
-
+/*
 clr r24
 
 show_all_names:
@@ -147,6 +161,6 @@ show_all_names:
 	inc r24
 	cpi r24, 2
 	brne show_all_names
-	
+	*/
 
 	rjmp main
