@@ -29,7 +29,20 @@ get_num_start:
 	brne skipconvnum ; if the result is non-zero,
 	; we need to look again
 	rcall convert ; if bit is clear, convert the bitcode
+
+	; return if #	
+	cpi temp, 0xf
+	breq terminate
+
+	cpi temp, 10
+	brge get_num_again
+
 	ret
+	get_num_again:
+	rcall get_num
+	terminate:
+	ret
+	
 	skipconvnum:
 	inc row ; else move to the next row
 	lsl mask ; shift the mask to the next bit
@@ -93,7 +106,16 @@ get_char_start:
 	breq j_to_r
 	cpi temp, 12
 	breq s_to_space
-	rjmp number_to_letter
+
+	; wasn't a letter and letter has not been pressed previously
+	cpi r18, 0x00
+	brne check_if_number ; if r18 is set, then check if temp is a number
+	rjmp get_char_start
+
+	check_if_number:
+	cpi temp, 10
+	brlt number_to_letter ; if the key that was pressed is a number, do the conversion
+	rjmp nextcolchar
 
 	a_to_i:
 		ldi r18, 'A'
@@ -106,31 +128,36 @@ get_char_start:
 		ldi r18, 'R'
 		rjmp get_char_start
 
-
 	number_to_letter:
 		add temp, r18
 		pop temp2
 		pop r18
+
+		; convert '[' to space
+		cpi temp, '['
+		breq return_space
+		ret
+		return_space:
+		ldi temp, ' ' 
 		ret
 	
 	skipconvchar:
-	inc row ; else move to the next row
-	lsl mask ; shift the mask to the next bit
-	jmp rowloopchar          
+		inc row ; else move to the next row
+		lsl mask ; shift the mask to the next bit
+		jmp rowloopchar          
 	nextcolchar:     
-	cpi col, 3 ; check if we're on the last column
-	breq get_char_start  ; if so, no buttons were pushed,
-	; so start again.
-
-	sec ; else shift the column mask:
-	; We must set the carry bit
-	rol mask ; and then rotate left by a bit,
-	; shifting the carry into
-	; bit zero. We need this to make
-	; sure all the rows have
-	; pull-up resistors
-	inc col ; increment column value
-	jmp colloopchar ; and check the next column
+		cpi col, 3 ; check if we're on the last column
+		breq get_char_start  ; if so, no buttons were pushed,
+		; so start again.
+		sec ; else shift the column mask:
+		; We must set the carry bit
+		rol mask ; and then rotate left by a bit,
+		; shifting the carry into
+		; bit zero. We need this to make
+		; sure all the rows have
+		; pull-up resistors
+		inc col ; increment column value
+		jmp colloopchar ; and check the next column
 	
 	
 

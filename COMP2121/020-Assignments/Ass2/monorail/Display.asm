@@ -5,9 +5,6 @@
  *   Author: rowra
  */ 
 
- 
-
-
  ; LCD CODE -----------------
 
 .equ LCD_RS = 7
@@ -134,11 +131,6 @@ debounce:
 	ret
 
 pause:
-	rcall debounce
-	rcall debounce
-	rcall debounce
-	rcall debounce
-	rcall debounce
 	rcall debounce
 	rcall debounce
 	rcall debounce

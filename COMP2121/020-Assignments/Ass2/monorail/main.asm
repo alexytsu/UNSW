@@ -117,17 +117,20 @@ SETUP:
 	/*
 	ldi r24, 0
 	get_all_names:
+	ldi disp, 'n'
+	display
 	rcall save_station_name
 	rcall print_station_name
+	rcall pause
 	do_lcd_command 0b00000001
 	ldi disp, 't'
 	display
 	rcall save_station_time
-	rcall pause
 	inc r24
 	cpi r24, 2
 	brne get_all_names
 	*/
+	
 
 
 ; code that should loop
@@ -145,9 +148,6 @@ show_all_names:
 	cpi r24, 2
 	brne show_all_names
 	*/
+	
 
 	rjmp main
-
-
-
-
