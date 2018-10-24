@@ -108,8 +108,6 @@ save_station_name:
 	push r19	; n *10
 	push r20	; temp n
 	
-	do_lcd_command 0b00000001
-
 	; makes r19 hold 10xr20
 	ldd r20, Y+1 
 	

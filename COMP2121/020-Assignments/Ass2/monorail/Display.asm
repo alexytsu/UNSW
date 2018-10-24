@@ -5,9 +5,6 @@
  *   Author: rowra
  */ 
 
- 
-
-
  ; LCD CODE -----------------
 
 .equ LCD_RS = 7
@@ -139,16 +136,11 @@ pause:
 	rcall debounce
 	rcall debounce
 	rcall debounce
-	rcall debounce
-	rcall debounce
-	rcall debounce
-	rcall debounce
-	rcall debounce
 	ret
 
- ; pass in n (number of characters to print) as register 24
- ; pass in cseg location with XL and XH
- print_Instruction:
+; pass in n (number of characters to print) as register 24
+; pass in cseg location with XL and XH
+print_Instruction:
 	; function prologue	
 	push YL	; save the current stack frame pointer
 	push YH

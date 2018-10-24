@@ -113,31 +113,29 @@ SETUP:
 	ldi disp, 'X'
 	do_lcd_data
 	*/
-	ldi ZH, 2*high(num_Stations)
-	ldi ZL, 2*low(num_Stations)
-	ldi r24, 25
-	rcall print_Instruction
 
-	/*
 	ldi r24, 0
 	get_all_names:
+	ldi disp, 'n'
+	display
 	rcall save_station_name
 	rcall print_station_name
+	rcall pause
 	do_lcd_command 0b00000001
 	ldi disp, 't'
 	display
 	rcall save_station_time
-	rcall pause
 	inc r24
 	cpi r24, 2
 	brne get_all_names
-	*/
+	
 
 
 ; code that should loop
 main:
 
-/*clr r24
+clr r24
+
 show_all_names:
 	rcall print_station_name
 	rcall pause
@@ -148,10 +146,6 @@ show_all_names:
 	inc r24
 	cpi r24, 2
 	brne show_all_names
-	*/
+	
 
 	rjmp main
-
-
-
-
