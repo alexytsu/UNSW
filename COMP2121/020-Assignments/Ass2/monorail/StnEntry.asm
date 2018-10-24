@@ -23,18 +23,22 @@ CollectInput:
 ; gets from the user the number of stations and saves it to the relevant section in memory
 get_number_of_stations:
 	; function prologue
-	ldi XH, high(n_stations)
-	ldi XL, low(n_stations)
+	ldi XH, 2*high(n_stations)
+	ldi XL, 2*low(n_stations)
 	push r20
 	push r19
 	push r18
 	push temp
 
 	call get_num
+	mov disp, temp
+	display_integer
+	
 	rcall debounce
 	cpi temp, 1
 	brne storeNStations
 
+	rcall pause
 	mov temp2, temp
 
 	call get_num
@@ -48,12 +52,12 @@ get_number_of_stations:
 
 	ldi temp, 10
 	do_lcd_command 0x01
-	ldi ZH, high(incorrect)
-	ldi ZL, low(incorrect)
+	ldi ZH, 2*high(incorrect)
+	ldi ZL, 2*low(incorrect)
 	ldi r24, 11
 	rcall print_Instruction
-	ldi ZH, high(numSerror)
-	ldi ZL, low(numSerror)
+	ldi ZH, 2*high(numSerror)
+	ldi ZL, 2*low(numSerror)
 	ldi r24, 19
 	rcall print_Instruction
 
@@ -65,6 +69,9 @@ digits2:
 	lsl r20
 	lsl r20
 	add r19, r20
+	mov disp, temp
+	display_integer
+	add temp, r19
 
 storeNStations:
 	st X, temp
