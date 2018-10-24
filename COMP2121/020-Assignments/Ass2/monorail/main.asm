@@ -115,32 +115,31 @@ SETUP:
 
 	rcall CollectInput
 
-	do_lcd_command 0b00000001
+	rcall get_number_of_stations
+	mov disp, r25
+	display_integer
+	out PORTC, r25
 
-
-	/*
 	ldi r24, 0
 	get_all_names:	
-	ldi disp, 'n'
-	display
+
+	rcall prompt_name
 	rcall save_station_name
-	rcall print_station_name
 	rcall pause
-	do_lcd_command 0b00000001
-	ldi disp, 't'
-	display
+
+	rcall prompt_time
 	rcall save_station_time
-	inc r24
-	cpi r24, 2
-	brne get_all_names
 	
-	*/
+	inc r24
+	cp r24, r25
+	brne get_all_names
+
+
 
 ; code that should loop
 main:
-/*
-clr r24
 
+clr r24
 show_all_names:
 	rcall print_station_name
 	rcall pause
@@ -149,8 +148,10 @@ show_all_names:
 	display_integer
 	rcall pause
 	inc r24
-	cpi r24, 2
+	rcall get_number_of_stations
+	mov temp, r25
+	cp r24, temp
 	brne show_all_names
-	*/
+	
 
 	rjmp main

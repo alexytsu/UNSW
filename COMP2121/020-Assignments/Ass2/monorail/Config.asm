@@ -7,7 +7,8 @@
 
  .cseg
 num_Stations: .db "Enter number of stations: "
-station_prompt: .db "Enter name for station  "
+station_prompt: .db "Enter name "
+time_prompt: .db "t(s) from "
 time_prompta: .db "Time from Station "
 time_promptb: .db " to Station "
 stop_time: .db "The stop time for all station:"
