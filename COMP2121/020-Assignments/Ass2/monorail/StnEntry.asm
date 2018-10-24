@@ -190,6 +190,8 @@ save_station_name:
 	ldi temp2, 10
 	get_name_letter:
 		rcall get_char
+		cpi temp, 0xf
+		breq hashPressed
 		mov disp, temp
 		display
 
@@ -199,6 +201,9 @@ save_station_name:
 
 		dec temp2
 		brne get_name_letter
+hashPressed:
+ser temp
+out PORTC, temp
 
 	; epilogue
 	pop r20
