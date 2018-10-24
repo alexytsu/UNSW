@@ -4,11 +4,7 @@
  *  Created: 23/10/2018 3:06:05 PM
  *   Author: rowra
  */ 
- 
- .cseg
-
- 
-; takes no parameters, returns the number that entered
+ ; takes no parameters, returns the number that entered
 get_num:
 get_num_start:
 	ldi mask, INITCOLMASK ; initial column mask
@@ -24,7 +20,7 @@ get_num_start:
 	LDS temp, PINL ; read PORTL. Cannot use in 
 	andi temp, ROWMASK ; read only the row bits
 	cpi temp, 0xF ; check if any rows are grounded
-	breq nextcol ; if not go to the next column
+	breq nextcolnum ; if not go to the next column
 	ldi mask, INITROWMASK ; initialise row check
 	clr row ; initial row
 	rowloopnum:      
@@ -38,7 +34,7 @@ get_num_start:
 	inc row ; else move to the next row
 	lsl mask ; shift the mask to the next bit
 	jmp rowloopnum          
-	nextcol:     
+	nextcolnum:     
 	cpi col, 3 ; check if we're on the last column
 	breq get_num_start  ; if so, no buttons were pushed,
 	; so start again.
@@ -56,25 +52,9 @@ get_num_start:
 	ret
 
 get_char:
-	; function prologue	
-	push YL	; save the current stack frame pointer
-	push YH
-	in YL, SPL ; get the stack frame
-	in YH, SPH
-	sbiw Y, 1
-	out SPL, YL
-	out SPH, YH ; update the frame position
-
-	; move actual parameters to formal parameters
-	std Y+1, r24
-	
-	; store conflict registers
-	push r18	; first character
-	push r19	; A B or C pressed?
-	push r20	;
-
+	push r18
+	push temp2
 	clr r18
-	clr r19
 
 get_char_start:
 	ldi mask, INITCOLMASK ; initial column mask
@@ -85,51 +65,53 @@ get_char_start:
 	ldi temp, 0xFF ; implement a delay so the
 	; hardware can stabilize
 	delaychar:
-	dec temp
-	brne delaychar
+		dec temp
+		brne delaychar
+	
 	LDS temp, PINL ; read PORTL. Cannot use in 
 	andi temp, ROWMASK ; read only the row bits
 	cpi temp, 0xF ; check if any rows are grounded
-	breq nextcol ; if not go to the next column
+	breq nextcolchar ; if not go to the next column
+	
 	ldi mask, INITROWMASK ; initialise row check
 	clr row ; initial row
 	rowloopchar:      
-	mov temp2, temp
-	and temp2, mask ; check masked bit
-	brne skipconvchar ; if the result is non-zero,
-	; we need to look again
-	rcall convert ; if bit is clear, convert the bitcode
+		mov temp2, temp
+		and temp2, mask ; check masked bit
+		brne skipconvchar ; if the result is non-zero look again
+
+	rcall convert 
+
 	; check if A B or C pressed
 	; A (abc def ghi)
 	; B (jkl mno pqr)
 	; C (stu vwx yz )
 
-	; if r19 is still zero, we need to look at the letter
-	cpi r19, 0
-	brne number_to_letter
-		ser r19 ; set the r19 "flag" so that next time we know to look for a number
+	cpi temp, 10
+	breq a_to_i
+	cpi temp, 11
+	breq j_to_r
+	cpi temp, 12
+	breq s_to_space
+	rjmp number_to_letter
 
-		cpi temp, 10
-		breq a_to_i
-		cpi temp, 11
-		breq j_to_r
-		cpi temp, 12
-		breq s_to_space
+	a_to_i:
+		ldi r18, 'A'
+		subi r18, 1
+		rjmp get_char_start
+	j_to_r:
+		ldi r18, 'I'
+		rjmp get_char_start
+	s_to_space:
+		ldi r18, 'R'
+		rjmp get_char_start
 
-		a_to_i:
-			ldi r18, 'A'
-			subi r18, 1
-		j_to_r:
-			ldi r18, 'I'
-		s_to_space:
-			ldi r18, 'R'
-	
-		jmp get_char_start
-	
 
 	number_to_letter:
-		add r18, temp
-		rjmp return_char
+		add temp, r18
+		pop temp2
+		pop r18
+		ret
 	
 	skipconvchar:
 	inc row ; else move to the next row
@@ -150,21 +132,6 @@ get_char_start:
 	inc col ; increment column value
 	jmp colloopchar ; and check the next column
 	
-	
-	; epilogue
-	return_char:
-	mov temp, r18
-	pop r20
-	pop r19
-	pop r18
-
-	adiw Y, 1
-	out SPH, YH
-	out SPL, YL
-	
-	pop YH
-	pop YL 
-	ret
 	
 
 ; convert function converts the row and column given to a

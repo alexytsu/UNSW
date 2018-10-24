@@ -133,6 +133,19 @@ debounce:
 	rcall sleep_100ms
 	ret
 
+pause:
+	rcall debounce
+	rcall debounce
+	rcall debounce
+	rcall debounce
+	rcall debounce
+	rcall debounce
+	rcall debounce
+	rcall debounce
+	rcall debounce
+	rcall debounce
+	ret
+
  ; pass in n (number of characters to print) as register 24
  ; pass in cseg location with XL and XH
  print_Instruction:
@@ -148,18 +161,32 @@ debounce:
 	; store conflict registers
 	push r18	; i
 	push r19	; n 
+	push r20
 
 	mov r19, r24
-
+	;do_lcd_command 0xc0
 	;Loop from 0 to n-1 printing each character as it goes
-	;adiw XH:XL,
 	displayLoop:
+	inc r18
 	subi r19, 1
+	cpi r18, 17
+	breq lineChange
+	rjmp skipLineChange
+lineChange:
+	rcall debounce
+	do_lcd_command 0b11000000
+	ldi r18, 1
+skipLineChange:
 	lpm r16, Z+
 	do_lcd_data
 	cpi r19, 1
 	brne displayLoop
 
+	do_lcd_command 0b11000000
+	ldi r16, 'X'
+	do_lcd_data
+	ldi r16, 'D'
+	do_lcd_data
 	; epilogue
 	pop r19
 	pop r18
