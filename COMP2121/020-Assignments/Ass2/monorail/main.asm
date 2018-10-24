@@ -14,7 +14,6 @@
 	rcall lcd_wait
 .endmacro
 
-
 .macro display_integer
 	subi disp, -'0'
 	display
@@ -33,7 +32,9 @@
 .def col = r21
 .def mask = r22
 
-.def program_status=r1
+; timer handling
+.def time = r18
+.def flags = r1
 
 ; masks 
 .equ PORTLDIR = 0xF0
@@ -46,11 +47,24 @@
 station_names: .byte 100
 travel_times: .byte 10
 n_stations: .byte 1
+stop_time: .byte 1
 
+
+.equ estop_mask = 0b00000001
+.equ next_stop_mask = 0b00000010
+.equ at_station_mask = 0b00000100
+
+; logic controlling monorail operation
+status_current_time: .byte 1
+status_next_station_time: .byte 1 ; time for stopping at next station
 
 .CSEG
 .org 0x0000
 rjmp SETUP
+.org INT0
+rjmp pushbutton1
+.org INT1
+rjmp pushbutton2
 
 .include "Config.asm"
 .include "Display.asm"
@@ -83,6 +97,9 @@ SETUP:
 	clr temp
 	out PORTF, temp
 	out PORTA, temp
+
+	; Enable interrupts on the pushbuttons
+	
 
 	; ==== reset hardware ====
 	; reset the screen
@@ -153,3 +170,13 @@ show_all_names:
 	
 
 	rjmp main
+
+pushbutton1:
+	ser temp
+	out PORTC, temp
+	reti
+
+pushbutton2:
+	clr temp
+	out PORTC, temp
+	reti
