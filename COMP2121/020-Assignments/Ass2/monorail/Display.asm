@@ -19,6 +19,10 @@
 	rcall lcd_wait
 .endmacro
 
+.macro clear
+	do_lcd_command 0x01
+.endmacro
+
 .macro do_lcd_data
 	rcall lcd_data
 	rcall lcd_wait
@@ -185,5 +189,134 @@ skipLineChange:
 	
 	pop YH
 	pop YL 
+
+	ret
+
+; prompt for nth out of m total stations
+; n in r24, m in r25
+prompt_name:
+	
+	push YL
+	push YH
+	in YL, SPL
+	in YH, SPH
+	
+	sbiw Y, 2 ; reserve two bytes for input parameters
+
+	out SPL, YL
+	out SPH, YH ; update the frame to the local frame
+
+	; move actual parameters to formal parameters
+	std Y+1, r24 ; n
+	std Y+2, r25 ; m
+
+	; store conflict registers
+	push r24
+	push r25
+
+	clear
+	ldi ZH, high(station_prompt<<1)
+	ldi ZL, low(station_prompt<<1)
+	ldi r24, 12
+	rcall print_Instruction
+	
+	; show the user which station they are entering a name for
+	ldd disp, Y+1
+	subi disp, -1
+	display_integer
+	ldi disp, '/'
+	display
+	ldd disp, Y+2
+	display_integer
+	ldi disp, ':'
+	display
+	
+	do_lcd_command 0b11000000
+	
+
+	; epilogue
+	
+	; restore conflict registers
+	pop r25
+	pop r24
+
+	; restore stack frame 
+	adiw Y, 2
+	out SPH, YH
+	out SPL, YL
+
+	; restore y pointer
+	pop YH
+	pop YL
+
+	ret
+
+; prompt for nth out of m total stations
+; n in r24, m in r25
+prompt_time:
+	
+	push YL
+	push YH
+	in YL, SPL
+	in YH, SPH
+	
+	sbiw Y, 2 ; reserve two bytes for input parameters
+
+	out SPL, YL
+	out SPH, YH ; update the frame to the local frame
+
+	; move actual parameters to formal parameters
+	std Y+1, r24 ; n
+	std Y+2, r25 ; m
+
+	; store conflict registers
+	push r23
+	push r24
+	push r25
+
+	clear
+	ldi ZH, high(time_prompt<<1)
+	ldi ZL, low(time_prompt<<1)
+	ldi r24, 11
+	rcall print_Instruction
+	
+	ldd r23, Y+2
+	inc r23
+
+	; show the user which station they are entering a name for
+	ldd disp, Y+1
+	subi disp, -1
+	display_integer
+	ldi disp, '-'
+	display
+	ldd disp, Y+1
+	subi disp, -1
+
+	cp disp, r23 ; last station? wrap around to beginning
+	breq dont_wrap_station
+	ldi disp, 1 ; wrwap station
+	dont_wrap_station:
+	display_integer
+	ldi disp, ':'
+	display
+	
+	do_lcd_command 0b11000000
+	
+
+	; epilogue
+	
+	; restore conflict registers
+	pop r25
+	pop r24
+	pop r23
+
+	; restore stack frame 
+	adiw Y, 2
+	out SPH, YH
+	out SPL, YL
+
+	; restore y pointer
+	pop YH
+	pop YL
 
 	ret

@@ -13,7 +13,7 @@ CollectInput:
 	ldi r24, 26
 	rcall print_Instruction
 
-	rcall get_number_of_stations
+	rcall set_number_of_stations
 	rcall debounce 
 	rcall debounce
 	
@@ -21,10 +21,10 @@ CollectInput:
 	ret
 
 ; gets from the user the number of stations and saves it to the relevant section in memory
-get_number_of_stations:
+set_number_of_stations:
 	; function prologue
-	ldi XH, 2*high(n_stations)
-	ldi XL, 2*low(n_stations)
+	ldi XH, high(n_stations)
+	ldi XL, low(n_stations)
 	push r20
 	push r19
 	push r18
@@ -63,24 +63,26 @@ get_number_of_stations:
 
 	rjmp storeNStations
 
-digits2:
-	lsl r20
-	mov r19, r20
-	lsl r20
-	lsl r20
-	add r19, r20
-	mov disp, temp
-	display_integer
-	add temp, r19
+	digits2:
+		ldi disp, 0
+		display_integer
+		ldi temp, 10
 
-storeNStations:
-	st X, temp
+	storeNStations:
+		st X, temp
 
-	pop temp
-	pop r18
-	pop r19
-	pop r20
+		pop temp
+		pop r18
+		pop r19
+		pop r20
 
+		ret
+
+; places the number of stations in r25
+get_number_of_stations:
+	ldi ZH, high(n_stations)
+	ldi ZL, low(n_stations)
+	ld r25, Z
 	ret
 
 ; pass in n as register r24
@@ -153,7 +155,7 @@ save_station_name:
 	push YH
 	in YL, SPL ; get the stack frame
 	in YH, SPH
-	sbiw Y, 1	; reserve two bytes for local loop counter and parameter station number
+	sbiw Y, 1	; reserve two one byte for local loop counter and parameter station number
 	out SPL, YL
 	out SPH, YH ; update the frame position
 
