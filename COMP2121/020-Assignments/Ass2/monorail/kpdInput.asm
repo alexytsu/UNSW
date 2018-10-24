@@ -29,12 +29,18 @@ get_num_start:
 	brne skipconvnum ; if the result is non-zero,
 	; we need to look again
 	rcall convert ; if bit is clear, convert the bitcode
-	
+
+	; return if #	
+	cpi temp, 0xf
+	breq terminate
+
 	cpi temp, 10
-	brlt get_num_again
+	brge get_num_again
+
 	ret
 	get_num_again:
 	rcall get_num
+	terminate:
 	ret
 	
 	skipconvnum:
