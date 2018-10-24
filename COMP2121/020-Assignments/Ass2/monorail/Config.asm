@@ -16,3 +16,16 @@ configuration_complete: .db "Configuration Complete. Initialising system ... "
 incorrect: .db "Incorrect! "
 numSerror: .db "Station count is 10"
 timeSerror: .db "Time incorrect"
+
+resetNames:
+	ldi temp, ' '
+	ldi temp2, 100
+	ldi XH, high(station_names)
+	ldi XL, low(station_names)
+
+clearnames:
+	st X+, temp
+	dec temp2
+	brne clearnames
+
+	ret

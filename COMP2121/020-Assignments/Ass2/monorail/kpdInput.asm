@@ -99,6 +99,8 @@ get_char_start:
 	; A (abc def ghi)
 	; B (jkl mno pqr)
 	; C (stu vwx yz )
+	cpi temp, 0xf
+	breq end
 
 	cpi temp, 10
 	breq a_to_i
@@ -130,6 +132,7 @@ get_char_start:
 
 	number_to_letter:
 		add temp, r18
+	end:
 		pop temp2
 		pop r18
 

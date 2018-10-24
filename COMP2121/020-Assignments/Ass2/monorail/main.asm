@@ -98,6 +98,7 @@ SETUP:
 	do_lcd_command 0b00001111 ; Cursor on, bar, with blink
 	;do_lcd_command 0xc0
 
+	rcall resetNames
 
 	; test subroutines
 	/*call get_num
@@ -113,13 +114,10 @@ SETUP:
 	do_lcd_data
 	*/
 
-<<<<<<< HEAD
 
-	rcall CollectInput;
-/*
+	;rcall CollectInput;
 
-=======
->>>>>>> 028d83af6f8663bb52d0cda24eb298bff7116ffd
+
 	rcall CollectInput
 
 	rcall get_number_of_stations
@@ -127,11 +125,7 @@ SETUP:
 	display_integer
 	out PORTC, r25
 
-<<<<<<< HEAD
-	
 
-=======
->>>>>>> 028d83af6f8663bb52d0cda24eb298bff7116ffd
 	ldi r24, 0
 	get_all_names:	
 
@@ -145,11 +139,9 @@ SETUP:
 	inc r24
 	cp r24, r25
 	brne get_all_names
-<<<<<<< HEAD
 
-	*/
-=======
->>>>>>> 028d83af6f8663bb52d0cda24eb298bff7116ffd
+	
+
 
 ; code that should loop
 main:
