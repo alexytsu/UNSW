@@ -113,7 +113,6 @@ SETUP:
 	do_lcd_data
 	*/
 
-<<<<<<< HEAD
 	rcall CollectInput;
 /*
 =======
@@ -141,10 +140,6 @@ SETUP:
 <<<<<<< HEAD
 	*/
 
-=======
-	
-	*/
->>>>>>> 996f3fc788814b247cf081c9856dded8180b957b
 
 ; code that should loop
 main:
