@@ -23,6 +23,7 @@ save_station_time:
 	; store conflict registers
 	push r18	; temp
 	push r19	; temp n
+	push temp
 
 	ldd r19, Y+1
 	; get address of the station name's storage location
@@ -33,8 +34,42 @@ save_station_time:
 	add XL, r19
 	adc XH, r18
 
-	; dummy 5 seconds
-	rcall get_num
+	call get_num
+	mov disp, temp
+	display_integer
+	
+	rcall debounce
+	cpi temp, 1
+	brne storeStnTime
+
+	rcall pause
+
+	call get_num
+	rcall debounce
+	rcall debounce
+	cpi temp, 0xf
+	breq storeStnTime
+	
+	cpi temp, 0
+	breq digitsTime
+
+	ldi temp, 10
+	do_lcd_command 0x01
+	ldi ZH, 2*high(incorrect)
+	ldi ZL, 2*low(incorrect)
+	ldi r24, 12
+	rcall print_Instruction
+	ldi ZH, 2*high(timeSerror)
+	ldi ZL, 2*low(timeSerror)
+	ldi r24, 19
+	rcall print_Instruction
+
+	rjmp storeNStations
+
+digitsTime:
+	ldi temp, 10
+
+storeStnTime:
 	st X, temp
 	out PORTC, temp
 	rcall pause
