@@ -18,10 +18,9 @@
 	sts OCR3BL, speed
  .endmacro
 
- initialise_motor:
-	start_motor
+
 		
-=======
+
  .macro poll_estop
 	ldi mask, INITCOLMASK
 	sts portl, mask
