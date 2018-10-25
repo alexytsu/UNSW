@@ -62,15 +62,9 @@ status_next_station_time: .byte 1 ; time for stopping at next station
 .CSEG
 .org 0x0000
 rjmp SETUP
-<<<<<<< HEAD
 .org INT0addr
 rjmp pushbutton1
 .org INT1addr
-=======
-.org INT0ADDR
-rjmp pushbutton1
-.org INT1ADDR
->>>>>>> 252a07932e4f9e0780854d83fc978d3700548f8e
 rjmp pushbutton2
 
 .include "Config.asm"
