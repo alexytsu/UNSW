@@ -7,3 +7,13 @@
 
 
  .cseg
+
+ .macro start_motor
+
+ .endmacro
+
+ .macro stop_motor
+
+ .endmacro
+
+ 
