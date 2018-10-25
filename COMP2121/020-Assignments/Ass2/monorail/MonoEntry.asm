@@ -117,7 +117,7 @@ save_station_time:
 	breq digitsTime
 
 	ldi temp, 10
-	do_lcd_command 0x01
+	clear
 	ldi ZH, 2*high(incorrect)
 	ldi ZL, 2*low(incorrect)
 	ldi r24, 12
@@ -127,7 +127,7 @@ save_station_time:
 	ldi r24, 19
 	rcall print_Instruction
 
-	rjmp storeStoptime
+	rjmp storeStntime
 
 digitsTime:
 	ldi temp, 10

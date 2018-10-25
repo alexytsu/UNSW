@@ -21,6 +21,10 @@
 
 .macro clear
 	do_lcd_command 0x01
+	ldi r16, 0
+	ldi XH, high(lcd_position)
+	ldi XL, low(lcd_position)
+	st X, r16
 .endmacro
 
 .macro do_lcd_data
@@ -155,12 +159,16 @@ pause:
 	out SPL, YL
 	out SPH, YH ; update the frame position
 
+	ldi XH, high(lcd_position)
+	ldi XL, low(lcd_position)
+
 	; store conflict registers
 	push r18	; i
 	push r19	; n 
 	push r20
 
-	clr r18
+
+	ld r18, X
 	mov r19, r24
 	;do_lcd_command 0xc0
 	;Loop from 0 to n-1 printing each character as it goes
@@ -168,7 +176,6 @@ pause:
 	inc r18
 	subi r19, 1
 	cpi r18, 17
-	out PORTC, r18
 	brlt skipLineChange
 	do_lcd_command 0b11000000
 	ldi r18, 1
@@ -177,6 +184,8 @@ skipLineChange:
 	do_lcd_data
 	cpi r19, 1
 	brne displayLoop
+	
+	st X, r18
 
 	; epilogue
 	pop r20
@@ -227,10 +236,13 @@ prompt_name:
 	ldi disp, '/'
 	display
 	ldd disp, Y+2
+	out PORTC, disp
 	display_integer
 	ldi disp, ':'
 	display
 	
+	rcall pause
+
 	do_lcd_command 0b11000000
 	
 
@@ -285,12 +297,12 @@ prompt_time:
 
 	; show the user which station they are entering a name for
 	ldd disp, Y+1
-	subi disp, -1
+	inc disp
 	display_integer
 	ldi disp, '-'
 	display
 	ldd disp, Y+1
-	subi disp, -1
+	inc disp
 
 	cp disp, r23 ; last station? wrap around to beginning
 	breq dont_wrap_station

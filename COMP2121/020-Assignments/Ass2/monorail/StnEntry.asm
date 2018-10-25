@@ -16,6 +16,12 @@ CollectInput:
 	rcall set_number_of_stations
 	rcall debounce 
 	rcall debounce
+	rcall debounce 
+	rcall debounce
+	rcall debounce 
+	rcall debounce 
+	rcall debounce
+	rcall debounce
 	
 	;Recieves input for station names
 	ret
@@ -51,14 +57,14 @@ set_number_of_stations:
 	breq digits2
 
 	ldi temp, 10
-	do_lcd_command 0x01
-	ldi ZH, 2*high(incorrect)
-	ldi ZL, 2*low(incorrect)
+	clear
+	ldi ZH, high(incorrect<<1)
+	ldi ZL, low(incorrect<<1)
 	ldi r24, 11
 	rcall print_Instruction
-	ldi ZH, 2*high(numSerror)
-	ldi ZL, 2*low(numSerror)
-	ldi r24, 19
+	ldi ZH, high(numSerror<<1)
+	ldi ZL, low(numSerror<<1)
+	ldi r24, 20
 	rcall print_Instruction
 
 	rjmp storeNStations
@@ -83,6 +89,7 @@ get_number_of_stations:
 	ldi ZH, high(n_stations)
 	ldi ZL, low(n_stations)
 	ld r25, Z
+	out PORTC, r25
 	ret
 
 ; pass in n as register r24
@@ -121,7 +128,7 @@ print_station_name:
 	add XL, r19
 	adc XH, r20
 
-	do_lcd_command 0b0000001
+	clear
 	
 	ldd disp, Y+1
 	display_integer

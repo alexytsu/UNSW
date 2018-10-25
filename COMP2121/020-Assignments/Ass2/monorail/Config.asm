@@ -26,5 +26,4 @@ clearnames:
 	st X+, temp
 	dec temp2
 	brne clearnames
-
 	ret

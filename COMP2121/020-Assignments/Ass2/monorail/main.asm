@@ -48,6 +48,7 @@ station_names: .byte 100
 travel_times: .byte 10
 n_stations: .byte 1
 stop_time: .byte 1
+lcd_position: .byte 1
 
 
 .equ estop_mask = 0b00000001
@@ -61,9 +62,9 @@ status_next_station_time: .byte 1 ; time for stopping at next station
 .CSEG
 .org 0x0000
 rjmp SETUP
-.org INT0
+.org INT0addr
 rjmp pushbutton1
-.org INT1
+.org INT1addr
 rjmp pushbutton2
 
 .include "Config.asm"
@@ -110,7 +111,7 @@ SETUP:
 	do_lcd_command 0b00111000 ; 2x5x7
 	do_lcd_command 0b00111000 ; 2x5x7
 	do_lcd_command 0b00001000 ; display off?
-	do_lcd_command 0b00000001 ; clear display
+	clear ; clear display
 	do_lcd_command 0b00000110 ; increment, no display shift
 	do_lcd_command 0b00001111 ; Cursor on, bar, with blink
 	;do_lcd_command 0xc0
