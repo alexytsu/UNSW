@@ -61,9 +61,9 @@ status_next_station_time: .byte 1 ; time for stopping at next station
 .CSEG
 .org 0x0000
 rjmp SETUP
-.org INT0
+.org INT0ADDR
 rjmp pushbutton1
-.org INT1
+.org INT1ADDR
 rjmp pushbutton2
 
 .include "Config.asm"
@@ -99,7 +99,12 @@ SETUP:
 	out PORTA, temp
 
 	; Enable interrupts on the pushbuttons
-	
+	ldi temp, (2 << ISC10) | (2 << ISC00) ; The built-in constants ISC10=2 and ISC00=0 are
+	sts EICRA, temp ; temp=0b00001010, so both interrupts are configured as falling edge
+	in temp, EIMSK
+	ori temp, (1<<INT0) | (1<<INT1) ; INT0=0 & INT1=1
+	out EIMSK, temp ; Enable External Interrupts 0 and 1
+	sei
 
 	; ==== reset hardware ====
 	; reset the screen
@@ -114,34 +119,14 @@ SETUP:
 	do_lcd_command 0b00000110 ; increment, no display shift
 	do_lcd_command 0b00001111 ; Cursor on, bar, with blink
 	;do_lcd_command 0xc0
-
+	/*
 	rcall resetNames
-
-	; test subroutines
-	/*call get_num
-	mov disp, temp
-	subi disp, -'0'
-	do_lcd_data
-
-	rcall get_char
-	mov disp, temp
-	do_lcd_data
-
-	ldi disp, 'X'
-	do_lcd_data
-	*/
-
-
-	;rcall CollectInput;
-
-
 	rcall CollectInput
 
 	rcall get_number_of_stations
 	mov disp, r25
+	
 	display_integer
-	out PORTC, r25
-
 
 	ldi r24, 0
 	get_all_names:	
@@ -157,12 +142,14 @@ SETUP:
 	cp r24, r25
 	brne get_all_names
 
-	
+	*/
 
 
 ; code that should loop
 main:
-
+	out PORTC, flags
+	poll_estop
+/*
 clr r24
 show_all_names:
 	rcall print_station_name
@@ -176,16 +163,7 @@ show_all_names:
 	mov temp, r25
 	cp r24, temp
 	brne show_all_names
-	
+	*/
 
 	rjmp main
 
-pushbutton1:
-	ser temp
-	out PORTC, temp
-	reti
-
-pushbutton2:
-	clr temp
-	out PORTC, temp
-	reti
