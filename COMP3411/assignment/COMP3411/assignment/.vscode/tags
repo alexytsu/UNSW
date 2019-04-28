@@ -1,0 +1,102 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_OUTPUT_MODE	u-ctags	/u-ctags or e-ctags/
+!_TAG_PROGRAM_AUTHOR	Universal Ctags Team	//
+!_TAG_PROGRAM_NAME	Universal Ctags	/Derived from Exuberant Ctags/
+!_TAG_PROGRAM_URL	https://ctags.io/	/official site/
+!_TAG_PROGRAM_VERSION	0.0.0	/45968eff/
+Board	../myAgent/board.py	/^class Board:$/;"	kind:class	line:4
+Board	../src/board.py	/^class Board:$/;"	kind:class	line:4
+Game	../src/game.py	/^class Game:$/;"	kind:class	line:15
+INDEX_TO_MOVE	../myAgent/position.py	/^def INDEX_TO_MOVE(index):$/;"	kind:function	line:13
+MAX	../src/game.py	/^MAX = True$/;"	kind:variable	line:9
+MAX_HEURISTIC	../myAgent/position.py	/^MAX_HEURISTIC = 10000$/;"	kind:variable	line:5
+MIN	../src/game.py	/^MIN = False$/;"	kind:variable	line:10
+MIN_HEURISTIC	../myAgent/position.py	/^MIN_HEURISTIC = -MAX_HEURISTIC$/;"	kind:variable	line:6
+MOVE_TO_INDEX	../myAgent/position.py	/^def MOVE_TO_INDEX(move):$/;"	kind:function	line:9
+Player	../myAgent/player.py	/^class Player:$/;"	kind:class	line:7
+Position	../myAgent/position.py	/^class Position:$/;"	kind:class	line:17
+Position	../src/position.py	/^class Position:$/;"	kind:class	line:5
+__init__	../myAgent/board.py	/^    def __init__(self, grid=None):$/;"	kind:member	line:30
+__init__	../myAgent/player.py	/^    def __init__(self, currPosition):$/;"	kind:member	line:9
+__init__	../myAgent/position.py	/^    def __init__(self, board, currGridN):$/;"	kind:member	line:19
+__init__	../src/board.py	/^    def __init__(self, board=None):$/;"	kind:member	line:6
+__init__	../src/game.py	/^    def __init__(self, board=None):$/;"	kind:member	line:36
+__init__	../src/position.py	/^    def __init__(self, board, currGridN):$/;"	kind:member	line:48
+agent.py	../myAgent/agent.py	1;"	kind:file	line:1
+agent.py	../src/agent.py	1;"	kind:file	line:1
+board	../myAgent/agent.py	/^    board = Board()$/;"	kind:variable	line:77
+board.py	../myAgent/board.py	1;"	kind:file	line:1
+board.py	../src/board.py	1;"	kind:file	line:1
+boards	../src/model_agent.py	/^boards = np.zeros((10, 10), dtype="int8")$/;"	kind:variable	line:17
+col1_win	../myAgent/board.py	/^    col1_win = np.array([0, 3, 6])$/;"	kind:variable	line:8
+col2_win	../myAgent/board.py	/^    col2_win = np.array([1, 4, 7])$/;"	kind:variable	line:9
+col3_win	../myAgent/board.py	/^    col3_win = np.array([2, 5, 8])$/;"	kind:variable	line:10
+curr	../src/model_agent.py	/^curr = 0 # this is the current board to play in$/;"	kind:variable	line:19
+diag1_win	../myAgent/board.py	/^    diag1_win = np.array([0, 4, 8])$/;"	kind:variable	line:14
+diag2_win	../myAgent/board.py	/^    diag2_win = np.array([2, 4, 6])$/;"	kind:variable	line:15
+evaluate_board	../myAgent/board.py	/^    def evaluate_board(self):$/;"	kind:member	line:36
+evaluate_board	../src/board.py	/^    def evaluate_board(self):$/;"	kind:member	line:38
+evaluate_grid	../src/board.py	/^    def evaluate_grid(grid):$/;"	kind:member	line:45
+evaluate_grid	../src/game.py	/^    def evaluate_grid(self, grid_n):$/;"	kind:member	line:89
+evaluate_subgrid	../myAgent/board.py	/^    def evaluate_subgrid(self, subGridN):$/;"	kind:member	line:43
+game.py	../src/game.py	1;"	kind:file	line:1
+gamestate	../src/agent.py	/^    gamestate = Game()$/;"	kind:variable	line:75
+get_valid_moves	../myAgent/position.py	/^    def get_valid_moves(self):$/;"	kind:member	line:32
+index_to_move	../src/game.py	/^    def index_to_move(index):$/;"	kind:member	line:22
+main	../src/model_agent.py	/^def main():$/;"	kind:function	line:94
+minimax	../myAgent/position.py	/^    def minimax(self, maximise, depth):$/;"	kind:member	line:37
+minimax	../src/position.py	/^    def minimax(position, maximising, depth, lim):$/;"	kind:member	line:6
+model_agent.py	../src/model_agent.py	1;"	kind:file	line:1
+move_to_index	../src/game.py	/^    def move_to_index(move):$/;"	kind:member	line:29
+nodes_explored	../src/game.py	/^nodes_explored = 0$/;"	kind:variable	line:12
+np	../myAgent/agent.py	/^import numpy as np$/;"	kind:namespace	line:5
+np	../myAgent/board.py	/^import numpy as np$/;"	kind:namespace	line:1
+np	../myAgent/player.py	/^import numpy as np$/;"	kind:namespace	line:1
+np	../myAgent/position.py	/^import numpy as np$/;"	kind:namespace	line:1
+np	../src/agent.py	/^import numpy as np$/;"	kind:namespace	line:5
+np	../src/board.py	/^import numpy as np$/;"	kind:namespace	line:1
+np	../src/game.py	/^import numpy as np$/;"	kind:namespace	line:4
+np	../src/model_agent.py	/^import numpy as np$/;"	kind:namespace	line:9
+np	../src/position.py	/^import numpy as np$/;"	kind:namespace	line:1
+parse	../myAgent/agent.py	/^def parse(string, player=None):$/;"	kind:function	line:14
+parse	../src/agent.py	/^def parse(string, game=None):$/;"	kind:function	line:12
+parse	../src/model_agent.py	/^def parse(string):$/;"	kind:function	line:65
+place	../myAgent/position.py	/^    def place(self, move, player):$/;"	kind:member	line:27
+place	../src/game.py	/^    def place(self, pos, player):$/;"	kind:member	line:108
+place	../src/model_agent.py	/^def place(board, num, player):$/;"	kind:function	line:58
+play	../src/model_agent.py	/^def play():$/;"	kind:function	line:45
+play_minimax_move	../myAgent/player.py	/^    def play_minimax_move(self):$/;"	kind:member	line:24
+play_minimax_move	../src/game.py	/^    def play_minimax_move(self):$/;"	kind:member	line:125
+play_random_move	../src/game.py	/^    def play_random_move(self):$/;"	kind:member	line:116
+player	../myAgent/agent.py	/^    player = Player(position)$/;"	kind:variable	line:79
+player.py	../myAgent/player.py	1;"	kind:file	line:1
+position	../myAgent/agent.py	/^    position = Position(board, 0)$/;"	kind:variable	line:78
+position.py	../myAgent/position.py	1;"	kind:file	line:1
+position.py	../src/position.py	1;"	kind:file	line:1
+print_board	../myAgent/board.py	/^    def print_board(self):$/;"	kind:member	line:116
+print_board	../src/game.py	/^    def print_board(self):$/;"	kind:member	line:75
+print_board	../src/model_agent.py	/^def print_board(board):$/;"	kind:function	line:30
+print_board_row	../myAgent/board.py	/^    def print_board_row(self, a, b, c, i, j, k):$/;"	kind:member	line:87
+print_board_row	../src/game.py	/^    def print_board_row(board, a, b, c, i, j, k):$/;"	kind:member	line:46
+print_board_row	../src/model_agent.py	/^def print_board_row(board, a, b, c, i, j, k):$/;"	kind:function	line:23
+response	../myAgent/agent.py	/^            response = parse(line, player)$/;"	kind:variable	line:89
+response	../src/agent.py	/^            response = parse(line, gamestate)$/;"	kind:variable	line:85
+row1_win	../myAgent/board.py	/^    row1_win = np.array([0, 1, 2])$/;"	kind:variable	line:11
+row2_win	../myAgent/board.py	/^    row2_win = np.array([3, 4, 5])$/;"	kind:variable	line:12
+row3_win	../myAgent/board.py	/^    row3_win = np.array([6, 7, 8])$/;"	kind:variable	line:13
+s	../myAgent/agent.py	/^    s = serverConnect(int(sys.argv[2]))$/;"	kind:variable	line:76
+s	../src/agent.py	/^    s = serverConnect(int(sys.argv[2]))$/;"	kind:variable	line:74
+s	../src/model_agent.py	/^s = [".","X","O"]$/;"	kind:variable	line:18
+serverConnect	../myAgent/agent.py	/^def serverConnect(port):$/;"	kind:function	line:67
+serverConnect	../src/agent.py	/^def serverConnect(port):$/;"	kind:function	line:65
+set_curr_grid	../myAgent/position.py	/^    def set_curr_grid(self, gridN):$/;"	kind:member	line:23
+set_curr_grid	../src/game.py	/^    def set_curr_grid(self, grid_n):$/;"	kind:member	line:104
+set_player	../myAgent/player.py	/^    def set_player(self, playerToken):$/;"	kind:member	line:13
+set_player	../src/game.py	/^    def set_player(self, player):$/;"	kind:member	line:95
+text	../myAgent/agent.py	/^        text = s.recv(1024).decode()$/;"	kind:variable	line:82
+text	../src/agent.py	/^        text = s.recv(1024).decode()$/;"	kind:variable	line:78
+winning_combinations	../myAgent/board.py	/^    winning_combinations = np.array($/;"	kind:variable	line:17
+won_game	../myAgent/board.py	/^    def won_game(self, player):$/;"	kind:member	line:63
+won_grid	../src/board.py	/^    def won_grid(self, grid, player):$/;"	kind:member	line:71
+won_subgrid	../myAgent/board.py	/^    def won_subgrid(self, subGridN, player):$/;"	kind:member	line:70

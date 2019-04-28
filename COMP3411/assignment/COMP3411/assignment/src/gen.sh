@@ -8,4 +8,4 @@ if [ "$#" -ne 1 ]; then
 fi
 
 ./servt -p $1 & sleep 0.1
-./agent -p $1 & sleep 0.1
+./lookt -d 2 -p $1 & sleep 0.1
