@@ -1,15 +1,18 @@
 #!/usr/bin/python3
 import socket
 import sys
+import pdb
 
 import numpy as np
-from game import Game
+from player import Player
+from position import Position
+from board import Board
 
 # read what the server sent us and
 # only parses the strings that are necessary
 
 
-def parse(string, game=None):
+def parse(string, player=None):
     string = string.strip()
     if "init" in string:
         return 0
@@ -26,27 +29,27 @@ def parse(string, game=None):
 
     # Handle cases for game start
     if command == "start":
-        game.set_player(args[0])
+        player.set_player(args[0])
         return 0
 
     if command == "second_move":
-        game.set_curr_grid(int(args[0]))
-        game.place(int(args[1]), game.opposition)
-        return game.play_minimax_move()
+        player.currPosition.set_curr_grid(int(args[0]))
+        player.currPosition.place(int(args[1]), player.opposition)
+        return player.play_minimax_move()
     elif command == "third_move":
-        game.set_curr_grid(int(args[0]))
-        game.place(int(args[1]), game.player)
-        game.place(int(args[2]), game.opposition)
-        return game.play_minimax_move()
+        player.currPosition.set_curr_grid(int(args[0]))
+        player.currPosition.place(int(args[1]), player.player)
+        player.currPosition.place(int(args[2]), player.opposition)
+        return player.play_minimax_move()
 
     # Calculate the best next move
     elif command == "next_move":
-        game.place(int(args[0]), game.opposition)
-        return game.play_minimax_move()
+        player.currPosition.place(int(args[0]), player.opposition)
+        return player.play_minimax_move()
 
     elif command == "last_move":
-        game.place(int(args[0]), game.opposition)
-        print("Moves played: ", game.moves_played)
+        player.currPosition.place(int(args[0]), player.opposition)
+        print("We played:", player.moves_played, "moves.")
         return 0
 
     # Handle cases for game ending
@@ -56,10 +59,13 @@ def parse(string, game=None):
 
     elif command == "loss":
         print("We lost :(")
+        player.currPosition.board.print_board()
+
+        # pdb.set_trace()
         return -1
 
     else:
-        raise Exception("Unhandled behaviour:", command)
+        return 0
 
 
 def serverConnect(port):
@@ -72,7 +78,9 @@ if __name__ == "__main__":
 
     # connect to the socket
     s = serverConnect(int(sys.argv[2]))
-    gamestate = Game()
+    board = Board()
+    position = Position(board, 0)
+    player = Player(position)
 
     while True:
         text = s.recv(1024).decode()
@@ -82,7 +90,7 @@ if __name__ == "__main__":
         for line in text.split("\n"):
             if not(line):
                 break
-            response = parse(line, gamestate)
+            response = parse(line, player)
             if response == -1:
                 s.close()
                 exit()

@@ -6,6 +6,7 @@ from position import Position, MIN_HEURISTIC, MAX_HEURISTIC, MOVE_TO_INDEX, INDE
 from board import Board
 
 DEBUG = False
+SEARCH_DEPTH = 5
 
 
 class Player:
@@ -43,7 +44,7 @@ class Player:
             best_score = MIN_HEURISTIC
             for candidate in candidates:
                 candidate["value"] = candidate["position"].minimax(
-                    False, 2, MIN_HEURISTIC, MAX_HEURISTIC)
+                    False, SEARCH_DEPTH, MIN_HEURISTIC, MAX_HEURISTIC)
                 if candidate["value"] > best_score:
                     best_move = [(candidate["move"])]
                     best_score = candidate["value"]
@@ -68,8 +69,16 @@ class Player:
             best_move = []
             best_score = MAX_HEURISTIC
             for candidate in candidates:
+
+                """
+                make the candidate move
+                """
                 candidate["value"] = candidate["position"].minimax(
-                    True, 5, MIN_HEURISTIC, MAX_HEURISTIC)
+                    True, SEARCH_DEPTH, MIN_HEURISTIC, MAX_HEURISTIC)
+
+                """
+                evaluate it compared to previous moves
+                """
                 if candidate["value"] < best_score:
                     best_move = [(candidate["move"])]
                     best_score = candidate["value"]
