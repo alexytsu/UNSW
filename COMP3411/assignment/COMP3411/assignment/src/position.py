@@ -41,7 +41,7 @@ class Position:
         evaluation = self.board.evaluate_board()
 
         if depth == 0:
-            return 0
+            return evaluation
 
         if self.board.won_game(1):
             if DEBUG:

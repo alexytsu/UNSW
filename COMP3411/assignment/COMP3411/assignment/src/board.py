@@ -33,6 +33,8 @@ class Board:
         else:
             self.grid = grid
 
+        self.lookup = {}
+
     def evaluate_board(self):
         heuristic = 0
         for i in range(9):
@@ -46,6 +48,10 @@ class Board:
 
         subgrid = self.grid[subGridN]
         tic_tac_toe = np.reshape(subgrid, (3, 3))
+
+        lookup_key = np.array2string(subgrid)
+        if lookup_key in self.lookup:
+            return self.lookup[lookup_key]
 
         x_heuristic = 0
         o_heuristic = 0
@@ -71,6 +77,8 @@ class Board:
                 o_heuristic += 1
             if (col == 2).sum() == 2:
                 o_heuristic += 3
+
+        self.lookup[lookup_key] = x_heuristic - o_heuristic
 
         return x_heuristic - o_heuristic
 
