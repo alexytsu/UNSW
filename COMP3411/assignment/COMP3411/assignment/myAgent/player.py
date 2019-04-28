@@ -42,7 +42,8 @@ class Player:
             best_move = []
             best_score = MIN_HEURISTIC
             for candidate in candidates:
-                candidate["value"] = candidate["position"].minimax(False, 3)
+                candidate["value"] = candidate["position"].minimax(
+                    False, 2, MIN_HEURISTIC, MAX_HEURISTIC)
                 if candidate["value"] > best_score:
                     best_move = [(candidate["move"])]
                     best_score = candidate["value"]
@@ -67,7 +68,8 @@ class Player:
             best_move = []
             best_score = MAX_HEURISTIC
             for candidate in candidates:
-                candidate["value"] = candidate["position"].minimax(True, 2)
+                candidate["value"] = candidate["position"].minimax(
+                    True, 5, MIN_HEURISTIC, MAX_HEURISTIC)
                 if candidate["value"] < best_score:
                     best_move = [(candidate["move"])]
                     best_score = candidate["value"]
@@ -86,6 +88,7 @@ class Player:
                 print("==== BEST MOVES ====")
                 print(best_move)
                 print("CHOSEN:", chosen_move)
+
             external_move = INDEX_TO_MOVE(chosen_move)
 
             self.currPosition.place(external_move, self.player)

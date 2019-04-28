@@ -34,16 +34,18 @@ class Position:
         possibleMoves = np.where(subGrid == 0)[0]
         return possibleMoves
 
-    def minimax(self, maximise, depth):
+    def minimax(self, maximise, depth, alpha, beta):
 
         if depth == 0:
             evaluation = self.board.evaluate_board()
             return evaluation
 
+        """
         if self.board.won_game(1):
             return MAX_HEURISTIC
         elif self.board.won_game(2):
             return MIN_HEURISTIC
+        """
 
         possibleMoves = self.get_valid_moves()
 
@@ -54,7 +56,9 @@ class Position:
                 newGrid[self.currGridN][move] = 1
                 newBoard = Board(newGrid)
                 newPosition = Position(newBoard, move)
-                maxResult = max(maxResult, newPosition.minimax(False, depth-1))
+                maxResult = max(maxResult, newPosition.minimax(
+                    False, depth-1, alpha, beta))
+                alpha = max(alpha, maxResult)
             return maxResult
 
         else:
@@ -64,5 +68,7 @@ class Position:
                 newGrid[self.currGridN][move] = 2
                 newBoard = Board(newGrid)
                 newPosition = Position(newBoard, move)
-                minResult = min(minResult, newPosition.minimax(True, depth-1))
+                minResult = min(minResult, newPosition.minimax(
+                    True, depth-1, alpha, beta))
+                beta = min(beta, minResult)
             return minResult

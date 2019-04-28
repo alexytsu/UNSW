@@ -40,25 +40,14 @@ class Board:
 
         return heuristic
 
+    # this function needs to be blazing quick
     def evaluate_subgrid(self, subGridN):
-        subGrid = self.grid[subGridN]
 
-        availableMoves = np.where(subGrid == 0)[0]
+        subgrid = self.grid[subGridN]
+        x_heuristic = (subgrid == 1).sum()
+        o_hueristic = (subgrid == 2).sum()
 
-        heuristic = 0
-
-        for move in availableMoves:
-            subGrid[move] = 1
-            if self.won_subgrid(subGridN, 1):
-                heuristic += 1
-
-            subGrid[move] = 2
-            if self.won_subgrid(subGridN, 2):
-                heuristic -= 1
-
-            subGrid[move] = 0
-
-        return heuristic
+        return x_heuristic - o_hueristic
 
     def won_game(self, player):
         for i in range(9):
