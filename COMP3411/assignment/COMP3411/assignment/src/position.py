@@ -47,12 +47,12 @@ class Position:
             if DEBUG:
                 print("CLAIMING VICTORY for X???")
                 self.board.print_board()
-            return MAX_HEURISTIC - depth
+            return MAX_HEURISTIC + depth
         elif self.board.won_game(2):
             if DEBUG:
                 print("CLAIMING VICTORY for O???")
                 self.board.print_board()
-            return MIN_HEURISTIC + depth
+            return MIN_HEURISTIC - depth
 
         possibleMoves = self.get_valid_moves()
 

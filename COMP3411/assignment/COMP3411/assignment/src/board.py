@@ -34,6 +34,7 @@ class Board:
             self.grid = grid
 
         self.lookup = {}
+        self.won_subgrids = []
 
     def evaluate_board(self):
         heuristic = 0
@@ -96,10 +97,15 @@ class Board:
         subGrid = self.grid[subGridN]
         playerPos = np.where(subGrid == player)[0]
 
+        key = np.array2string(subGrid)
+        if key in self.won_subgrids:
+            return True
+
         for winning_combination in Board.winning_combinations:
             mask = np.isin(winning_combination, playerPos)
             won = not (False in mask)
             if won:
+                self.won_subgrids.append(key)
                 return True
 
         return False

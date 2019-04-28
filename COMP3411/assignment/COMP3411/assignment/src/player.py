@@ -1,4 +1,5 @@
 import random
+import pdb
 
 import numpy as np
 
@@ -6,7 +7,7 @@ from position import Position, MIN_HEURISTIC, MAX_HEURISTIC, MOVE_TO_INDEX, INDE
 from board import Board
 
 DEBUG = False
-SEARCH_DEPTH = 5
+SEARCH_DEPTH = 4
 
 
 class Player:
@@ -32,6 +33,7 @@ class Player:
 
         valid_moves = self.currPosition.get_valid_moves()
         candidates = []
+
         for move in valid_moves:
             newGrid = np.copy(self.currPosition.board.grid)
             newGrid[self.currPosition.currGridN][move] = self.player
@@ -103,3 +105,31 @@ class Player:
             self.currPosition.place(external_move, self.player)
 
             return external_move
+
+
+if __name__ == "__main__":
+
+    # FAILED TO CHOOSE CORRECT MOVE (first noticed in commit 686c2e7)
+    b1 = Board()
+    b1.grid[0][np.array([1, 2, 7])] = 1
+    b1.grid[0][np.array([6])] = 2
+    b1.grid[1][np.array([3, 5])] = 1
+    b1.grid[1][0] = 2
+    b1.grid[2][0] = 2
+    b1.grid[3][np.array([5, 8])] = 2
+    b1.grid[5][6] = 1
+    b1.grid[5][0] = 2
+    b1.grid[6][6] = 1
+    b1.grid[6][np.array([0, 8])] = 2
+    b1.grid[7][1] = 2
+    b1.grid[8][np.array([0, 3])] = 1
+    b1.print_board()
+
+    p1 = Position(b1, 0)
+
+    pl1 = Player(p1)
+    pl1.set_player('x')
+
+    pl1.play_minimax_move()
+
+    pl1.currPosition.board.print_board()
