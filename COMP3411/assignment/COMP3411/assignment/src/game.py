@@ -3,107 +3,13 @@ import random
 
 import numpy as np
 
+from position import Position
+from board import Board
+
 MAX = True
 MIN = False
 
 nodes_explored = 0
-
-class Position:
-    def minimax(position, maximising, depth, lim):
-        # get all the possible moves for this position
-        global nodes_explored
-        nodes_explored += 1
-
-        if depth == lim:
-            return 0
-
-        currGrid = position.board[position.currGridN]
-        possibleMoves = np.where(currGrid == 0)[0]
-
-        for i in range(9):
-            if Board.won_grid(position.board[i], 1):
-                return (lim-depth+1)*100
-
-            if Board.won_grid(position.board[i], 2):
-                return (lim-depth+1)*(-100)
-
-        if maximising:
-            maxResult = -1000
-            for move in possibleMoves:
-                newBoard = np.copy(position.board)
-                newBoard[position.currGridN][move] = 1
-                newCurrGrid = move
-                newPosition = Position(newBoard, newCurrGrid)
-                maxResult = max(
-                    maxResult,
-                    Position.minimax(newPosition, False, depth + 1, lim),
-                )
-            return maxResult
-        else:
-            minResult = 1000
-            for move in possibleMoves:
-                newBoard = np.copy(position.board)
-                newBoard[position.currGridN][move] = 2
-                newCurrGrid = move
-                newPosition = Position(newBoard, newCurrGrid)
-                minResult = min(
-                    minResult,
-                    Position.minimax(newPosition, True, depth + 1, lim),
-                )
-            return minResult
-
-    def __init__(self, board, currGridN):
-        self.board = board
-        self.currGridN = currGridN
-
-
-class Board:
-
-    def evaluate_grid(grid):
-        """
-        A static heuristic for a single grid of the 9x9 board.
-        - Higher positive score favours player X more
-        - More negative means favours player O more 
-
-        The board's favourability for a particular player can be the sum 
-        of the evaluation of the grids for most cases.
-        """
-
-
-    def won_grid(grid, player):
-
-        # These indicies 'mask' combinations that are considered winning
-        col1_win = np.array([0, 3, 6])
-        col2_win = np.array([1, 4, 7])
-        col3_win = np.array([2, 5, 8])
-        row1_win = np.array([0, 1, 2])
-        row2_win = np.array([3, 4, 5])
-        row3_win = np.array([6, 7, 8])
-        diag1_win = np.array([0, 4, 8])
-        diag2_win = np.array([2, 4, 6])
-
-        winning_positions = np.array(
-            [
-                col1_win,
-                col2_win,
-                col3_win,
-                row1_win,
-                row2_win,
-                row3_win,
-                diag1_win,
-                diag2_win,
-            ]
-        )
-
-        player_arrangement = np.where(grid == player)
-
-        for winning_combination in winning_positions:
-            mask = np.isin(winning_combination, player_arrangement)
-            won = not (False in mask)
-            if won:
-                return True
-
-        return False
 
 
 class Game:
@@ -131,6 +37,7 @@ class Game:
         """
         creates an initially empty board
         """
+        self.moves_played = 0
         if board is None:
             self.board = np.zeros((9, 9), dtype="int8")
         else:
@@ -217,6 +124,8 @@ class Game:
 
     def play_minimax_move(self):
 
+        self.moves_played += 1
+
         grid = self.board[self.currGrid]
         valid_places = np.where(grid == 0)[0]
 
@@ -224,6 +133,7 @@ class Game:
         for move in valid_places:
             new_board = np.copy(self.board)
             new_board[self.currGrid][move] = self.player
+            new_board = Board(new_board)
             new_position = Position(new_board, move)
             candidates.append({"move": move, "position": new_position})
 
@@ -243,18 +153,17 @@ class Game:
                     best_move = [x["move"]]
 
             chosen_move = random.choice(best_move)
-            external_move = Game.index_to_move(chosen_move) 
+            external_move = Game.index_to_move(chosen_move)
             self.place(external_move, self.player)
 
-            print(nodes_explored)
-
+            print("candidates", candidates)
             return external_move
 
         if self.player == 2:
             best_move = []
             best_score = 100000
             for x in candidates:
-                x["value"] = Position.minimax(x["position"], True, 0, 3)
+                x["value"] = Position.minimax(x["position"], True, 0, 2)
                 if x["value"] <= best_score:
                     if(x["value"] == best_score):
                         try:
@@ -268,8 +177,6 @@ class Game:
             chosen_move = random.choice(best_move)
             external_move = Game.index_to_move(chosen_move)
             self.place(external_move, self.player)
-            print(nodes_explored)
+            print("candidates", candidates)
+
             return external_move
-
-
-

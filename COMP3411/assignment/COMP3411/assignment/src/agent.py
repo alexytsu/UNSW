@@ -44,6 +44,7 @@ def parse(string, game=None):
 
     elif command == "last_move":
         game.place( int(args[0]), game.opposition)
+        print("Moves played: ", game.moves_played)
         return 0
 
     # Handle cases for game ending
