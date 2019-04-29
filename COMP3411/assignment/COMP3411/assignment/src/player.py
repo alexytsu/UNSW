@@ -1,12 +1,13 @@
 import random
 import pdb
+import time
 
 import numpy as np
 
 from position import Position, MIN_HEURISTIC, MAX_HEURISTIC, MOVE_TO_INDEX, INDEX_TO_MOVE
 from board import Board
 
-DEBUG = True
+DEBUG = False
 SEARCH_DEPTH = 2
 
 
@@ -15,6 +16,9 @@ class Player:
     def __init__(self, currPosition):
         self.currPosition = currPosition
         self.moves_played = 0
+        self.search_depth = 0
+        self.clock_available = 25  # give us some leeway
+        self.previous_time = 0
 
     def set_player(self, playerToken):
         if playerToken == 'x':
@@ -28,10 +32,13 @@ class Player:
         print("We are player:", playerToken, "\n\tindex:", self.player)
 
     def play_minimax_move(self):
+        start = time.clock()
         self.moves_played += 1
 
         valid_moves = self.currPosition.get_valid_moves()
         candidates = []
+
+        external_move = 0
 
         for move in valid_moves:
             newGrid = np.copy(self.currPosition.board.grid)
@@ -45,14 +52,18 @@ class Player:
             best_score = MIN_HEURISTIC
             for candidate in candidates:
                 candidate["value"] = candidate["position"].minimax(
-                    False, SEARCH_DEPTH + int(self.moves_played / 5), 2*MIN_HEURISTIC, 2*MAX_HEURISTIC)
+                    False, 2 + self.search_depth, 2*MIN_HEURISTIC, 2*MAX_HEURISTIC)
                 if candidate["value"] > best_score:
                     best_move = [(candidate["move"])]
                     best_score = candidate["value"]
                 elif candidate["value"] == best_score:
                     best_move.append(candidate["move"])
 
-            chosen_move = random.choice(best_move)
+            try:
+                chosen_move = random.choice(best_move)
+            except:
+                chosen_move = random.choice(valid_moves)
+
             external_move = INDEX_TO_MOVE(chosen_move)
 
             if DEBUG:
@@ -64,7 +75,6 @@ class Player:
                 print("CHOSEN:", chosen_move)
 
             self.currPosition.place(external_move, self.player)
-            return external_move
 
         if self.player == 2:
             best_move = []
@@ -75,7 +85,7 @@ class Player:
                 make the candidate move
                 """
                 candidate["value"] = candidate["position"].minimax(
-                    True, SEARCH_DEPTH + int(self.moves_played / 3), 2*MIN_HEURISTIC, 2*MAX_HEURISTIC)
+                    True, 2 + self.search_depth, 2*MIN_HEURISTIC, 2*MAX_HEURISTIC)
 
                 """
                 evaluate it compared to previous moves
@@ -106,7 +116,28 @@ class Player:
 
             self.currPosition.place(external_move, self.player)
 
-            return external_move
+        time_taken = time.clock() - start
+        print("TimeTaken:", time_taken)
+
+        # store
+        self.previous_time = time_taken
+
+        # update our time keeping
+        self.clock_available += 2
+        self.clock_available -= time_taken
+
+        # update our depth
+        if self.clock_available - self.previous_time * 10 > 0:
+            print(
+                f"Increasing search depth to {self.search_depth +1 } with {self.clock_available} on the clock and previous move {self.previous_time}")
+            self.search_depth += 1
+
+        if self.clock_available - self.previous_time * 1.5 < 0:
+            print(
+                f"Decreasing search depth to {self.search_depth - 1 } with {self.clock_available} on the clock and previous move {self.previous_time}")
+            self.search_depth -= 1
+
+        return external_move
 
 
 if __name__ == "__main__":
