@@ -38,10 +38,13 @@ class Board:
         self.lookup = {}
         self.won_subgrids = {}
 
-    def evaluate_board(self):
+    def evaluate_board(self, biased):
         heuristic = 0
         for i in range(9):
-            subgrid_h = self.evaluate_subgrid(i)
+            if i == biased:
+                subgrid_h = 2 * self.evaluate_subgrid(i)
+            else:
+                subgrid_h = self.evaluate_subgrid(i)
             heuristic += subgrid_h
 
         return heuristic
@@ -50,7 +53,7 @@ class Board:
     def evaluate_subgrid(self, subGridN):
 
         subgrid = self.grid[subGridN]
-        lookup_key = np.array2string(subgrid)
+        lookup_key = subgrid.tobytes()
         if lookup_key in self.lookup:
             return self.lookup[lookup_key]
 
@@ -90,7 +93,7 @@ class Board:
         subGrid = self.grid[subGridN]
         playerPos = np.where(subGrid == player)[0]
 
-        key = np.array2string(playerPos)
+        key = playerPos.tobytes()
         if key in self.won_subgrids:
             return self.won_subgrids[key]
 

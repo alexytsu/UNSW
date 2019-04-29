@@ -127,7 +127,12 @@ class Player:
         self.clock_available -= time_taken
 
         # update our depth
-        if self.clock_available - self.previous_time * 10 > 0:
+        if self.clock_available - self.previous_time * 90 > 0:
+            print(
+                f"DOUBLE Increasing search depth to {self.search_depth + 2 } with {self.clock_available} on the clock and previous move {self.previous_time}")
+            self.search_depth += 2
+
+        elif self.clock_available - self.previous_time * 10 > 0:
             print(
                 f"Increasing search depth to {self.search_depth +1 } with {self.clock_available} on the clock and previous move {self.previous_time}")
             self.search_depth += 1

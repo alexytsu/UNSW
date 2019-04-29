@@ -39,7 +39,7 @@ class Position:
 
     def minimax(self, maximise, depth, alpha, beta):
 
-        evaluation = self.board.evaluate_board()
+        evaluation = self.board.evaluate_board(self.currGridN)
 
         if depth == 0:
             return evaluation

@@ -8,5 +8,5 @@ if [ "$#" -ne 2 ]; then
 fi
 
 ./servt -p $2 & sleep 0.1
-./agent.py -p $2 & sleep 0.1
+./agent.py -p $2 & sleep 1
 ./$1    -p $2
