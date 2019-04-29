@@ -41,10 +41,9 @@ class Board:
     def evaluate_board(self, biased):
         heuristic = 0
         for i in range(9):
+            subgrid_h = self.evaluate_subgrid(i)
             if i == biased:
-                subgrid_h = 3 * self.evaluate_subgrid(i)
-            else:
-                subgrid_h = self.evaluate_subgrid(i)
+                heuristic += subgrid_h
             heuristic += subgrid_h
 
         return heuristic

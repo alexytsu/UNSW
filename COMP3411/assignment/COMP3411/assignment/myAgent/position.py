@@ -33,6 +33,7 @@ class Position:
         self.board.grid[self.currGridN][move] = player
         self.oldGridN = self.currGridN
         self.currGridN = move
+        print(f"From board {self.oldGridN} played {move}")
 
     def get_valid_moves(self):
         subGrid = self.board.grid[self.currGridN]
