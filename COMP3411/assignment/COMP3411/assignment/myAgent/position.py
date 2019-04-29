@@ -22,6 +22,7 @@ class Position:
     def __init__(self, board, currGridN):
         self.board = board
         self.currGridN = currGridN
+        self.oldGridN = 0
 
     def set_curr_grid(self, gridN):
         gridN = MOVE_TO_INDEX(gridN)
@@ -30,6 +31,7 @@ class Position:
     def place(self, move, player):
         move = MOVE_TO_INDEX(move)
         self.board.grid[self.currGridN][move] = player
+        self.oldGridN = self.currGridN
         self.currGridN = move
 
     def get_valid_moves(self):
@@ -44,12 +46,12 @@ class Position:
         if depth == 0:
             return evaluation
 
-        if self.board.won_game(1):
+        if self.board.won_subgrid(self.oldGridN, 1):
             if DEBUG:
                 print("CLAIMING VICTORY for X???")
                 self.board.print_board()
             return MAX_HEURISTIC + depth
-        elif self.board.won_game(2):
+        elif self.board.won_subgrid(self.oldGridN, -1):
             if DEBUG:
                 print("CLAIMING VICTORY for O???")
                 self.board.print_board()
@@ -63,14 +65,17 @@ class Position:
 
                 # make the move
                 self.board.grid[self.currGridN][move] = 1
-                oldGridN = self.currGridN
+                memOldGridN = self.oldGridN
+                self.oldGridN = self.currGridN
                 self.currGridN = move
 
                 maxResult = max(maxResult,
                                 self.minimax(False, depth-1, alpha, beta))
                 # undo the move
-                self.currGridN = oldGridN
+                self.currGridN = self.oldGridN
                 self.board.grid[self.currGridN][move] = 0
+
+                self.oldGridN = memOldGridN
 
                 if PRUNE:
                     alpha = max(alpha, maxResult)
@@ -83,16 +88,19 @@ class Position:
             for move in possibleMoves:
 
                 # make the move
-                self.board.grid[self.currGridN][move] = 2
-                oldGridN = self.currGridN
+                self.board.grid[self.currGridN][move] = -1
+                memOldGridN = self.oldGridN
+                self.oldGridN = self.currGridN
                 self.currGridN = move
 
                 minResult = min(minResult,
                                 self.minimax(True, depth-1, alpha, beta))
 
                 # undo the move
-                self.currGridN = oldGridN
+                self.currGridN = self.oldGridN
                 self.board.grid[self.currGridN][move] = 0
+
+                self.oldGridN = memOldGridN
 
                 if PRUNE:
                     beta = min(beta, minResult)

@@ -42,7 +42,7 @@ class Board:
         heuristic = 0
         for i in range(9):
             if i == biased:
-                subgrid_h = 2 * self.evaluate_subgrid(i)
+                subgrid_h = 3 * self.evaluate_subgrid(i)
             else:
                 subgrid_h = self.evaluate_subgrid(i)
             heuristic += subgrid_h
@@ -66,7 +66,7 @@ class Board:
                     mini_heuristic += 1
                     if mini_heuristic == 0:
                         break
-                if subgrid[index] == 2:
+                if subgrid[index] == -1:
                     mini_heuristic -= 1
                     if mini_heuristic == 0:
                         break
@@ -75,7 +75,9 @@ class Board:
             else:
                 heuristic += mini_heuristic
 
+        reverse_key = (-subgrid).tobytes()
         self.lookup[lookup_key] = heuristic
+        self.lookup[reverse_key] = -heuristic
 
         return heuristic
 

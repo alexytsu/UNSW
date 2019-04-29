@@ -8,7 +8,8 @@ from position import Position, MIN_HEURISTIC, MAX_HEURISTIC, MOVE_TO_INDEX, INDE
 from board import Board
 
 DEBUG = False
-SEARCH_DEPTH = 2
+
+BASE_SEARCH_DEPTH = 3
 
 
 class Player:
@@ -17,16 +18,16 @@ class Player:
         self.currPosition = currPosition
         self.moves_played = 0
         self.search_depth = 0
-        self.clock_available = 25  # give us some leeway
+        self.clock_available = 28  # give us some leeway for initialisation + error overhead
         self.previous_time = 0
 
     def set_player(self, playerToken):
         if playerToken == 'x':
             self.player = 1
-            self.opposition = 2
+            self.opposition = -1
             self.moves_played += 1
         elif playerToken == 'o':
-            self.player = 2
+            self.player = -1
             self.opposition = 1
 
         print("We are player:", playerToken, "\n\tindex:", self.player)
@@ -52,7 +53,7 @@ class Player:
             best_score = MIN_HEURISTIC
             for candidate in candidates:
                 candidate["value"] = candidate["position"].minimax(
-                    False, 2 + self.search_depth, 2*MIN_HEURISTIC, 2*MAX_HEURISTIC)
+                    False, BASE_SEARCH_DEPTH + self.search_depth, 2*MIN_HEURISTIC, 2*MAX_HEURISTIC)
                 if candidate["value"] > best_score:
                     best_move = [(candidate["move"])]
                     best_score = candidate["value"]
@@ -76,7 +77,7 @@ class Player:
 
             self.currPosition.place(external_move, self.player)
 
-        if self.player == 2:
+        if self.player == -1:
             best_move = []
             best_score = MAX_HEURISTIC
             for candidate in candidates:
@@ -85,7 +86,7 @@ class Player:
                 make the candidate move
                 """
                 candidate["value"] = candidate["position"].minimax(
-                    True, 2 + self.search_depth, 2*MIN_HEURISTIC, 2*MAX_HEURISTIC)
+                    True, BASE_SEARCH_DEPTH + self.search_depth, 2*MIN_HEURISTIC, 2*MAX_HEURISTIC)
 
                 """
                 evaluate it compared to previous moves
@@ -129,12 +130,12 @@ class Player:
         # update our depth
         if self.clock_available - self.previous_time * 90 > 0:
             print(
-                f"DOUBLE Increasing search depth to {self.search_depth + 2 } with {self.clock_available} on the clock and previous move {self.previous_time}")
+                f"Increasing search depth (+2) to {self.search_depth + 2 } with {self.clock_available} on the clock and previous move {self.previous_time}")
             self.search_depth += 2
 
         elif self.clock_available - self.previous_time * 10 > 0:
             print(
-                f"Increasing search depth to {self.search_depth +1 } with {self.clock_available} on the clock and previous move {self.previous_time}")
+                f"Increasing search depth (+1) to {self.search_depth +1 } with {self.clock_available} on the clock and previous move {self.previous_time}")
             self.search_depth += 1
 
         if self.clock_available - self.previous_time * 1.5 < 0:
