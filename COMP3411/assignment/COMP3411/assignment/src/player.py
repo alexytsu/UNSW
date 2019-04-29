@@ -6,8 +6,8 @@ import numpy as np
 from position import Position, MIN_HEURISTIC, MAX_HEURISTIC, MOVE_TO_INDEX, INDEX_TO_MOVE
 from board import Board
 
-DEBUG = False
-SEARCH_DEPTH = 4
+DEBUG = True
+SEARCH_DEPTH = 2
 
 
 class Player:
@@ -29,7 +29,6 @@ class Player:
 
     def play_minimax_move(self):
         self.moves_played += 1
-        print("play_minimax_move(): playing a new move")
 
         valid_moves = self.currPosition.get_valid_moves()
         candidates = []
@@ -46,7 +45,7 @@ class Player:
             best_score = MIN_HEURISTIC
             for candidate in candidates:
                 candidate["value"] = candidate["position"].minimax(
-                    False, SEARCH_DEPTH, MIN_HEURISTIC, MAX_HEURISTIC)
+                    False, SEARCH_DEPTH + int(self.moves_played / 5), 2*MIN_HEURISTIC, 2*MAX_HEURISTIC)
                 if candidate["value"] > best_score:
                     best_move = [(candidate["move"])]
                     best_score = candidate["value"]
@@ -76,7 +75,7 @@ class Player:
                 make the candidate move
                 """
                 candidate["value"] = candidate["position"].minimax(
-                    True, SEARCH_DEPTH, MIN_HEURISTIC, MAX_HEURISTIC)
+                    True, SEARCH_DEPTH + int(self.moves_played / 3), 2*MIN_HEURISTIC, 2*MAX_HEURISTIC)
 
                 """
                 evaluate it compared to previous moves
@@ -87,10 +86,13 @@ class Player:
                 elif candidate["value"] == best_score:
                     best_move.append(candidate["move"])
 
-            chosen_move = random.choice(best_move)
+            try:
+                chosen_move = random.choice(best_move)
+            except:
+                chosen_move = random.choice(valid_moves)
 
             if DEBUG:
-                print("\n\n\nCURRPOSITON")
+                print("\n\n\nCURRPOSITON about to play O")
                 print("Curr Grid: ", self.currPosition.currGridN)
                 self.currPosition.board.print_board()
                 print("===== CANDIDATES =====")
@@ -110,6 +112,8 @@ class Player:
 if __name__ == "__main__":
 
     # FAILED TO CHOOSE CORRECT MOVE (first noticed in commit 686c2e7)
+    """
+    # Fix: reverse the depth for winning moves on X and O
     b1 = Board()
     b1.grid[0][np.array([1, 2, 7])] = 1
     b1.grid[0][np.array([6])] = 2
@@ -133,3 +137,76 @@ if __name__ == "__main__":
     pl1.play_minimax_move()
 
     pl1.currPosition.board.print_board()
+    """
+
+    # Chose a losing move
+    """
+    CURRPOSITON
+    Curr Grid:  3
+    * X X | X * * | * * *
+    * * * | * * * | X O *
+    * O * | O * O | X * *
+    ------+-------+------
+    * * * | O * * | * * O
+    * * * | * X * | * * *
+    * * O | * X * | * * *
+    ------+-------+------
+    * * * | * O * | O X *
+    * O X | * * * | X * *
+    * * X | * * X | O * *
+
+    == == = CANDIDATES == == =
+    {'move': 0, 'position': < position.Position object at 0x7f1354b21f60 > , 'value': 1}
+    {'move': 1, 'position': < position.Position object at 0x7f1354b219e8 > , 'value': 2}
+    {'move': 2, 'position': < position.Position object at 0x7f1354b21b70 > , 'value': 1}
+    {'move': 3, 'position': < position.Position object at 0x7f1354b21c18 > , 'value': 2}
+    {'move': 4, 'position': < position.Position object at 0x7f1354b21da0 > , 'value': 1}
+    {'move': 5, 'position': < position.Position object at 0x7f1354b21e10 > , 'value': 2}
+    {'move': 6, 'position': < position.Position object at 0x7f1354b21e80 > , 'value': 1}
+    {'move': 7, 'position': < position.Position object at 0x7f1354b21940 > , 'value': 2}
+    == == BEST MOVES == ==
+    [0, 2, 4, 6]
+    CHOSEN: 2
+    """
+
+    b2 = Board()
+    g2 = b2.grid
+    g2[0][1] = 1
+    g2[0][2] = 1
+    g2[0][7] = 2
+
+    g2[1][0] = 1
+    g2[1][6] = 2
+    g2[1][8] = 2
+
+    g2[2][3] = 1
+    g2[2][6] = 1
+    g2[2][4] = 2
+
+    g2[3][8] = 2
+
+    g2[4][4] = 1
+    g2[4][7] = 1
+    g2[4][0] = 2
+
+    g2[5][2] = 2
+
+    g2[6][5] = 1
+    g2[6][8] = 1
+    g2[6][4] = 2
+
+    g2[7][8] = 1
+    g2[7][1] = 2
+
+    g2[8][1] = 1
+    g2[8][3] = 1
+    g2[8][0] = 2
+    g2[8][6] = 2
+
+    b2.print_board()
+
+    pos2 = Position(b2, 3)
+    pl2 = Player(pos2)
+    pl2.set_player('o')
+
+    pl2.play_minimax_move()

@@ -1,5 +1,7 @@
 import numpy as np
 
+DEBUG = True
+
 
 class Board:
 
@@ -97,15 +99,10 @@ class Board:
         subGrid = self.grid[subGridN]
         playerPos = np.where(subGrid == player)[0]
 
-        key = np.array2string(subGrid)
-        if key in self.won_subgrids:
-            return True
-
         for winning_combination in Board.winning_combinations:
             mask = np.isin(winning_combination, playerPos)
             won = not (False in mask)
             if won:
-                self.won_subgrids.append(key)
                 return True
 
         return False
@@ -154,3 +151,14 @@ class Board:
         self.print_board_row(7, 8, 9, 4, 5, 6)
         self.print_board_row(7, 8, 9, 7, 8, 9)
         print()
+
+
+if __name__ == "__main__":
+    board = Board()
+    subGrid = board.grid[7]
+
+    subGrid[np.array([2, 5, 8])] = 2
+    subGrid[np.array([3, 6])] = 1
+
+    print(board.won_game(1))
+    print(board.won_game(2))

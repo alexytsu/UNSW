@@ -6,6 +6,7 @@ MAX_HEURISTIC = 10000
 MIN_HEURISTIC = -MAX_HEURISTIC
 
 DEBUG = False
+PRUNE = True
 
 
 def MOVE_TO_INDEX(move):
@@ -20,7 +21,7 @@ class Position:
 
     def __init__(self, board, currGridN):
         self.board = board
-        self.currGridN = 0
+        self.currGridN = currGridN
 
     def set_curr_grid(self, gridN):
         gridN = MOVE_TO_INDEX(gridN)
@@ -61,7 +62,7 @@ class Position:
             for move in possibleMoves:
 
                 # make the move
-                self.board.grid[self.currGridN][move] = 2
+                self.board.grid[self.currGridN][move] = 1
                 oldGridN = self.currGridN
                 self.currGridN = move
 
@@ -71,9 +72,10 @@ class Position:
                 self.currGridN = oldGridN
                 self.board.grid[self.currGridN][move] = 0
 
-                alpha = max(alpha, maxResult)
-                if alpha >= beta:
-                    break
+                if PRUNE:
+                    alpha = max(alpha, maxResult)
+                    if alpha >= beta:
+                        break
             return maxResult
 
         else:
@@ -81,7 +83,7 @@ class Position:
             for move in possibleMoves:
 
                 # make the move
-                self.board.grid[self.currGridN][move] = 1
+                self.board.grid[self.currGridN][move] = 2
                 oldGridN = self.currGridN
                 self.currGridN = move
 
@@ -92,7 +94,8 @@ class Position:
                 self.currGridN = oldGridN
                 self.board.grid[self.currGridN][move] = 0
 
-                beta = min(beta, minResult)
-                if alpha >= beta:
-                    break
+                if PRUNE:
+                    beta = min(beta, minResult)
+                    if alpha >= beta:
+                        break
             return minResult
