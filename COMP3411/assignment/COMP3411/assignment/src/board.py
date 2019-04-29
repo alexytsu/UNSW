@@ -36,7 +36,7 @@ class Board:
             self.grid = grid
 
         self.lookup = {}
-        self.won_subgrids = []
+        self.won_subgrids = {}
 
     def evaluate_board(self):
         heuristic = 0
@@ -50,40 +50,31 @@ class Board:
     def evaluate_subgrid(self, subGridN):
 
         subgrid = self.grid[subGridN]
-        tic_tac_toe = np.reshape(subgrid, (3, 3))
-
         lookup_key = np.array2string(subgrid)
         if lookup_key in self.lookup:
             return self.lookup[lookup_key]
 
-        x_heuristic = 0
-        o_heuristic = 0
+        heuristic = 0
 
-        for row in tic_tac_toe:
-            if (row == 1).sum() == 1:
-                x_heuristic += 1
-            if (row == 1).sum() == 2:
-                x_heuristic += 3
+        for triplet in self.winning_combinations:
+            mini_heuristic = 0
+            for index in triplet:
+                if subgrid[index] == 1:
+                    mini_heuristic += 1
+                    if mini_heuristic == 0:
+                        break
+                if subgrid[index] == 2:
+                    mini_heuristic -= 1
+                    if mini_heuristic == 0:
+                        break
+            if abs(mini_heuristic) >= 2:
+                heuristic += 3*mini_heuristic
+            else:
+                heuristic += mini_heuristic
 
-            if (row == 2).sum() == 1:
-                o_heuristic += 1
-            if (row == 2).sum() == 2:
-                o_heuristic += 3
+        self.lookup[lookup_key] = heuristic
 
-        for col in np.transpose(tic_tac_toe):
-            if (col == 1).sum() == 1:
-                x_heuristic += 1
-            if (col == 1).sum() == 2:
-                x_heuristic += 3
-
-            if (col == 2).sum() == 1:
-                o_heuristic += 1
-            if (col == 2).sum() == 2:
-                o_heuristic += 3
-
-        self.lookup[lookup_key] = x_heuristic - o_heuristic
-
-        return x_heuristic - o_heuristic
+        return heuristic
 
     def won_game(self, player):
         for i in range(9):
@@ -99,12 +90,18 @@ class Board:
         subGrid = self.grid[subGridN]
         playerPos = np.where(subGrid == player)[0]
 
+        key = np.array2string(playerPos)
+        if key in self.won_subgrids:
+            return self.won_subgrids[key]
+
         for winning_combination in Board.winning_combinations:
             mask = np.isin(winning_combination, playerPos)
             won = not (False in mask)
             if won:
+                self.won_subgrids[key] = True
                 return True
 
+        self.won_subgrids[key] = False
         return False
 
     # Utility Functions (Useful for debugging but do not offer useful logic
