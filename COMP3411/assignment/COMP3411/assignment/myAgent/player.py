@@ -4,43 +4,53 @@ import time
 
 import numpy as np
 
-from position import Position, MIN_HEURISTIC, MAX_HEURISTIC, MOVE_TO_INDEX, INDEX_TO_MOVE
+form position import Position
+
+from position import (
+    Position,
+    MIN_HEURISTIC,
+    MAX_HEURISTIC,
+    MOVE_TO_INDEX,
+    INDEX_TO_MOVE,
+)
 from board import Board
 
 DEBUG = False
 
-BASE_SEARCH_DEPTH = 3
-
+BASE_SEARCH_DEPTH = 2 # never evaluate worse than this depth even under time pressure
 
 class Player:
-
-    def __init__(self, currPosition):
+    def __init__(self, currPosition: Position):
         self.currPosition = currPosition
         self.moves_played = 0
         self.search_depth = 0
-        self.clock_available = 28  # give us some leeway for initialisation + error overhead
+        self.clock_available = (
+            28
+        )  # give us some leeway for initialisation + error overhead
         self.previous_time = 0
 
     def set_player(self, playerToken):
-        if playerToken == 'x':
+        if playerToken == "x":
             self.player = 1
             self.opposition = -1
             self.moves_played += 1
-        elif playerToken == 'o':
+        elif playerToken == "o":
             self.player = -1
             self.opposition = 1
 
-        print("We are player:", playerToken, "\n\tindex:", self.player)
-
     def play_minimax_move(self):
+        """ 
+        Choose the best move for the player find all possible moves to make. Choose the move
+        that leads to the worst response from the opponent assuming perfect play
+        """
+
         start = time.clock()
-        self.moves_played += 1
+        self.moves_played += 1 # store for debugging
 
         valid_moves = self.currPosition.get_valid_moves()
         candidates = []
 
-        external_move = 0
-
+        # Generate a new "Position" for each possible move to evaluate it
         for move in valid_moves:
             newGrid = np.copy(self.currPosition.board.grid)
             newGrid[self.currPosition.currGridN][move] = self.player
@@ -48,12 +58,20 @@ class Player:
             newPosition = Position(newBoard, move)
             candidates.append({"move": move, "position": newPosition})
 
-        if self.player == 1:
+        if self.player == 1:  # we are player x
             best_move = []
             best_score = MIN_HEURISTIC
+
+            # examine all cnadidate moves
             for candidate in candidates:
+
+                # play it out to the dynamic depth
                 candidate["value"] = candidate["position"].minimax(
-                    False, BASE_SEARCH_DEPTH + self.search_depth, 2*MIN_HEURISTIC, 2*MAX_HEURISTIC)
+                    False,
+                    BASE_SEARCH_DEPTH + self.search_depth,  # dynamic depth
+                    2 * MIN_HEURISTIC,
+                    2 * MAX_HEURISTIC,
+                )
                 if candidate["value"] > best_score:
                     best_move = [(candidate["move"])]
                     best_score = candidate["value"]
@@ -77,20 +95,20 @@ class Player:
 
             self.currPosition.place(external_move, self.player)
 
-        if self.player == -1:
+        if self.player == -1:  # we are player o
             best_move = []
             best_score = MAX_HEURISTIC
             for candidate in candidates:
 
-                """
-                make the candidate move
-                """
+                # evaluate the candidate move
                 candidate["value"] = candidate["position"].minimax(
-                    True, BASE_SEARCH_DEPTH + self.search_depth, 2*MIN_HEURISTIC, 2*MAX_HEURISTIC)
+                    True,
+                    BASE_SEARCH_DEPTH + self.search_depth,
+                    2 * MIN_HEURISTIC,
+                    2 * MAX_HEURISTIC,
+                )
 
-                """
-                evaluate it compared to previous moves
-                """
+                # evaluate it compared to previous moves
                 if candidate["value"] < best_score:
                     best_move = [(candidate["move"])]
                     best_score = candidate["value"]
@@ -118,29 +136,31 @@ class Player:
             self.currPosition.place(external_move, self.player)
 
         time_taken = time.clock() - start
-        print("TimeTaken:", time_taken)
 
         # store
         self.previous_time = time_taken
 
         # update our time keeping
-        self.clock_available += 2
-        self.clock_available -= time_taken
+        self.clock_available += 2 # we gain 2 seconds for every move made 
+        self.clock_available -= time_taken # we used some time
 
-        # update our depth
+        # update our depth for the next move
         if self.clock_available - self.previous_time * 90 > 0:
             print(
-                f"Increasing search depth (+2) to {self.search_depth + 2 } with {self.clock_available} on the clock and previous move {self.previous_time}")
+                f"Increasing search depth (+2) to {self.search_depth + 2 } with {self.clock_available} on the clock and previous move {self.previous_time}"
+            )
             self.search_depth += 2
 
         elif self.clock_available - self.previous_time * 10 > 0:
             print(
-                f"Increasing search depth (+1) to {self.search_depth +1 } with {self.clock_available} on the clock and previous move {self.previous_time}")
+                f"Increasing search depth (+1) to {self.search_depth +1 } with {self.clock_available} on the clock and previous move {self.previous_time}"
+            )
             self.search_depth += 1
 
         if self.clock_available - self.previous_time * 1.5 < 0:
             print(
-                f"Decreasing search depth to {self.search_depth - 1 } with {self.clock_available} on the clock and previous move {self.previous_time}")
+                f"Decreasing search depth to {self.search_depth - 1 } with {self.clock_available} on the clock and previous move {self.previous_time}"
+            )
             self.search_depth -= 1
 
         return external_move
@@ -244,6 +264,6 @@ if __name__ == "__main__":
 
     pos2 = Position(b2, 3)
     pl2 = Player(pos2)
-    pl2.set_player('o')
+    pl2.set_player("o")
 
     pl2.play_minimax_move()

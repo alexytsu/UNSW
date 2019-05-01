@@ -16,6 +16,9 @@ class Board:
     diag1_win = np.array([0, 4, 8])
     diag2_win = np.array([2, 4, 6])
 
+    # Generating and storing these winning masks in memory at class initialisation
+    # leads to significant performance increases compared to calculating/initialising 
+    # them each time we need to check whether a grid is won or lost.
     winning_combinations = np.array(
         [
             col1_win,
@@ -39,6 +42,11 @@ class Board:
         self.won_subgrids = {}
 
     def evaluate_board(self, biased):
+        """ 
+        the board is evaluated as the sum of the evaluation of all subgrids 
+        the grid that the next move will be played on is given more weight
+        """
+
         heuristic = 0
         for i in range(9):
             subgrid_h = self.evaluate_subgrid(i)
@@ -48,9 +56,15 @@ class Board:
 
         return heuristic
 
-    # this function needs to be blazing quick
-    def evaluate_subgrid(self, subGridN):
+    # this function needs to be a quick yet accurate estimate of x/o's chances of winning
+    def evaluate_subgrid(self, subGridN):  # this is our "heuristic" function
+        """
+        The more favourable a subgrid is considered for X the more positive a heuristic it returns.
+        For O the more favourable a subgrid is the more negative a heuristic it returns.
+        """
 
+        # Lookup to see if we have evaluated this position before thus saving
+        # the cost of evaluating it again
         subgrid = self.grid[subGridN]
         lookup_key = subgrid.tobytes()
         if lookup_key in self.lookup:
@@ -74,6 +88,9 @@ class Board:
             else:
                 heuristic += mini_heuristic
 
+        # store the result so we can look it up later
+        # also store the negated reverse position since X and O are symmetrical
+        # and it is a zero-sum game
         reverse_key = (-subgrid).tobytes()
         self.lookup[lookup_key] = heuristic
         self.lookup[reverse_key] = -heuristic
