@@ -24,7 +24,7 @@ class Player:
         self.moves_played = 0
         self.search_depth = 0
         self.clock_available = (
-            28
+            24
         )  # give us some leeway for initialisation + error overhead
         self.previous_time = 0
 
@@ -99,7 +99,7 @@ class Player:
         self.previous_time = time_taken
 
         # update our time keeping
-        self.clock_available += 2  # we gain 2 seconds for every move made 
+        self.clock_available += 1.5  # we gain 2 seconds for every move made 
         self.clock_available -= time_taken  # we used some time
 
         # update our depth for the next move
@@ -111,7 +111,7 @@ class Player:
             # if we will not timeout by increasing the search depth, do it
             self.search_depth += 1
 
-        if self.clock_available - self.previous_time * 1.4 < 0:
+        if self.clock_available - self.previous_time * 2 < 0:
             # if maintaining the current search depth may timeout, decrease it for safety
             self.search_depth -= 1
 
