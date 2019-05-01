@@ -1,3 +1,5 @@
+import pickle as pkl
+
 import numpy as np
 
 from board import Board
@@ -73,7 +75,7 @@ class Position:
 
             if best_move is not None:
                 location = np.where(possibleMoves == best_move)[0][0]
-                possibleMoves = np.roll(possibleMoves, location+1)
+                possibleMoves[[0,location]] = possibleMoves[[location, 0]]
 
             for move in possibleMoves:
 
@@ -118,7 +120,7 @@ class Position:
 
             if best_move is not None:
                 location = np.where(possibleMoves == best_move)[0][0]
-                possibleMoves = np.roll(possibleMoves, location+1)
+                possibleMoves[[0 ,location]] = possibleMoves[[location, 0]]
 
             for move in possibleMoves:
 

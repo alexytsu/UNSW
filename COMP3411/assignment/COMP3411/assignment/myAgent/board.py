@@ -1,3 +1,5 @@
+import pickle as pkl
+
 import numpy as np
 
 DEBUG = True
@@ -38,8 +40,18 @@ class Board:
         else:
             self.grid = grid
 
-        self.lookup = {}
-        self.won_subgrids = {}
+        try:
+            with open("heuristics.pkl", "rb") as file:
+                self.lookup = pkl.load(file)
+        except:
+            self.lookup = {}
+            print("loading from scratch...")
+        try:
+            with open("won_subgrids.pkl", "rb") as file:
+                self.won_subgrids = pkl.load(file)
+        except:
+            self.won_subgrids = {}
+            print("loading from scratch...")
 
     def evaluate_board(self, biased):
         """ 

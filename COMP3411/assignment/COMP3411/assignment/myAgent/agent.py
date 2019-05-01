@@ -2,6 +2,7 @@
 import socket
 import sys
 import pdb
+import pickle as pkl
 
 import numpy as np
 from player import Player
@@ -147,18 +148,25 @@ def parse(string, player=None):
 
     elif command == "last_move":
         player.currPosition.place(int(args[0]), player.opposition)
-        print("We played:", player.moves_played, "moves.")
         return 0
 
     # Handle cases for game ending
     elif command == "win":
+        with open("heuristics.pkl", "wb") as file:
+            pkl.dump(player.currPosition.board.lookup, file)
+        with open("won_subgrids.pkl", "wb") as file:
+            pkl.dump(player.currPosition.board.won_subgrids, file)
+        print("We played:", player.moves_played, "moves.")
         print("Yay!! We win!! :)")
         return -1
 
     elif command == "loss":
+        with open("heuristics.pkl", "wb") as file:
+            pkl.dump(player.currPosition.board.lookup, file)
+        with open("won_subgrids.pkl", "wb") as file:
+            pkl.dump(player.currPosition.board.won_subgrids, file)
+        print("We played:", player.moves_played, "moves.")
         print("We lost :(")
-        player.currPosition.board.print_board()
-
         # pdb.set_trace()
         return -1
 
