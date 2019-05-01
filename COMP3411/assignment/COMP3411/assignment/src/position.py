@@ -23,6 +23,8 @@ class Position:
         self.board = board
         self.currGridN = currGridN
         self.oldGridN = 0
+        self.killer_max_moves = {}
+        self.killer_min_moves = {}
 
     def set_curr_grid(self, gridN):
         gridN = MOVE_TO_INDEX(gridN)
@@ -42,26 +44,37 @@ class Position:
 
     def minimax(self, maximise, depth, alpha, beta):
 
-        evaluation = self.board.evaluate_board(self.currGridN)
-
         if depth == 0:
+            evaluation = self.board.evaluate_board(self.currGridN)
             return evaluation
 
+        # to check if we are a terminal node we only need to check the subgrid
+        # that was last played in when returning the heuristic, we also weight
+        # earlier victories in the search tree more than later ones by adding
+        # or subtracting the current depth as necessary
         if self.board.won_subgrid(self.oldGridN, 1):
-            if DEBUG:
-                print("CLAIMING VICTORY for X???")
-                self.board.print_board()
             return MAX_HEURISTIC + depth
         elif self.board.won_subgrid(self.oldGridN, -1):
-            if DEBUG:
-                print("CLAIMING VICTORY for O???")
-                self.board.print_board()
             return MIN_HEURISTIC - depth
 
         possibleMoves = self.get_valid_moves()
 
+        subgrid = self.board.grid[self.currGridN]
+        grid_hash = subgrid.tobytes()
+
         if maximise:
             maxResult = MIN_HEURISTIC
+
+            best_move = None
+            
+            # play the killer move first
+            if grid_hash in self.killer_max_moves:
+                best_move = self.killer_max_moves[grid_hash]["move"]
+
+            if best_move is not None:
+                location = np.where(possibleMoves == best_move)[0][0]
+                possibleMoves = np.roll(possibleMoves, location+1)
+
             for move in possibleMoves:
 
                 # make the move
@@ -70,8 +83,19 @@ class Position:
                 self.oldGridN = self.currGridN
                 self.currGridN = move
 
-                maxResult = max(maxResult,
-                                self.minimax(False, depth-1, alpha, beta))
+                # minimax evaluation
+                curr_eval = self.minimax(False, depth-1, alpha, beta)
+
+                if curr_eval > maxResult:
+                    maxResult = curr_eval
+
+                # update our killer move if necessary
+                if grid_hash in self.killer_max_moves:
+                    if curr_eval > self.killer_max_moves[grid_hash]["val"]:
+                        self.killer_max_moves[grid_hash] = {"move": move, "val": curr_eval}
+                else:
+                    self.killer_max_moves[grid_hash] = {"move": move, "val": curr_eval}
+
                 # undo the move
                 self.currGridN = self.oldGridN
                 self.board.grid[self.currGridN][move] = 0
