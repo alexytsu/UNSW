@@ -83,6 +83,19 @@ Specifically if a single move by the opponent can refute the current line of exa
 worse outcome for the player than one previously fully examined then that entire line of evaluation is pruned. This
 is a strict improvement on standard minimax search with no pruning.
 
+- Caching
+Heuristic evaluation and terminal state evaluation are cached. A hash of the
+position is taken and the result of a board is stored in a hashmap. This 
+allows us to simply look up if we have previously already calculated the
+heuristic of a particular board state. This leads to great savings in time
+as many positions (of a subgrid) are repeated across the board and in 
+different game paths.
+
+For heuristic evaluation we can "double cache" any position by reversing
+the board (swapping X's and O's) and storing the negative heuristic of that
+since we have set our heuristic as a zero-sum between X and O and a position
+that is evaluated as a 1 will be -1 if the X's are swapped with O's.
+
 - Evaluation of terminal states
 When a game is considered "won or lost", minimax search terminates leading to great performance optimisations.
 In general, the game is considered "won" or "lost" when any one of the subboards is considered won or lost in the 
