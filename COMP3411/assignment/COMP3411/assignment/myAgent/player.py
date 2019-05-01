@@ -103,11 +103,15 @@ class Player:
         self.clock_available -= time_taken  # we used some time
 
         # update our depth for the next move
-        if self.clock_available - self.previous_time * 1000 > 0:
+        if self.clock_available - self.previous_time * 5000 > 0:
             # in early stages we might need a more aggressive deepening of the search depth
-            self.search_depth += 3
+            self.search_depth += 5
 
-        if self.clock_available - self.previous_time * 90 > 0:
+        elif self.clock_available - self.previous_time * 1000 > 0:
+            # in early stages we might need a more aggressive deepening of the search depth
+            self.search_depth += 4
+
+        elif self.clock_available - self.previous_time * 90 > 0:
             # in early stages we might need a more aggressive deepening of the search depth
             self.search_depth += 2
 
