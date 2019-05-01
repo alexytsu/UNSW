@@ -110,6 +110,16 @@ class Position:
 
         else:
             minResult = MAX_HEURISTIC
+
+            best_move = None
+            # play the killer move first
+            if grid_hash in self.killer_min_moves:
+                best_move = self.killer_min_moves[grid_hash]["move"]
+
+            if best_move is not None:
+                location = np.where(possibleMoves == best_move)[0][0]
+                possibleMoves = np.roll(possibleMoves, location+1)
+
             for move in possibleMoves:
 
                 # make the move
@@ -118,8 +128,18 @@ class Position:
                 self.oldGridN = self.currGridN
                 self.currGridN = move
 
-                minResult = min(minResult,
-                                self.minimax(True, depth-1, alpha, beta))
+                # minimax evaluation
+                curr_eval = self.minimax(True, depth-1, alpha, beta)
+
+                if curr_eval < minResult:
+                    minResult = curr_eval
+
+                # update our killer move if necessary
+                if grid_hash in self.killer_min_moves:
+                    if curr_eval < self.killer_min_moves[grid_hash]["val"]:
+                        self.killer_min_moves[grid_hash] = {"move": move, "val": curr_eval}
+                else:
+                    self.killer_min_moves[grid_hash] = {"move": move, "val": curr_eval}
 
                 # undo the move
                 self.currGridN = self.oldGridN
