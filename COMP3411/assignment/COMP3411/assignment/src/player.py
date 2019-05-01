@@ -44,76 +44,53 @@ class Player:
         """
 
         start = time.clock()
-        self.moves_played += 1 # store for debugging
+        self.moves_played += 1  # store for debugging
 
         valid_moves = self.currPosition.get_valid_moves()
+        chosen_move = valid_moves[0]  # a default failback in weird cases?
 
-        candidates = []
-        # Generate a new "Position" for each possible move to evaluate it
-        for move in valid_moves:
-            newGrid = np.copy(self.currPosition.board.grid)
-            newGrid[self.currPosition.currGridN][move] = self.player
-            newBoard = Board(newGrid)
-            newPosition = Position(newBoard, move)
-            candidates.append({"move": move, "position": newPosition})
-
-        if self.player == 1:  # we are player x
-            best_move = []
+        if self.player == 1:  # set defaults that will undoubtedly be overidden
             best_score = MIN_HEURISTIC
-
-            # examine all cnadidate moves
-            for candidate in candidates:
-
-                # play it out to the dynamic depth
-                candidate["value"] = candidate["position"].minimax(
-                    False,
-                    BASE_SEARCH_DEPTH + self.search_depth,  # dynamic depth
-                    2 * MIN_HEURISTIC,
-                    2 * MAX_HEURISTIC,
-                )
-                if candidate["value"] > best_score:
-                    best_move = [(candidate["move"])]
-                    best_score = candidate["value"]
-                elif candidate["value"] == best_score:
-                    best_move.append(candidate["move"])
-
-            try:
-                chosen_move = random.choice(best_move)
-            except:
-                chosen_move = random.choice(valid_moves)
-
-            external_move = INDEX_TO_MOVE(chosen_move)
-
-            self.currPosition.place(external_move, self.player)
-
-        if self.player == -1:  # we are player o
-            best_move = []
+            maximise = True
+        elif self.player == -1:
             best_score = MAX_HEURISTIC
-            for candidate in candidates:
+            maximise = False
 
-                # evaluate the candidate move
-                candidate["value"] = candidate["position"].minimax(
-                    True,
-                    BASE_SEARCH_DEPTH + self.search_depth,
-                    2 * MIN_HEURISTIC,
-                    2 * MAX_HEURISTIC,
-                )
+        for move in valid_moves:
 
-                # evaluate it compared to previous moves
-                if candidate["value"] < best_score:
-                    best_move = [(candidate["move"])]
-                    best_score = candidate["value"]
-                elif candidate["value"] == best_score:
-                    best_move.append(candidate["move"])
+            # make the move 
+            """
+            playing and then undoing the move is far more performant than making a deep copy in memory
+            """
+            self.currPosition.board.grid[self.currPosition.currGridN][move] = self.player
+            memOldGridN = self.currPosition.oldGridN
+            self.currPosition.oldGridN = self.currPosition.currGridN
+            self.currPosition.currGridN = move
 
-            try:
-                chosen_move = random.choice(best_move)
-            except:
-                chosen_move = random.choice(valid_moves)
+            # play it out to the dynamic depth
+            current_score = self.currPosition.minimax(
+                not maximise,  # the maximiser takes the MAX of all the minimizer's choices
+                BASE_SEARCH_DEPTH + self.search_depth,  # dynamic depth
+                2 * MIN_HEURISTIC,
+                2 * MAX_HEURISTIC,
+            )
 
-            external_move = INDEX_TO_MOVE(chosen_move)
+            self.currPosition.currGridN = self.currPosition.oldGridN
+            self.currPosition.board.grid[self.currPosition.currGridN][move] = 0
+            self.currPosition.oldGridN = memOldGridN
 
-            self.currPosition.place(external_move, self.player)
+            if maximise: #track the running max score
+                if current_score > best_score:
+                    chosen_move = move
+                    best_score = current_score
+            else: # track the running min score and the move to achieve it
+                if current_score < best_score:
+                    chosen_move = move
+                    best_score = current_score
+
+        # update the currPosition by playing the chosen move
+        external_move = INDEX_TO_MOVE(chosen_move)
+        self.currPosition.place(external_move, self.player)
 
         # Let's prepare for the next move and update some bookkeeping
         time_taken = time.clock() - start
