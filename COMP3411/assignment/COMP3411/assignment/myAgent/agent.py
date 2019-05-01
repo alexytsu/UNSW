@@ -161,9 +161,9 @@ def parse(string, player=None):
         return -1
 
     elif command == "loss":
-        with open("heuristics.pkl", "wb") as file:
+        with open("heuristics.py", "wb") as file:
             pkl.dump(player.currPosition.board.lookup, file)
-        with open("won_subgrids.pkl", "wb") as file:
+        with open("won_subgrids.py", "wb") as file:
             pkl.dump(player.currPosition.board.won_subgrids, file)
         print("We played:", player.moves_played, "moves.")
         print("We lost :(")

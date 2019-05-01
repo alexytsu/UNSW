@@ -41,13 +41,13 @@ class Board:
             self.grid = grid
 
         try:
-            with open("heuristics.pkl", "rb") as file:
+            with open("heuristics.py", "rb") as file:
                 self.lookup = pkl.load(file)
         except:
             self.lookup = {}
             print("loading from scratch...")
         try:
-            with open("won_subgrids.pkl", "rb") as file:
+            with open("won_subgrids.py", "rb") as file:
                 self.won_subgrids = pkl.load(file)
         except:
             self.won_subgrids = {}
