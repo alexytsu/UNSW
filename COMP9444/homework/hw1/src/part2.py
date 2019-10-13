@@ -37,18 +37,23 @@ class LinearModel:
 
     def activation(self, x):
         """
-        TODO: Implement a sigmoid activation function that accepts a float and returns
-        a float, but raises a Value error if a boolean, list or numpy array is passed in
-        hint: consider np.exp()
+        A sigmoid activation function that accepts a float and returns a float
         """
+        if isinstance(x, (list, bool, np.ndarray)):
+            raise ValueError(f"Activation function expects a float but got {type(x)} instead")
+
+        return 1 / (1 + np.exp(-x))
+
 
     def forward(self, inputs):
         """
-        TODO: Implement the forward pass (inference) of a the model.
-
-        inputs is a numpy array. The bias term is the last element in self.weights.
-        hint: call the activation function you have implemented above.
+        the forward pass (inference) of a the model.
         """
+        s = self.weights[-1]
+        for index in range(self.num_inputs):
+            s += inputs[index] * self.weights[index]
+
+        return self.activation(s)
 
     @staticmethod
     def loss(prediction, label):
@@ -56,6 +61,8 @@ class LinearModel:
         TODO: Return the cross entropy for the given prediction and label
         hint: consider using np.log()
         """
+        E = -label * np.log(prediction) - (1 - label) * np.log(1 - prediction)
+        return E
 
     @staticmethod
     def error(prediction, label):
@@ -65,6 +72,7 @@ class LinearModel:
         For example, if label= 1 and the prediction was 0.8, return 0.2
                      if label= 0 and the preduction was 0.43 return -0.43
         """
+        return label - prediction
 
     def backward(self, inputs, diff):
         """
@@ -81,6 +89,13 @@ class LinearModel:
 
         Note: Numpy arrays are passed by reference and can be modified in-place
         """
+
+        for i in range(self.num_inputs):
+            self.weights[i] += self.lr * diff * inputs[i]
+        
+        self.weights[-1] += self.lr * diff
+
+
 
     def plot(self, inputs, marker):
         """
