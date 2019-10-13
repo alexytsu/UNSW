@@ -57,18 +57,13 @@ class LinearModel:
 
     @staticmethod
     def loss(prediction, label):
-        """
-        TODO: Return the cross entropy for the given prediction and label
-        hint: consider using np.log()
-        """
+        """ Returns the cross entropy for the given prediction and label """
         E = -label * np.log(prediction) - (1 - label) * np.log(1 - prediction)
         return E
 
     @staticmethod
     def error(prediction, label):
-        """
-        TODO: Return the difference between the label and the prediction
-
+        """ Return the difference between the label and the prediction
         For example, if label= 1 and the prediction was 0.8, return 0.2
                      if label= 0 and the preduction was 0.43 return -0.43
         """
@@ -76,18 +71,7 @@ class LinearModel:
 
     def backward(self, inputs, diff):
         """
-        TODO: Adjust self.weights by gradient descent
-
-        We take advantage of the simplification shown in Lecture 2b, slide 23,
-        to compute the gradient directly from the differential or difference
-        dE/ds = z - t (which is passed in as diff)
-
-        The resulting weight update should look essentially the same as for the
-        Perceptron Learning Rule (shown in Lectures 1c, slide 11) except that
-        the error can take on any continuous value between -1 and +1,
-        rather than being restricted to the integer values -1, 0 or +1.
-
-        Note: Numpy arrays are passed by reference and can be modified in-place
+        Adjust self.weights by gradient descent using a simplification
         """
 
         for i in range(self.num_inputs):
