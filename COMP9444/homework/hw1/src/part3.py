@@ -94,16 +94,24 @@ class NNModel:
 
     def view_batch(self):
         """
-        TODO: Display first batch of images from trainloader in 8x8 grid
-
-        Do not make calls to plt.imshow() here
-
-        Return:
+        Returns
            1) A float32 numpy array (of dim [28*8, 28*8]), containing a tiling of the batch images,
            place the first 8 images on the first row, the second 8 on the second row, and so on
 
            2) An int 8x8 numpy array of labels corresponding to this tiling
         """
+        batch, labels = next(iter(self.trainloader))
+
+        batch_grid = np.array(np.reshape(batch, (8,8,28,28)))
+        batch_grid = [np.concatenate(row, axis=1) for row in batch_grid]
+        batch_grid = np.vstack(batch_grid)
+        batch_grid = np.array(batch_grid)
+
+        label_grid = np.array(np.reshape(labels, (8,8)))
+
+        return batch_grid, label_grid
+
+
 
     def train_step(self):
         """
@@ -165,7 +173,8 @@ def plot_result(results, names):
 
 def main():
     models = [Linear(), FeedForward(), CNN()]  # Change during development
-    epochs = 10
+    models = [Linear()]
+    epochs = 3
     results = []
 
     # Can comment the below out during development
