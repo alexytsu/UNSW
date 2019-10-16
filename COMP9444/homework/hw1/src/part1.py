@@ -17,7 +17,7 @@ import torch
 
 
 def simple_addition(x, y):
-    return x + y
+    return torch.add(x, y)
 
 
 # Resize tensors

@@ -55,7 +55,7 @@ class FeedForward(nn.Module):
         x = F.relu(self.fc1(x))
         x = F.relu(self.fc2(x))
         x = F.relu(self.fc3(x))
-        x = F.log_softmax(x)
+        x = F.log_softmax(x, dim=1)
         return x
 
 
@@ -71,6 +71,25 @@ class CNN(nn.Module):
     Hint: You will need to reshape outputs from the last conv layer prior to feeding them into
     the linear layers.
     """
+    def __init__(self):
+        super(CNN, self).__init__()
+        self.conv1 = nn.Conv2d(1, 10, kernel_size=5, stride=1)
+        self.conv2 = nn.Conv2d(10, 50, kernel_size=5, stride=1)
+
+        self.pool1 = nn.MaxPool2d(kernel_size=2)
+
+        self.fc1 = nn.Linear(800, 256)
+        self.fc2 = nn.Linear(256, 10)
+
+    def forward(self, x):
+        x = x.view(x.shape[0], -1)  # make sure inputs are flattened
+        x = self.pool1(F.relu(self.conv1(x)))
+        x = self.pool1(F.relu(self.conv2(x)))
+        x = F.relu(self.fc1(x))
+        x = self.fc2(x)
+        x = F.log_softmax(x, dim=1)
+        return x
+
 
 class NNModel:
     def __init__(self, network, learning_rate):
@@ -102,7 +121,7 @@ class NNModel:
         """
 
         #TODO: fix this wrong loss function
-        self.lossfn = nn.CrossEntropyLoss() 
+        self.lossfn = nn.NLLLoss() 
         self.optimizer = optim.Adam(self.model.parameters(), lr=learning_rate)
 
         self.num_train_samples = len(self.trainloader)
@@ -184,13 +203,12 @@ def plot_result(results, names):
     plt.grid(True)
     plt.tight_layout()
     plt.show()
-    plt.savefig("./part_2_plot.png")
+    plt.savefig("./part_3_plot.png")
 
 
 def main():
     models = [Linear(), FeedForward(), CNN()]  # Change during development
-    models = [FeedForward()]
-    epochs = 3
+    epochs = 10
     results = []
 
     # Can comment the below out during development
