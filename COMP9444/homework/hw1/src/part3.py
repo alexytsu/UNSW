@@ -44,6 +44,20 @@ class FeedForward(nn.Module):
     Linear (256) -> ReLU -> Linear(64) -> ReLU -> Linear(10) -> ReLU-> LogSoftmax
     """
 
+    def __init__(self):
+        super(FeedForward, self).__init__()
+        self.fc1 = nn.Linear(784, 256)
+        self.fc2 = nn.Linear(256, 64)
+        self.fc3 = nn.Linear(64, 10)
+
+    def forward(self, x):
+        x = x.view(x.shape[0], -1)  # make sure inputs are flattened
+        x = F.relu(self.fc1(x))
+        x = F.relu(self.fc2(x))
+        x = F.relu(self.fc3(x))
+        x = F.log_softmax(x)
+        return x
+
 
 class CNN(nn.Module):
     """
@@ -86,7 +100,9 @@ class NNModel:
         
         Hint: All networks output log-softmax values (i.e. log probabilities or.. likelihoods.). 
         """
-        self.lossfn = None
+
+        #TODO: fix this wrong loss function
+        self.lossfn = nn.CrossEntropyLoss() 
         self.optimizer = optim.Adam(self.model.parameters(), lr=learning_rate)
 
         self.num_train_samples = len(self.trainloader)
@@ -173,15 +189,17 @@ def plot_result(results, names):
 
 def main():
     models = [Linear(), FeedForward(), CNN()]  # Change during development
-    models = [Linear()]
+    models = [FeedForward()]
     epochs = 3
     results = []
 
     # Can comment the below out during development
+    """
     images, labels = NNModel(Linear(), 0.003).view_batch()
     print(labels)
     plt.imshow(images, cmap="Greys")
     plt.show()
+    """
 
     for model in models:
         print(f"Training {model.__class__.__name__}...")
