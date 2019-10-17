@@ -68,4 +68,4 @@ def simple_concatenate(tensors):
 
 def simple_stack(tensors, dim):
     """ A function that concatenates the given sequence of tensors along a new dimension(dim) and returns the result. """
-    return torch.cat(tensors, dim)
+    return torch.stack(tensors, dim)
