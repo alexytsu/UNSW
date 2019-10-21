@@ -82,9 +82,9 @@ class CNN(nn.Module):
         self.fc2 = nn.Linear(256, 10)
 
     def forward(self, x):
-        x = x.view(x.shape[0], -1)  # make sure inputs are flattened
         x = self.pool1(F.relu(self.conv1(x)))
         x = self.pool1(F.relu(self.conv2(x)))
+        x = x.view(x.shape[0], -1)
         x = F.relu(self.fc1(x))
         x = self.fc2(x)
         x = F.log_softmax(x, dim=1)
@@ -207,7 +207,7 @@ def plot_result(results, names):
 
 
 def main():
-    models = [Linear(), FeedForward(), CNN()]  # Change during development
+    models = [CNN(), Linear(), FeedForward()]  # Change during development
     epochs = 10
     results = []
 
