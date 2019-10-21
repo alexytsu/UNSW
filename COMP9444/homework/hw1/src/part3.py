@@ -121,7 +121,7 @@ class NNModel:
         """
 
         #TODO: fix this wrong loss function
-        self.lossfn = nn.NLLLoss() 
+        self.lossfn = F.nll_loss()
         self.optimizer = optim.Adam(self.model.parameters(), lr=learning_rate)
 
         self.num_train_samples = len(self.trainloader)
