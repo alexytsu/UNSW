@@ -40,7 +40,6 @@ class Linear(nn.Module):
 
 class FeedForward(nn.Module):
     """
-    TODO: Implement the following network structure
     Linear (256) -> ReLU -> Linear(64) -> ReLU -> Linear(10) -> ReLU-> LogSoftmax
     """
 
@@ -61,8 +60,6 @@ class FeedForward(nn.Module):
 
 class CNN(nn.Module):
     """
-    TODO: Implement CNN Network structure
-
     conv1 (channels = 10, kernel size= 5, stride = 1) -> Relu -> max pool (kernel size = 2x2) ->
     conv2 (channels = 50, kernel size= 5, stride = 1) -> Relu -> max pool (kernel size = 2x2) ->
     Linear (256) -> Relu -> Linear (10) -> LogSoftmax
@@ -120,7 +117,6 @@ class NNModel:
         Hint: All networks output log-softmax values (i.e. log probabilities or.. likelihoods.). 
         """
 
-        #TODO: fix this wrong loss function
         self.lossfn = F.nll_loss
         self.optimizer = optim.Adam(self.model.parameters(), lr=learning_rate)
 
