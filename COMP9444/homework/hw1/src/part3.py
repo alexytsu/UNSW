@@ -203,17 +203,15 @@ def plot_result(results, names):
 
 
 def main():
-    models = [CNN(), Linear(), FeedForward()]  # Change during development
+    models = [Linear(), FeedForward(), CNN()]  # Change during development
     epochs = 10
     results = []
 
     # Can comment the below out during development
-    """
     images, labels = NNModel(Linear(), 0.003).view_batch()
     print(labels)
     plt.imshow(images, cmap="Greys")
     plt.show()
-    """
 
     for model in models:
         print(f"Training {model.__class__.__name__}...")
