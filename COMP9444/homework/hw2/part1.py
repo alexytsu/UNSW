@@ -76,6 +76,7 @@ def lstm(input, hiddenSize):
     return lstm(input.view(len()), hidden)
 
 
+
 def conv(input, weight):
     """
     TODO: Return the convolution of input and weight tensors,
@@ -83,3 +84,4 @@ def conv(input, weight):
           The convolution should be along the sequence axis.
           input is of size [batchSize, inputDim, seqLength]
     """
+    return torch.nn.functional.conv1d(input, weight)
