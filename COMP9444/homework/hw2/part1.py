@@ -14,8 +14,8 @@ DOING SO MAY CAUSE YOUR CODE TO FAIL AUTOMATED TESTING.
 
 import torch
 
-class rnn(torch.nn.Module):
 
+class rnn(torch.nn.Module):
     def __init__(self):
         super(rnn, self).__init__()
 
@@ -31,7 +31,8 @@ class rnn(torch.nn.Module):
               (hiddenDim = 128), and return the new hidden state.
         """
         x1 = self.ih(input)
-        return self.hh(x1 + hidden)
+        x2 = self.hh(hidden)
+        return torch.tanh(x1 + x2)
 
     def forward(self, input):
         hidden = torch.zeros(128)
@@ -46,11 +47,11 @@ class rnn(torch.nn.Module):
         seqLength, batchSize, inputDim = input.shape
         for seq in range(seqLength):
             hidden = self.rnnCell(input[seq], hidden)
-            
+
         return hidden
 
-class rnnSimplified(torch.nn.Module):
 
+class rnnSimplified(torch.nn.Module):
     def __init__(self):
         super(rnnSimplified, self).__init__()
         """
@@ -65,13 +66,17 @@ class rnnSimplified(torch.nn.Module):
 
         return hidden
 
+
 def lstm(input, hiddenSize):
     """
     TODO: Let variable lstm be an instance of torch.nn.LSTM.
           Variable input is of size [batchSize, seqLength, inputDim]
     """
-    lstm = torch.nn.LSTM(input.shape[1] * input.shape[2],hidden_size)
+    lstm = torch.nn.LSTM(
+        input_size=input.shape[1] * input.shape[2], hidden_size=hiddenSize
+    )
     return lstm(input)
+
 
 def conv(input, weight):
     """
