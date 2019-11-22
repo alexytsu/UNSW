@@ -72,8 +72,10 @@ def lstm(input, hiddenSize):
     TODO: Let variable lstm be an instance of torch.nn.LSTM.
           Variable input is of size [batchSize, seqLength, inputDim]
     """
-    lstm = torch.nn.LSTM(input_size=input.shape[2], hidden_size=hiddenSize, batch_first=True)
-    return lstm(input)
+    _lstm = torch.nn.LSTM(
+        input_size=input.shape[2], hidden_size=hiddenSize, batch_first=True
+    )
+    return _lstm(input)
 
 
 def conv(input, weight):
