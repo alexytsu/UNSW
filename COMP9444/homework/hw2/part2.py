@@ -58,7 +58,7 @@ class NetworkLstm(tnn.Module):
         x2 = self.fc1(hn[0])
         x2 = self.ReLU1(x2)
         x3 = self.fc2(x2)
-        return x3[:,0]
+        return x3
 
 
 # Class for creating the neural network.
@@ -118,7 +118,7 @@ class NetworkCnn(tnn.Module):
         x3 = x3.view(x3.shape[0], -1)
 
         output = self.fc1(x3)
-        return output[:,0]
+        return output
 
 
 
@@ -130,8 +130,7 @@ def lossFunc():
     cross-entropy.
     """
     def customLoss(input, output):
-        activated = torch.sigmoid(input)
-        return tnn.functional.binary_cross_entropy_with_logits(activated, output)
+        return tnn.functional.binary_cross_entropy_with_logits(tnn.sigmoid(input[:,0]), output)
 
     return customLoss
 
@@ -145,12 +144,9 @@ def measures(outputs, labels):
 
     outputs and labels are torch tensors.
     """
-    print("outputs", outputs)
     outputs[outputs <= 0] = 0
     outputs[outputs > 0] = 1
     confusion_vector = outputs / labels
-    
-    print("confusion_vector", confusion_vector)
 
     # true positives when label=1, truth=1: 1/1 = 1
     tp = torch.sum(confusion_vector == 1).item()
@@ -193,7 +189,16 @@ def main():
     )
 
     # Create an instance of the network in memory (potentially GPU memory). Can change to NetworkCnn during development.
-    net = NetworkCnn().to(device)
+
+    net = None
+
+    useCNN = False
+    if useCNN:
+        print("Using CNN")
+        net = NetworkCnn().to(device)
+    else:
+        print("Using RNN")
+        net = NetworkLstm().to(device)
     
     print("Data Loaded")
 
@@ -222,8 +227,6 @@ def main():
 
             # Forward pass through the network.
             output = net(inputs, length)
-            import pdb
-            pdb.set_trace()
 
             loss = criterion(output, labels)
 
@@ -265,7 +268,7 @@ def main():
             false_pos += fp_batch
             false_neg += fn_batch
 
-    accuracy = 100 * (true_pos + true_neg) / len(dev)
+    accuracy = 100 * (true_pos + true_neg) / (true_pos + true_neg + false_neg + false_pos)
     matthews = MCC(true_pos, true_neg, false_pos, false_neg)
 
     print(
