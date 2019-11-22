@@ -130,7 +130,7 @@ def lossFunc():
     cross-entropy.
     """
     def customLoss(input, output):
-        return tnn.functional.binary_cross_entropy_with_logits(tnn.sigmoid(input[:,0]), output)
+        return tnn.functional.binary_cross_entropy_with_logits(input[:,0], output)
 
     return customLoss
 
@@ -144,6 +144,7 @@ def measures(outputs, labels):
 
     outputs and labels are torch tensors.
     """
+    outputs  = outputs[:,0]
     outputs[outputs <= 0] = 0
     outputs[outputs > 0] = 1
     confusion_vector = outputs / labels
@@ -192,7 +193,7 @@ def main():
 
     net = None
 
-    useCNN = False
+    useCNN = True
     if useCNN:
         print("Using CNN")
         net = NetworkCnn().to(device)
