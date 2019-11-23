@@ -58,7 +58,7 @@ class NetworkLstm(tnn.Module):
         x2 = self.fc1(hn[0])
         x2 = self.ReLU1(x2)
         x3 = self.fc2(x2)
-        return x3
+        return x3[:,0]
 
 
 # Class for creating the neural network.
@@ -118,7 +118,7 @@ class NetworkCnn(tnn.Module):
         x3 = x3.view(x3.shape[0], -1)
 
         output = self.fc1(x3)
-        return output
+        return output[:,0]
 
 
 
@@ -130,7 +130,7 @@ def lossFunc():
     cross-entropy.
     """
     def customLoss(input, output):
-        return tnn.functional.binary_cross_entropy_with_logits(input[:,0], output)
+        return tnn.functional.binary_cross_entropy_with_logits(input, output)
 
     return customLoss
 
@@ -144,7 +144,6 @@ def measures(outputs, labels):
 
     outputs and labels are torch tensors.
     """
-    outputs  = outputs[:,0]
     outputs[outputs <= 0] = 0
     outputs[outputs > 0] = 1
     confusion_vector = outputs / labels
@@ -193,7 +192,7 @@ def main():
 
     net = None
 
-    useCNN = True
+    useCNN = False
     if useCNN:
         print("Using CNN")
         net = NetworkCnn().to(device)
