@@ -12,12 +12,24 @@ from imdb_dataloader import IMDB
 class Network(tnn.Module):
     def __init__(self):
         super(Network, self).__init__()
+        self.lstm = tnn.LSTM(
+            input_size=50, hidden_size=100, batch_first=True
+        )
+        self.fc1 = tnn.Linear(100, 64)
+        self.ReLU1 = tnn.ReLU()
+        self.fc2 = tnn.Linear(64, 1)
 
     def forward(self, input, length):
         """
         DO NOT MODIFY FUNCTION SIGNATURE
         Create the forward pass through the network.
         """
+        packed_input = tnn.utils.rnn.pack_padded_sequence(input, length, batch_first=True)
+        x1, (hn, cn) = self.lstm(packed_input)
+        x2 = self.fc1(hn[0])
+        x2 = self.ReLU1(x2)
+        x3 = self.fc2(x2)
+        return x3[:,0]
 
 
 class PreProcessing():
