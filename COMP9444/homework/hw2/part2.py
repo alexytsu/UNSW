@@ -37,7 +37,6 @@ class NetworkLstm(tnn.Module):
     def __init__(self):
         super(NetworkLstm, self).__init__()
         """
-        TODO:
         Create and initialise weights and biases for the layers.
         """
         self.lstm = tnn.LSTM(
@@ -50,7 +49,6 @@ class NetworkLstm(tnn.Module):
     def forward(self, input, length):
         """
         DO NOT MODIFY FUNCTION SIGNATURE
-        TODO:
         Create the forward pass through the network.
         """
         packed_input = tnn.utils.rnn.pack_padded_sequence(input, length, batch_first=True)
@@ -81,7 +79,6 @@ class NetworkCnn(tnn.Module):
     def __init__(self):
         super(NetworkCnn, self).__init__()
         """
-        TODO:
         Create and initialise weights and biases for the layers.
         """
         self.conv1 = tnn.Conv1d(in_channels=50, kernel_size=8, padding=5, out_channels=50)
@@ -100,7 +97,6 @@ class NetworkCnn(tnn.Module):
     def forward(self, input, length):
         """
         DO NOT MODIFY FUNCTION SIGNATURE
-        TODO:
         Create the forward pass through the network.
         """
         x1 = self.conv1(input.permute(0,2,1))
@@ -124,7 +120,6 @@ class NetworkCnn(tnn.Module):
 
 def lossFunc():
     """
-    TODO:
     Return a loss function appropriate for the above networks that
     will add a sigmoid to the output and calculate the binary
     cross-entropy.
@@ -137,7 +132,6 @@ def lossFunc():
 
 def measures(outputs, labels):
     """
-    TODO:
     Return (in the following order): the number of true positive
     classifications, true negatives, false positives and false
     negatives from the given batch outputs and provided labels.
