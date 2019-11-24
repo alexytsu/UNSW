@@ -12,8 +12,11 @@ from imdb_dataloader import IMDB
 class Network(tnn.Module):
     def __init__(self):
         super(Network, self).__init__()
-        self.lstm = tnn.LSTM(
+        self.lstm1 = tnn.LSTM(
             input_size=50, hidden_size=100, batch_first=True, num_layers=5
+        )
+        self.lstm2 = tnn.LSTM(
+            input_size=100, hidden_size=100, batch_first=True, num_layers=5
         )
         self.fc1 = tnn.Linear(100, 200)
         self.ReLU1 = tnn.ReLU()
@@ -28,6 +31,7 @@ class Network(tnn.Module):
         """
         packed_input = tnn.utils.rnn.pack_padded_sequence(input , length, batch_first=True)
         x, (hn, cn) = self.lstm(packed_input)
+        x, (hn, cn) = self.lstm2(hn)
         x = self.ReLU1(self.fc1(hn[0]))
         x = self.ReLU2(self.fc2(x))
         x = self.fc3(x)
