@@ -13,7 +13,7 @@ class Network(tnn.Module):
     def __init__(self):
         super(Network, self).__init__()
         self.lstm = tnn.LSTM(
-            input_size=50, hidden_size=150, batch_first=True, num_layers=5
+            input_size=50, hidden_size=200, batch_first=True, num_layers=5
         )
         self.fc1 = tnn.Linear(150, 100)
         self.ReLU1 = tnn.ReLU()
@@ -23,6 +23,7 @@ class Network(tnn.Module):
         self.dropout2 = tnn.Dropout(0.5)
         self.fc3 = tnn.Linear(64, 32)
         self.ReLU3 = tnn.ReLU()
+        self.dropout3 = tnn.Dropout(0.5)
         self.fc4 = tnn.Linear(32,1)
 
     def forward(self, input, length):
@@ -34,7 +35,7 @@ class Network(tnn.Module):
         x, (hn, cn) = self.lstm(packed_input)
         x = self.dropout1(self.ReLU1(self.fc1(hn[0])))
         x = self.dropout2(self.ReLU2(self.fc2(x)))
-        x = self.ReLU3(self.fc3(x))
+        x = self.dropout3(self.ReLU3(self.fc3(x)))
         x = self.fc4(x)
         return x[:,0]
 
