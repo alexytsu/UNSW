@@ -13,14 +13,11 @@ class Network(tnn.Module):
     def __init__(self):
         super(Network, self).__init__()
         self.lstm1 = tnn.LSTM(
-            input_size=50, hidden_size=100, batch_first=True, num_layers=5
+            input_size=50, hidden_size=50, batch_first=True, num_layers=10
         )
-        self.lstm2 = tnn.LSTM(
-            input_size=100, hidden_size=100, batch_first=True, num_layers=5
-        )
-        self.fc1 = tnn.Linear(100, 200)
+        self.fc1 = tnn.Linear(50, 100)
         self.ReLU1 = tnn.ReLU()
-        self.fc2 = tnn.Linear(200, 64)
+        self.fc2 = tnn.Linear(100, 64)
         self.ReLU2 = tnn.ReLU()
         self.fc3 = tnn.Linear(64, 1)
 
@@ -30,8 +27,7 @@ class Network(tnn.Module):
         Create the forward pass through the network.
         """
         packed_input = tnn.utils.rnn.pack_padded_sequence(input , length, batch_first=True)
-        x, (hn, cn) = self.lstm(packed_input)
-        x, (hn, cn) = self.lstm2(hn)
+        x, (hn, cn) = self.lstm1(packed_input)
         x = self.ReLU1(self.fc1(hn[0]))
         x = self.ReLU2(self.fc2(x))
         x = self.fc3(x)
@@ -92,25 +88,6 @@ def main():
 
     for epoch in range(100):
         running_loss = 0
-        if ((epoch + 1)%5 == 0):
-            num_correct = 0
-            with torch.no_grad():
-                for batch in testLoader:
-                    # Get a batch and potentially send it to GPU memory.
-                    inputs, length, labels = textField.vocab.vectors[batch.text[0]].to(device), batch.text[1].to(
-                        device), batch.label.type(torch.FloatTensor).to(device)
-
-                    labels -= 1
-
-                    # Get predictions
-                    outputs = torch.sigmoid(net(inputs, length))
-                    predicted = torch.round(outputs)
-
-                    num_correct += torch.sum(labels == predicted).item()
-
-            accuracy = 100 * num_correct / len(dev)
-            print(f"Accuracy at {epoch} is {accuracy:.2f}%")
-            torch.save(net.state_dict(), f"./{epoch+1}model.pth")
 
         for i, batch in enumerate(trainLoader):
             # Get a batch and potentially send it to GPU memory.
@@ -139,6 +116,26 @@ def main():
             if i % 32 == 31:
                 print("Epoch: %2d, Batch: %4d, Loss: %.3f" % (epoch + 1, i + 1, running_loss / 32))
                 running_loss = 0
+
+        if ((epoch + 1)%5 == 0):
+            num_correct = 0
+            with torch.no_grad():
+                for batch in testLoader:
+                    # Get a batch and potentially send it to GPU memory.
+                    inputs, length, labels = textField.vocab.vectors[batch.text[0]].to(device), batch.text[1].to(
+                        device), batch.label.type(torch.FloatTensor).to(device)
+
+                    labels -= 1
+
+                    # Get predictions
+                    outputs = torch.sigmoid(net(inputs, length))
+                    predicted = torch.round(outputs)
+
+                    num_correct += torch.sum(labels == predicted).item()
+
+            accuracy = 100 * num_correct / len(dev)
+            print(f"Accuracy at {epoch} is {accuracy:.2f}%")
+            torch.save(net.state_dict(), f"./{epoch+1}model.pth")
         
 
     num_correct = 0
