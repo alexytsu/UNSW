@@ -11,17 +11,19 @@ from imdb_dataloader import IMDB
 # Class for creating the neural network.
 class Network(tnn.Module):
     def __init__(self):
-        super(NetworkLstm, self).__init__()
+        super(Network, self).__init__()
         """
         Create and initialise weights and biases for the layers.
         """
         self.lstm = tnn.LSTM(
-            input_size=50, hidden_size=100, batch_first=True, num_layers=5
+            input_size=50, hidden_size=140, batch_first=True, num_layers=3
         )
-        self.fc1 = tnn.Linear(100, 64)
+        self.fc1 = tnn.Linear(140, 64)
         self.ReLU1 = tnn.ReLU()
+        self.dropout1 = tnn.Dropout(0.7)
         self.fc2 = tnn.Linear(64, 50)
         self.ReLU2 = tnn.ReLU()
+        self.dropout1 = tnn.Dropout(0.2)
         self.fc3 = tnn.Linear(50, 1)
 
     def forward(self, input, length):
@@ -31,8 +33,8 @@ class Network(tnn.Module):
         """
         packed_input = tnn.utils.rnn.pack_padded_sequence(input, length, batch_first=True)
         x, (hn, cn) = self.lstm(packed_input)
-        x = self.ReLU1(self.fc1(hn[0]))
-        x = self.ReLU2(self.fc2(x))
+        x = self.dropout1(self.ReLU1(self.fc1(hn[0])))
+        x = self.dropout2(self.ReLU2(self.fc2(x)))
         x = self.fc3(x)
         return x[:,0]
 
