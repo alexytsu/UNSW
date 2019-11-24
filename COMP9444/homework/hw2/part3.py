@@ -13,7 +13,7 @@ class Network(tnn.Module):
     def __init__(self):
         super(Network, self).__init__()
         self.lstm = tnn.LSTM(
-            input_size=50, hidden_size=200, batch_first=True, num_layers=2
+            input_size=50, hidden_size=150, batch_first=True, num_layers=3
         )
         self.fc1 = tnn.Linear(200, 100)
         self.ReLU1 = tnn.ReLU()
