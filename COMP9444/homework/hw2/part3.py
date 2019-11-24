@@ -13,15 +13,17 @@ class Network(tnn.Module):
     def __init__(self):
         super(Network, self).__init__()
         self.lstm = tnn.LSTM(
-            input_size=50, hidden_size=150, batch_first=True, num_layers=3
+            input_size=50, hidden_size=150, batch_first=True, num_layers=5
         )
-        self.fc1 = tnn.Linear(200, 100)
+        self.fc1 = tnn.Linear(150, 100)
         self.ReLU1 = tnn.ReLU()
         self.dropout1 = tnn.Dropout(0.5)
         self.fc2 = tnn.Linear(100, 64)
         self.ReLU2 = tnn.ReLU()
         self.dropout2 = tnn.Dropout(0.5)
-        self.fc3 = tnn.Linear(64, 1)
+        self.fc3 = tnn.Linear(64, 32)
+        self.ReLU3 = tnn.ReLU()
+        self.fc4 = tnn.Linear(32,1)
 
     def forward(self, input, length):
         """
@@ -32,7 +34,8 @@ class Network(tnn.Module):
         x, (hn, cn) = self.lstm(packed_input)
         x = self.dropout1(self.ReLU1(self.fc1(hn[0])))
         x = self.dropout2(self.ReLU2(self.fc2(x)))
-        x = self.fc3(x)
+        x = self.ReLU3(self.fc3(x))
+        x = self.fc4(x)
         return x[:,0]
 
 
@@ -88,7 +91,7 @@ def main():
     criterion =lossFunc()
     optimiser = topti.Adam(net.parameters(), lr=0.001)  # Minimise the loss using the Adam algorithm.
 
-    for epoch in range(50):
+    for epoch in range(100):
         running_loss = 0
         if ((epoch + 1)%5 == 0):
             torch.save(net.state_dict(), f"./{epoch+1}epochs_model.pth")
@@ -120,6 +123,7 @@ def main():
             if i % 32 == 31:
                 print("Epoch: %2d, Batch: %4d, Loss: %.3f" % (epoch + 1, i + 1, running_loss / 32))
                 running_loss = 0
+        
 
     num_correct = 0
 
