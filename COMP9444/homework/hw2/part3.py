@@ -12,25 +12,23 @@ from imdb_dataloader import IMDB
 class Network(tnn.Module):
     def __init__(self):
         super(Network, self).__init__()
-        self.cnn = tnn.Conv1d(in_channels=50, out_channels=50, kernel_size=8, padding=5)
         self.lstm = tnn.LSTM(
-            input_size=50, hidden_size=150, batch_first=True, num_layers=2
+            input_size=50, hidden_size=100, batch_first=True, num_layers=5
         )
-        self.fc1 = tnn.Linear(150, 100)
+        self.fc1 = tnn.Linear(100, 64)
         self.ReLU1 = tnn.ReLU()
         self.dropout1 = tnn.Dropout(0.5)
-        self.fc2 = tnn.Linear(100, 64)
+        self.fc2 = tnn.Linear(64, 5)
         self.ReLU2 = tnn.ReLU()
         self.dropout2 = tnn.Dropout(0.5)
-        self.fc3 = tnn.Linear(64, 1)
+        self.fc3 = tnn.Linear(5, 1)
 
     def forward(self, input, length):
         """
         DO NOT MODIFY FUNCTION SIGNATURE
         Create the forward pass through the network.
         """
-        x = self.cnn(input.permute(0,2,1)).permute(0,2,1)
-        packed_input = tnn.utils.rnn.pack_padded_sequence(x, length, batch_first=True)
+        packed_input = tnn.utils.rnn.pack_padded_sequence(input , length, batch_first=True)
         x, (hn, cn) = self.lstm(packed_input)
         x = self.dropout1(self.ReLU1(self.fc1(hn[0])))
         x = self.dropout2(self.ReLU2(self.fc2(x)))
