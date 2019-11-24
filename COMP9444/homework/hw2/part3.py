@@ -14,15 +14,15 @@ class Network(tnn.Module):
         super(Network, self).__init__()
         self.cnn = tnn.Conv1d(in_channels=50, out_channels=50, kernel_size=8, padding=5)
         self.lstm = tnn.LSTM(
-            input_size=50, hidden_size=200, batch_first=True, num_layers=3
+            input_size=50, hidden_size=150, batch_first=True, num_layers=2
         )
-        self.fc1 = tnn.Linear(200, 100)
+        self.fc1 = tnn.Linear(150, 100)
         self.ReLU1 = tnn.ReLU()
         self.dropout1 = tnn.Dropout(0.5)
-        self.fc2 = tnn.Linear(100, 32)
+        self.fc2 = tnn.Linear(100, 64)
         self.ReLU2 = tnn.ReLU()
         self.dropout2 = tnn.Dropout(0.5)
-        self.fc3 = tnn.Linear(32, 1)
+        self.fc3 = tnn.Linear(64, 1)
 
     def forward(self, input, length):
         """
