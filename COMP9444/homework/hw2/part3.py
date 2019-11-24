@@ -13,11 +13,15 @@ class Network(tnn.Module):
     def __init__(self):
         super(Network, self).__init__()
         self.lstm = tnn.LSTM(
-            input_size=50, hidden_size=100, batch_first=True
+            input_size=50, hidden_size=200, batch_first=True, num_layers=2
         )
-        self.fc1 = tnn.Linear(100, 64)
+        self.fc1 = tnn.Linear(200, 100)
         self.ReLU1 = tnn.ReLU()
-        self.fc2 = tnn.Linear(64, 1)
+        self.dropout1 = tnn.Dropout(0.5)
+        self.fc2 = tnn.Linear(100, 64)
+        self.ReLU2 = tnn.ReLU()
+        self.dropout2 = tnn.Dropout(0.5)
+        self.fc3 = tnn.Linear(64, 1)
 
     def forward(self, input, length):
         """
@@ -25,16 +29,25 @@ class Network(tnn.Module):
         Create the forward pass through the network.
         """
         packed_input = tnn.utils.rnn.pack_padded_sequence(input, length, batch_first=True)
-        x1, (hn, cn) = self.lstm(packed_input)
-        x2 = self.fc1(hn[0])
-        x2 = self.ReLU1(x2)
-        x3 = self.fc2(x2)
-        return x3[:,0]
+        x, (hn, cn) = self.lstm(packed_input)
+        x = self.dropout1(self.ReLU1(self.fc1(hn[0])))
+        x = self.dropout2(self.ReLU2(self.fc2(x)))
+        x = self.fc3(x)
+        return x[:,0]
 
 
 class PreProcessing():
     def pre(x):
         """Called after tokenization"""
+
+        def not_useless(word):
+            if '<' in word or '>' in word:
+                return False 
+            if word == 'a' or word == 'the':
+                return False
+            return True
+
+        x = list(filter(not_useless, x))
         return x
 
     def post(batch, vocab):
@@ -75,8 +88,10 @@ def main():
     criterion =lossFunc()
     optimiser = topti.Adam(net.parameters(), lr=0.001)  # Minimise the loss using the Adam algorithm.
 
-    for epoch in range(10):
+    for epoch in range(50):
         running_loss = 0
+        if ((epoch + 1)%5 == 0):
+            torch.save(net.state_dict(), f"./{epoch+1}epochs_model.pth")
 
         for i, batch in enumerate(trainLoader):
             # Get a batch and potentially send it to GPU memory.
