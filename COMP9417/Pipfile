@@ -8,6 +8,8 @@ verify_ssl = true
 [packages]
 scikit-learn = "*"
 jupyter = "*"
+matplotlib = "*"
+seaborn = "*"
 
 [requires]
 python_version = "3.8"
