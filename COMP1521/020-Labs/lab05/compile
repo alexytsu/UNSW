@@ -1,0 +1,1 @@
+cat matrices1.s main.s print.s mult.s > exe.s

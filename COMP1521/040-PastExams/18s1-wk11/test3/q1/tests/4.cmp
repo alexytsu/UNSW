@@ -1,0 +1,6 @@
+Your Output                        Expected Output                    
+
+s1 = T				   s1 = T
+s1 = T				   s1 = T
+s2 = tX				   s2 = t
+n = 1				   n = 1
