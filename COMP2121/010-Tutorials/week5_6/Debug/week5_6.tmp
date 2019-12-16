@@ -1,0 +1,39 @@
+<ASSEMBLER_INFO>
+ <VERSION>2.2.7</VERSION>
+ <DEVICE>"ATmega2560"</DEVICE>
+ <WORKING_DIR>C:\Repositories\02-University\18-COMP2121\010-Tutorials\week5_6\Debug</WORKING_DIR>
+ <INCLUDE_PATH>
+  <DIR>C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.150\avrasm\inc</DIR>
+  <DIR>C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avrassembler\Include</DIR>
+  <DIR></DIR>
+ </INCLUDE_PATH>
+ <SOURCE_FILE>C:\Repositories\02-University\18-COMP2121\010-Tutorials\week5_6\main.asm</SOURCE_FILE>
+ <INCLUDED_FILES>
+  <FILE>C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.150\avrasm\inc\m2560def.inc</FILE>
+ </INCLUDED_FILES>
+ <OBJECT_FILES>
+  <FILE>C:\Repositories\02-University\18-COMP2121\010-Tutorials\week5_6\Debug\week5_6.obj</FILE>
+ </OBJECT_FILES>
+ <HEX_FILES>
+  <FILE>week5_6.hex</FILE>
+ </HEX_FILES>
+ <OUTPUT_FILES>
+  <FILE>week5_6.map</FILE>
+  <FILE>week5_6.lss</FILE>
+ </OUTPUT_FILES>
+ <LABELS>
+  <glob_x><FILE>C:\Repositories\02-University\18-COMP2121\010-Tutorials\week5_6\main.asm</FILE><LINE>38</LINE></glob_x>
+  <glob_n><FILE>C:\Repositories\02-University\18-COMP2121\010-Tutorials\week5_6\main.asm</FILE><LINE>39</LINE></glob_n>
+  <array><FILE>C:\Repositories\02-University\18-COMP2121\010-Tutorials\week5_6\main.asm</FILE><LINE>40</LINE></array>
+  <main_i><FILE>C:\Repositories\02-University\18-COMP2121\010-Tutorials\week5_6\main.asm</FILE><LINE>44</LINE></main_i>
+  <main_sum><FILE>C:\Repositories\02-University\18-COMP2121\010-Tutorials\week5_6\main.asm</FILE><LINE>45</LINE></main_sum>
+  <main_result><FILE>C:\Repositories\02-University\18-COMP2121\010-Tutorials\week5_6\main.asm</FILE><LINE>46</LINE></main_result>
+  <main><FILE>C:\Repositories\02-University\18-COMP2121\010-Tutorials\week5_6\main.asm</FILE><LINE>53</LINE></main>
+  <loop_begin><FILE>C:\Repositories\02-University\18-COMP2121\010-Tutorials\week5_6\main.asm</FILE><LINE>103</LINE></loop_begin>
+  <loop_end><FILE>C:\Repositories\02-University\18-COMP2121\010-Tutorials\week5_6\main.asm</FILE><LINE>162</LINE></loop_end>
+  <power><FILE>C:\Repositories\02-University\18-COMP2121\010-Tutorials\week5_6\main.asm</FILE><LINE>169</LINE></power>
+  <end_program><FILE>C:\Repositories\02-University\18-COMP2121\010-Tutorials\week5_6\main.asm</FILE><LINE>252</LINE></end_program>
+  <for_pow><FILE>C:\Repositories\02-University\18-COMP2121\010-Tutorials\week5_6\main.asm</FILE><LINE>213</LINE></for_pow>
+  <for_pow_end><FILE>C:\Repositories\02-University\18-COMP2121\010-Tutorials\week5_6\main.asm</FILE><LINE>228</LINE></for_pow_end>
+ </LABELS>
+</ASSEMBLER_INFO>
