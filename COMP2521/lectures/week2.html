@@ -1,0 +1,684 @@
+
+<!-- saved from url=(0062)http://www.cse.unsw.edu.au/~cs2521/17s2/lecs/week02/notes.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>Week 02 </title>
+<link href="./week2_files/notes.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<p><span class="title">Week 02 </span></p><p>
+</p><p></p><hr><p>
+<table width="100%" cellpadding="0">
+<tbody><tr valign="top"><td align="left"><span class="section">Efficiency</span></td><td align="right"></td></tr></tbody></table>
+</p><p>
+</p><p></p><hr><p>
+<table width="100%" cellpadding="0">
+<tbody><tr valign="top"><td align="left"><span class="heading">Program Properties</span></td><td align="right"><small>2/46</small></td></tr></tbody></table>
+</p><p>
+Recall that we want our programs to be:
+</p><ul>
+<li> <em>correct</em>: produce required results for valid inputs
+</li><li> <em>reliable</em>: behave sensibly for invalid inputs/errors
+</li><li> <em>efficient</em>: give results quickly <small>(even for large inputs)</small>
+</li><li> <em>maintainable</em>: code is clear and well-structured
+</li></ul>
+Guaranteeing <em>correct</em>ness requires
+<ul>
+<li> formal statement of requirements (pre/post-conditions)
+</li><li> formal proof that program meets requirements
+</li></ul>
+<em>Testing</em> increases confidence that program may be correct ...
+<p></p><hr><p>
+<table width="100%" cellpadding="0">
+<tbody><tr valign="top"><td align="left"><span class="cont">... Program Properties</span></td><td align="right"><small>3/46</small></td></tr></tbody></table>
+</p><p>
+Trade-off: &nbsp; efficiency &nbsp;vs&nbsp; clarity
+</p><p>
+</p><div class="center">
+<p></p><div class="center">
+<img alt="[Diagram:Pics/misc/knuth-small.jpg]" src="./week2_files/knuth-small.jpg">
+</div><p>
+</p><p>
+"Premature optimization is the root of all evil" ... Don Knuth
+</p><p>
+<span style="font-size:10pt">
+"KnuthAtOpenContentAlliance" by Flickr user Jacob Appelbaum, uploaded to en.wikipedia by users BeSherman, Duozmo - Flickr.com (via en.wikipedia). Licensed under CC BY-SA 2.5 via Wikimedia Commons
+</span>
+</p></div>
+<p></p><hr><p>
+<table width="100%" cellpadding="0">
+<tbody><tr valign="top"><td align="left"><span class="heading">Program/Algorithm Efficiency</span></td><td align="right"><small>4/46</small></td></tr></tbody></table>
+</p><p>
+How to determine <em>efficiency</em>?
+</p><p>
+<em>Measure</em> <i>program</i> execution costs &nbsp; (experimental)
+</p><ul>
+<li> run program on various inputs, measure time ...
+</li><li> but depends on compiler, machine, etc, etc.
+</li><li> alternatively, detailed analysis of function call profile
+</li></ul>
+<em>Analyse</em> <i>algorithm</i> execution costs &nbsp; (theoretical)
+<ul>
+<li> identify core operation in <i>algorithm</i>
+</li><li> express cost in terms of #operations = <i><big>g</big>(N)</i>  <br>
+	<small>(<i>N</i> = size of "input" e.g. #items in data structure, length of input file, ...)</small>
+</li></ul>
+<p></p><hr><p>
+<table width="100%" cellpadding="0">
+<tbody><tr valign="top"><td align="left"><span class="cont">... Program/Algorithm Efficiency</span></td><td align="right"><small>5/46</small></td></tr></tbody></table>
+</p><p>
+Example: finding max value in an unsorted array
+</p><p></p><pre>int findMax(int a[], int N) {
+   int i, max = a[0];
+   for (i = 1; i &lt; N; i++)
+      if (a[i] &gt; max) max = a[i];
+   return max;
+}
+</pre><p>
+Core operation? ... compare <large><code>a[i]</code></large> to <large><code>max</code></large>
+</p><p>
+How many times? ... clearly <large><code>N-1</code></large>
+</p><p>
+Execution cost grows <em>linearly</em> &nbsp;
+	<small>(i.e. 2 × #elements &#8658; 2 × time)</small>
+</p><p></p><hr><p>
+<table width="100%" cellpadding="0">
+<tbody><tr valign="top"><td align="left"><span class="cont">... Program/Algorithm Efficiency</span></td><td align="right"><small>6/46</small></td></tr></tbody></table>
+</p><p>
+Example: finding max value in a sorted (ascending) array
+</p><p></p><pre>int findMax(int a[], int N) {
+   return a[N-1];
+}
+</pre><p>
+No iteration needed; max is always last.
+</p><p>
+Execution cost is <em>constant</em> &nbsp; <small>(same regardless of #elements)</small>
+</p><p></p><hr><p>
+<table width="100%" cellpadding="0">
+<tbody><tr valign="top"><td align="left"><span class="cont">... Program/Algorithm Efficiency</span></td><td align="right"><small>7/46</small></td></tr></tbody></table>
+</p><p>
+Example: finding given value <large><code>k</code></large> in an array
+</p><p></p><pre>int search(int k, int a[], int N) {
+   int i;
+   for (i = 0; i &lt; N; i++)
+      if (a[i] == k) return i;
+   return -1;
+}
+</pre><p>
+Core operation? ... compare <large><code>a[i]</code></large> to <large><code>k</code></large>
+</p><p>
+How many times? ... not so straightforward
+</p><p>
+Need to consider best/worst/average-case costs.
+</p><p></p><hr><p>
+<table width="100%" cellpadding="0">
+<tbody><tr valign="top"><td align="left"><span class="cont">... Program/Algorithm Efficiency</span></td><td align="right"><small>8/46</small></td></tr></tbody></table>
+</p><p>
+Best case: &nbsp; find <large><code>k</code></large> in <large><code>a[0]</code></large> &nbsp; (1)
+</p><p>
+Worst case: &nbsp; no <large><code>k</code></large> or find <large><code>k</code></large> in <large><code>a[N-1]</code></large> &nbsp; (<large><code>N</code></large>)
+</p><p>
+Average case: &nbsp; find <large><code>k</code></large> "in the middle" of <large><code>a</code></large> &nbsp; (<large><code>N</code></large>/2)
+</p><p>
+Could devise "overall average" if we know likelihood of each case.
+</p><p>
+If not, take pessimistic view ... worst case.
+</p><p>
+In fact, both worst and average cases grow <em>linearly</em>.
+</p><p></p><hr><p>
+<table width="100%" cellpadding="0">
+<tbody><tr valign="top"><td align="left"><span class="heading">Algorithmic Complexity</span></td><td align="right"><small>9/46</small></td></tr></tbody></table>
+</p><p>
+Cost is primarily interesting for large data
+</p><ul>
+<li> consider <em>growth rate</em> rather than absolute cost
+</li></ul>
+Leads to <em>complexity classes</em> and <em>big-O notation</em>
+<p>
+<font color="#000099">Definition</font>: &nbsp; <i>g(n) &#8712; <font color="#CC0000"><big>O</big>(f(n))</font> &nbsp; if g(n) &#8804; c.f(n) &nbsp; &#8704; n &gt; N<sub>0</sub></i>
+</p><p>
+Complexity classes
+</p><ul>
+<li> <i>O(1)</i> ... constant functions &nbsp;<small>(e.g. <i>g(n) = 1, 2, 3, ...</i>)</small>
+</li><li> <i>O(logn)</i> ... log functions &nbsp;<small>(e.g. <i>log(n), log<sub>2</sub>(n), ...</i>)</small>
+</li><li> <i>O(n)</i> ... linear functions &nbsp;<small>(e.g. <i>n/2, n, 5n+100, ...</i>)</small>
+</li><li> <i>O(nlogn)</i>, &nbsp; <i>O(n<sup>2</sup>)</i>, &nbsp; <i>O(n<sup>3</sup>)</i>, &nbsp; <i>O(k<sup>n</sup>)</i>, &nbsp; <i>O(n!)</i>, &nbsp; ...
+</li></ul>
+<p></p><hr><p>
+<table width="100%" cellpadding="0">
+<tbody><tr valign="top"><td align="left"><span class="cont">... Algorithmic Complexity</span></td><td align="right"><small>10/46</small></td></tr></tbody></table>
+</p><p>
+Algorithms are "rated" by their complexity class.
+</p><p>
+Thus we might say "quicksort has worst case complexity <i>O(n<sup>2</sup>)</i> "
+</p><p>
+Assigning an algorithm to a complexity class ...
+</p><ul>
+<li> determine cost <i>g(n)</i> as function of input size <i>n</i>
+</li><li> associate <i>g(n)</i> with appropriate complexity class
+</li></ul>
+<br>
+Want to know everything ... try the 
+<a target="_blank" href="http://bigocheatsheet.com/">Big-O Cheat Sheet</a>
+<p></p><hr><p>
+<table width="100%" cellpadding="0">
+<tbody><tr valign="top"><td align="left"><span class="heading">Exercise 1: Assigning Complexity Class</span></td><td align="right"><small>11/46</small></td></tr></tbody></table>
+</p><p>
+Give complexity classes for above functions:
+</p><ul>
+<li> find max value in unordered array
+</li><li> find max value in sorted array
+</li><li> search for value in unordered array
+</li></ul>
+What about?
+<ul>
+<li> find max value in sorted linked list
+</li><li> search for value in sorted array
+<p></p><hr><p>
+<table width="100%" cellpadding="0">
+<tbody><tr valign="top"><td align="left"><span class="section">Abstract Data Types</span></td><td align="right"></td></tr></tbody></table>
+</p><p>
+</p><p></p><hr><p>
+<table width="100%" cellpadding="0">
+<tbody><tr valign="top"><td align="left"><span class="heading">Abstract Data Types</span></td><td align="right"><small>13/46</small></td></tr></tbody></table>
+</p><p>
+A <em>data type</em> is ...
+</p><ul>
+<li> a set of <em>values</em> &nbsp; <small>(atomic or structured values)</small>
+</li><li> a collection of <em>operations</em> on those values
+</li></ul>
+An <em>abstract data type</em> is ...
+<ul>
+<li> an approach to implementing data types
+</li><li> separates <em>interface</em> from <em>implementation</em>
+</li><li> users of the ADT see only the interface
+</li><li> builders of the ADT provide an implementation
+</li></ul>
+<small>
+E.g. do you know what a (<large><code>FILE *</code></large>) looks like? do you want/need to know?
+</small>
+<p></p><hr><p>
+<table width="100%" cellpadding="0">
+<tbody><tr valign="top"><td align="left"><span class="heading">DTs, ADOs, ADTs, GADTs</span></td><td align="right"><small>14/46</small></td></tr></tbody></table>
+</p><p>
+We want to distinguish ...
+</p><ul>
+<li> DT = (non-abstract) <em>d</em>ata <em>t</em>ype &nbsp; <small>(e.g. C strings)</small>
+</li><li> ADO = <em>a</em>bstract <em>d</em>ata <em>o</em>bject
+</li><li> ADT = <em>a</em>bstract <em>d</em>ata <em>t</em>ype &nbsp; <small>(e.g. C files)</small>
+</li><li> GADT = <em>g</em>eneric (polymorphic) <em>a</em>bstract <em>d</em>ata <em>t</em>ype
+</li></ul>
+ADTs &#8658; can have multiple instances &nbsp; <small>(e.g. <large><code>Set a, b, c;</code></large>)</small>
+<p>
+GADTs &#8658; multiple instances/types &nbsp; <small>(e.g. <large><code>Set&lt;int&gt; a; Set&lt;char&gt; b;</code></large>)</small>
+</p><p>
+<small>
+Warning: Sedgewick's first few examples are ADOs, not ADTs.
+</small>
+</p><p></p><hr><p>
+<table width="100%" cellpadding="0">
+<tbody><tr valign="top"><td align="left"><span class="heading">Interface/Implementation</span></td><td align="right"><small>15/46</small></td></tr></tbody></table>
+</p><p>
+ADT <em>interface</em> provides
+</p><ul>
+<li> a user-view of the data structure (e.g. <large><code>FILE*</code></large>)
+</li><li> function signatures (prototypes) for all operations
+</li><li> semantics of operations (via documentation)
+</li><li> a contract between ADT and its clients
+</li></ul>
+ADT <em>implementation</em> gives
+<ul>
+<li> concrete definition of the data structures
+</li><li> definition of functions for all operations
+</li></ul>
+<p></p><hr><p>
+<table width="100%" cellpadding="0">
+<tbody><tr valign="top"><td align="left"><span class="heading">Collections</span></td><td align="right"><small>16/46</small></td></tr></tbody></table>
+</p><p>
+Many of the ADTs we deal with ...
+</p><ul>
+<li> consist of a <em>collection</em> of <em>items</em>
+</li><li> where each item may be a simple type or an ADT
+</li><li> and items often have a <em>key</em> <small>(to identify them)</small>
+</li></ul>
+Collections may be categorised by ...
+<ul>
+<li> <em>structure</em>:<br>
+&nbsp; linear (list), branching (tree), cyclic (graph)
+</li><li> <em>usage</em>:<br>
+&nbsp; set, matrix, stack, queue, search-tree, dictionary, ...
+</li></ul>
+<p></p><hr><p>
+<table width="100%" cellpadding="0">
+<tbody><tr valign="top"><td align="left"><span class="cont">... Collections</span></td><td align="right"><small>17/46</small></td></tr></tbody></table>
+</p><p>
+Collection structures:
+</p><p></p><div class="center">
+<img alt="[Diagram:Pics/intro/structures-small.png]" src="./week2_files/structures-small.png">
+</div><p>
+</p><p></p><hr><p>
+<table width="100%" cellpadding="0">
+<tbody><tr valign="top"><td align="left"><span class="cont">... Collections</span></td><td align="right"><small>18/46</small></td></tr></tbody></table>
+</p><p>
+Or even a hybrid structure like ...
+</p><p></p><div class="center">
+<img alt="[Diagram:Pics/intro/structures2-small.png]" src="./week2_files/structures2-small.png">
+</div><p>
+</p><p></p><hr><p>
+<table width="100%" cellpadding="0">
+<tbody><tr valign="top"><td align="left"><span class="cont">... Collections</span></td><td align="right"><small>19/46</small></td></tr></tbody></table>
+</p><p>
+Or this ...
+</p><p></p><div class="center">
+<img alt="[Diagram:Pics/intro/structures3-small.png]" src="./week2_files/structures3-small.png">
+</div><p>
+</p><p></p><hr><p>
+<table width="100%" cellpadding="0">
+<tbody><tr valign="top"><td align="left"><span class="cont">... Collections</span></td><td align="right"><small>20/46</small></td></tr></tbody></table>
+</p><p>
+Or this ...
+</p><p></p><div class="center">
+<img alt="[Diagram:Pics/intro/structures4-small.png]" src="./week2_files/structures4-small.png">
+</div><p>
+</p><p></p><hr><p>
+<table width="100%" cellpadding="0">
+<tbody><tr valign="top"><td align="left"><span class="cont">... Collections</span></td><td align="right"><small>21/46</small></td></tr></tbody></table>
+</p><p>
+Typical operations on collections
+</p><ul>
+<li> <em>create</em> an empty collection
+</li><li> <em>insert</em> one item into the collection
+</li><li> <em>remove</em> one item from the collection
+</li><li> <em>find</em> an item in the collection
+</li><li> <em>check</em> properties of the collection <small>(size,empty?)</small>
+</li><li> <em>drop</em> the entire collection
+</li><li> <em>display</em> the collection
+</li></ul>
+<p></p><hr><p>
+<table width="100%" cellpadding="0">
+<tbody><tr valign="top"><td align="left"><span class="section">Example ADT: Sets of Integers</span></td><td align="right"></td></tr></tbody></table>
+</p><p>
+</p><p></p><hr><p>
+<table width="100%" cellpadding="0">
+<tbody><tr valign="top"><td align="left"><span class="heading">Set ADT</span></td><td align="right"><small>23/46</small></td></tr></tbody></table>
+</p><p>
+<em>Set</em> data type: collection of unique integer values.
+</p><p>
+"Book-keeping" operations:
+</p><ul>
+<li> <large><code>Set newSet()</code></large> ... create new empty set
+</li><li> <large><code>void dropSet(Set)</code></large> ... free memory used by set
+</li><li> <large><code>void showSet(Set)</code></large> ... display as <large><code>{1,2,3...}</code></large>
+</li></ul>
+Assignment operations:
+<ul>
+<li> <large><code>void readSet(FILE*,Set)</code></large> ... read+insert set values
+</li><li> <large><code>Set SetCopy(Set)</code></large> ... make a copy of a set
+</li></ul>
+<p></p><hr><p>
+<table width="100%" cellpadding="0">
+<tbody><tr valign="top"><td align="left"><span class="cont">... Set ADT</span></td><td align="right"><small>24/46</small></td></tr></tbody></table>
+</p><p>
+Data-type operations:
+</p><ul>
+<li> <large><code>void SetInsert(Set,int)</code></large> ... add number into set
+</li><li> <large><code>void SetDelete(Set,int)</code></large> ... remove number from set
+</li><li> <large><code>int SetMember(Set,int)</code></large> ... set membership test
+</li><li> <large><code>Set SetUnion(Set,Set)</code></large> ... union
+</li><li> <large><code>Set SetIntersect(Set,Set)</code></large> ... intersection
+</li><li> <large><code>int SetCard(Set)</code></large> ... cardinality (#elements)
+</li></ul>
+<small>
+Note: union and intersection return a newly-created <large><code>Set</code></large>
+</small>
+<p></p><hr><p>
+<table width="100%" cellpadding="0">
+<tbody><tr valign="top"><td align="left"><span class="heading">Exercise 2: pre- and post-conditions</span></td><td align="right"><small>25/46</small></td></tr></tbody></table>
+</p><p>
+Each <large><code>Set</code></large> operation has well-defined semantics.
+</p><p>
+Express these semantics in detail via statements of:
+</p><ul>
+<li> what conditions need to hold at start of function
+</li><li> what will hold at end of function <small>(assuming successful)</small>
+</li></ul>
+<br>
+<i>Could</i> be implemented as <large><code>assert()</code></large>s in functions
+<p>
+But only during the development/testing phase
+</p><ul>
+<li> <large><code>assert()</code></large> does not provide useful error-handling
+</li></ul>
+<p></p><hr><p>
+<table width="100%" cellpadding="0">
+<tbody><tr valign="top"><td align="left"><span class="cont">... Set ADT</span></td><td align="right"><small>26/46</small></td></tr></tbody></table>
+</p><p>
+Example set client: set of small odd numbers
+</p><p></p><pre>Set s;  int i;
+s = newSet();
+for (i = 1; i &lt; 26; i += 2)
+    SetInsert(s,i);
+showSet(s); putchar('\n');
+</pre><p>
+Outputs:
+</p><p></p><pre>{1,3,5,7,9,11,13,15,17,19,21,23,25}
+</pre><p>
+</p><p></p><hr><p>
+<table width="100%" cellpadding="0">
+<tbody><tr valign="top"><td align="left"><span class="heading">Set Applications</span></td><td align="right"><small>27/46</small></td></tr></tbody></table>
+</p><p>
+Example: eliminating duplicates
+</p><p></p><pre><comment>// scan a list of items in a file</comment>
+Set seenItems = newSet();
+FILE *in = fopen(<i>FileName</i>,"r");
+while (fscanf(in, "%d", &amp;item) == 1) {
+   if (SetMember(seenItems, item))
+      <comment>// ignore, already processed</comment>;
+   else {
+      SetInsert(seenItems, item);
+      <i>process</i> item;
+   }
+}
+fclose(in);
+</pre><p>
+</p><p></p><hr><p>
+<table width="100%" cellpadding="0">
+<tbody><tr valign="top"><td align="left"><span class="heading">Exercise 3: Set Lab</span></td><td align="right"><small>28/46</small></td></tr></tbody></table>
+</p><p>
+Build an interactive tool to manipulate <large><code>Set</code></large>s
+</p><p>
+Has 26 "built-in" <large><code>Set</code></large>s referenced by <large><code>a</code></large>..<large><code>z</code></large>
+</p><p>
+With commands:
+</p><p></p><pre><small>
+s S = show Set S
+i V S = insert value V in Set S
+d V S = remove value V from Set S
+m V S = check if value V is in Set S
+c S = cardinality of Set S (#elems)
++ S T R = put (S Union T) in Set R
+* S T R = put (S Intersect T) in Set R
+r F S = read values from file F into Set S
+q = quit
+</small></pre><p>
+</p><p></p><hr><p>
+<table width="100%" cellpadding="0">
+<tbody><tr valign="top"><td align="left"><span class="heading">Exercise 4: Set ADT Pre/Post-conditions</span></td><td align="right"><small>29/46</small></td></tr></tbody></table>
+</p><p>
+If <large><code>x</code></large> is a variable of type <large><code>T</code></large>, an ADT
+</p><ul>
+<li> <i>ptr(x)</i> is the pointer stored in <large><code>x</code></large>
+</li><li> <i>val(x)</i> is the abstract value represented by <large><code>*x</code></large>
+</li><li> <i>valid(T,x)</i> indicates that
+<ul>
+<li> the collection of values in <large><code>*x</code></large> <br>
+	satisfies all constraints on "correct" values of type <large><code>T</code></large>
+</li></ul>
+</li><li> <i>x'</i> is an updated version of <i>x</i> &nbsp; <small>(<i>ptr(x')</i> == <i>ptr(x)</i>)</small>
+</li></ul>
+<br>
+Consider the pre/post-conditions on <large><code>Set</code></large>s in these terms.
+<p>
+Suggest an implementation for an &nbsp;<large><code>isValid()</code></large>&nbsp; function?
+</p><p></p><hr><p>
+<table width="100%" cellpadding="0">
+<tbody><tr valign="top"><td align="left"><span class="heading">Sets as Unsorted Arrays</span></td><td align="right"><small>30/46</small></td></tr></tbody></table>
+</p><p>
+</p><p></p><div class="center">
+<img alt="[Diagram:Pics/sets/set-array-small.png]" src="./week2_files/set-array-small.png">
+</div><p>
+</p><p></p><hr><p>
+<table width="100%" cellpadding="0">
+<tbody><tr valign="top"><td align="left"><span class="cont">... Sets as Unsorted Arrays</span></td><td align="right"><small>31/46</small></td></tr></tbody></table>
+</p><p>
+Costs for set operations on unsorted array:
+</p><ul>
+<li> <em>card</em>: read from struct; &nbsp; constant cost &nbsp; <i>O(1)</i>
+</li><li> <em>member</em>: scan list from start; &nbsp; linear cost &nbsp; <i>O(n)</i>
+</li><li> <em>insert</em>: duplicate check, add at end; &nbsp; linear cost &nbsp; <i>O(n)</i>
+</li><li> <em>delete</em>: find, copy last into gap; &nbsp; linear cost &nbsp; <i>O(n)</i>
+</li><li> <em>union</em>: copy s1, insert each item from s2; &nbsp; quadratic cost &nbsp; <i>O(nm)</i>
+</li><li> <em>intersect</em>: scan for each item in s1; &nbsp; quadratic cost &nbsp; <i>O(nm)</i>
+</li></ul>
+Assuming: s1 has <i>n</i> items, s2 has <i>m</i> items
+<p></p><hr><p>
+<table width="100%" cellpadding="0">
+<tbody><tr valign="top"><td align="left"><span class="heading">Sets as Sorted Arrays</span></td><td align="right"><small>32/46</small></td></tr></tbody></table>
+</p><p>
+Costs for set operations on sorted array:
+</p><ul>
+<li> <em>card</em>: read from struct; &nbsp; <i>O(1)</i>
+</li><li> <em>member</em>: binary search; &nbsp; <i>O(log n)</i>
+</li><li> <em>insert</em>: find, shift up, insert; &nbsp; <i>O(n)</i>
+</li><li> <em>delete</em>: find, shift down; &nbsp; <i>O(n)</i>
+</li><li> <em>union</em>: merge = scan s1, scan s2; &nbsp; <i>O(n)</i> &nbsp; <small>(technically <i>O(n+m)</i>)</small>
+</li><li> <em>intersect</em>: merge = scan s1, scan s2; &nbsp; <i>O(n)</i> &nbsp; <small>(technically <i>O(n+m)</i>)</small>
+</li></ul>
+<p></p><hr><p>
+<table width="100%" cellpadding="0">
+<tbody><tr valign="top"><td align="left"><span class="heading">Sets as Linked Lists</span></td><td align="right"><small>33/46</small></td></tr></tbody></table>
+</p><p>
+</p><p></p><div class="center">
+<img alt="[Diagram:Pics/sets/set-list-small.png]" src="./week2_files/set-list-small.png">
+</div><p>
+</p><p></p><hr><p>
+<table width="100%" cellpadding="0">
+<tbody><tr valign="top"><td align="left"><span class="cont">... Sets as Linked Lists</span></td><td align="right"><small>34/46</small></td></tr></tbody></table>
+</p><p>
+Costs for set operations on linked list:
+</p><ul>
+<li> <em>insert</em>: duplicate check, insert at head; &nbsp; <i>O(n)</i>
+</li><li> <em>delete</em>: find, unlink; &nbsp; <i>O(n)</i>
+</li><li> <em>member</em>: linear search; <i>O(n)</i>
+</li><li> <em>card</em>: lookup; <i>O(1)</i>
+</li><li> <em>union</em>: copy s1, insert each item from s2; <i>O(nm)</i>
+</li><li> <em>intersect</em>: scan for each item in s1; &nbsp; <i>O(nm)</i>
+</li></ul>
+Assume <i>n</i> = size of <i>s1</i>, <i>m</i> = size of <i>s2</i>
+<p>
+If we don't have <large><code>nelems</code></large>, <em>card</em> becomes <i>O(n)</i>
+</p><p></p><hr><p>
+<table width="100%" cellpadding="0">
+<tbody><tr valign="top"><td align="left"><span class="heading">Sets as Hash Tables</span></td><td align="right"><small>35/46</small></td></tr></tbody></table>
+</p><p>
+</p><p></p><div class="center">
+<img alt="[Diagram:Pics/sets/set-htab-small.png]" src="./week2_files/set-htab-small.png">
+</div><p>
+</p><p></p><hr><p>
+<table width="100%" cellpadding="0">
+<tbody><tr valign="top"><td align="left"><span class="cont">... Sets as Hash Tables</span></td><td align="right"><small>36/46</small></td></tr></tbody></table>
+</p><p>
+A <em>hash table</em> is a data structure that
+</p><ul>
+<li> provides fast access to items based on <em>key</em> value
+</li></ul>
+<p></p><div class="center">
+<img alt="[Diagram:Pics/sets/hash-table-small.png]" src="./week2_files/hash-table-small.png">
+</div><p>
+</p><p></p><hr><p>
+<table width="100%" cellpadding="0">
+<tbody><tr valign="top"><td align="left"><span class="cont">... Sets as Hash Tables</span></td><td align="right"><small>37/46</small></td></tr></tbody></table>
+</p><p>
+Hash function: <i>h</i>(value) = (value % TABSIZE).
+</p><p>
+Operations <em>insert</em>, <em>delete</em>, <em>member</em>
+</p><ul>
+<li> all start by <i>h</i>(v), and then manipulate selected list
+</li></ul>
+<p></p><hr><p>
+<table width="100%" cellpadding="0">
+<tbody><tr valign="top"><td align="left"><span class="heading">Hash Table Costs</span></td><td align="right"><small>38/46</small></td></tr></tbody></table>
+</p><p>
+Costs for set operations via hash table:
+</p><ul>
+<li> same <i>O(n)</i> behaviour as for single linked list
+</li><li> if sorted: &nbsp; insert/delete = <i>O(n)</i>, &nbsp; <big>&#8712;</big> = <i>O(n)</i>, &nbsp; <big>&#8746;</big>/<big>&#8745;</big> = <i>O(n+m)</i>
+</li><li> if unsorted: &nbsp; insert = <i>O(1)</i>, &nbsp; delete = <i>O(n)</i>, &nbsp; <big>&#8712;</big> = <i>O(n)</i>, &nbsp; <big>&#8746;</big>/<big>&#8745;</big> = <i>O(n.m)</i>
+</li><li> BUT because hash table has <i>H</i> entries ...
+<ul>
+<li> has <i>H</i> lists for <i>n</i> elements &nbsp; <small>(cf. 1 list for <i>n</i> elements)</small>
+</li><li> each hash table list is, on average, <i>H</i> times shorter than single list
+</li><li> constants do not appear in <i>O(n)</i> analyses, but can be significant
+</li></ul>
+</li></ul>
+<p></p><hr><p>
+<table width="100%" cellpadding="0">
+<tbody><tr valign="top"><td align="left"><span class="heading">Sets as Bit-strings</span></td><td align="right"><small>39/46</small></td></tr></tbody></table>
+</p><p>
+</p><p></p><div class="center">
+<img alt="[Diagram:Pics/sets/set-bits-small.png]" src="./week2_files/set-bits-small.png">
+</div><p>
+</p><p></p><hr><p>
+<table width="100%" cellpadding="0">
+<tbody><tr valign="top"><td align="left"><span class="cont">... Sets as Bit-strings</span></td><td align="right"><small>40/46</small></td></tr></tbody></table>
+</p><p>
+Restrict possible values that can be stored in the Set
+</p><ul>
+<li> typically restricted to 0..N-1, <small>(where N%32 == 0)</small>
+</li><li> represent each value by position in large array of bits
+</li><li> insertion means set a bit to 1 (<large><code>bit|1</code></large>)
+</li><li> deletion means set a bit to 0 (<large><code>bit&amp;0</code></large>)
+</li><li> bit position for value <large><code>i</code></large> is easy to compute
+</li></ul>
+Representation of bit-list in C:
+<p></p><pre>#define NWORDS ???
+unsigned int bits[NWORDS];
+</pre><p>
+For most common C implementations, gives us #bits = 32*<large><code>NWORDS</code></large>.
+</p><p>
+This gives us a set which can hold values in range 0..(#bits-1)
+</p><p></p><hr><p>
+<table width="100%" cellpadding="0">
+<tbody><tr valign="top"><td align="left"><span class="heading">Exercise 5: Implement Bit operations</span></td><td align="right"><small>41/46</small></td></tr></tbody></table>
+</p><p>
+Given the following definitions:
+</p><p></p><pre>#define NBITS 1024
+#define NWORDS (NBITS/32)
+typedef unsigned int Word;
+typedef Word BitS[NWORDS];
+</pre><p>
+Implement functions for
+</p><ul>
+<li> getBit(Bits b, int i) ... get value of i'th bit, 0 or 1
+</li><li> setBit(Bits b, int i) ... ensure i'th bit is set to 1
+</li><li> unsetBit(Bits b, int i) ... ensure i'th bit is set to 0
+</li></ul>
+<p></p><hr><p>
+<table width="100%" cellpadding="0">
+<tbody><tr valign="top"><td align="left"><span class="heading">Exercise 6: Implement Union via Bit Strings</span></td><td align="right"><small>42/46</small></td></tr></tbody></table>
+</p><p>
+Given the following definitions:
+</p><p></p><pre>#define NBITS 1024
+#define NWORDS (NBITS/32)
+typedef unsigned int Word;
+typedef Word BitS[NWORDS];
+
+BitS a, b, c;
+</pre><p>
+Implement a function to store the union of <large><code>a</code></large> and <large><code>b</code></large> in <large><code>c</code></large>:
+</p><p></p><pre>void BitUnion(BitS a, BitS b, BitS c);
+</pre><p>
+Do it once using <large><code>getBit()</code></large> et al, and once "optimally".
+</p><p></p><hr><p>
+<table width="100%" cellpadding="0">
+<tbody><tr valign="top"><td align="left"><span class="heading">Setting and unsetting bits </span></td><td align="right"><small>43/46</small></td></tr></tbody></table>
+</p><p>
+Setting and unsetting bits by <large><code>&amp;</code></large> and <large><code>|</code></large>
+</p><p></p><div class="center">
+<img alt="[Diagram:Pics/ass1/bit-setting-small.png]" src="./week2_files/bit-setting-small.png">
+</div><p>
+</p><p></p><hr><p>
+<table width="100%" cellpadding="0">
+<tbody><tr valign="top"><td align="left"><span class="cont">... Setting and unsetting bits </span></td><td align="right"><small>44/46</small></td></tr></tbody></table>
+</p><p>
+Powers of two by bit-shifting
+</p><p></p><div class="center">
+<img alt="[Diagram:Pics/ass1/bit-shift-small.png]" src="./week2_files/bit-shift-small.png">
+</div><p>
+Don't use <large><code>pow(...)</code></large> from <large><code>math.h</code></large>!
+</p><p></p><hr><p>
+<table width="100%" cellpadding="0">
+<tbody><tr valign="top"><td align="left"><span class="heading">Performance of Set Implementations</span></td><td align="right"><small>45/46</small></td></tr></tbody></table>
+</p><p>
+Performance comparison:
+</p><p>
+<table border="1" cellpadding="5" cellspacing="0">
+<tbody><tr style="background-color:#dddddd">
+<td><b>Data Structure</b></td>
+<td><b>insert</b></td>
+<td><b>delete</b></td>
+<td><b>member</b></td>
+<td><b><big>&#8746;</big>, <big>&#8745;</big></b></td>
+<td><b>storage</b></td>
+</tr>
+<tr>
+<td>unsorted array</td>
+<td><i>O(n)</i></td>
+<td><i>O(n)</i></td>
+<td><i>O(n)</i></td>
+<td><i>O(n.m)</i></td>
+<td><i>O(N)</i></td>
+</tr>
+<tr>
+<td>sorted array</td>
+<td><i>O(n)</i></td>
+<td><i>O(n)</i></td>
+<td><i>O(log<sub>2</sub>n)</i></td>
+<td><i>O(n+m)</i></td>
+<td><i>O(N)</i></td>
+</tr>
+<tr>
+<td>unsorted linked list</td>
+<td><i>O(n)</i></td>
+<td><i>O(n)</i></td>
+<td><i>O(n)</i></td>
+<td><i>O(n.m)</i></td>
+<td><i>O(n)</i></td>
+</tr>
+<tr>
+<td>sorted linked list</td>
+<td><i>O(n)</i></td>
+<td><i>O(n)</i></td>
+<td><i>O(n)</i></td>
+<td><i>O(n+m)</i></td>
+<td><i>O(n)</i></td>
+</tr>
+<tr>
+<td>hash table <small>(lists)</small></td>
+<td><i>O(n)</i></td>
+<td><i>O(n)</i></td>
+<td><i>O(n)</i></td>
+<td><i>O(n+m)</i></td>
+<td><i>O(n+H)</i></td>
+</tr>
+<tr>
+<td>bit-maps</td>
+<td><i>O(1)</i></td>
+<td><i>O(1)</i></td>
+<td><i>O(1)</i></td>
+<td><i>O(1)</i></td>
+<td><i>O(N)</i></td>
+</tr>
+</tbody></table>
+</p><p>
+<i>n,m</i> = #elems, &nbsp; <i>N</i> = max #elems, &nbsp; <i>H</i> = size of hash table
+</p><p></p><hr><p>
+<table width="100%" cellpadding="0">
+<tbody><tr valign="top"><td align="left"><span class="cont">... Performance of Set Implementations</span></td><td align="right"><small>46/46</small></td></tr></tbody></table>
+</p><p>
+Notes on performance differences ...
+</p><p>
+Assume <i>O(1)</i> <large><code>card</code></large>, because we keep a count of #elems
+</p><p>
+For sorted array, insert cost is: cost of find + cost to interpolate <br>
+Cost = <i>log<sub>2</sub>n</i> tests + (avg)<i>n/2</i> moves &#8658; <i>O(n)</i>
+</p><p>
+Two <i>O(n)</i> costs: &nbsp;linked list =&nbsp;<i>k.n</i>, &nbsp;hash table =&nbsp;<i>j.n</i>&nbsp; but &nbsp;j&#8810;k <small>(lists are shorter)</small>
+</p><p>
+If lists are sorted, use merge for <big>&#8746;</big> and <big>&#8745;</big> so <i>O(n+m)</i>
+</p><p>
+Bit-map version restricts range of possible elements to <i>0..N-1</i>
+</p><p></p><hr><p>
+<small><small>Produced: 24 Jul 2017</small></small>
+
+
+</p></li></ul></body></html>

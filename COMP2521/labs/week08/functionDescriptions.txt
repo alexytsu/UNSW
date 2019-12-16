@@ -1,0 +1,6 @@
+memset(void *s, int c, size_t n): fills the memory at s with n bytes of c.
+
+url_fclose():
+url_feof():
+url_fgets():
+GetNextURL():

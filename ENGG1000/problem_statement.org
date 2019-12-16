@@ -1,0 +1,48 @@
+#+TITLE: ENGG1000 Problem Statement (Individual)
+#+SUBTITLE: Warehouse Droid Project Team 17
+#+AUTHOR: Alexander Su (z5166086)
+#+OPTIONS: toc:nil
+#+LATEX_CLASS: article
+
+* The Importance of Problem Statements
+In any project it is important to have a problem statement so that you can
+ensure the work you do is not wasted on an unrelated or unnecessary goal. I
+think it is especially useful to have a clearly defined problem statement in a
+group task because the way we communicate and discuss ideas together will be
+based around and shaped by our collective problem statement.
+* Individual Problem Statement
+The Warehouse Droid Project design brief contains a problem definition that
+describes the task we need to solve. It describes the main task as designing an
+prototype that can "autonomously detect, lift/drop and move a pallet from an
+unknown pick-up position to a known delivery location as quickly and safely as
+possible". From this statement, I formed my individual problem statement based
+around the robot's ability to lift the pallet and to do it as quickly as safely
+as possible.
+
+My problem statement breaks our task into three sub-tasks.
+1. *Move* /accurately/ whilst performing basic localisation (using
+   the magnets on the floor to check our position)
+2. *Lift* the pallet /safely/
+3. *Move* with the pallet to the destination and set it down /safely/
+* Collaborating with the team
+When we met on Monday however to discuss our problem statements as a team, we
+all found that there were many considerations we each had forgotten. By a
+process of brainstorming and listing subtasks of the project on a table on a
+whiteboard, we were able to describe the entire problem with greater coverage.
+For myself in particular, one major factor I had not considered was price. A
+critical part of the problem statement is to keep the costs of the robot under
+$100. Including this actually affects the entire problem statement as satisfying
+it - by using cheaper parts for example - almost always goes against our other
+objectives such as speed and accuracy.
+** Our Team's Problem Statement
+By working together as a team, we were able to generate a problem statement that
+was based around fulfilling specific criteria. We agreed that if we fulfilled these
+criteria, our droid would be successful for the project as a whole.
+1. The robot must have a large lifting *capacity*
+2. The robot must move and stop *accurately*
+3. The robot must perform *reliably*
+4. The robot must have a *low cost*
+5. The robot must be able to *avoid obstacles*
+6. The robot must operate *safely*
+7. The robot must be *stable*
+8. The robot must complete its tasks *quickly*

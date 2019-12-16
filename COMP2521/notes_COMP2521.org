@@ -1,0 +1,214 @@
+#+TITLE: COMP2521 - Data Structures and Algorithms
+#+LATEX_CLASS: article
+#+OPTIONS: toc:nil
+* <2017-07-26 Wed> Introduction 
+** Handling Command Line Arguments
+Use ~sscanf~ to handle command line arguments and error checking. Here is a
+example calendar app that gets months. We first check that we receive the
+correct number of command line arguments. We then check that the command line
+arguments are valid by assigning it to an integer and checking the return status
+of that assignment.
+#+BEGIN_SRC C
+	#include <stdio.h>
+	#include <stdlib.h>
+
+	int main(int argc, char *argv[])
+	{
+			char * monthStr;
+			if(argc != 2){
+					fprintf(stderr, "Usage: month 1...12 \n");
+					return EXIT_FAILURE;
+			}
+			int count;
+			int num;
+			//assignment and error checking is handled in the one line
+			if((count = sscanf(argv[1], "%d", &num)) == 0){
+					fprintf(stderr, "Usage: month 1...12 \n");
+					return EXIT_FAILURE;
+			}
+
+			switch(num){
+					case 1: monthStr = "January"; break;
+					case 2: monthStr = "February"; break;
+					default: monthStr = "Other"; break;
+			}
+
+			printf("%s\n", monthStr);
+
+			return EXIT_SUCCESS;
+	}
+#+END_SRC
+** Compiling C programs
+*** Header Files and Implementation files
+As a general rule, we keep function headers in .h files and their corresponding
+implementations in a .c file. When we include a file, it literally copies that
+code into the current file.
+*** Object Files 
+If we compile with ~gcc -Wall -Werror -c file.c~, it creates an object file. We
+can take two object files and link them together with ~gcc -o programName
+file1.o file2.o~. For each library we have a .c implementation file and a .h
+header file. As a general workflow,
+1. We compile the libraries into an object file
+2. Compile the program that uses these libraries into an object file
+3. We link these object files together into the final 
+*** Makefiles
+A make file is a recipe for compiling a complex program. Unless you define the
+target, it will only execute the first target. But in order to build the first
+target, it must resolve and build all its dependencies first.
+#+BEGIN_SRC makefile
+	targetName : dependency1.o dependency2.o 
+		gcc -Wall -Werror dependency1.o dependency2.o -o programName
+
+	dependency1.o : source1.c
+		gcc -Wall -Werror -c source1.c
+
+	dependency1.o : source2.c
+		gcc -Wall -Werror -c source2.c
+
+	rm :
+		rm -f *.o programName
+#+END_SRC
+We can use several shortcuts and variables in a Makefile to make the process
+more readable. But it is doing everything implicitly.
+#+BEGIN_SRC makefile
+	CC=gcc
+	CFLAGS=-Wall -Werror
+
+	programName : library1.o library2.o
+
+	library1.o : library1.c
+
+	library2.o : library2.c
+
+	rm :
+		rm -f *.o programName
+#+END_SRC
+* <2017-08-01 Tue> Algorithmic Efficiency 
+	[[file:lectures/week2.html][Lecture Slides]]
+** Measuring the efficiency of an algorithm
+We want our programs to be /correct/, /reliable/, /maintainable/ and
+/efficient/. To determine algorithmic efficiency, we measure program execution
+costs.
+| Experimental                                     | Theoretical                          |
+|--------------------------------------------------+--------------------------------------|
+| Run and measure execution time                   | Identify core costs of an algorithm  |
+| Depends on compiler, machine etc.                | Express cost in terms of #operations |
+| Alternatively we analyze a function call profile |                                      |
+
+We are usually more interested in the /growth rate/ of algorithms rather than
+their absolute cost. We look at /complexity classes/ and /big-O notation/:
+- O(1) ... constant functions
+- O(logn) ... log functions
+- O(n) ... linear functions
+- O(nlogn), O(n^2), O(n!) ... etc.
+* <2017-08-02 Wed> Abstract Data Types  
+** Binary Search
+Start with entire array and halve the range the element may be in. We stop when
+we find X or the range is empty. Binary search is *limited*. E.g. must be
+performed on arrays and the array must already be sorted. ADD derivation of its
+efficiency. 
+** Abstract Data Types
+We can model a program as a *state machine*. An *abstract data type* helps us
+conceptualize this. A data type is a set of *values* and collection of
+*operations* on those values. An abstract data type is an approach to
+implementing these, separating the interface and implementation. End users of an
+ADT should not see the implementation (which can be stored in an object file).
+| Type                       | Example   |
+|----------------------------+-----------|
+| Data Type                  | C strings |
+| Abstract Data Object       |           |
+| Abstract Data Types        | C files   |
+| Generic Abstract Data Type |           |
+Abstract data types can have multiple instances whereas GADTs can have multiple
+types and instances. We can also have hybrid data types such as linked-lists
+where each node points to an array.
+[[file:lectures/week2_files/structures2-small.png][linked-list-array]]
+** Pre-conditions and post-conditions
+If we assume a set of pre-conditions, we expect to reach a post-condition after
+our code has run. We /can/ use ~assert~ to do this pre-condition checking. But
+it does not provide useful error-handling and does not release resources that
+were allocated by ~malloc~. Usually, it is a better idea first release resources
+and then return the function with an error log.
+** Implement Bit Operations
+#+BEGIN_SRC c
+#define NBITS 1024
+#define NWORDS (NBITS/32)
+typedef unsigned int Word;
+typedef Word Bits[NWORDS]; //an unsigned integer
+#+END_SRC
+*** Masking
+Say we have 00110101 and we want to find the fourth bit. 
+| x = 1      | ~[00000001]~ |
+| x = x << 3 | ~[00001000]~ |
+| x & y      | ~[00000000]~ |
+We get a 1 or a 0 (as an int) corresponding to the 4th bit of x. 
+** Function pointers
+#+BEGIN_SRC c
+int sqauare(int x){ 
+  return x*x;
+}
+int timesTwo(int x){ 
+  return x*2;
+}
+int (*fp)(int); //declare a pointer that can point to a function
+fp = &square; //fp points to the square function
+int n = (*fp)(10); //call the square function with input 10
+fp = timesTwo; //we can point fp to functions without the &
+n = (*fp)(2); //call the timesTwo function with input 2
+n = fp(2); //we can also use normal function notation
+#+END_SRC 
+*** Higher Order Functions
+A simple use of a function pointer is to create higher order functions. A higher
+order function takes a function pointer in as a parameter. An example of a
+higher order function is a function that traverses a list and performs and
+operation on each elemenent (such as squaring the value).
+** Generic Types in C
+*Polymorphism* refers to the ability of the same code to perform the same action
+ on different types of data. C provides a pointer to void ~void *p~ which can be
+ used to create *generic data types* by declaring values to be of type ~void *~.
+#+BEGIN_SRC C
+	struct Node{
+		void *value;
+		struct Node *next;
+	};
+#+END_SRC
+* <2017-08-15 Tue> Sorting Algorithms
+** Merge Sort
+Since merge sort only works between two sorted lists, we must first split the
+original values into sorted lists. We can do this recursively by splitting an
+array until we have small sorted fragments.
+1. *Divide* by finding the middle of the array between index p and r. This can
+   be calculated by averaging p and r and rounding down.
+2. *Conquer* by recursively sorting the arrays (if they are unsorted). Split
+   them if unsorted, merge them if sorted.
+3. *Combine* by merging the two sorted subarrays back into a single sorted
+   subarray.
+The base case is a subarray containing fewer than two elements. Any array with
+one or no elements is already sorted.
+** Stability in Sorting Algorithms
+A *stable sort* assures that if two of the same values appear in a sequence the
+sorted output will have the same order. Quick sort is not a stable sort whereas
+*merge sort* can be implemented as a stable sort.
+
+* <2017-08-29 Tue> gdb and debugging
+** Examining programming state
+A *debugger* allows you to inspect the state of the program that has crashed due
+to a run-time error. It does not modify the program: you can insert breakpoints
+and inspect values within the program at these points.
+** Using gdb
+To use gdb, we must use the =-g= flag. A standard compile command may look like
+=gcc -g -Wall -Werror -o prog prog.c=. Other times, we will use gdb after a
+runtime error to examine the core file. Here are a few commands to use in gdb.
+- run, cont: give normal execution
+- break: stop at a certain points
+- step, next: one statement at a time
+- print: examine program state
+- where: find which function the porgram was executing when crashed
+- list [LINE]: gives five lines either side of the specified one
+- quit: exits gdb
+- run [ARGS]: you can give arguments to the chosen file
+There are a few graphical debuggers including *xxgdb* and *ddd* 
+** Profiling programs
+A program such as =gprof= works at the function level, producing profiles of
+execution time within each function in the program. It can give us a flat graph
+or show us a graph of which functions are calling eachother.
