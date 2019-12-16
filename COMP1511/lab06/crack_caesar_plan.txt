@@ -1,0 +1,16 @@
+Functions needed
+read input
+count frequency of letters in an input find the most frequent
+
+
+Step by step
+
+
+1. read the input .txt and count frequencies of each letter
+    use the read function
+2. find the most frequent letter
+    count the frequency 
+    find the most common
+3. read the input from stdin
+4. find the most common 
+5. the difference in ascii values  of the most common in both is the size of the caesar shift
