@@ -1,0 +1,7 @@
+*.hex
+*.lss
+*.map
+*.obj
+*.tmp
+*.asmproj
+*.atsuo
